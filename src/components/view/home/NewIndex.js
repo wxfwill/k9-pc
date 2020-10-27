@@ -417,7 +417,7 @@ class NewIndex extends Component {
                             mouseoverPoint.item?<img src={`${config.apiUrl}/api/dog/img?id=${mouseoverPoint.item&&mouseoverPoint.item.id}`} />:''
                         }
                         
-                        <Table pagination={false} rowClassName="mo_table" showHeader={false} dataSource={mouseOverData} columns={mouseoverColumns} />
+                        <Table rowKey='id' pagination={false} rowClassName="mo_table" showHeader={false} dataSource={mouseOverData} columns={mouseoverColumns} />
                     </div>
                 </div>
                 <Card title="今日值班" extra={Moment().format('YYYY-MM-DD')} style={{ width: 360, marginBottom: '10px' }} bodyStyle={{padding:'10px 24px'}}>

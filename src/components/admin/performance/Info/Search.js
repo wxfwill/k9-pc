@@ -1,5 +1,5 @@
-import React ,{ Component } from 'react'; 
-import { Form, Row, Col, Input, Button, Icon ,Select ,DatePicker} from 'antd';
+import React, { Component } from 'react';
+import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
 import { thirdLayout } from 'components/view/common/Layout';
 import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
@@ -8,91 +8,96 @@ const Option = Select.Option;
 const { MonthPicker } = DatePicker;
 require('style/view/common/conduct.less');
 class SearchForm extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      expand: true, 
-      value:'',
-      years:[],
+      expand: true,
+      value: '',
+      years: [],
       peoples: [],
-      checkDate:moment(new Date(), "YYYY-MM")
+      checkDate: moment(new Date(), 'YYYY-MM'),
     };
   }
-  componentWillMount(){
+  componentWillMount() {
     this.searchPeople();
-  
   }
   handleSearch = (e) => {
     e.preventDefault();
     let { limit } = this.props;
-    let timeData = 'range-time-picker'; 
+    let timeData = 'range-time-picker';
     this.props.form.validateFields((err, values) => {
-      console.log(values,'values');
-      values.checkDate=moment(values.checkDate).format('YYYY-MM');
+      console.log(values, 'values');
+      values.checkDate = moment(values.checkDate).format('YYYY-MM');
       limit(values);
     });
-  }
+  };
 
-  searchPeople = (name="") => {
-    httpAjax('post',config.apiUrl+'/api/userCenter/getTrainer',{name}).then(res => {
-        if(res.code == 0) {
-            this.setState({peoples: res.data})
-        }
-       
-    })
-}
+  searchPeople = (name = '') => {
+    httpAjax('post', config.apiUrl + '/api/userCenter/getTrainer', { name }).then((res) => {
+      if (res.code == 0) {
+        this.setState({ peoples: res.data });
+      }
+    });
+  };
 
   handleReset = () => {
     this.props.form.resetFields();
-  }
+  };
   toggle = () => {
     const { expand } = this.state;
     this.setState({ expand: !expand });
-  }
-  handleChange(name,value){
+  };
+  handleChange(name, value) {
     this.setState({
-      [name]:value
-    })
+      [name]: value,
+    });
   }
   handlePanelChange(date, dateString) {
     this.setState({
-      value:data
-    })
+      value: data,
+    });
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-    let {expand,peoples,years,checkDate}=this.state;
+    let { expand, peoples, years, checkDate } = this.state;
 
     return (
-      <Form className="ant-advanced-search-form"  onSubmit={this.handleSearch} >
+      <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
         <Row gutter={24}>
-          
-            <Col xl={8} lg={12} md={12} sm={24} xs={24} >
-              <FormItem label='姓名' {...thirdLayout}  >
-                  {getFieldDecorator('userId')(
-                      <Select placeholder="姓名"  
-                          optionLabelProp="children" 
-                          showSearch autosize={{ minRows: 2, maxRows: 24 }}
-                          filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                      >
-                          {peoples.map((item) => <Option value={item.id+''} key={item.id+'_peo'}>{item.name}</Option>)}
-                      </Select>
-                  )}
-              </FormItem>
-            </Col>
-            <Col xl={8} lg={12} md={12} sm={24} xs={24} >
-              <FormItem label='选择月份	' {...thirdLayout}>
-                {getFieldDecorator('checkDate', {
-			            initialValue:checkDate
-			          })(
-                  <MonthPicker placeholder="选择月份" defaultValue={checkDate}  />
-                )}
-              </FormItem>
-            </Col>
+          <Col xl={8} lg={12} md={12} sm={24} xs={24}>
+            <FormItem label="姓名" {...thirdLayout}>
+              {getFieldDecorator('userId')(
+                <Select
+                  placeholder="姓名"
+                  optionLabelProp="children"
+                  showSearch
+                  autosize={{ minRows: 2, maxRows: 24 }}
+                  filterOption={(input, option) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {peoples.map((item) => (
+                    <Option value={item.id + ''} key={item.id + '_peo'}>
+                      {item.name}
+                    </Option>
+                  ))}
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+          <Col xl={8} lg={12} md={12} sm={24} xs={24}>
+            <FormItem label="选择月份	" {...thirdLayout}>
+              {getFieldDecorator('checkDate', {
+                initialValue: checkDate,
+              })(<MonthPicker placeholder="选择月份" initialValue={checkDate} />)}
+            </FormItem>
+          </Col>
         </Row>
         <Row>
           <Col span={24} style={{ textAlign: 'right' }}>
-            <Button type="primary" htmlType="submit">查询</Button>
+            <Button type="primary" htmlType="submit">
+              查询
+            </Button>
             <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
               清空
             </Button>
