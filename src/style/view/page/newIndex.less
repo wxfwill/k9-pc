@@ -1,0 +1,287 @@
+.newIndex {
+    position: relative;
+    height: 925px;
+    .map_point_content {
+        position: relative;
+        .map_point {
+            background:#6bb7f5;
+            border: none;
+            width: 60px;
+            height: 60px;
+            padding-top: 10px; 
+            border-radius: 60px;
+            opacity: 0.8;
+            position: absolute;
+            color: #fff;
+            text-align: center;
+            font-size: 12px;
+            left: 5px;
+            top: 5px;
+        }
+        .map_bg {
+            background:#6bb7f5;
+            border: none;
+            width: 70px;
+            height: 70px;
+            border-radius: 70px;
+            opacity: 0.6;
+            position: absolute;
+            
+        }
+    }
+   
+    .k9_label {
+        display: flex;
+        justify-content: flex-start;
+        color: #666666;
+        line-height: 32px;
+        font-size: 14px;
+        :first-child {
+            padding-right: 10px;
+            font-weight: 600;
+        }
+        :last-child {
+            overflow: hidden;
+            max-width: 192px;
+            text-overflow:ellipsis;
+            white-space:nowrap;
+        }
+    }
+    .k9_card {
+        position: relative;
+        width: 360px;
+        background: #49a9ee;
+        border-radius: 4px;
+        height: 112px;
+        margin-bottom: 10px;
+        .k9_card_img {
+            position: absolute;
+            left: 54px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 38px;
+            height: 30px;
+            background: url(../../../images/view/u77.png) no-repeat;
+            background-size: 100% 100%;
+        }
+        .card_title {
+            font-size: 14px;
+            color: #fff;
+            position: absolute;
+            left: 122px;
+            top: 25px;
+        }
+        .dog_num {
+            left: 122px;
+            top: 45px;
+            position: absolute;
+            color: #fff;
+            font-style: normal;
+            span {
+                font-size: 28px;
+            }
+            i {
+                font-style: normal;
+            }
+        }
+    }
+    .index_footer {
+        width: 100%;
+        height: 310px;
+        display: flex;
+        .dec_cycle {
+            padding-top: 10px;
+            position: relative;
+            .echart_intext {
+                position: absolute;
+                left: 0;
+                top: 0;
+               
+                width: 160px;
+                height: 160px;
+                padding-top: 50px;
+                span {
+                    display: block;
+                    text-align: center;
+                  
+                }  
+                span:first-child {
+                    font-weight: 500;
+                    font-size: 32px;
+                    line-height: 50px;
+
+                }
+                span:last-child {
+                    color: #989898;
+                    font-size: 12px;
+                    line-height: 30px;
+                }
+            }
+            .echart_cycle {
+                width: 160px;
+                height: 160px;
+                position: relative;
+                
+            }
+            .echart_dec {
+                position: absolute;
+                //border: 1px solid;
+                left: 180px;
+                top: 42px;
+                
+                font-size: 12px;
+                .dec_item {
+                    margin-bottom: 10px;
+                    i {
+                        display: inline-block;
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 8px;
+                        background: #49a9ee;
+                        margin-right: 6px;
+                    }
+                    span {
+                        display: inline-block;
+                        margin-right: 6px;
+                    }
+                }
+            }
+        }
+        @media screen and (max-width: 1360px) {
+            .ant-carousel {
+                width: 210px;
+                position: absolute;
+                bottom: 10px;
+                max-height: 60px;
+            }
+        }
+        @media screen and (min-width: 1360px) {
+            .ant-carousel {
+                width: 350px;
+                position: absolute;
+                bottom: 10px;
+                max-height: 60px;
+            }
+        }
+        .ant-table {
+            margin-top: 2px;
+        }
+        .ant-table-thead > tr {
+            th {
+                color: #ccc;
+                font-size: 12px;
+                background: #fff;
+    
+            }  
+        }
+        .ant-table-tbody > tr > td {
+            padding: 14px 16px;
+            color: #666;
+            border:none;
+        }
+        .tab_row {
+          color:  #666;
+          font-size: 12px;
+        }
+    }
+    .index_map {
+        background: #fff;
+        position: absolute;
+        top: 0;
+        left: 380px;
+        height: 603px;
+   //     width: 1285px;
+        width:100%;
+        .map_title {
+            display: flex;
+            justify-content: space-between;
+            height: 50px;
+            // border-bottom: 1px solid #666;
+            div:first-child {
+                font-size: 16px;
+                font-weight: 650;
+                color: #666;
+                line-height: 50px;
+            }
+        }
+        .map_dom {
+            width: 100%;
+            height: 552px;
+        }
+        .mouseover_dev {
+            position: absolute;
+            width: 171px;
+            height: 220px;
+            background: #fff;
+            border: 1px solid #fff;
+            z-index: 99999999;
+            top: 0;
+            left: 0;
+            padding: 10px;
+            border-radius: 4px;
+            img {
+                width: 150px;
+                height: 94px;
+            }
+            .ant-table-tbody {
+                tr:nth-child(2n) {
+                    background: #f3f3f3;
+                   
+                }
+            }
+            .mo_table {
+                td {
+                    height: 25px;
+                    font-size: 12px;
+                    padding: 0;
+                    border: none;
+                    font-size: 12px;
+                    text-align: left;
+                }
+            }
+        }
+        .mouseover_dev::after {
+            content: "";
+            width: 0px;
+            height: 0px;
+            border-width:10px 10px 0;
+            border-style:solid;
+            border-color:#fff transparent transparent;/*灰 透明 透明 */
+            // margin:40px auto;
+            position: absolute;
+            bottom: -10px;
+            left: 15px;
+        }
+        .dog_base {
+            width: 80px;
+            height: 80px;
+            background: url(../../../images/view/base.png) no-repeat;
+            background-size: 100% 100%;
+            .base_dec {
+                padding-top: 10px;
+                font-size: 12px;
+                text-align: center;
+            }
+        }
+    }
+    .dogs_point {
+        width: 10px;
+        height: 10px;
+        border-radius: 10px;
+        background: #000;
+        animation: bgChange 1.5s linear infinite;
+        border: none;
+    }
+    @keyframes bgChange
+    {
+        0% {background: red;}
+        50% {background: rgb(255, 255, 255);}
+        100% {background: red;}
+    }
+    .dogs_img {
+        width: 42px;
+        height: 42px;
+        background: url(../../../images/view/u41.png) no-repeat;
+        background-size: 100%;
+    }
+}

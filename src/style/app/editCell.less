@@ -1,0 +1,75 @@
+.editable-cell {
+  position: relative;
+}
+
+.editable-cell-input-wrapper,
+.editable-cell-text-wrapper {
+  padding-right: 24px;
+}
+
+.editable-cell-text-wrapper {
+  padding: 5px 24px 5px 5px;
+}
+
+.editable-cell-icon,
+.editable-cell-icon-check {
+  position: absolute;
+  right: 0;
+  width: 20px;
+  cursor: pointer;
+}
+.editable-cell-icon-check{
+   margin-top: 10px; 
+}
+.editable-cell-icon {
+  line-height: 18px;
+  display: none;
+}
+
+.editable-cell-icon-check {
+  line-height: 28px;
+}
+.editable-cell{
+  .editable-cell-text-wrapper{
+    .anticon{
+      display: none;
+    }  
+  }
+}
+
+.editable-cell:hover .editable-cell-icon {
+  display: inline-block;
+}
+
+.editable-cell-icon:hover,
+.editable-cell-icon-check:hover {
+  color: #108ee9;
+}
+
+.editable-add-btn {
+  margin-bottom: 8px;
+}
+.scheduleContent{
+  .ant-table-tbody{
+    .ant-table-row:nth-child(5){
+      td:nth-child(2),td:nth-child(3),td:nth-child(4){
+        border-right:0;
+        text-align: right;
+      }
+    }
+  }
+  // .ant-table-bordered .ant-table-thead > tr > th, .ant-table-bordered .ant-table-tbody > tr > td{
+  //   border-right: 1px solid #666;
+  // }
+  // .ant-table-bordered .ant-table-thead > tr > th{
+  //   border-bottom: 1px solid #666;
+  // }
+  // .ant-table-tbody > tr > td{
+  //   border-bottom: 1px solid #666;
+  // }
+  //  .ant-table-bordered .ant-table-body > table{
+  //   border: 1px solid #666;
+  //   border-right: 0;
+  //   border-bottom: 0;
+  //  }
+}

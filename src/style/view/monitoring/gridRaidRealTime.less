@@ -1,0 +1,113 @@
+.gridRaidRealTime{
+        position: absolute;
+        top:64px;
+        bottom:0px;
+        right:0px;
+        #container{
+            position: absolute;
+            top:0px;
+            left:0px;
+            bottom:0px;
+            right:12px;
+            .card_title {
+                width: 100%;
+                display: flex;
+                font-size: 16px;
+                justify-content: space-between;
+                :last-child {
+                    color: #1890ff;
+                    cursor: pointer;
+                }
+          }
+          .p-icon{
+           cursor: pointer;
+           display: block;
+           width: 25px;
+           height: 100px;
+           position: absolute;
+           z-index: 9999;
+           background: #fff;
+           top: 88px;
+           line-height: 100px;
+           text-align: center;
+           border-top-left-radius: 16px;
+           border-bottom-left-radius: 16px;
+           border: 1px solid #ccc;
+           border-right-width: 0;
+          }
+        }
+        .ant-badge-status-dot{
+            width:15px;
+            height:15px;
+        }
+        .ant-card-body{
+         padding: 0;
+            &>div{
+                line-height:20px;
+                margin-top:5px;
+                width:100%;
+                .ant-tag-has-color{
+                    width:100%;
+                    text-align: center;
+                }
+            }
+        }
+       #peo_container {
+           user-select:none;
+           
+           .peo_item {
+               cursor: pointer;
+               display: inline-block;
+               margin-right: 10px;
+               width: 90px;
+               position: relative;
+               .cover_peo {
+                   width: 100%;
+                   height: 100%;
+                   position: absolute;
+                   top: 0;
+                   left: 0;
+                   background: transparent;
+               }
+               .peo_num {
+                   position: absolute;
+                   width: 12px;
+                   height: 12px;
+                   border-radius: 12px;
+                   background: rgba(16, 142, 233, 1);
+                   color: #fff;
+                   font-size: 10px;
+                   text-align: center;
+                   line-height: 12px;
+                   top: 3px;
+                   right: 2px;
+               }
+               img {
+                   display: block;
+                   width: 55px;
+                   height: 55px;
+                   margin: 0 auto;
+               }
+               .peo_dec {
+                   font-size: 12px;
+                   color: #989898;
+                   text-align: center;
+                   padding: 0px 0 10px 0;
+               }
+           }
+       }
+       #selPeople .ant-card-body{
+           padding-left:24px;
+           padding-right: 24px;
+       }
+       //2020
+       .ant-list{
+           background-color: white;
+           width: 360px;
+           max-height:520px;
+           overflow: auto;
+           position: absolute;
+           top: 0;
+           right: 0px;
+       }
+}

@@ -1,0 +1,86 @@
+.flex-table(){
+	display: flex;
+		span{
+			flex:1;
+			text-align: center;
+		}
+}
+.today-card{
+	background: url('../../../images/view/zuo1.png')no-repeat;
+	background-size: 100% 100%;
+	background-position:0px 8px ;
+	padding: 15px 10px 10px;
+	box-sizing: border-box;
+	margin-top:6px;
+	.TodayCard{
+		height: 271px;
+	}
+	.listWrapper{
+		padding-left:0px!important;
+		li{
+			white-space:nowrap;
+			text-overflow:ellipsis;
+			overflow:hidden;
+			cursor: pointer;
+			height:30px;
+			line-height: 30px;
+			font-size:12px;
+		}
+	}
+	.layout-card{
+		.card-title{
+			width:80%;
+			height:30px;
+			line-height: 30px;
+			display: inline-block;
+			text-indent: 10px;
+			background:url('../../../images/view/title_bg.png')no-repeat center;
+			background-size: 100% 100%;
+			color:#fff;
+		}
+		background: transparent;
+		.filter-wrapper{
+			.flex-table();
+			span{
+				color:#fff;
+				background:#284384;
+				padding:0 5px;
+				cursor: pointer;
+			}
+		}
+		.ant-card{
+			background:transparent;
+		}
+		.ant-card-head{
+			border-bottom:none;
+			height:20px!important;
+			min-height: 35px!important;
+			background: transparent;
+			padding: 5px!important;
+			padding-bottom: 10px;
+			.ant-card-head-wrapper{
+				min-height: 30px!important;
+				height: 30px!important
+			}
+			.ant-card-head-title{
+				color:#eac43e;
+				font-size:18px;
+				padding-top: 0!important;
+				padding-bottom: 5px!important;
+				height:auto!important;
+				.title span{
+					float: right;
+					color:#eac43e;
+					font-weight:500;
+					font-size:18px;
+				}
+			}
+		}
+		.ant-card-body{
+			padding: 4px!important;
+			padding-top: 15px!important;
+			padding-left: 25px!important;
+			color:#40d8ff;
+		}
+	}
+}

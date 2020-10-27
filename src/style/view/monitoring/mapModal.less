@@ -1,0 +1,53 @@
+.MapModal{
+	position:fixed;
+	z-index:99999;
+	top:0;
+	right:0px;
+	height:100%;
+	left:360px;
+	padding-top: 64px;		
+	box-sizing: border-box;
+	transition: left .5s;
+	-moz-transition: left .5s; 
+	-webkit-transition: left .5s;
+	-o-transition: left .5s;
+	.map-container{
+		padding-left:30px;
+		box-sizing: border-box;
+		border-left:1px solid #ccc;
+		height:100%;
+		background-color: #fff;
+		.container{
+			min-height: 600px;
+			.ant-card-body{
+				padding:24px;
+				.ant-tag{
+					width:100px;
+					text-align: center;
+					&:nth-child(2){
+						margin-top:20px;
+					}
+				}
+			}
+		}
+	}
+	.p-icon{
+		position:absolute;
+		background: #169bd5;
+		color:#fff;
+		border-radius: 0 32px 32px 0;
+		width:10px;
+		height:56px;
+		top:50%;
+		line-height: 56px;
+	}
+	.cursor{
+		cursor: pointer;
+	}
+	.left-max{
+		left:100%;
+	}
+	.left-min{
+		left:360px;
+	}
+}

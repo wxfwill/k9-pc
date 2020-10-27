@@ -1,0 +1,29 @@
+.detail-table{
+	height:100%;
+	background-color: #fff;
+}
+.baseDataTable{
+	.ant-row{
+		.ant-col-6{
+			border-top:1px solid #eee;
+			border-left:1px solid #eee;
+			line-height: 30px;
+			text-align: center;
+		}
+	}
+	.ant-row{
+		.ant-col-6:last-child{
+			border-right: 1px solid #eee;
+		}
+		.ant-col-6:nth-child(odd){
+			font-weight: 700;
+		}
+	}
+	.ant-row:last-child{
+		border-bottom: 1px solid #eee;
+	}
+	.detail-table-pc{
+		max-width: 100px;
+		max-height: 100px;
+	}
+}

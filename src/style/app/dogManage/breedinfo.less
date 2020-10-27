@@ -1,0 +1,57 @@
+.breedInfo {
+    .card_body {
+        position: relative;
+        .card_left {
+            // display: inline-block;
+            padding: 24px;
+            width: 256px;
+            border-right: 1px solid #ccc;
+            box-sizing: content-box;
+            display: flex;
+            align-content: center;
+            
+            img {
+                width: 80px;
+                height: 80px;
+               // border: 1px solid;
+                margin-right: 15px;
+            }
+            .left_dec {
+                display: inline-block;
+                font-size: 12px;
+                color: #989898;
+                line-height: 23px;
+                .left_h {
+                    font-weight: 650;
+                    font-size: 16px;
+                    color: #666666;
+                }
+            }
+        }
+        .card_right {
+            min-width: 500px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 24px;
+            font-size: 12px;
+            color: #989898;
+            line-height: 32px;
+            .breed_l {
+                width: 100%;
+                text-align: left;
+                text-indent: 30%
+            }
+        }
+        .reproduce_c_right {
+            left: 50%;
+            transform: translateX(-50%);
+            .reproduce_tag {
+                
+                display: inline-block;
+                margin-right: 20px;
+            }
+        }
+    }
+    
+}

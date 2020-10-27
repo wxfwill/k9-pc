@@ -1,0 +1,70 @@
+.HealthTab {
+    .health_card {
+        display: inline-block;
+        min-width: 380px;
+        width: 24%;
+        margin:0 10px 10px 0;
+        max-width: 420px;
+        padding: 20px;
+        border: 1px solid rgba(228, 228, 228, 1);
+        border-radius: 4px;
+        .card_header {
+            margin-bottom: 5px;
+            .card_header_h1 {
+                display: flex;
+                justify-content: space-between;
+                font-size: 12px;
+                color: #989898;
+                span:first-child {
+                    font-weight: 650;
+                    font-style: normal;
+                    font-size: 16px;
+                    color: #666666;
+                }
+                
+            }
+            .equipment{
+                font-size: 12px;
+                color: #989898;
+                line-height: 24px;
+            }
+        }
+        .card_map {
+            overflow: hidden;
+            width: 100%;
+            height: 210px;
+            position: relative;
+            font-weight: 900;
+            font-style: normal;
+            color: #FFFFFF;
+            .step {
+                position: relative;
+                padding-top: 10px;
+                text-indent: 20px;
+                z-index: 999;
+            }
+            .cal {
+                text-indent: 20px;
+                position: relative;
+                z-index: 999;
+            }
+            .bg_op {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                left: 0;
+                right: 0;
+                background: #000;
+                opacity: 0.6;
+                z-index: 99;
+            }
+            .map_div {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                left: 0;
+                right: 0;
+            }
+        }
+    }
+}
