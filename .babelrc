@@ -5,7 +5,7 @@
     "stage-0",
     "stage-1"
   ],
-  "plugins": ["transform-runtime","react-hot-loader/babel",["import",{
+  "plugins": ["react-hot-loader/babel", "transform-runtime",["import",{
 		"libraryName": "antd",
 		"libraryDirectory": "es", "style": "true" 
 	}]]

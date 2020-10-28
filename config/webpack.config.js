@@ -5,7 +5,7 @@ const commonSet = require("./webpack.common.js");
 var OpenBrowserPlugin = require("open-browser-webpack-plugin");
 const { address } = require("./config.js");
 const config = {
-  entry: ["babel-polyfill", "react-hot-loader/patch", "./src/app.js"],
+  entry: ["babel-polyfill", "./src/app.js"],
   output: {
     filename: "assets/js/[name].js",
     path: path.resolve(__dirname, "../dist"),
@@ -35,7 +35,7 @@ const config = {
     //new webpack.optimize.UglifyJsPlugin(),//压缩打包后文件
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new ConsoleLogWebpackStart(), //自定义插件
+    // new ConsoleLogWebpackStart(), //自定义插件
     // new OpenBrowserPlugin({ url: 'http://localhost:8001' }),
     new webpack.DefinePlugin({
       "process.env": {

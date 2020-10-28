@@ -3,6 +3,9 @@
 	.header{
 		padding-left:15px!important;
 		background:linear-gradient(160deg, #3c8ce7, #00eaff);
+		// height: inherit;
+		// line-height: inherit;
+		padding: 0;
 		.collapsed{
 			margin-bottom: 12px ;
 			margin-left:20px;
@@ -13,9 +16,17 @@
 	}
 	.usermsg{
 		background:rgba(255,255,255,0);
-		padding:@padding;
+		border-bottom: none;
+		// padding:@padding;
 		li{
-			padding-bottom: 8px;
+			// padding-bottom: 8px;
+		}
+	}
+	#mainWrapper {
+		.midder-content {
+			flex: 1;
+			overflow-x: hidden;
+			overflow-y: auto;
 		}
 	}
 }
