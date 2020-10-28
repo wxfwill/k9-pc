@@ -531,62 +531,66 @@ class NewIndex extends Component {
     console.log(this.state, 'newindex');
     return (
       <div className="newIndex">
-        <div className="index_map">
-          <div className="map_title">
-            <div style={{ marginLeft: '40px' }}>犬只分布情况</div>
-            <div style={{ marginRight: '40px' }}>
-              <Button.Group>
-                <Button>全部犬只</Button>
-                <Button>园区情况</Button>
-              </Button.Group>
+        <div className="newindex-top">
+          <div style={{ width: '360px' }}>
+            <Card
+              title="今日值班"
+              extra={Moment().format('YYYY-MM-DD')}
+              style={{ width: 360, marginBottom: '10px' }}
+              bodyStyle={{ padding: '10px 24px' }}
+            >
+              {this.renderLabel(dutyList)}
+            </Card>
+            <div>{this.renderDogCard(dogsInfo)}</div>
+          </div>
+          <div className="index_map">
+            <div className="map_title">
+              <div style={{ marginLeft: '40px' }}>犬只分布情况</div>
+              <div style={{ marginRight: '40px' }}>
+                <Button.Group>
+                  <Button>全部犬只</Button>
+                  <Button>园区情况</Button>
+                </Button.Group>
+              </div>
+            </div>
+            <div className="map_dom" id="container"></div>
+            <div
+              className="mouseover_dev"
+              style={{
+                display: mouseover ? 'block' : 'none',
+                left: `${mouseoverPoint.pixel && mouseoverPoint.pixel.x}px`,
+                top: `${mouseoverPoint.pixel && mouseoverPoint.pixel.y}px`,
+              }}
+            >
+              {mouseoverPoint.item ? (
+                <img src={`${config.apiUrl}/api/dog/img?id=${mouseoverPoint.item && mouseoverPoint.item.id}`} />
+              ) : (
+                ''
+              )}
+
+              <Table
+                rowKey={(row) => {
+                  return 'key_' + row.key;
+                }}
+                pagination={false}
+                rowClassName="mo_table"
+                showHeader={false}
+                dataSource={mouseOverData}
+                columns={mouseoverColumns}
+              />
             </div>
           </div>
-          <div className="map_dom" id="container"></div>
-          <div
-            className="mouseover_dev"
-            style={{
-              display: mouseover ? 'block' : 'none',
-              left: `${mouseoverPoint.pixel && mouseoverPoint.pixel.x}px`,
-              top: `${mouseoverPoint.pixel && mouseoverPoint.pixel.y}px`,
-            }}
-          >
-            {mouseoverPoint.item ? (
-              <img src={`${config.apiUrl}/api/dog/img?id=${mouseoverPoint.item && mouseoverPoint.item.id}`} />
-            ) : (
-              ''
-            )}
-
-            <Table
-              rowKey={(row) => {
-                return 'key_' + row.key;
-              }}
-              pagination={false}
-              rowClassName="mo_table"
-              showHeader={false}
-              dataSource={mouseOverData}
-              columns={mouseoverColumns}
-            />
-          </div>
         </div>
-        <Card
-          title="今日值班"
-          extra={Moment().format('YYYY-MM-DD')}
-          style={{ width: 360, marginBottom: '10px' }}
-          bodyStyle={{ padding: '10px 24px' }}
-        >
-          {this.renderLabel(dutyList)}
-        </Card>
-        <div>{this.renderDogCard(dogsInfo)}</div>
         <div className="index_footer">
-          <Card title="警犬训练概况" style={{ flex: 1, marginRight: 15 }} bodyStyle={{ padding: '0 24px' }}>
+          <Card title="警犬训练概况" bodyStyle={{ padding: '0 24px' }}>
             {EchartPie(trainSituationData)}
             {/*提示信息 {this.renderCarousel(dogDrill)}*/}
           </Card>
-          <Card title="犬病诊疗概况" style={{ flex: 1, marginRight: 15 }} bodyStyle={{ padding: '0 24px' }}>
+          <Card title="犬病诊疗概况" bodyStyle={{ padding: '0 24px' }}>
             {EchartPie(cureCycleList, 'cureCycle')}
             {/*   {this.renderCarousel(cureTips)}*/}
           </Card>
-          <Card title="绩效考核排名" style={{ flex: 1, marginRight: 15 }} bodyStyle={{ padding: '0' }}>
+          <Card title="绩效考核排名" bodyStyle={{ padding: '0' }}>
             <div style={{ height: 254, overflow: 'auto', padding: '0 24px', marginbottom: 1 }}>
               <Table
                 rowKey={(row) => {
@@ -598,7 +602,7 @@ class NewIndex extends Component {
               />
             </div>
           </Card>
-          <Card title="最新消息" style={{ flex: 1 }} bodyStyle={{ padding: '0 24px' }}>
+          <Card title="最新消息" bodyStyle={{ padding: '0 24px' }}>
             <TodayCard />
           </Card>
         </div>
