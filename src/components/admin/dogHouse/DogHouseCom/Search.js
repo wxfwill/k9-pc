@@ -75,7 +75,7 @@ class SearchForm extends React.Component {
           <Col xl={8} lg={12} md={12} sm={24} xs={24}>
             <FormItem label="选择楼号" {...thirdLayout} hasFeedback>
               {getFieldDecorator('houseId')(
-                <Select style={{ width: 120 }} initialValue={1} onChange={this.selectHouseId}>
+                <Select placeholder="请选择" style={{ width: 120 }} initialValue={1} onChange={this.selectHouseId}>
                   {this.state.allHouseData.map((item) => {
                     return (
                       <Option key={item.id} value={item.id}>
