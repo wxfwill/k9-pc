@@ -25,6 +25,9 @@ class Room extends Component {
     };
   }
   handleLimit = (limit) => {
+    console.log('limit');
+    console.log(limit);
+    //   this.setState({ limit });
     let per = Object.assign({}, this.state.pagination, {
       currPage: 1,
       houseId: limit && limit.houseId,
@@ -125,6 +128,7 @@ class Room extends Component {
         title: '操作',
         dataIndex: 'opreation',
         render: (text, record, index) => {
+          // console.log(text, record, index)
           return (
             <div>
               <span
@@ -144,6 +148,11 @@ class Room extends Component {
                   编辑
                 </span>
               </Link>
+              {/*
+              record.palyUrl? <a href={`javascript:;`} onClick={() =>this.viewVideoCamera(record.id)} >
+              <span  style={{cursor: "pointer",color:'#1890ff'}} ><Icon type='video-camera' style={{margin:'0 10px', }} />视频</span>
+            </a> : ''
+            */}
               <Popconfirm title="确认删除此犬舍?" onConfirm={() => this.deleteDogs(record)}>
                 <span style={{ cursor: 'pointer', color: '#1890ff' }}>
                   <Icon type="delete" style={{ margin: '0 10px' }} />
@@ -179,7 +188,7 @@ class Room extends Component {
                 loading={this.state.loading}
                 columns={columns}
                 isBordered={true}
-                isRowSelects={true}
+                isRowSelects={false}
                 rowSelectKeys={this.state.selectedRowKeys}
                 handleChangeSize={this.handleChangeSize}
                 handleShowSizeChange={this.handleShowSizeChange}

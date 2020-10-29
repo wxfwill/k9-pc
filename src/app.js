@@ -7,6 +7,9 @@ import reducer from 'reducers';
 import thunk from 'redux-thunk';
 import Routes from 'router/router';
 import createLogger from 'redux-logger';
+// http
+import httpAjax from 'libs/httpAjax';
+React.httpAjax = httpAjax;
 //汉化包
 import { ConfigProvider } from 'antd';
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
