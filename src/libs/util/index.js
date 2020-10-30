@@ -131,6 +131,15 @@ let method = {
   ArrMetho: ArrMethod,
 };
 
+// 判断是否为数组
+export const isObject = (ele) => {
+  if (Object.prototype.toString.call(ele) == '[object Object]') {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export { constant, Msg, method, cookieUtil };
 /*
 module.exports = {
