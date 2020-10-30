@@ -55,6 +55,11 @@ class CustomTable extends Component {
         dataSource={dataSource}
         rowKey="id"
         columns={columns}
+        locale={{
+          emptyText: (() => {
+            return newloading ? '正在加载中' : dataSource.length == 0 ? '暂无数据' : null;
+          })(),
+        }}
         loading={newloading}
         rowSelection={newisRowSelects}
         bordered={isBordered == true ? true : false}

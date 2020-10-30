@@ -41,6 +41,8 @@ class AppComponent extends React.Component {
       logoSrc: util.constant.LogoSrc,
       logoText: util.constant.logoText,
     };
+    console.log('this.menus');
+    console.log(this.menus);
     return (
       <Layout className={classNames('indexComponent')} style={{ height: '100%' }}>
         <HeaderComponent
