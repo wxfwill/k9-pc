@@ -70,7 +70,7 @@ const TrainPlaceEdit = asyncComponent(() => import('components/admin/trainPlace/
 const Command = asyncComponent(() => import('components/admin/reportManage/Command/index'));
 const CommandEdit = asyncComponent(() => import('components/admin/reportManage/Command/CommandEdit'));
 const FourReport = asyncComponent(() => import('pages/reportManage/FourReport'));
-const FourReportListSearch = asyncComponent(() => import('pages/reportManage/FourReportListSearch'));
+const FourReportListSearch = asyncComponent(() => import('pages/reportManage/FourReportListSearch/index'));
 const StatisticsList = asyncComponent(() => import('pages/reportManage/StatisticsList'));
 
 // UWB
@@ -484,15 +484,15 @@ const routes = [
     component: Command,
   },
   {
-    path: '/app/report/fourReport',
+    path: '/app/reportManage/fourReport',
     component: FourReport,
   },
   {
-    path: '/app/report/FourReportListSearch',
+    path: '/app/reportManage/FourReportListSearch',
     component: FourReportListSearch,
   },
   {
-    path: '/app/report/StatisticsList',
+    path: '/app/reportManage/StatisticsList',
     component: StatisticsList,
   },
   {

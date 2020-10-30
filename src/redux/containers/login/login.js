@@ -15,11 +15,11 @@ const addMenu = [
   {
     icon: 'area-chart',
     id: 200,
-    pathname: 'pages/reportManage',
+    pathname: '/app/reportManage',
     sub: [
-      { id: 201, title: '4w报备上报', pathname: '/app/report/fourReport', icon: '' },
-      { id: 202, title: '4w报备信息', pathname: '/app/report/FourReportListSearch', icon: '' },
-      { id: 203, title: '4w任务统计', pathname: '/app/report/StatisticsList', icon: '' },
+      { id: 201, title: '4w报备上报', pathname: '/app/reportManage/fourReport', icon: '' },
+      { id: 202, title: '4w报备信息', pathname: '/app/reportManage/FourReportListSearch', icon: '' },
+      { id: 203, title: '4w任务统计', pathname: '/app/reportManage/StatisticsList', icon: '' },
     ],
     title: '4w报备',
   },

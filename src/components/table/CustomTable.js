@@ -39,8 +39,6 @@ class CustomTable extends Component {
 
     // 分页
     let newPage = Object.assign({}, this.state.pagination, pagination);
-    console.log('新的分页');
-    console.log(newPage);
     // loading
     let newloading = loading ? loading : this.state.loading;
     // 是否多选
@@ -53,7 +51,9 @@ class CustomTable extends Component {
     return (
       <Table
         dataSource={dataSource}
-        rowKey="id"
+        rowKey={(row) => {
+          return this.props.setTableKey ? this.props.setTableKey(row) : 'id';
+        }}
         columns={columns}
         locale={{
           emptyText: (() => {
