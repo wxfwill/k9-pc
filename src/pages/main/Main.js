@@ -34,7 +34,7 @@ class MainComponent extends React.Component {
   };
   render() {
     const { location, history } = this.props;
-    let { collapsed } = this.props.systomState;
+    let { collapsed } = this.props.systomState || false;
     let headerMsg = {
       logoSrc: util.constant.LogoSrc,
       logoText: util.constant.logoText,

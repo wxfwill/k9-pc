@@ -137,7 +137,6 @@ class NewIndex extends Component {
   }
 
   componentDidMount() {
-    console.log('didMount', this.props);
     const { lat, lng } = this.center;
 
     this.drillEchart = echart.init(this.refs.drillCycle);
@@ -170,10 +169,8 @@ class NewIndex extends Component {
     }
   }
   socketOnmessage = (resData) => {
-    // console.log('Client received a message',event);
     const self = this;
     if (resData.code == 0 && resData.msgType == 'locationMap') {
-      console.log(resData);
       self.TMap.clear(self.dogPoints);
       self.TMap.clear(self.baseList);
       self.dogPoints = [];
@@ -210,7 +207,6 @@ class NewIndex extends Component {
     leaveHome();
   }
   mouseoverDogsPoint = (e, item) => {
-    console.log(e, item);
     this.setState({
       mouseoverPoint: {
         pixel: {
@@ -226,7 +222,6 @@ class NewIndex extends Component {
     const { lat, lng } = this.center;
     const { AreaDogNum } = this.state;
     const zoomLevel = map.getZoom();
-    console.log(zoomLevel);
     this.setState({ zoomLevel });
     // map.setCenter(new qq.maps.LatLng(lat,lng));
     if (zoomLevel <= 10) {
@@ -528,7 +523,6 @@ class NewIndex extends Component {
         value: mouseoverPoint.item && mouseoverPoint.item.subordinateArea,
       },
     ];
-    console.log(this.state, 'newindex');
     return (
       <div className="newIndex">
         <div className="newindex-top">
@@ -611,9 +605,7 @@ class NewIndex extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  socketMsg: state.system.socketMsg,
+  socketMsg: state.system && state.system.socketMsg,
+  token: state.loginReducer.token,
 });
 export default connect(mapStateToProps)(NewIndex);
-
-// WEBPACK FOOTER //
-// ./src/components/view/home/NewIndex.js

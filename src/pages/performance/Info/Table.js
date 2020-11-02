@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table, Button, Icon, Popconfirm, message, Modal, Form, Row, Col, Input, Tag } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import Immutable from 'immutable';
-import { firstLayout, secondLayout } from 'components/view/common/Layout';
+import { firstLayout, secondLayout } from 'util/Layout';
 import moment from 'moment';
 import httpAjax from 'libs/httpAjax';
 import 'style/app/performance.less';

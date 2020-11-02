@@ -18,7 +18,7 @@ import {
 } from 'antd';
 import { Link } from 'react-router-dom';
 import httpAjax from 'libs/httpAjax';
-import { firstLayout, secondLayout } from 'components/view/common/Layout';
+import { firstLayout, secondLayout } from 'util/Layout';
 import PeoModal from '../monitoring/Deploy/add/PeoModal';
 import moment from 'moment';
 import 'style/view/common/detailTable.less';

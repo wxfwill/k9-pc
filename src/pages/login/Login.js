@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { hashHistory } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import { Button, Row, Input, Form, Checkbox, Icon, message } from 'antd';
-// import {animation} from './animation.js';
-import * as loginStatus from 'actions/loginStatus';
-import * as systomStatus from 'actions/systomStatus';
+
+import { saveUserInfo, saveMenuList, saveToken } from 'store/actions/loginAction';
+
 import 'style/pages/login.less';
-// const THREE = require('libs/three.js');
 const FormItem = Form.Item;
 
 const addMenu = [
@@ -30,7 +28,7 @@ class Login extends Component {
     super(props);
     let localUser = JSON.parse(localStorage.getItem('username'));
     let localPwd = JSON.parse(localStorage.getItem('password'));
-    let username = typeof localUser == 'object' ? ' ' : localUser;
+    let username = typeof localUser == 'object' ? '' : localUser;
     let password = typeof localPwd == 'object' ? '' : localPwd;
     this.state = {
       username: username,
@@ -41,76 +39,52 @@ class Login extends Component {
       remPwd: typeof localPwd == 'object' ? false : true,
     };
   }
-  componentDidMount() {
-    // animation(THREE);
-  }
-  handleLogin(data, dispatch, handle) {
-    let { history } = this.props;
-    const self = this;
-    handle();
-    this.setState(
-      {
-        loginLoading: false,
-      },
-      function () {
-        if (data.code == 0) {
-          let { roleType } = data.data.user;
-          let { user, menuList, msgList } = data.data;
-          let newMenuList = [...menuList, ...addMenu];
-          // debugger;
-          dispatch(user, msgList);
-          let userJson = JSON.stringify(user);
-          let munuJson = JSON.stringify(newMenuList);
-
-          sessionStorage.setItem('user', userJson);
-          sessionStorage.setItem('menus', munuJson);
-          message.success('登录成功！', 1, function () {
-            // self.props.sysActions.newSocket();
-            /*    if(roleType==0){
-              history.push({pathname:'/view/home/index',menus:menuList})
-            }else{
-              history.push({pathname:'/app/home/index',menus:menuList})
-            }  */
-            history.push({ pathname: '/app/home/index', menus: newMenuList });
-          });
-        } else {
-          message.error(data.msg, 1);
-        }
-      }
-    );
-  }
+  componentDidMount() {}
   handleChange(name, event) {
     this.setState({
       [name]: event.target.value,
     });
   }
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
-    let _this = this;
-    let { success, error } = this.props.actions;
-    _this.setState({
+    let { history } = this.props;
+    this.setState({
       validate: true,
     });
-    _this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields((err, values) => {
       if (!err) {
-        _this.setState({
+        this.setState({
           loginLoading: true,
         });
-        httpAjax('post', config.apiUrl + '/api/userCenter/login', {
+        let hide = message.loading('正在验证...', 0);
+        React.httpAjax('post', config.apiUrl + '/api/userCenter/login', {
           account: values.userName.trim(),
           password: values.password.trim(),
-        })
-          .then((res) => {
-            let hide = message.loading('正在验证...', 0);
-            _this.handleLogin(res, success, hide);
-          })
-          .catch(function (err) {
-            let hide = message.loading('正在验证...', 0);
-            _this.handleLogin(err, error, hide);
-          });
+        }).then((res) => {
+          if (res && res.code == 0) {
+            hide();
+            this.setState({ loading: false }, () => {
+              let { user, menuList, token } = res.data;
+              let newMenuList = [...menuList, ...addMenu];
+
+              let userJson = JSON.stringify(user);
+              let munuJson = JSON.stringify(newMenuList);
+
+              this.props.tokenAction(token);
+              this.props.menuAction(newMenuList);
+              this.props.userinfoAction(user);
+
+              sessionStorage.setItem('user', userJson);
+              sessionStorage.setItem('menus', munuJson);
+              message.success('登录成功！', 1, function () {
+                history.push({ pathname: '/app/home/index', menus: newMenuList });
+              });
+            });
+          }
+        });
       }
     });
-  }
+  };
   changeChecked(state, event) {
     let _this = this;
     if ((state == 'remPwd' && !this.state.remUser) || (state == 'remUser' && this.state.remPwd)) {
@@ -155,7 +129,6 @@ class Login extends Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-    let { loginState } = this.props;
     return (
       <div className="loginpage" id="loginWrapper">
         <div className="background"></div>
@@ -220,14 +193,13 @@ class Login extends Component {
 const LoginComponent = Form.create()(Login);
 
 const mapStateToProps = (state) => ({
-  loginState: state.login,
+  token: state.loginReducer.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(loginStatus, dispatch),
-  sysActions: bindActionCreators(systomStatus, dispatch),
+  userinfoAction: (info) => dispatch(saveUserInfo(info)),
+  tokenAction: (token) => dispatch(saveToken(token)),
+  menuAction: (list) => dispatch(saveMenuList(list)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
-
-//getValueFromEvent:this.handleInput.bind(this,'username')

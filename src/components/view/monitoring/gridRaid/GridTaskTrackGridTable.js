@@ -275,7 +275,7 @@ class GridTaskTrackGridTable extends React.Component {
   }
 }
 const mapStateToProps = (state) => ({
-  socketMsg: state.system.socketMsg,
+  socketMsg: state.system && state.system.socketMsg,
 });
 const mapDispatchToProps = (dispatch) => ({
   sysActions: bindActionCreators(systomStatus, dispatch),

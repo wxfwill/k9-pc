@@ -1,6 +1,6 @@
-import React ,{ Component } from 'react'; 
-import { Form, Row, Col, Input, Button, Icon ,Select,DatePicker} from 'antd';
-import { thirdLayout } from 'components/view/common/Layout';
+import React, { Component } from 'react';
+import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
+import { thirdLayout } from 'util/Layout';
 import httpAjax from 'libs/httpAjax';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
@@ -9,18 +9,18 @@ require('style/view/common/conduct.less');
 class SearchForm extends React.Component {
   state = {
     expand: true,
-    subjectId:'',
-    dogName:'',
-    typeOption:[],
+    subjectId: '',
+    dogName: '',
+    typeOption: [],
   };
   componentWillMount() {
     let _this = this;
-    let typeOption = httpAjax('post',config.apiUrl+'/api/trainingSubject/getAllTrainSubjectName');
-    Promise.all([typeOption]).then((resArr)=>{
+    let typeOption = httpAjax('post', config.apiUrl + '/api/trainingSubject/getAllTrainSubjectName');
+    Promise.all([typeOption]).then((resArr) => {
       _this.setState({
-        typeOption:resArr[0].data,
-      })
-    })
+        typeOption: resArr[0].data,
+      });
+    });
   }
   handleSearch = (e) => {
     e.preventDefault();
@@ -28,37 +28,40 @@ class SearchForm extends React.Component {
     let timeData = 'range-time-picker';
     this.props.form.validateFields((err, fieldsValue) => {
       const rangeTimeValue = fieldsValue['range-time-picker'];
-      let rangeValueArr = ["",""];
-      if(!(typeof rangeTimeValue=='undefined'||rangeTimeValue.length==0)){
-         rangeValueArr =[rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss'),rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss')];
+      let rangeValueArr = ['', ''];
+      if (!(typeof rangeTimeValue == 'undefined' || rangeTimeValue.length == 0)) {
+        rangeValueArr = [
+          rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss'),
+          rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss'),
+        ];
       }
       const values = {
         ...fieldsValue,
-        'range-time-picker':rangeValueArr
+        'range-time-picker': rangeValueArr,
       };
-      let subData ={
-        startTime:values[timeData][0],
-        endTime:values[timeData][1],
-        subjectId:values.subjectId,
-        dogName:values.dogName
+      let subData = {
+        startTime: values[timeData][0],
+        endTime: values[timeData][1],
+        subjectId: values.subjectId,
+        dogName: values.dogName,
       };
-      Object.keys(subData).forEach(function(item,index){
-        typeof subData[item] == 'undefined'?subData[item]='':'';
-      })
+      Object.keys(subData).forEach(function (item, index) {
+        typeof subData[item] == 'undefined' ? (subData[item] = '') : '';
+      });
       limit(subData);
     });
-  }
+  };
   toggle = () => {
     const { expand } = this.state;
     this.setState({ expand: !expand });
-  }
+  };
   handleReset = () => {
     this.props.form.resetFields();
-  }
-  handleChange(name,value){
+  };
+  handleChange(name, value) {
     this.setState({
-      [name]:value
-    })
+      [name]: value,
+    });
   }
   render() {
     let expand = this.state.expand;
@@ -67,42 +70,42 @@ class SearchForm extends React.Component {
       rules: [{ type: 'array', message: 'Please select time!' }],
     };
     return (
-      <Form
-        className="ant-advanced-search-form"
-        onSubmit={this.handleSearch}
-      >
+      <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
         <Row gutter={24}>
-            <Col xl={8} lg={12} md={12} sm={24} xs={24} >
-              <FormItem label={"训练科目"} {...thirdLayout}>
-               {getFieldDecorator('subjectId')(
-                  <Select placeholder="训练科目" >
-                    {this.state.typeOption.map((item,index)=>{
-                      return(
-                        <Option key={item.id} value={item.id}>{item.name}</Option>
-                      )
-                    })}
-                  </Select>
-                )}
-              </FormItem>
-            </Col>
-            <Col xl={8} lg={12} md={12} sm={24} xs={24} >
-              <FormItem label={'犬名'} {...thirdLayout}>
-                {getFieldDecorator('dogName')(
-                  <Input placeholder="犬名" />
-                )}
-              </FormItem>
-            </Col>
-            <Col xl={8} lg={12} md={12} sm={24} xs={24} >
-              <FormItem label="时间范围" {...thirdLayout}>
-                {getFieldDecorator('range-time-picker', rangeConfig)(
-                  <RangePicker showTime format="YYYY-MM-DD HH:mm:ss"style={{width:'220px'}} />
-                )}
-              </FormItem>
-            </Col>
+          <Col xl={8} lg={12} md={12} sm={24} xs={24}>
+            <FormItem label={'训练科目'} {...thirdLayout}>
+              {getFieldDecorator('subjectId')(
+                <Select placeholder="训练科目">
+                  {this.state.typeOption.map((item, index) => {
+                    return (
+                      <Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+          <Col xl={8} lg={12} md={12} sm={24} xs={24}>
+            <FormItem label={'犬名'} {...thirdLayout}>
+              {getFieldDecorator('dogName')(<Input placeholder="犬名" />)}
+            </FormItem>
+          </Col>
+          <Col xl={8} lg={12} md={12} sm={24} xs={24}>
+            <FormItem label="时间范围" {...thirdLayout}>
+              {getFieldDecorator(
+                'range-time-picker',
+                rangeConfig
+              )(<RangePicker showTime format="YYYY-MM-DD HH:mm:ss" style={{ width: '220px' }} />)}
+            </FormItem>
+          </Col>
         </Row>
-         <Row>
+        <Row>
           <Col span={24} style={{ textAlign: 'right' }}>
-            <Button type="primary" htmlType="submit">查询</Button>
+            <Button type="primary" htmlType="submit">
+              查询
+            </Button>
             <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
               清空
             </Button>
@@ -119,7 +122,6 @@ class SearchForm extends React.Component {
 const ScheduleManageSearch = Form.create()(SearchForm);
 
 export default ScheduleManageSearch;
-
 
 // WEBPACK FOOTER //
 // ./src/components/view/searchForm/drill/PdogSearch.js

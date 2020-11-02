@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'components/view/common/Layout';
+import { thirdLayout } from 'util/Layout';
 import httpAjax from 'libs/httpAjax';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
@@ -13,18 +13,17 @@ class SearchForm extends React.Component {
     this.state = {
       expand: true,
       dogHouseId: [],
-      isExistHouse: {}
+      isExistHouse: {},
     };
   }
   componentWillMount() {
     //获取犬舍栋数
-    httpAjax("post", config.apiUrl + '/api/basicData/dogHouse', {}).then(res => {
+    httpAjax('post', config.apiUrl + '/api/basicData/dogHouse', {}).then((res) => {
       if (res.code == 0) {
         this.setState({ dogHouseId: res.data });
-        sessionStorage.setItem("dogHouseId", JSON.stringify(res.data));
+        sessionStorage.setItem('dogHouseId', JSON.stringify(res.data));
       }
-    })
-
+    });
   }
   handleSearch = (e) => {
     e.preventDefault();
@@ -33,41 +32,43 @@ class SearchForm extends React.Component {
     this.props.form.validateFields((err, values) => {
       limit(values);
     });
-  }
+  };
   handleReset = () => {
     this.props.form.resetFields();
-  }
+  };
   toggle = () => {
     const { expand } = this.state;
     this.setState({ expand: !expand });
-  }
+  };
   handleChange(name, value) {
     this.setState({
-      [name]: value
-    })
+      [name]: value,
+    });
   }
   render() {
     let { expand, dogHouseId } = this.state;
     const { getFieldDecorator } = this.props.form;
-    const dogHouseIdOption = dogHouseId && dogHouseId.map((item, index) => {
-      return <Option value={item.id} key={index}>{item.name}</Option>
-    })
+    const dogHouseIdOption =
+      dogHouseId &&
+      dogHouseId.map((item, index) => {
+        return (
+          <Option value={item.id} key={index}>
+            {item.name}
+          </Option>
+        );
+      });
 
     return (
-      <Form className="ant-advanced-search-form" onSubmit={this.handleSearch} >
+      <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
         <Row gutter={24}>
-          <Col xl={8} lg={12} md={12} sm={24} xs={24} >
-            <FormItem label='犬舍' {...thirdLayout}>
-              {getFieldDecorator('dogHouseId')(
-                <Select placeholder="犬舍" >
-                  {dogHouseIdOption}
-                </Select>
-              )}
+          <Col xl={8} lg={12} md={12} sm={24} xs={24}>
+            <FormItem label="犬舍" {...thirdLayout}>
+              {getFieldDecorator('dogHouseId')(<Select placeholder="犬舍">{dogHouseIdOption}</Select>)}
             </FormItem>
           </Col>
-          <Col xl={8} lg={12} md={12} sm={24} xs={24} >
-            <FormItem label='是否在舍' {...thirdLayout}>
-              <Select placeholder="是否在舍" >
+          <Col xl={8} lg={12} md={12} sm={24} xs={24}>
+            <FormItem label="是否在舍" {...thirdLayout}>
+              <Select placeholder="是否在舍">
                 <Option key="1">是</Option>
                 <Option key="0">否</Option>
               </Select>
@@ -92,8 +93,12 @@ class SearchForm extends React.Component {
         </Row>
         <Row>
           <Col span={24} style={{ textAlign: 'right' }}>
-            <Button type="primary" htmlType="submit"><Icon type="search" />查询</Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}><Icon type="rollback" />
+            <Button type="primary" htmlType="submit">
+              <Icon type="search" />
+              查询
+            </Button>
+            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+              <Icon type="rollback" />
               清空
             </Button>
             {/*<a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>
