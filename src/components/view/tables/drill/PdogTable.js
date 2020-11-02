@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Table, Button, Tag, Badge, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import Immutable from 'immutable';
-import VideoModal from 'components/view/drill/VideoModal';
-import LocateModal from 'components/view/drill/LocateModal';
+import VideoModal from 'pages/drill/VideoModal';
+import LocateModal from 'pages/drill/LocateModal';
 import httpAjax from 'libs/httpAjax';
 
 const localSVG = require('images/banglocation.svg');

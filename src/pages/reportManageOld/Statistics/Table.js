@@ -18,7 +18,7 @@ import {
   DatePicker,
 } from 'antd';
 import moment from 'moment';
-import { thirdLayout } from 'components/view/common/Layout';
+import { thirdLayout } from 'util/Layout';
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
 // 引入折线图。

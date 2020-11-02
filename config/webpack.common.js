@@ -67,6 +67,7 @@ const commonSet = {
       //配置路径常量
       localData: `${srcPath}/localData`,
       pages: `${srcPath}/pages`,
+      store: `${srcPath}/store`,
       components: `${srcPath}/components`,
       actions: `${srcPath}/redux/actions`,
       constants: `${srcPath}/redux/constants`,

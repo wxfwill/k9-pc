@@ -2,7 +2,7 @@ import React,{ Component } from 'react';
 import { Button,Icon,message,Card,Collapse,Row,Col,Select,Form,Input,Upload } from 'antd';
 import {Link} from 'react-router-dom';
 import httpAjax from 'libs/httpAjax';
-import { firstLayout,secondLayout} from 'components/view/common/Layout';
+import { firstLayout,secondLayout} from 'util/Layout';
 
 import moment from 'moment';
 import 'style/view/common/detailTable.less';

@@ -2,8 +2,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const commonSet = require("./webpack.common.js");
-var OpenBrowserPlugin = require("open-browser-webpack-plugin");
-const { address } = require("./config.js");
+const { apiUrl } = require("./config.js");
 const config = {
   entry: ["babel-polyfill", "./src/app.js"],
   output: {
@@ -24,7 +23,7 @@ const config = {
     // historyApiFallback: true,
     proxy: {
       "/api/*": {
-        target: address.domains + "/",
+        target: apiUrl + "/",
         changeOrigin: true,
         secure: true,
       },
@@ -36,7 +35,6 @@ const config = {
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     // new ConsoleLogWebpackStart(), //自定义插件
-    // new OpenBrowserPlugin({ url: 'http://localhost:8001' }),
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: '"development"', //node提供的常量api

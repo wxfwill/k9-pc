@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Input, Button, Radio, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'components/view/common/Layout';
+import { thirdLayout } from 'util/Layout';
 import moment from 'moment';
 import httpAjax from 'libs/httpAjax';
 const FormItem = Form.Item;
