@@ -145,7 +145,7 @@ class SearchForm extends Component {
           <Col xl={4} lg={4} md={8} sm={12} xs={12}>
             <FormItem
               label="是否反馈"
-              labelCol={{ xl: { span: 6 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
+              labelCol={{ xl: { span: 9 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
             >
               {getFieldDecorator('feedback', {
                 initialValue: this.state.feedbalVal,
@@ -160,7 +160,7 @@ class SearchForm extends Component {
           <Col xl={4} lg={4} md={8} sm={12} xs={12}>
             <FormItem
               label="是否抓捕成功"
-              labelCol={{ xl: { span: 8 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
+              labelCol={{ xl: { span: 9 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
             >
               {getFieldDecorator('catch', {
                 initialValue: this.state.successVal,

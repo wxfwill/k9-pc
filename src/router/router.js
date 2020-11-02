@@ -1,23 +1,45 @@
-import React from 'react';
-import {HashRouter as Router, Route, Switch ,Redirect} from 'react-router-dom';
+import React, { Component } from 'react';
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
+import AuthRouter from 'components/AuthRouter';
+import routerArr from './allRouter';
 
+import Main from 'pages/main/Main';
+import LoginComponent from 'pages/login/Login';
 
-import AppComponent from 'containers/admin/main/AppComponent';
-
-import LoginComponent from 'containers/login/login';
-
-import ViewComponent from 'containers/view/main/ViewComponent';
 // 路由配置
-const routes = () => (
-  <Router>
-    <div className="app">
-      <Switch>
-        <Route exact path="/" render={() => <Redirect to="/login" push />} />        
-        <Route path="/app" component={AppComponent} />
-        <Route path="/login" component={LoginComponent} />
-        <Route path="/view" component={ViewComponent} />
-      </Switch>
-    </div>
-  </Router>
-);
+class routes extends Component {
+  constructor(props) {
+    super(props);
+  }
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return;
+    };
+  }
+  render() {
+    return (
+      <HashRouter>
+        <div className="app">
+          <Switch>
+            <Route exact path="/" render={() => <Redirect to="/login" push />} />
+            <Route path="/login" component={LoginComponent} />
+            <Route
+              render={() => {
+                return (
+                  <Main>
+                    <Switch>
+                      {routerArr.map((item, index) => {
+                        return <AuthRouter key={index} path={item.path} component={item.component} />;
+                      })}
+                    </Switch>
+                  </Main>
+                );
+              }}
+            />
+          </Switch>
+        </div>
+      </HashRouter>
+    );
+  }
+}
 export default routes;
