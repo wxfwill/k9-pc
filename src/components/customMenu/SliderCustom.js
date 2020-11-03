@@ -2,9 +2,11 @@
  * Created by hao.cheng on 2017/4/13.
  */
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Layout } from 'antd';
 import { withRouter } from 'react-router-dom';
 import SiderMenu from './SiderMenu';
+import { showNavCollapsed } from 'store/actions/common';
 
 const { Sider } = Layout;
 
@@ -12,7 +14,6 @@ class SliderCustom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapsed: false,
       mode: 'inline',
       openKey: '',
       selectedKey: '',
@@ -22,10 +23,7 @@ class SliderCustom extends Component {
   componentDidMount() {
     this.setMenuOpen(this.props);
   }
-  componentWillReceiveProps(nextProps) {
-    this.onCollapse(nextProps.collapsed);
-    //   this.setMenuOpen(nextProps)
-  }
+  componentWillReceiveProps(nextProps) {}
   setMenuOpen = (props) => {
     const { pathname } = props.location;
     let menuUrl = pathname;
@@ -52,13 +50,6 @@ class SliderCustom extends Component {
       firstHide: false,
     });
   };
-  onCollapse = (collapsed) => {
-    this.setState({
-      collapsed,
-      firstHide: collapsed,
-      mode: collapsed ? 'vertical' : 'inline',
-    });
-  };
   menuClick = (e) => {
     this.setState({
       selectedKey: e.key,
@@ -73,13 +64,13 @@ class SliderCustom extends Component {
     });
   };
   render() {
-    const { menus, collapsed } = this.props;
+    const { menus } = this.props;
     return (
       <Sider
         trigger={null}
         width={200}
         breakpoint="lg"
-        collapsed={collapsed}
+        collapsed={this.props.isCollapsed}
         style={{ background: 'rgb(53,64,82)', overflowY: 'auto', height: '100%', overflowX: 'hidden' }}
       >
         <SiderMenu
@@ -97,4 +88,12 @@ class SliderCustom extends Component {
   }
 }
 
-export default withRouter(SliderCustom);
+const mapStateToProps = (state) => ({
+  isCollapsed: state.commonReducer.collapsed,
+});
+const mapDispatchToProps = (dispatch) => ({
+  isCollapsedAction: () => dispatch(showNavCollapsed()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SliderCustom));
+// export default withRouter(SliderCustom);

@@ -6,8 +6,8 @@ const BeardComponent = ({ location, menus, history }) => {
   const breads = [];
   let showBack = false;
   let pageArr = ['Schedule', 'Detail', 'AddUser', 'UserData', 'EditUser', 'Add', 'View', 'Edit', 'Todo'];
-  let isntIndex = location && !location.pathname.includes('index');
-  let isMap = location && !location.pathname.includes('grid');
+  let isntIndex = !location.pathname.includes('index');
+  let isMap = !location.pathname.includes('grid');
   let cacheKey = '';
   let jumpObj = {
     Schedule: '智能排班',
@@ -34,16 +34,16 @@ const BeardComponent = ({ location, menus, history }) => {
     return false;
   }
   menus.forEach(function (item, index) {
-    if (item.pathname && item.pathname == location && location.pathname) {
+    if (item.pathname && item.pathname == location.pathname) {
       breads.push({ name: item.title });
-    } else if (judge(location && location.pathname, item.pathname, pageArr)) {
+    } else if (judge(location.pathname, item.pathname, pageArr)) {
       jump(item, jumpObj[pageArr[index]]);
     } else {
       item.sub &&
         item.sub.forEach(function (list, indexs) {
-          if (list.pathname && list.pathname == location && location.pathname) {
+          if (list.pathname && list.pathname == location.pathname) {
             breads.push({ name: list.title });
-          } else if (judge(location && location.pathname, list.pathname, pageArr)) {
+          } else if (judge(location.pathname, list.pathname, pageArr)) {
             jump(list, jumpObj[cacheKey]);
           }
         });

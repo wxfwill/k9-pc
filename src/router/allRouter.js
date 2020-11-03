@@ -83,6 +83,18 @@ const ReportStatistics = asyncComponent(() => import('pages/reportManageOld/Stat
 //工作信息统计
 const WorkLog = asyncComponent(() => import('pages/reportManageOld/WorkLog/index'));
 
+// 新版--上报统计
+// 上报
+const FourReport = asyncComponent(() => import('pages/reportManage/FourReport'));
+// 信息查询
+const FourReportListSearch = asyncComponent(() => import('pages/reportManage/FourReportListSearch/index'));
+// 中队统计
+const TeamWorkStatist = asyncComponent(() => import('pages/reportManage/TeamWorkStatist'));
+const TeamWorkStatistDetal = asyncComponent(() => import('pages/reportManage/TeamWorkStatist/DetalList'));
+// 个人统计
+const OwnWorkStatise = asyncComponent(() => import('pages/reportManage/OwnWorkStatise'));
+const OwnWorkStatiseDetal = asyncComponent(() => import('pages/reportManage/OwnWorkStatise/TaskDetalList'));
+
 const Officer = asyncComponent(() => import('components/view/assess/Officer'));
 const DogFeed = asyncComponent(() => import('components/view/dog/DogFeed'));
 const DeviceInforList = asyncComponent(() => import('components/view/deviceManage/DeviceInforList'));
@@ -109,10 +121,6 @@ const AddVideo = asyncComponent(() => import('components/admin/video/addVideo'))
 const TrainPlace = asyncComponent(() => import('components/admin/trainPlace/TrainPlace'));
 const TrainPlaceEdit = asyncComponent(() => import('components/admin/trainPlace/TrainPlaceEdit'));
 
-const FourReport = asyncComponent(() => import('pages/reportManage/FourReport'));
-const FourReportListSearch = asyncComponent(() => import('pages/reportManage/FourReportListSearch/index'));
-const StatisticsList = asyncComponent(() => import('pages/reportManage/StatisticsList'));
-
 // UWB
 const Uwb = asyncComponent(() => import('components/admin/uwb/Uwb'));
 const UwbEdit = asyncComponent(() => import('components/admin/uwb/UwbEdit'));
@@ -131,9 +139,9 @@ const Assemble = asyncComponent(() => import('components/admin/monitordog/assemb
 const AssembleAdd = asyncComponent(() => import('components/admin/monitordog/assemble/AssembleAdd'));
 
 const routerArr = [
-  { path: '/app/home/index', component: IndexComponent },
+  { path: '/app/home/index', component: IndexComponent, meta: { name: '首页' } },
   { path: '/app/monitoring/duty', component: DutyComponent },
-  { path: '/app/monitoring/deploy', component: Deploy },
+  { path: '/app/monitoring/deploy', component: Deploy, meta: { name: '紧急调配' } },
   {
     path: '/app/monitoring/assemble',
     component: Assemble,
@@ -501,8 +509,20 @@ const routerArr = [
     component: FourReportListSearch,
   },
   {
-    path: '/app/reportManage/StatisticsList',
-    component: StatisticsList,
+    path: '/app/reportManage/TeamWorkStatist',
+    component: TeamWorkStatist,
+  },
+  {
+    path: '/app/reportManage/TeamWorkStatistDetal',
+    component: TeamWorkStatistDetal,
+  },
+  {
+    path: '/app/reportManage/OwnWorkStatiseDetal',
+    component: OwnWorkStatiseDetal,
+  },
+  {
+    path: '/app/reportManage/OwnWorkStatise',
+    component: OwnWorkStatise,
   },
   {
     path: '/app/report/4wcommandEdit',

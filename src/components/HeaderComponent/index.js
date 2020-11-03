@@ -5,7 +5,9 @@ import { bindActionCreators } from 'redux';
 
 import { Link, withRouter } from 'react-router-dom';
 import { Layout, Menu, Icon, Row, Col, Badge, Button, message } from 'antd';
+
 import * as systomStatus from 'actions/systomStatus';
+import { showNavCollapsed } from 'store/actions/common';
 
 import httpAjax from 'libs/httpAjax';
 import { constant } from 'libs/util/index';
@@ -133,17 +135,19 @@ class HeaderComponent extends Component {
         console.log(err);
       });
   };
+  handleCollapsed = () => {
+    this.props.isCollapsedAction();
+  };
   render() {
-    const { name } = this.props.loginState;
-    const { toggleCollapsed } = this.props;
+    const { name } = this.props.userinfo;
     return (
       <Header className="header">
         <div className="logo">
           <Row type="flex" justify="space-between" align="middle">
             <Col xs={8} sm={10} md={12} lg={18}>
               <img src={constant.LogoPng} alt="logo" />
-              <Button type="primary" className="collapsed" onClick={toggleCollapsed}>
-                <Icon type={this.props.collapsed ? 'menu-unfold' : 'menu-fold'} />
+              <Button type="primary" className="collapsed" onClick={this.handleCollapsed.bind(this)}>
+                <Icon type={this.props.isCollapsed ? 'menu-unfold' : 'menu-fold'} />
               </Button>
             </Col>
             <Col xs={8} sm={8} md={6} lg={3}>
@@ -178,7 +182,7 @@ class HeaderComponent extends Component {
             </Col>
             <Col xs={4} sm={3} md={3} lg={2} className="center">
               <span style={{ cursor: 'pointer' }} onClick={this.downloadApp.bind(this)}>
-                <Icon type="download" /> app端
+                <Icon type="download" /> app端7
               </span>
             </Col>
             <Col xs={4} sm={3} md={3} lg={1}>
@@ -194,9 +198,12 @@ class HeaderComponent extends Component {
 }
 const mapStateToProps = (state) => ({
   socketMsg: state.system && state.system.socketMsg,
+  isCollapsed: state.commonReducer.collapsed,
+  userinfo: state.loginReducer.userInfo,
 });
 const mapDispatchToProps = (dispatch) => ({
   sysActions: bindActionCreators(systomStatus, dispatch),
+  isCollapsedAction: () => dispatch(showNavCollapsed()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(HeaderComponent));

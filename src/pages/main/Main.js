@@ -1,13 +1,10 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
-import { Layout, Menu, Breadcrumb, Icon, Row, Col, Badge, BackTop } from 'antd';
-import * as loginStatus from 'actions/loginStatus';
-import * as systomState from 'actions/systomStatus';
+import { Layout, BackTop } from 'antd';
+import { showNavCollapsed } from 'store/actions/common';
 import SliderCustom from 'components/customMenu/SliderCustom';
-
 import BeardComponent from 'components/BeardComponent';
 import HeaderComponent from 'components/HeaderComponent';
 
@@ -18,44 +15,21 @@ const logoPic = require('images/logo.png');
 class MainComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      collapsed: false,
-    };
-    this.menus = JSON.parse(sessionStorage.getItem('menus'));
-    this.user = JSON.parse(sessionStorage.getItem('user'));
+    this.menus = this.props.menus;
   }
-  onCollapse = (collapsed) => {
-    this.setState({ collapsed });
-  };
-  toggleCollapsed = () => {
-    let { unfold } = this.props.systomActions;
-    let { collapsed } = this.props.systomState;
-    unfold(!collapsed);
-  };
   render() {
     const { location, history } = this.props;
-    let { collapsed } = this.props.systomState || false;
-    let headerMsg = {
-      logoSrc: util.constant.LogoSrc,
-      logoText: util.constant.logoText,
-    };
     return (
       <Layout className={classNames('indexComponent')} style={{ height: '100%' }}>
-        <HeaderComponent
-          headerMsg={headerMsg}
-          loginState={this.user}
-          toggleCollapsed={this.toggleCollapsed}
-          collapsed={collapsed}
-        />
+        <HeaderComponent />
         <Layout>
           <div>
-            <SliderCustom collapsed={collapsed} menus={this.menus} />
+            <SliderCustom menus={this.menus} />
           </div>
           <Layout id="mainWrapper">
             <BeardComponent location={location} menus={this.menus} history={history} />
             <div className="midder-content" id="mainWrapper1">
               <Content style={{ background: '#f0f2f5', margin: 0, padding: '0 24px 0px' }}>
-                {/* <Routes /> */}
                 {this.props.children}
               </Content>
             </div>
@@ -71,10 +45,11 @@ class MainComponent extends React.Component {
 const mapStateToProps = (state) => ({
   loginState: state.login,
   systomState: state.system,
+  isCollapsed: state.commonReducer.collapsed,
+  menus: state.loginReducer.menuList,
 });
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(loginStatus, dispatch),
-  systomActions: bindActionCreators(systomState, dispatch),
+  isCollapsedAction: () => dispatch(showNavCollapsed()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(MainComponent));

@@ -65,19 +65,19 @@ class Login extends Component {
             hide();
             this.setState({ loading: false }, () => {
               let { user, menuList, token } = res.data;
-              let newMenuList = [...menuList, ...addMenu];
+              // let newMenuList = [...menuList, ...addMenu];
 
               let userJson = JSON.stringify(user);
-              let munuJson = JSON.stringify(newMenuList);
+              let munuJson = JSON.stringify(menuList);
 
               this.props.tokenAction(token);
-              this.props.menuAction(newMenuList);
+              this.props.menuAction(menuList);
               this.props.userinfoAction(user);
 
               sessionStorage.setItem('user', userJson);
               sessionStorage.setItem('menus', munuJson);
               message.success('登录成功！', 1, function () {
-                history.push({ pathname: '/app/home/index', menus: newMenuList });
+                history.push({ pathname: '/app/home/index', menus: menuList });
               });
             });
           }
