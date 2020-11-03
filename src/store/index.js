@@ -8,10 +8,12 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 import loginReducer from './reducers/loginReducer';
 import socketReducer from './reducers/websocketReducer';
+import commonReducer from './reducers/common';
 
 const rootReducer = combineReducers({
   loginReducer,
   socketReducer,
+  commonReducer,
 });
 
 // redux持久化

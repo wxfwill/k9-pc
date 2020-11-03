@@ -29,7 +29,7 @@ class routes extends Component {
                   <Main>
                     <Switch>
                       {routerArr.map((item, index) => {
-                        return <AuthRouter key={index} path={item.path} component={item.component} />;
+                        return <AuthRouter key={index} path={item.path} component={item.component} meta={item.meta} />;
                       })}
                     </Switch>
                   </Main>

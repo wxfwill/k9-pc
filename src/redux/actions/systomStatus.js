@@ -35,7 +35,7 @@ export const reaciveMsg = (event) => {
   };
 };
 export const socketon = (callback) => {
-  websocket && websocket.send(JSON.stringify({ msgType: 'map_start' }));
+  // websocket && websocket.send(JSON.stringify({ msgType: 'map_start' }));
   return {
     type: Symbol(),
   };
