@@ -85,7 +85,7 @@ const WorkLog = asyncComponent(() => import('pages/reportManageOld/WorkLog/index
 
 // 新版--上报统计
 // 上报
-const FourReport = asyncComponent(() => import('pages/reportManage/FourReport'));
+const FourReport = asyncComponent(() => import('pages/reportManage/FourReport/index'));
 // 信息查询
 const FourReportListSearch = asyncComponent(() => import('pages/reportManage/FourReportListSearch/index'));
 // 中队统计
