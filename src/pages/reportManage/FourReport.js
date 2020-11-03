@@ -31,57 +31,74 @@ const EditableRow = ({ form, index, ...props }) => (
 
 const EditableFormRow = Form.create()(EditableRow);
 
+//查询人员列表
+let personnelList = [];
+(function () {
+  React.httpAjax('post', config.apiUrl + '/api/userCenter/getCombatStaff')
+    .then((res) => {
+      if (res.code == 0) {
+        personnelList = res.data;
+        console.log(personnelLists, '匿名函数，，，，，');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+})();
+//查询中队及用户信息。key：中队名称；value：中队下符合条件人员；
+let personnelTree = [];
+let isSearch = true;
+function queryGroupUser(keyword) {
+  if (!isSearch) {
+    return;
+  }
+  isSearch = false;
+  let dataObj = {
+    keyword: keyword,
+  };
+  React.httpAjax('post', config.apiUrl + '/api/userCenter/queryGroupUser', dataObj)
+    .then((res) => {
+      if (res.code == 0) {
+        let arr = [];
+        for (const name in res.data) {
+          arr.push({
+            name: name,
+            children: res.data[name],
+          });
+        }
+        personnelTree = arr;
+      }
+      isSearch = true;
+    })
+    .catch((error) => {
+      console.log(error);
+      isSearch = true;
+    });
+}
+queryGroupUser();
+//根据大类名查询该类下的规则
+let ruleList = [];
+(function () {
+  let dataObj = {
+    name: '',
+  };
+  React.httpAjax('get', config.apiUrl + '/api/integral-rule/queryRuleByRootName', dataObj)
+    .then((res) => {
+      if (res.code == 0) {
+        console.log(res, '------=======-----这是啥');
+        ruleList = res.data;
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+})();
+
 class EditableCell extends React.Component {
   state = {
     editing: false,
-    personnelList: [],
-    personnelTree: [],
+    searchPeers: '',
   };
-
-  componentDidMount() {
-    this.getCombatStaff();
-    this.queryGroupUser();
-  }
-
-  //查询人员列表
-  getCombatStaff() {
-    React.httpAjax('post', config.apiUrl + '/api/userCenter/getCombatStaff')
-      .then((res) => {
-        if (res.code == 0) {
-          this.setState({
-            personnelList: res.data,
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  //查询中队及用户信息。key：中队名称；value：中队下符合条件人员；
-  queryGroupUser() {
-    let dataObj = {
-      keyword: '',
-    };
-    React.httpAjax('post', config.apiUrl + '/api/userCenter/queryGroupUser', dataObj)
-      .then((res) => {
-        if (res.code == 0) {
-          let arr = [];
-          for (const name in res.data) {
-            arr.push({
-              name: name,
-              children: res.data[name],
-            });
-          }
-          this.setState({
-            personnelTree: arr,
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
 
   toggleEdit = () => {
     const editing = !this.state.editing;
@@ -110,7 +127,13 @@ class EditableCell extends React.Component {
     switch (title) {
       case '时间':
         domHtml = (
-          <DatePicker ref={(node) => (this.input = node)} showTime placeholder="请选择时间" onChange={this.save} />
+          <DatePicker
+            ref={(node) => (this.input = node)}
+            showTime
+            placeholder="请选择时间"
+            onChange={this.save}
+            size="small"
+          />
         );
         break;
       case '来源':
@@ -127,6 +150,7 @@ class EditableCell extends React.Component {
             ref={(node) => (this.input = node)}
             showSearch
             style={{ width: '100%' }}
+            size="small"
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             placeholder="请选择类别"
             allowClear
@@ -137,23 +161,23 @@ class EditableCell extends React.Component {
             <TreeNode value="parent" title="parent" key="0-1" selectable={false}>
               <TreeNode value="0" title="类别0" key="0-1-1" />
               <TreeNode value="1" title="类别1" key="random2" />
-              <TreeNode value="2" title="类别2" key="random2" />
+              <TreeNode value="2" title="类别2" key="random3" />
             </TreeNode>
           </TreeSelect>
         );
         break;
       case '汇报人':
-        //domHtml = <Input ref={(node) => (this.input = node)} placeholder="请输入或粘贴汇报人" onBlur={this.save} />;
         domHtml = (
           <Select
             ref={(node) => (this.input = node)}
             mode="multiple"
             style={{ width: '100%' }}
+            size="small"
             placeholder="请输入或粘贴汇报人"
             onChange={this.save}
           >
-            {this.state.personnelList && this.state.personnelList.length > 0
-              ? this.state.personnelList.map((item) => {
+            {personnelList && personnelList.length > 0
+              ? personnelList.map((item) => {
                   return <Option key={item.id}>{item.name}</Option>;
                 })
               : null}
@@ -166,15 +190,19 @@ class EditableCell extends React.Component {
             ref={(node) => (this.input = node)}
             showSearch
             style={{ width: '100%' }}
+            size="small"
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             placeholder="请选择同行人"
             allowClear
             multiple
-            treeDefaultExpandAll
+            filterTreeNode={() => true}
             onChange={this.save}
+            onSearch={(value) => {
+              queryGroupUser(value);
+            }}
           >
-            {this.state.personnelTree && this.state.personnelTree.length > 0
-              ? this.state.personnelTree.map((item) => {
+            {personnelTree && personnelTree.length > 0
+              ? personnelTree.map((item) => {
                   return (
                     <TreeNode value={item.name} title={item.name} key={item.name} selectable={false}>
                       {item.children && item.children.length > 0
@@ -190,17 +218,17 @@ class EditableCell extends React.Component {
         );
         break;
       case '记录人':
-        //domHtml = <Input ref={(node) => (this.input = node)} placeholder="请输入或粘贴记录人" onBlur={this.save} />;
         domHtml = (
           <Select
             ref={(node) => (this.input = node)}
             mode="multiple"
             style={{ width: '100%' }}
+            size="small"
             placeholder="请输入或粘贴记录人"
             onChange={this.save}
           >
-            {this.state.personnelList && this.state.personnelList.length > 0
-              ? this.state.personnelList.map((item) => {
+            {personnelList && personnelList.length > 0
+              ? personnelList.map((item) => {
                   return <Option key={item.id}>{item.name}</Option>;
                 })
               : null}
@@ -230,34 +258,44 @@ class EditableCell extends React.Component {
           <TextArea
             ref={(node) => (this.input = node)}
             rows={2}
+            size="small"
             placeholder="请输入或粘贴反馈内容"
             onBlur={this.save}
           />
         );
         break;
       case '抓捕人数':
-        domHtml = <InputNumber ref={(node) => (this.input = node)} min={0} max={1000} onChange={this.save} />;
+        domHtml = (
+          <InputNumber ref={(node) => (this.input = node)} min={0} max={1000} onChange={this.save} size="small" />
+        );
         break;
       case '任务地点':
         domHtml = (
           <Select
             ref={(node) => (this.input = node)}
             showSearch
-            style={{ width: 200 }}
+            style={{ width: '100%' }}
+            size="small"
             placeholder="请选择任务地点"
             optionFilterProp="children"
             onChange={this.save}
             filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           >
-            <Option value="0">南山区</Option>
-            <Option value="1">福田区</Option>
-            <Option value="2">罗湖区</Option>
+            <Option value="南山区">南山区</Option>
+            <Option value="福田区">福田区</Option>
+            <Option value="罗湖区">罗湖区</Option>
           </Select>
         );
         break;
       case '备注':
         domHtml = (
-          <TextArea ref={(node) => (this.input = node)} rows={2} placeholder="请输入或粘贴备注" onBlur={this.save} />
+          <TextArea
+            ref={(node) => (this.input = node)}
+            rows={2}
+            size="small"
+            placeholder="请输入或粘贴备注"
+            onBlur={this.save}
+          />
         );
         break;
     }
@@ -268,7 +306,7 @@ class EditableCell extends React.Component {
           rules: [
             {
               required: true,
-              message: `${title} is required.`,
+              message: `${title}不能为空！`,
             },
           ],
           initialValue: record[dataIndex],
@@ -311,30 +349,31 @@ class FourReport extends Component {
       {
         title: '类别',
         dataIndex: 'categoryIds',
+        width: '200px',
         editable: true,
       },
       {
         title: '汇报人',
         dataIndex: 'reporters',
-        width: '230px',
+        width: '200px',
         editable: true,
       },
       {
         title: '同行人',
         dataIndex: 'peers',
-        width: '230px',
+        width: '200px',
         editable: true,
       },
       {
         title: '记录人',
         dataIndex: 'loggers',
-        width: '230px',
+        width: '200px',
         editable: true,
       },
       {
         title: '详细情况',
         dataIndex: 'repDetail',
-        width: '230px',
+        width: '200px',
         editable: true,
       },
       {
@@ -346,7 +385,7 @@ class FourReport extends Component {
       {
         title: '反馈内容',
         dataIndex: 'feedbackContext',
-        width: '230px',
+        width: '200px',
         editable: true,
       },
       {
@@ -358,12 +397,13 @@ class FourReport extends Component {
       {
         title: '任务地点',
         dataIndex: 'taskLocation',
+        width: '200px',
         editable: true,
       },
       {
         title: '备注',
         dataIndex: 'remark',
-        width: '230px',
+        width: '200px',
         editable: true,
       },
       {
@@ -407,7 +447,7 @@ class FourReport extends Component {
       peers: [], //同行人
       remark: '',
       repDetail: '',
-      repTime: '',
+      repTime: null,
       reporters: [], //汇报人
       source: '',
       taskLocation: '',
@@ -427,7 +467,6 @@ class FourReport extends Component {
       ...row,
     });
     this.setState({ dataSource: newData });
-    console.log(newData, 'ppppppppppppppppp');
   };
 
   //提交报备信息
@@ -464,7 +503,7 @@ class FourReport extends Component {
           }
         })
         .catch((error) => {
-          console.log(error);
+          message.error(error.msg);
         });
     } else {
       message.error('请新增上报内容！');
@@ -514,18 +553,20 @@ class FourReport extends Component {
               bordered
               dataSource={dataSource}
               columns={columns}
-              scroll={{ x: 2750 }}
+              scroll={{ x: 2500 }}
               pagination={false}
             />
-            <Button
-              onClick={this.onSubmit}
-              type="primary"
-              style={{
-                marginTop: 30,
-              }}
-            >
-              提交
-            </Button>
+            {dataSource && dataSource.length > 0 ? (
+              <Button
+                onClick={this.onSubmit}
+                type="primary"
+                style={{
+                  marginTop: 30,
+                }}
+              >
+                提交
+              </Button>
+            ) : null}
           </Card>
         </Col>
       </Row>
