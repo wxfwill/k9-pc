@@ -48,6 +48,7 @@ const PerformanceRule = asyncComponent(() => import('pages/performance/Rule/inde
 const PerformanceRegister = asyncComponent(() => import('pages/performance/Register/index'));
 const PerformanceDetail = asyncComponent(() => import('pages/performance/Register/RegisterDetail'));
 const PerformanceEdit = asyncComponent(() => import('pages/performance/Register/RegisterEdit'));
+const PerformanceAssessmentSetting = asyncComponent(() => import('pages/performance/AssessmentSetting/index'));
 
 // 智能排版
 const ScheduleManage = asyncComponent(() => import('pages/scheduleManage/ScheduleManage'));
@@ -495,6 +496,10 @@ const routerArr = [
   {
     path: '/app/performance/registerEdit',
     component: PerformanceEdit,
+  },
+  {
+    path: '/app/performance/assessmentSetting',
+    component: PerformanceAssessmentSetting,
   },
   {
     path: '/app/report/4wcommand',

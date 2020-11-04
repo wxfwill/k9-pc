@@ -125,15 +125,17 @@ class EditableCell extends React.Component {
   };
 
   save = (e) => {
-    console.log(e);
+    // console.log(e);
     const { record, handleSave } = this.props;
-    this.form.validateFields((error, values) => {
-      if (error && error[e.currentTarget.id]) {
-        return;
-      }
-      this.toggleEdit();
-      handleSave({ ...record, ...values });
-    });
+    // this.form.validateFields((error, values) => {
+    //   if (error && error[e.currentTarget.id]) {
+    //     return;
+    //   }
+    //   this.toggleEdit();
+    //   handleSave({ ...record, ...values });
+    // });
+    console.log(this.form);
+    handleSave({ ...record }, this.form);
   };
 
   renderCell = (form) => {
@@ -190,7 +192,7 @@ class EditableCell extends React.Component {
             ref={(node) => (this.input = node)}
             mode="multiple"
             style={{ width: '100%' }}
-            placeholder="请输入汇报人"
+            placeholder={'请输入汇报人'}
             onChange={this.save}
           >
             {personnelList && personnelList.length > 0
@@ -269,17 +271,22 @@ class EditableCell extends React.Component {
         );
         break;
       case '抓捕人数':
-        domHtml = <InputNumber ref={(node) => (this.input = node)} min={0} max={1000} onChange={this.save} />;
+        domHtml = (
+          <InputNumber
+            ref={(node) => (this.input = node)}
+            min={0}
+            max={1000}
+            placeholder={'请输入抓捕人数'}
+            onChange={this.save}
+          />
+        );
         break;
       case '任务地点':
         domHtml = (
           <Select
             ref={(node) => (this.input = node)}
-            showSearch
             style={{ width: '100%' }}
             placeholder="请选择任务地点"
-            optionFilterProp="children"
-            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             onChange={this.save}
           >
             {areaList && areaList.length > 0
@@ -423,6 +430,8 @@ class FourReport extends Component {
     this.state = {
       dataSource: [],
       count: 1,
+      childrenForm: null,
+      recordForm: null,
     };
   }
 
@@ -450,7 +459,7 @@ class FourReport extends Component {
       repTime: null,
       reporters: [], //汇报人
       source: '',
-      taskLocation: '',
+      taskLocation: [],
     };
     this.setState({
       dataSource: [...dataSource, newData],
@@ -458,19 +467,77 @@ class FourReport extends Component {
     });
   };
 
-  handleSave = (row) => {
-    const newData = [...this.state.dataSource];
-    const index = newData.findIndex((item) => row.key === item.key);
-    const item = newData[index];
-    newData.splice(index, 1, {
-      ...item,
-      ...row,
+  handleSave = (row, form) => {
+    // const newData = [...this.state.dataSource];
+    // const index = newData.findIndex((item) => row.key === item.key);
+    // const item = newData[index];
+    // newData.splice(index, 1, {
+    //   ...item,
+    //   ...row,
+    // });
+    // this.setState({ dataSource: newData });
+    this.setState({
+      recordForm: row,
+      childrenForm: form,
     });
-    this.setState({ dataSource: newData });
   };
 
   //提交报备信息
   onSubmit = () => {
+    const { childrenForm, recordForm } = this.state;
+    childrenForm.validateFields((error, values) => {
+      if (error && error[e.currentTarget.id]) {
+        return;
+      }
+      const row = { ...recordForm, ...values };
+      const newData = [...this.state.dataSource];
+      const index = newData.findIndex((item) => row.key === item.key);
+      const item = newData[index];
+      newData.splice(index, 1, {
+        ...item,
+        ...row,
+      });
+      this.setState({ dataSource: newData }, () => {
+        const { dataSource } = this.state;
+        if (dataSource && dataSource.length > 0) {
+          let arr = [];
+          dataSource.map((item) => {
+            arr.push({
+              categoryIds: item.categoryIds, //类别
+              feedbackContext: item.feedbackContext,
+              //id: 0,
+              isFeedback: item.isFeedback,
+              loggers: item.loggers, //记录人
+              peers: item.peers, //同行人
+              remark: item.remark,
+              repDetail: item.repDetail,
+              repTime: Moment(item.repTime),
+              reporters: item.reporters, //汇报人
+              source: item.source,
+              taskLocation: item.taskLocation,
+            });
+          });
+          const dataObj = {
+            reports: arr,
+          };
+          React.httpAjax('post', config.apiUrl + '/api/report/create4wReport', dataObj)
+            .then((res) => {
+              if (res.code == 0) {
+                message.success('上报成功！');
+                this.props.history.push('/app/reportManage/FourReportListSearch');
+              } else {
+                message.error(res.msg);
+              }
+            })
+            .catch((error) => {
+              message.error(error.msg);
+            });
+        } else {
+          message.error('请新增上报内容！');
+        }
+      });
+    });
+    return;
     const { dataSource } = this.state;
     if (dataSource && dataSource.length > 0) {
       let arr = [];
