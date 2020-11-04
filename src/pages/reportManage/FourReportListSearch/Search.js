@@ -32,36 +32,22 @@ class SearchForm extends Component {
           title: '内务任务',
         },
       ],
-      feedbalVal: 0,
-      successVal: 1,
+      feedbalVal: null,
+      successVal: null,
     };
-  }
-  componentWillMount() {
-    //获取职务信息
-    // httpAjax("post",config.apiUrl+'/api/basicData/dutyList',{}).then(res=>{
-    //   if(res.code==0){
-    //     this.setState({dutyList:res.data});
-    //      sessionStorage.setItem("dutyList",JSON.stringify(res.data));
-    //   }
-    // })
   }
   componentDidMount() {
     // this.getAllHouse();
   }
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
-    let timeData = 'range-time-picker';
     this.props.form.validateFields((err, values) => {
-      limit(values);
+      console.log(values);
+      this.props.handleSearchData && this.props.handleSearchData(values);
     });
   };
   handleReset = () => {
     this.props.form.resetFields();
-  };
-  toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
   };
   handleChange(name, value) {
     this.setState({
@@ -91,7 +77,7 @@ class SearchForm extends Component {
         <Row gutter={24}>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="中队:" {...thirdLayout}>
-              {getFieldDecorator('team')(
+              {getFieldDecorator('groupId')(
                 <Select placeholder="请选择" allowClear onChange={this.selectHouseId}>
                   {this.state.allHouseData.map((item) => {
                     return (
@@ -106,21 +92,21 @@ class SearchForm extends Component {
           </Col>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="姓名:" {...thirdLayout}>
-              {getFieldDecorator('name', {
+              {getFieldDecorator('userName', {
                 initialValue: '',
               })(<Input placeholder="请输入" allowClear />)}
             </FormItem>
           </Col>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="开始时间" {...thirdLayout}>
-              {getFieldDecorator('startTime', {
+              {getFieldDecorator('repDateStart', {
                 initialValue: null,
               })(<DatePicker placeholder="请输入" onChange={this.onChangeStartTime} />)}
             </FormItem>
           </Col>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="结束时间" {...thirdLayout}>
-              {getFieldDecorator('endTime', {
+              {getFieldDecorator('repDateEnd', {
                 initialValue: null,
               })(<DatePicker placeholder="请输入" onChange={this.onChangeEndTime} />)}
             </FormItem>
@@ -129,7 +115,7 @@ class SearchForm extends Component {
         <Row>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="任务类型" {...thirdLayout} hasFeedback>
-              {getFieldDecorator('taskType')(
+              {getFieldDecorator('categoryIds')(
                 <Select placeholder="请选择" style={{ width: '100%' }} allowClear onChange={this.selectTaskType}>
                   {this.state.taksTypeData.map((item) => {
                     return (
@@ -147,12 +133,12 @@ class SearchForm extends Component {
               label="是否反馈"
               labelCol={{ xl: { span: 9 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
             >
-              {getFieldDecorator('feedback', {
+              {getFieldDecorator('isFeedback', {
                 initialValue: this.state.feedbalVal,
               })(
                 <Radio.Group onChange={this.hangdleFeedback}>
-                  <Radio value={0}>是</Radio>
-                  <Radio value={1}>否</Radio>
+                  <Radio value={true}>是</Radio>
+                  <Radio value={false}>否</Radio>
                 </Radio.Group>
               )}
             </FormItem>
@@ -162,24 +148,24 @@ class SearchForm extends Component {
               label="是否抓捕成功"
               labelCol={{ xl: { span: 9 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
             >
-              {getFieldDecorator('catch', {
+              {getFieldDecorator('arrest', {
                 initialValue: this.state.successVal,
               })(
                 <Radio.Group onChange={this.hangdleCatch}>
-                  <Radio value={0}>是</Radio>
-                  <Radio value={1}>否</Radio>
+                  <Radio value={true}>是</Radio>
+                  <Radio value={false}>否</Radio>
                 </Radio.Group>
               )}
             </FormItem>
           </Col>
           <Col xl={4} lg={4} md={8} sm={12} xs={12}>
             <FormItem label="地点" {...thirdLayout}>
-              {getFieldDecorator('place', {
+              {getFieldDecorator('taskLocation', {
                 initialValue: '',
               })(<Input placeholder="请输入" allowClear />)}
             </FormItem>
           </Col>
-          <Col span={6} lg={6} md={8} sm={12} xs={12}>
+          <Col xl={6} lg={6} md={8} sm={12} xs={12} style={{ textAlign: 'center' }}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
@@ -187,7 +173,7 @@ class SearchForm extends Component {
               清空
             </Button>
             <Button style={{ marginLeft: 8 }} onClick={this.handlePrif}>
-              打印
+              导出
             </Button>
           </Col>
         </Row>

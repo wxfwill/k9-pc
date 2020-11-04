@@ -4,6 +4,7 @@ import Search from './Search';
 import { tableHeaderLabel } from 'localData/reportManage/tableHeader';
 import CustomTable from 'components/table/CustomTable';
 require('style/fourReport/reportList.less');
+import moment from 'moment';
 
 class FourReportListSearch extends Component {
   constructor(props) {
@@ -31,7 +32,9 @@ class FourReportListSearch extends Component {
       },
     };
   }
+
   componentDidMount() {
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '4w信息查询'] });
     let { param, sortFieldName, sortType, pagination } = this.state;
     this.getListData(param, sortFieldName, sortType, pagination);
   }
@@ -40,6 +43,18 @@ class FourReportListSearch extends Component {
   };
   handleShowSizeChange = (cur, size) => {
     this.tableChange({ currPage: cur, pageSize: size, current: cur });
+  };
+  handleSearchData = (data) => {
+    let per = data;
+    per.categoryIds = per.categoryIds != null ? [per.categoryIds] : [];
+    per.groupId = per.groupId != null ? [per.groupId] : [];
+    per.repDateEnd = per.repDateEnd && moment(per.repDateEnd).format('YYYY-MM-DD');
+    per.repDateStart = per.repDateStart && moment(per.repDateStart).format('YYYY-MM-DD');
+    let newObj = Object.assign({}, this.state.param, per);
+    this.setState({ param: newObj }, () => {
+      let { param, sortFieldName, sortType, pagination } = this.state;
+      this.getListData(param, sortFieldName, sortType, pagination);
+    });
   };
   tableChange = (obj) => {
     if (!util.isObject(obj)) {
@@ -68,12 +83,12 @@ class FourReportListSearch extends Component {
     return (
       <div className="four-wrap">
         <Card title="按条件搜索" bordered={false}>
-          <Search />
+          <Search handleSearchData={this.handleSearchData} />
         </Card>
         <Card bordered={false}>
           <CustomTable
             setTableKey={(row) => {
-              return row.userId;
+              return 'key-' + row.userId + row.repTime;
             }}
             dataSource={this.state.dataSource}
             pagination={this.state.pagination}

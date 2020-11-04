@@ -7,7 +7,7 @@ import Main from 'pages/main/Main';
 import LoginComponent from 'pages/login/Login';
 
 // 路由配置
-class routes extends Component {
+class Routes extends Component {
   constructor(props) {
     super(props);
   }
@@ -42,4 +42,4 @@ class routes extends Component {
     );
   }
 }
-export default routes;
+export default Routes;

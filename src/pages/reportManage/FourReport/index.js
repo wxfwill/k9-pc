@@ -458,7 +458,9 @@ class FourReport extends Component {
       count: count + 1,
     });
   };
-
+  componentDidMount() {
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '4w上报'] });
+  }
   handleSave = (row) => {
     const newData = [...this.state.dataSource];
     const index = newData.findIndex((item) => row.key === item.key);

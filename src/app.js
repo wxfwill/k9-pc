@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Routes from 'router/router';
+import Routes from './router/router';
 
 // redux
 import { Provider } from 'react-redux';
@@ -13,6 +13,7 @@ import { PersistGate } from 'redux-persist/lib/integration/react';
 // http
 import httpAjax from 'libs/httpAjax';
 React.httpAjax = httpAjax;
+React.store = store;
 
 //汉化包
 import { ConfigProvider } from 'antd';

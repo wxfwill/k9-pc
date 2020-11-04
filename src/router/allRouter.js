@@ -513,12 +513,18 @@ const routerArr = [
     component: TeamWorkStatist,
   },
   {
-    path: '/app/reportManage/TeamWorkStatistDetal',
+    path: '/app/reportManage/TeamWorkStatist/Detal',
     component: TeamWorkStatistDetal,
+    meta: {
+      name: '团队任务详情列表',
+    },
   },
   {
-    path: '/app/reportManage/OwnWorkStatiseDetal',
+    path: '/app/reportManage/OwnWorkStatise/Detal',
     component: OwnWorkStatiseDetal,
+    meta: {
+      name: '个人任务详情列表',
+    },
   },
   {
     path: '/app/reportManage/OwnWorkStatise',
@@ -534,33 +540,4 @@ const routerArr = [
   },
 ];
 
-// sub routes are added to any route it'll work
-// const RouteWithSubRoutes = (route) => (
-//   <Route
-//     exact
-//     path={route.path}
-//     render={(props) => (
-//       // pass the sub-routes down to keep nesting
-//       <route.component {...props} routes={route.routes} />
-//     )}
-//   />
-// );
-// export default class Routes extends Component {
-//   constructor(props) {
-//     super(props);
-//   }
-//   render() {
-//     return (
-//       <Switch>
-//         {routes.map((route, i) => (
-//           <RouteWithSubRoutes key={i} {...route} />
-//         ))}
-//       </Switch>
-//     );
-//   }
-// }
-
 export default routerArr;
-
-// WEBPACK FOOTER //
-// ./src/router/routes/adminRoute.js

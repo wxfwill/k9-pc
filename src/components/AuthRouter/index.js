@@ -27,6 +27,8 @@ const myAuth = [
 
 // 跳转
 function redirectTo(props) {
+  console.log('11111');
+  console.log(props);
   // 添加额外参数
   props.location.meta = props.meta;
   let user = sessionStorage.getItem('user');
