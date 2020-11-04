@@ -137,6 +137,7 @@ class NewIndex extends Component {
   }
 
   componentDidMount() {
+    React.store.dispatch({ type: 'NAV_DATA', nav: [] });
     const { lat, lng } = this.center;
 
     this.drillEchart = echart.init(this.refs.drillCycle);

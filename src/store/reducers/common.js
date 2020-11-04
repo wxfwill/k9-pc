@@ -1,7 +1,8 @@
-import { IS_COLLAPSED } from '../actionTypes';
+import { IS_COLLAPSED, NAV_DATA } from '../actionTypes';
 
 const initialzeState = {
   collapsed: false,
+  navData: [],
 };
 
 export default function collaspedReducer(state = initialzeState, action) {
@@ -10,6 +11,11 @@ export default function collaspedReducer(state = initialzeState, action) {
       return {
         ...state,
         collapsed: !state.collapsed,
+      };
+    case NAV_DATA:
+      return {
+        ...state,
+        navData: action.nav,
       };
     default:
       return state;

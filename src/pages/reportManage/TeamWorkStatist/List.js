@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Card } from 'antd';
-import Search from './DetalSearch';
+import Search from './Search';
 import moment from 'moment';
+import { withRouter } from 'react-router-dom';
 import { tableHeaderLabel } from 'localData/reportManage/tableHeader';
 import CustomTable from 'components/table/CustomTable';
 require('style/fourReport/reportList.less');
@@ -34,6 +35,7 @@ class TeamWorkStatist extends Component {
   }
 
   componentDidMount() {
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '中队工作统计'] });
     let { param, sortFieldName, sortType, pagination } = this.state;
     this.getListData(param, sortFieldName, sortType, pagination);
   }
@@ -72,12 +74,17 @@ class TeamWorkStatist extends Component {
       }
     });
   };
+  handleClick = () => {
+    let { history } = this.props;
+    history.push('/app/reportManage/TeamWorkStatist/Detal');
+  };
   render() {
     return (
       <div className="four-wrap">
         <Card title="按条件搜索" bordered={false}>
           <Search handleSearchData={this.handleSearchData} />
         </Card>
+        <button onClick={this.handleClick.bind(this)}>团队详情</button>
         <Card bordered={false}>
           <CustomTable
             setTableKey={(row) => {
@@ -98,4 +105,4 @@ class TeamWorkStatist extends Component {
   }
 }
 
-export default TeamWorkStatist;
+export default withRouter(TeamWorkStatist);
