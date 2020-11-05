@@ -49,6 +49,7 @@ const PerformanceRegister = asyncComponent(() => import('pages/performance/Regis
 const PerformanceDetail = asyncComponent(() => import('pages/performance/Register/RegisterDetail'));
 const PerformanceEdit = asyncComponent(() => import('pages/performance/Register/RegisterEdit'));
 const PerformanceAssessmentSetting = asyncComponent(() => import('pages/performance/AssessmentSetting/index'));
+const PerformanceAssessmentDetail = asyncComponent(() => import('pages/performance/AssessmentSetting/detail'));
 
 // 智能排版
 const ScheduleManage = asyncComponent(() => import('pages/scheduleManage/ScheduleManage'));
@@ -89,6 +90,8 @@ const WorkLog = asyncComponent(() => import('pages/reportManageOld/WorkLog/index
 const FourReport = asyncComponent(() => import('pages/reportManage/FourReport/index'));
 // 信息查询
 const FourReportListSearch = asyncComponent(() => import('pages/reportManage/FourReportListSearch/index'));
+// 其他事物上报
+const OtherThingsReport = asyncComponent(() => import('pages/reportManage/OtherThingsReport/index'));
 // 中队统计
 const TeamWorkStatist = asyncComponent(() => import('pages/reportManage/TeamWorkStatist'));
 const TeamWorkStatistDetal = asyncComponent(() => import('pages/reportManage/TeamWorkStatist/DetalList'));
@@ -502,6 +505,10 @@ const routerArr = [
     component: PerformanceAssessmentSetting,
   },
   {
+    path: '/app/performance/assessmentDetail',
+    component: PerformanceAssessmentDetail,
+  },
+  {
     path: '/app/report/4wcommand',
     component: Command,
   },
@@ -512,6 +519,10 @@ const routerArr = [
   {
     path: '/app/reportManage/FourReportListSearch',
     component: FourReportListSearch,
+  },
+  {
+    path: '/app/reportManage/otherThingsReport',
+    component: OtherThingsReport,
   },
   {
     path: '/app/reportManage/TeamWorkStatist',

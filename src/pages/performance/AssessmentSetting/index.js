@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, Button, Table, Divider, message } from 'antd';
+import { Row, Col, Card, Button, Table, Divider, message, Popconfirm } from 'antd';
 import NoData from 'components/NoData/index';
 import AddRule from './addRule';
 import 'style/pages/performance/AssessmentSetting/index.less';
@@ -43,9 +43,9 @@ class AssessmentSetting extends Component {
               编辑
             </a>
             <Divider type="vertical" />
-            <a style={{ color: 'red' }} onClick={() => this.deleteRule(record.id)}>
-              删除
-            </a>
+            <Popconfirm title="确定删除?" onConfirm={() => this.deleteRule(record.id)}>
+              <a style={{ color: 'red' }}>删除</a>
+            </Popconfirm>
           </span>
         ),
       },
@@ -59,6 +59,7 @@ class AssessmentSetting extends Component {
     };
   }
   componentDidMount() {
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['绩效考核', '考核指标设置'] });
     this.getAllRule();
   }
   // 获取全部规则树
@@ -117,7 +118,7 @@ class AssessmentSetting extends Component {
         <Row>
           <Col xl={24} lg={24} md={24} sm={24} xs={24}>
             <Card bordered={false}>
-              <Button type="primary" icon="plus" onClick={() => this.openAddRule('大类')}>
+              <Button type="primary" size="large" icon="plus" onClick={() => this.openAddRule('大类')}>
                 添加大类
               </Button>
               <div className="card-list">
@@ -139,9 +140,9 @@ class AssessmentSetting extends Component {
                             >
                               编辑
                             </a>
-                            <a style={{ color: 'red', marginLeft: 16 }} onClick={() => this.deleteRule(item.id)}>
-                              删除
-                            </a>
+                            <Popconfirm title="确定删除?" onConfirm={() => this.deleteRule(item.id)}>
+                              <a style={{ color: 'red', marginLeft: 16 }}>删除</a>
+                            </Popconfirm>
                           </span>
                         }
                         style={{ width: '49%' }}
@@ -158,18 +159,6 @@ class AssessmentSetting extends Component {
                 ) : (
                   <NoData />
                 )}
-                {/* <Card
-                title="4w报备"
-                extra={<a href="#">删除</a>}
-                style={{ width: '49%' }}
-                actions={[
-                  <Button type="primary" icon="plus">
-                    添加
-                  </Button>,
-                ]}
-              >
-                <Table columns={columns} dataSource={data} pagination={false} />
-              </Card> */}
               </div>
             </Card>
           </Col>

@@ -77,31 +77,19 @@ function queryGroupUser(keyword) {
     });
 }
 queryGroupUser();
-//根据大类名查询该类下的规则
+//查询类
 let ruleList = [];
 (function () {
-  let dataObj = {
-    rootName: '4W报备',
-  };
-  React.httpAjax('get', config.apiUrl + '/api/integral-rule/queryRulesByRootName', {
-    params: dataObj,
-  })
+  React.httpAjax('get', config.apiUrl + '/api/integral-rule/queryAll')
     .then((res) => {
       if (res.code == 0) {
-        ruleList = res.data;
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-})();
-//地点列表
-let areaList = [];
-(function () {
-  React.httpAjax('post', config.apiUrl + '/api/basicData/subordinateAreaList')
-    .then((res) => {
-      if (res.code == 0) {
-        areaList = res.data;
+        res.data && res.data.length > 0
+          ? res.data.map((item) => {
+              if (item.ruleName !== '4W报备') {
+                ruleList.push(item);
+              }
+            })
+          : null;
       }
     })
     .catch((error) => {
@@ -146,14 +134,14 @@ class EditableCell extends React.Component {
           <DatePicker ref={(node) => (this.input = node)} showTime placeholder="请选择时间" onChange={this.save} />
         );
         break;
-      // case '来源':
-      //   domHtml = (
-      //     <Radio.Group ref={(node) => (this.input = node)} onChange={this.save}>
-      //       <Radio value="wg">警犬大队工作群</Radio>
-      //       <Radio value="f2f">面对面口述</Radio>
-      //     </Radio.Group>
-      //   );
-      //   break;
+      case '来源':
+        domHtml = (
+          <Radio.Group ref={(node) => (this.input = node)} onChange={this.save}>
+            <Radio value="wg">工作群</Radio>
+            <Radio value="f2f">口述</Radio>
+          </Radio.Group>
+        );
+        break;
       case '类别':
         domHtml = (
           <TreeSelect
@@ -184,14 +172,14 @@ class EditableCell extends React.Component {
           </TreeSelect>
         );
         break;
-      case '任务指派领导':
+      case '汇报人':
         domHtml = (
           <Select
             ref={(node) => (this.input = node)}
             mode="multiple"
             optionFilterProp="children"
             style={{ width: '100%' }}
-            placeholder="请输入任务指派领导"
+            placeholder="请输入汇报人"
             onChange={this.save}
           >
             {personnelList && personnelList.length > 0
@@ -202,14 +190,14 @@ class EditableCell extends React.Component {
           </Select>
         );
         break;
-      case '任务执行人':
+      case '同行人':
         domHtml = (
           <TreeSelect
             ref={(node) => (this.input = node)}
             showSearch
             style={{ width: '100%' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-            placeholder="请选择任务执行人"
+            placeholder="请选择同行人"
             allowClear
             multiple
             filterTreeNode={() => true}
@@ -234,70 +222,10 @@ class EditableCell extends React.Component {
           </TreeSelect>
         );
         break;
-      case '用车审核人':
-        domHtml = (
-          <Select
-            ref={(node) => (this.input = node)}
-            mode="multiple"
-            optionFilterProp="children"
-            style={{ width: '100%' }}
-            placeholder="请输入用车审核人"
-            onChange={this.save}
-          >
-            {personnelList && personnelList.length > 0
-              ? personnelList.map((item) => {
-                  return <Option key={item.id}>{item.name}</Option>;
-                })
-              : null}
-          </Select>
-        );
-        break;
       case '详细情况':
         domHtml = (
           <TextArea ref={(node) => (this.input = node)} rows={2} placeholder="请输入详细情况" onBlur={this.save} />
         );
-        break;
-      case '是否反馈':
-        domHtml = (
-          <Radio.Group ref={(node) => (this.input = node)} onChange={this.save}>
-            <Radio value={1}>是</Radio>
-            <Radio value={0}>否</Radio>
-          </Radio.Group>
-        );
-        break;
-      case '反馈内容':
-        domHtml = (
-          <TextArea ref={(node) => (this.input = node)} rows={2} placeholder="请输入反馈内容" onBlur={this.save} />
-        );
-        break;
-      case '抓捕人数':
-        domHtml = <InputNumber ref={(node) => (this.input = node)} min={0} max={1000} onChange={this.save} />;
-        break;
-      case '任务地点':
-        domHtml = (
-          <Select
-            ref={(node) => (this.input = node)}
-            showSearch
-            style={{ width: '100%' }}
-            placeholder="请选择任务地点"
-            optionFilterProp="children"
-            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-            onChange={this.save}
-          >
-            {areaList && areaList.length > 0
-              ? areaList.map((item) => {
-                  return (
-                    <Option value={item.name} key={item.id}>
-                      {item.name}
-                    </Option>
-                  );
-                })
-              : null}
-          </Select>
-        );
-        break;
-      case '备注':
-        domHtml = <TextArea ref={(node) => (this.input = node)} rows={2} placeholder="请输入备注" onBlur={this.save} />;
         break;
     }
     //return domHtml;
@@ -326,110 +254,56 @@ class EditableCell extends React.Component {
   }
 }
 
-class FourReport extends Component {
+class OtherThingsReport extends Component {
   constructor(props) {
     super(props);
     this.columns = [
       {
         title: '序号',
         dataIndex: 'key',
-        width: '70px',
+        //width: '70px',
         fixed: 'left',
       },
       {
         title: '时间',
         dataIndex: 'repTime',
-        width: '220px',
+        //width: '220px',
         editable: true,
       },
       {
-        title: '任务指派领导',
-        dataIndex: 'taskAssignLeader',
-        width: '150px',
+        title: '来源',
+        dataIndex: 'source',
+        //width: '150px',
         editable: true,
       },
-      // {
-      //   title: '来源',
-      //   dataIndex: 'source',
-      //   width: '150px',
-      //   editable: true,
-      // },
       {
         title: '类别',
         dataIndex: 'categoryIds',
-        width: '140px',
+        //width: '140px',
         editable: true,
       },
       {
-        title: '用车审核人',
-        dataIndex: 'carUseAuditor',
-        width: '150px',
+        title: '汇报人',
+        dataIndex: 'rep',
+        //width: '150px',
         editable: true,
       },
       {
-        title: '任务执行人',
-        dataIndex: 'taskExecutor',
-        width: '150px',
+        title: '同行人',
+        dataIndex: 'peer',
+        //width: '140px',
         editable: true,
       },
-      // {
-      //   title: '汇报人',
-      //   dataIndex: 'reporters',
-      //   width: '150px',
-      //   editable: true,
-      // },
-      // {
-      //   title: '同行人',
-      //   dataIndex: 'peers',
-      //   width: '140px',
-      //   editable: true,
-      // },
-      // {
-      //   title: '记录人',
-      //   dataIndex: 'loggers',
-      //   width: '140px',
-      //   editable: true,
-      // },
       {
         title: '详细情况',
         dataIndex: 'repDetail',
-        width: '160px',
-        editable: true,
-      },
-      {
-        title: '是否反馈',
-        dataIndex: 'isFeedback',
-        width: '90px',
-        editable: true,
-      },
-      {
-        title: '反馈内容',
-        dataIndex: 'feedbackContext',
-        width: '160px',
-        editable: true,
-      },
-      {
-        title: '抓捕人数',
-        dataIndex: 'arrestNum',
-        width: '110px',
-        editable: true,
-      },
-      {
-        title: '任务地点',
-        dataIndex: 'taskLocation',
-        width: '140px',
-        editable: true,
-      },
-      {
-        title: '备注',
-        dataIndex: 'remark',
-        width: '140px',
+        //width: '160px',
         editable: true,
       },
       {
         title: '操作',
         dataIndex: 'operationKey',
-        width: '80px',
+        //width: '80px',
         fixed: 'right',
         render: (text, record) =>
           this.state.dataSource.length >= 1 ? (
@@ -458,22 +332,12 @@ class FourReport extends Component {
     const newData = {
       key: count,
       operationKey: this.state.count,
-      arrestNum: 0,
-      categoryIds: [], //类别
-      feedbackContext: '',
-      //id: 0,
-      isFeedback: 0,
-      //loggers: [], //记录人
-      //peers: [], //同行人
-      remark: '',
-      repDetail: '',
       repTime: null,
-      //reporters: [], //汇报人
       source: '',
-      taskLocation: '',
-      taskAssignLeader: [], //任务指派领导
-      carUseAuditor: [], //用车审核人
-      taskExecutor: [], //任务执行人
+      categoryIds: [], //类别
+      rep: [], //汇报人
+      peer: [], //同行人
+      repDetail: '',
     };
     this.setState({
       dataSource: [...dataSource, newData],
@@ -481,7 +345,7 @@ class FourReport extends Component {
     });
   };
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '4w上报'] });
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '其他事物上报'] });
   }
   handleSave = (row) => {
     const newData = [...this.state.dataSource];
@@ -502,27 +366,21 @@ class FourReport extends Component {
       dataSource.map((item) => {
         arr.push({
           categoryIds: item.categoryIds, //类别
-          feedbackContext: item.feedbackContext,
-          //id: 0,
-          isFeedback: item.isFeedback,
-          loggers: item.loggers, //记录人
-          peers: item.peers, //同行人
-          remark: item.remark,
+          peer: item.peer, //同行人
           repDetail: item.repDetail,
           repTime: Moment(item.repTime),
-          reporters: item.reporters, //汇报人
           source: item.source,
-          taskLocation: item.taskLocation,
+          rep: item.rep,
         });
       });
       const dataObj = {
         reports: arr,
       };
-      React.httpAjax('post', config.apiUrl + '/api/report/create4wReport', dataObj)
+      React.httpAjax('post', config.apiUrl + '/api/report/createOtherReport', dataObj)
         .then((res) => {
           if (res.code == 0) {
             message.success('上报成功！');
-            this.props.history.push('/app/reportManage/FourReportListSearch');
+            //this.props.history.push('/app/reportManage/FourReportListSearch');
           } else {
             message.error(res.msg);
           }
@@ -578,7 +436,7 @@ class FourReport extends Component {
               bordered
               dataSource={dataSource}
               columns={columns}
-              scroll={{ x: 1750 }}
+              //scroll={{ x: 1000 }}
               pagination={false}
             />
             {dataSource && dataSource.length > 0 ? (
@@ -599,4 +457,4 @@ class FourReport extends Component {
   }
 }
 
-export default FourReport;
+export default OtherThingsReport;
