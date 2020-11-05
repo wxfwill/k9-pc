@@ -2,19 +2,17 @@ import React, { Component } from 'react';
 import { Card } from 'antd';
 import Search from './Search';
 import moment from 'moment';
+import { withRouter } from 'react-router-dom';
 import { tableHeaderLabel } from 'localData/reportManage/tableHeader';
 import CustomTable from 'components/table/CustomTable';
 require('style/fourReport/reportList.less');
-import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
-import List from './List';
-import DetalList from './DetalList';
 
 class TeamWorkStatist extends Component {
   constructor(props) {
     super(props);
     this.state = {
       dataSource: [],
-      columns: tableHeaderLabel,
+      columns: [],
       loading: false,
       param: {
         arrest: null,
@@ -26,6 +24,8 @@ class TeamWorkStatist extends Component {
         taskLocation: null,
         userName: '',
       },
+      endDate: null,
+      startDate: null,
       sortFieldName: '',
       sortType: 'desc',
       pagination: {
@@ -35,75 +35,89 @@ class TeamWorkStatist extends Component {
       },
     };
   }
-
+  handleRowClick = (record) => {
+    console.log('txt');
+    console.log(record);
+  };
   componentDidMount() {
-    let { param, sortFieldName, sortType, pagination } = this.state;
-    this.getListData(param, sortFieldName, sortType, pagination);
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '中队工作统计'] });
+    this.getListData();
   }
-  handleChangeSize = (page) => {
-    this.tableChange({ currPage: page, current: page });
-  };
-  handleShowSizeChange = (cur, size) => {
-    this.tableChange({ currPage: cur, pageSize: size, current: cur });
-  };
   handleSearchData = (data) => {
-    console.log('data=========');
-    console.log(data);
     console.log(moment(data.year).format('YYYY'));
-    console.log(moment(data.month).format('MM'));
+    console.log(moment(data.month).format('M'));
+    let year = Number(moment(data.year).format('YYYY'));
+    let month = Number(moment(data.month).format('M'));
+    let monthObj = this.getMontDateRange(year, month);
+    console.log(moment(monthObj.start).format('YYYY-MM-DD'));
+    console.log(moment(monthObj.end).format('YYYY-MM-DD'));
+    this.setState(
+      {
+        endDate: moment(monthObj.end).format('YYYY-MM-DD'),
+        startDate: moment(monthObj.start).format('YYYY-MM-DD'),
+      },
+      () => {
+        this.getListData();
+      }
+    );
   };
-  tableChange = (obj) => {
-    if (!util.isObject(obj)) {
-      throw new Error(`${obj} must is an object`);
-    }
-    let per = Object.assign({}, this.state.pagination, obj);
-    this.setState({ pagination: per }, () => {
-      let { param, sortFieldName, sortType, pagination } = this.state;
-      this.getListData(param, sortFieldName, sortType, pagination);
-    });
+  getMontDateRange = (year, month) => {
+    let startDate = moment([year, month - 1]);
+    let endDate = moment(startDate).endOf('month');
+    return { start: startDate, end: endDate };
   };
-  getListData = (param, sortFieldName, sortType, pagination) => {
-    let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
+  getListData = () => {
+    let { endDate, startDate } = this.state;
     this.setState({ loading: true });
-    React.httpAjax('post', config.apiUrl + '/api/report/page4wReportInfo', { ...newObj }).then((res) => {
+    React.httpAjax('post', config.apiUrl + '/api/report/statistic4wGroup', { endDate, startDate }).then((res) => {
       if (res && res.code === 0) {
         let resData = res.data;
-        const pagination = { ...this.state.pagination };
-        pagination.total = resData.totalCount;
-        pagination.current = resData.currPage;
-        this.setState({ dataSource: resData.list, loading: false, pagination });
+        let titleArr = resData ? resData.title : [];
+        let formatArr = [];
+        titleArr.map((item, index) => {
+          let obj = {
+            title: ((item) => {
+              let arr = item && item.toString().split('##');
+              return arr[0];
+            })(item),
+            dataIndex: item,
+            key: item,
+            align: 'center',
+            render: (txt, record, index) => {
+              return (
+                <span className="tabEleRow" onClick={this.handleRowClick.bind(this, record)}>
+                  {record[item]}
+                </span>
+              );
+            },
+          };
+          formatArr.push(obj);
+        });
+        this.setState({ columns: formatArr, dataSource: resData ? resData.data : [], loading: false });
       }
     });
   };
   render() {
     return (
       <div className="four-wrap">
-        {/* {this.props.children} */}
-
-        <Route path="/app/reportManage/TeamWorkStatist" component={List}></Route>
-        <Route path="/app/reportManage/TeamWorkStatist/Detal" component={DetalList}></Route>
-
-        {/* <Card title="按条件搜索" bordered={false}>
+        <Card title="按条件搜索" bordered={false}>
           <Search handleSearchData={this.handleSearchData} />
         </Card>
         <Card bordered={false}>
           <CustomTable
             setTableKey={(row) => {
-              return 'key-' + row.userId + row.repTime;
+              return 'key-' + row.groupId;
             }}
             dataSource={this.state.dataSource}
-            pagination={this.state.pagination}
             loading={this.state.loading}
             columns={this.state.columns}
             isBordered={true}
             isRowSelects={false}
-            handleChangeSize={this.handleChangeSize}
-            handleShowSizeChange={this.handleShowSizeChange}
           ></CustomTable>
-        </Card> */}
+        </Card>
       </div>
     );
   }
 }
 
-export default TeamWorkStatist;
+export default withRouter(TeamWorkStatist);
