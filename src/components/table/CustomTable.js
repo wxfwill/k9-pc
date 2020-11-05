@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table } from 'antd';
+import NoData from 'components/NoData/index';
 class CustomTable extends Component {
   constructor(props) {
     super(props);
@@ -38,7 +39,7 @@ class CustomTable extends Component {
     }
 
     // 分页
-    let newPage = Object.assign({}, this.state.pagination, pagination);
+    let newPage = pagination ? Object.assign({}, this.state.pagination, pagination) : false;
     // loading
     let newloading = loading ? loading : this.state.loading;
     // 是否多选
@@ -57,7 +58,11 @@ class CustomTable extends Component {
         columns={columns}
         locale={{
           emptyText: (() => {
-            return newloading ? '正在加载中' : dataSource.length == 0 ? '暂无数据' : null;
+            return newloading ? (
+              <div style={{ margin: '70px 0', color: 'black' }}>正在加载中...</div>
+            ) : dataSource.length == 0 ? (
+              <NoData></NoData>
+            ) : null;
           })(),
         }}
         loading={newloading}

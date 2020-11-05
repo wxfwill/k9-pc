@@ -518,14 +518,14 @@ const routerArr = [
     component: TeamWorkStatist,
   },
   {
-    path: '/app/reportManage/TeamWorkStatist/Detal',
+    path: '/app/reportManage/TeamWorkStatistDetal',
     component: TeamWorkStatistDetal,
     meta: {
       name: '团队任务详情列表',
     },
   },
   {
-    path: '/app/reportManage/OwnWorkStatise/Detal',
+    path: '/app/reportManage/OwnWorkStatiseDetal',
     component: OwnWorkStatiseDetal,
     meta: {
       name: '个人任务详情列表',

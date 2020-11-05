@@ -21,7 +21,9 @@ class SearchForm extends Component {
   handleSearch = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      this.props.handleSearchData && this.props.handleSearchData(values);
+      if (!err) {
+        this.props.handleSearchData && this.props.handleSearchData(values);
+      }
     });
   };
   handleReset = () => {
@@ -58,6 +60,12 @@ class SearchForm extends Component {
             <FormItem label="年份" {...thirdLayout}>
               {getFieldDecorator('year', {
                 initialValue: time,
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择年份',
+                  },
+                ],
               })(
                 <DatePicker
                   mode="year"
@@ -86,7 +94,13 @@ class SearchForm extends Component {
             <FormItem label="月份" {...thirdLayout}>
               {getFieldDecorator('month', {
                 initialValue: null,
-              })(<MonthPicker placeholder="请选择" onChange={this.onChangeStartTime} />)}
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择月份',
+                  },
+                ],
+              })(<MonthPicker placeholder="请选择" format="MM" onChange={this.onChangeStartTime} />)}
             </FormItem>
           </Col>
 

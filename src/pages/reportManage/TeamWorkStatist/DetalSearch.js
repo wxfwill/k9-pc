@@ -21,17 +21,19 @@ class SearchForm extends Component {
   }
   componentDidMount() {
     // this.getAllHouse();
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '中队工作统计', '详情'] });
   }
   handleSearch = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      this.props.handleSearchData && this.props.handleSearchData(values);
+      if (!err) {
+        this.props.handleSearchData && this.props.handleSearchData(values);
+      }
     });
   };
   handleReset = () => {
     this.props.form.resetFields();
     this.props.form.setFieldsValue({ year: null });
+    this.props.handleReset && this.props.handleReset();
   };
   handleChange(name, value) {
     this.setState({
@@ -59,7 +61,7 @@ class SearchForm extends Component {
     return (
       <Form onSubmit={this.handleSearch}>
         <Row gutter={24}>
-          <Col xl={5} lg={5} md={8} sm={12} xs={12}>
+          <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="中队:" {...thirdLayout}>
               {getFieldDecorator('groupId')(
                 <Select placeholder="请选择" allowClear onChange={this.selectHouseId}>
@@ -74,10 +76,16 @@ class SearchForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col xl={5} lg={5} md={8} sm={12} xs={12}>
+          <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="年份" {...thirdLayout}>
               {getFieldDecorator('year', {
                 initialValue: time,
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择年份',
+                  },
+                ],
               })(
                 <DatePicker
                   mode="year"
@@ -106,11 +114,17 @@ class SearchForm extends Component {
             <FormItem label="月份" {...thirdLayout}>
               {getFieldDecorator('month', {
                 initialValue: null,
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择月份',
+                  },
+                ],
               })(<MonthPicker placeholder="请选择" onChange={this.onChangeStartTime} />)}
             </FormItem>
           </Col>
 
-          <Col xl={8} lg={8} md={8} sm={12} xs={12} style={{ textAlign: 'center' }}>
+          <Col xl={6} lg={6} md={6} sm={12} xs={12} style={{ textAlign: 'center' }}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
