@@ -1,10 +1,14 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const srcPath = path.resolve(__dirname, "../src");
 const commonSet = {
   entry: {
-    app: path.resolve(__dirname, "../src/app.js"),
+    main: ["babel-polyfill", "./src/app.js"],
+    vendor1: ["react", "react-router-dom", "react-redux"],
+    vendor2: ["antd", "axios"],
+    vendor3: ["classnames"],
   },
   output: {
     filename: "assets/js/[name].js",
@@ -14,17 +18,25 @@ const commonSet = {
   module: {
     rules: [
       {
-        test: /\.bundle\.js$/,
+        test: /\.bundle\.jsx?$/,
         use: "bundle-loader",
       },
       {
-        test: /\.(js|jsx)$/,
+        test: /\.jsx?$/,
         use: "babel-loader",
         exclude: path.resolve(__dirname, "../node_modules"),
       },
       {
         test: /\.(less|css)$/,
-        use: ["style-loader", "css-loader", "less-loader"],
+        use: ExtractTextPlugin.extract({
+          fallback: {
+            loader: "style-loader",
+            options: {
+              singleton: true, // 表示将页面上的所有css都放到一个style标签内
+            },
+          },
+          use: ["css-loader", "less-loader"],
+        }),
       },
       {
         test: /\.scss$/,
@@ -44,7 +56,14 @@ const commonSet = {
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf|mp4)$/,
-        use: ["file-loader"],
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "fonts/[name].[hash:7].[ext]",
+            },
+          },
+        ],
       },
     ],
   },
@@ -56,6 +75,14 @@ const commonSet = {
     new webpack.ProvidePlugin({
       util: "util",
       config: "config",
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ["vendor3", "vendor2", "vendor1"],
+      minChunks: Infinity,
+    }),
+    new ExtractTextPlugin({
+      filename: "css/[name].[contenthash].css",
+      allChunks: true,
     }),
   ],
   // externals:{

@@ -1,6 +1,7 @@
 import { message, Button, Alert } from 'antd';
 const LogoSrc = require('images/logo.png');
 const LogoPng = require('images/left-logo.png');
+import moment from 'moment';
 message.config({
   duration: 3,
 });
@@ -140,6 +141,12 @@ export const isObject = (ele) => {
   }
 };
 
+// 根据年月计算出一个月的开始和结束日期
+export const getMontDateRange = (year, month) => {
+  let startDate = moment([year, month - 1]);
+  let endDate = moment(startDate).endOf('month');
+  return { start: startDate, end: endDate };
+};
 export { constant, Msg, method, cookieUtil };
 /*
 module.exports = {

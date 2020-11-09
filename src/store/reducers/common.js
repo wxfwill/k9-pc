@@ -1,7 +1,8 @@
-import { IS_COLLAPSED, NAV_DATA } from '../actionTypes';
+import { IS_COLLAPSED, NAV_DATA, MENU_HIGH_LINE } from '../actionTypes';
 
 const initialzeState = {
   collapsed: false,
+  routeUrl: '/app/home/index',
   navData: [],
 };
 
@@ -16,6 +17,11 @@ export default function collaspedReducer(state = initialzeState, action) {
       return {
         ...state,
         navData: action.nav,
+      };
+    case MENU_HIGH_LINE:
+      return {
+        ...state,
+        routeUrl: action.url,
       };
     default:
       return state;

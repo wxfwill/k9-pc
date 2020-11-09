@@ -22,7 +22,7 @@ import storage from 'redux-persist/lib/storage';
 const persistConfig = {
   key: 'root',
   storage: storage,
-  whitelist: ['loginReducer', 'socketReducer'], // 白名单
+  whitelist: ['loginReducer', 'socketReducer', 'commonReducer'], // 白名单
 };
 
 const myPersistReducer = persistReducer(persistConfig, rootReducer);

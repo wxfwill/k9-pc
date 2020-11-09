@@ -11,6 +11,7 @@ import { showNavCollapsed } from 'store/actions/common';
 
 import httpAjax from 'libs/httpAjax';
 import { constant } from 'libs/util/index';
+import { changeRoute } from 'store/actions/common';
 const { Header } = Layout;
 const SubMenu = Menu.SubMenu;
 
@@ -77,7 +78,7 @@ class HeaderComponent extends Component {
           if (res.code == 0) {
             hide();
             //util.cookieUtil.unset('token');
-
+            this.props.changeRouteAction('/app/home/index');
             history.push('/');
           }
         })
@@ -204,6 +205,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   sysActions: bindActionCreators(systomStatus, dispatch),
   isCollapsedAction: () => dispatch(showNavCollapsed()),
+  changeRouteAction: (url) => dispatch(changeRoute(url)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(HeaderComponent));

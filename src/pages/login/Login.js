@@ -5,6 +5,7 @@ import { hashHistory } from 'react-router-dom';
 import { Button, Row, Input, Form, Checkbox, Icon, message } from 'antd';
 
 import { saveUserInfo, saveMenuList, saveToken } from 'store/actions/loginAction';
+import { changeRoute } from 'store/actions/common';
 
 import 'style/pages/login.less';
 const FormItem = Form.Item;
@@ -73,6 +74,7 @@ class Login extends Component {
               this.props.tokenAction(token);
               this.props.menuAction(menuList);
               this.props.userinfoAction(user);
+              this.props.changeRouteAction('/app/home/index');
 
               sessionStorage.setItem('user', userJson);
               sessionStorage.setItem('menus', munuJson);
@@ -200,6 +202,7 @@ const mapDispatchToProps = (dispatch) => ({
   userinfoAction: (info) => dispatch(saveUserInfo(info)),
   tokenAction: (token) => dispatch(saveToken(token)),
   menuAction: (list) => dispatch(saveMenuList(list)),
+  changeRouteAction: (url) => dispatch(changeRoute(url)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);

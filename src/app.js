@@ -4,10 +4,10 @@ import Routes from './router/router';
 
 // redux
 import { Provider } from 'react-redux';
-import store from './store';
+import store from './store/index';
 
 // redux持久化
-import { persistor } from './store';
+import { persistor } from './store/index';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 
 // http
@@ -29,13 +29,13 @@ require('normalize.css');
 class App extends React.Component {
   render() {
     return (
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Provider store={store}>
           <ConfigProvider locale={zh_CN}>
             <Routes />
           </ConfigProvider>
-        </PersistGate>
-      </Provider>
+        </Provider>
+      </PersistGate>
     );
   }
 }

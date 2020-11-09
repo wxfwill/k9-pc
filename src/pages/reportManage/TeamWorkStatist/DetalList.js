@@ -21,8 +21,8 @@ class TeamWorkStatist extends Component {
       columns: teamTableHeaderDetal,
       loading: false,
       param: {
-        endDate: null,
-        startDate: null,
+        date: '',
+        dateType: '',
         groupId: [],
         userId: [],
       },
@@ -50,32 +50,38 @@ class TeamWorkStatist extends Component {
   handleShowSizeChange = (cur, size) => {
     this.tableChange({ currPage: cur, pageSize: size, current: cur });
   };
-  getMontDateRange = (year, month) => {
-    let startDate = moment([year, month - 1]);
-    let endDate = moment(startDate).endOf('month');
-    return { start: startDate, end: endDate };
-  };
+
   handleSearchData = (data) => {
     // console.log('data');
     // console.log(data);
     this.handleCommon(data);
   };
   handleCommon = (data) => {
-    let year = data ? Number(moment(data.year).format('YYYY')) : null;
-    let month = data ? Number(moment(data.month).format('M')) : null;
-    let monthObj = {};
-    if (year && month) {
-      monthObj = this.getMontDateRange(year, month);
+    console.log('78=======78');
+    console.log(data);
+    let { pagination, param } = this.state;
+    let _param, _pagination;
+    if (data && data.year && !data.month) {
+      _param = Object.assign({}, param, {
+        date: moment(data.year).format('YYYY'),
+        dateType: 'year',
+        groupId: data && data.groupId ? [data.groupId] : [],
+      });
+    } else if (data && data.year && data.month) {
+      _param = Object.assign({}, param, {
+        date: moment(data.year).format('YYYY') + '-' + moment(data.month).format('M'),
+        dateType: 'month',
+        groupId: data && data.groupId ? [data.groupId] : [],
+      });
+    } else {
+      _param = Object.assign({}, param, {
+        date: '',
+        dateType: '',
+        groupId: data && data.groupId ? [data.groupId] : [],
+      });
     }
 
-    let { pagination, param } = this.state;
-
-    let _param = Object.assign({}, param, {
-      endDate: data ? moment(monthObj.end).format('YYYY-MM-DD') : null,
-      startDate: data ? moment(monthObj.start).format('YYYY-MM-DD') : null,
-      groupId: data ? [data.groupId] : [],
-    });
-    let _pagination = Object.assign({}, pagination, { current: 1, currPage: 1, pageSize: 10 });
+    _pagination = Object.assign({}, pagination, { current: 1, currPage: 1, pageSize: 10 });
 
     this.setState(
       {
@@ -116,7 +122,7 @@ class TeamWorkStatist extends Component {
     return (
       <div className="four-wrap">
         <Card title="按条件搜索" bordered={false}>
-          <Search handleSearchData={this.handleSearchData} handleReset={this.handleReset} />
+          <Search isShowTeam={true} handleSearchData={this.handleSearchData} handleReset={this.handleReset} />
         </Card>
         <Card bordered={false}>
           <CustomTable

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Card } from 'antd';
-import Search from './Search';
+import Search from 'pages/reportManage/Common/Search';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
-import { tableHeaderLabel } from 'localData/reportManage/tableHeader';
 import CustomTable from 'components/table/CustomTable';
 require('style/fourReport/reportList.less');
 
@@ -14,18 +13,8 @@ class TeamWorkStatist extends Component {
       dataSource: [],
       columns: [],
       loading: false,
-      param: {
-        arrest: null,
-        categoryIds: [],
-        groupId: [],
-        isFeedback: null,
-        repDateEnd: null,
-        repDateStart: null,
-        taskLocation: null,
-        userName: '',
-      },
-      endDate: null,
-      startDate: null,
+      date: '',
+      dateType: '',
       sortFieldName: '',
       sortType: 'desc',
       pagination: {
@@ -36,30 +25,43 @@ class TeamWorkStatist extends Component {
     };
   }
   handleRowClick = (record) => {
-    console.log('txt');
-    console.log(record);
+    // console.log('txt');
+    // console.log(record);
+    this.props.history.push({ pathname: '/app/reportManage/OwnWorkStatise', search: `?groupId=${record.groupId}` });
   };
   componentDidMount() {
     React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '中队工作统计'] });
     this.getListData();
   }
+  handleReset = () => {
+    this.handleSearchData();
+  };
   handleSearchData = (data) => {
-    console.log(moment(data.year).format('YYYY'));
-    console.log(moment(data.month).format('M'));
-    let year = Number(moment(data.year).format('YYYY'));
-    let month = Number(moment(data.month).format('M'));
-    let monthObj = this.getMontDateRange(year, month);
-    console.log(moment(monthObj.start).format('YYYY-MM-DD'));
-    console.log(moment(monthObj.end).format('YYYY-MM-DD'));
-    this.setState(
-      {
-        endDate: moment(monthObj.end).format('YYYY-MM-DD'),
-        startDate: moment(monthObj.start).format('YYYY-MM-DD'),
-      },
-      () => {
+    if (data && data.year && !data.month) {
+      this.setState({ date: moment(data.year).format('YYYY'), dateType: 'year' }, () => {
         this.getListData();
-      }
-    );
+      });
+    } else if (data && data.year && data.month) {
+      this.setState(
+        {
+          date: moment(data.year).format('YYYY') + '-' + moment(data.month).format('M'),
+          dateType: 'month',
+        },
+        () => {
+          this.getListData();
+        }
+      );
+    } else {
+      this.setState(
+        {
+          date: '',
+          dateType: '',
+        },
+        () => {
+          this.getListData();
+        }
+      );
+    }
   };
   getMontDateRange = (year, month) => {
     let startDate = moment([year, month - 1]);
@@ -67,9 +69,9 @@ class TeamWorkStatist extends Component {
     return { start: startDate, end: endDate };
   };
   getListData = () => {
-    let { endDate, startDate } = this.state;
+    let { date, dateType } = this.state;
     this.setState({ loading: true });
-    React.httpAjax('post', config.apiUrl + '/api/report/statistic4wGroup', { endDate, startDate }).then((res) => {
+    React.httpAjax('post', config.apiUrl + '/api/report/statistic4wGroup', { date, dateType }).then((res) => {
       if (res && res.code === 0) {
         let resData = res.data;
         let titleArr = resData ? resData.title : [];
@@ -101,7 +103,7 @@ class TeamWorkStatist extends Component {
     return (
       <div className="four-wrap">
         <Card title="按条件搜索" bordered={false}>
-          <Search handleSearchData={this.handleSearchData} />
+          <Search handleSearchData={this.handleSearchData} handleReset={this.handleReset} />
         </Card>
         <Card bordered={false}>
           <CustomTable

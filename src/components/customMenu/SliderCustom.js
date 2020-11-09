@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Layout, Menu, Icon } from 'antd';
 import { withRouter, Link } from 'react-router-dom';
 import SiderMenu from './SiderMenu';
-import { showNavCollapsed } from 'store/actions/common';
+import { showNavCollapsed, changeRoute } from 'store/actions/common';
 
 const { Sider } = Layout;
 
@@ -15,13 +15,20 @@ class SliderCustom extends Component {
     super(props);
     this.state = {
       mode: 'inline',
-      openKey: '',
+      openKey: this.props.routeUrl.substr(0, this.props.routeUrl.lastIndexOf('/')),
       selectedKey: '',
-      firstHide: true, // 点击收缩菜单，第一次隐藏展开子菜单，openMenu时恢复
+      firstHide: false, // 点击收缩菜单，第一次隐藏展开子菜单，openMenu时恢复
     };
   }
   componentDidMount() {
-    this.setMenuOpen(this.props);
+    this.props.onRef(this);
+    // this.setMenuOpen(this.props);
+    //监控路由变化
+    // window.addEventListener('hashchange', () => {
+    //   // this.setState({ hash: true });
+    //   console.log('监听路由的变化');
+    //   this.setMenuOpen(this.props);
+    // });
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.isCollapsed) {
@@ -48,9 +55,6 @@ class SliderCustom extends Component {
     } else if (pathname.includes('Edit')) {
       menuUrl = pathname.substr(0, pathname.lastIndexOf('Edit'));
     }
-    console.log('====================123');
-    console.log(pathname.split('/'));
-    console.log(pathname.substr(0, pathname.lastIndexOf('/')));
 
     this.setState({
       openKey: pathname.substr(0, pathname.lastIndexOf('/')),
@@ -63,8 +67,8 @@ class SliderCustom extends Component {
     this.setState({
       selectedKey: e.key,
     });
-    const { popoverHide } = this.props; // 响应式布局控制小屏幕点击菜单时隐藏菜单操作
-    popoverHide && popoverHide();
+    // const { popoverHide } = this.props; // 响应式布局控制小屏幕点击菜单时隐藏菜单操作
+    // popoverHide && popoverHide();
 
     // this.props.history.push(e.key);
   };
@@ -105,7 +109,10 @@ class SliderCustom extends Component {
   render() {
     const { menus } = this.props;
     console.log('===========menus');
-    console.log(menus);
+    console.log(this.state.openKey);
+    console.log(this.props.routeUrl);
+
+    // console.log(menus);
     return (
       <Sider
         trigger={null}
@@ -127,7 +134,7 @@ class SliderCustom extends Component {
         <Menu
           mode="inline"
           onClick={this.menuClick}
-          selectedKeys={[this.state.selectedKey]}
+          selectedKeys={[this.props.routeUrl]}
           openKeys={this.state.firstHide ? null : [this.state.openKey]}
           onOpenChange={this.openMenu}
           style={{ height: '100%', borderRight: 0 }}
@@ -141,9 +148,11 @@ class SliderCustom extends Component {
 
 const mapStateToProps = (state) => ({
   isCollapsed: state.commonReducer.collapsed,
+  routeUrl: state.commonReducer.routeUrl,
 });
 const mapDispatchToProps = (dispatch) => ({
   isCollapsedAction: () => dispatch(showNavCollapsed()),
+  changeRouteAction: (url) => dispatch(changeRoute(url)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SliderCustom));

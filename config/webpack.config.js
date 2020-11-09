@@ -4,7 +4,12 @@ const webpack = require("webpack");
 const commonSet = require("./webpack.common.js");
 const { apiUrl } = require("./config.js");
 const config = {
-  entry: ["babel-polyfill", "./src/app.js"],
+  entry: {
+    main: ["babel-polyfill", "./src/app.js"],
+    vendor1: ["react", "react-router-dom", "react-redux"],
+    vendor2: ["antd", "axios"],
+    vendor3: ["classnames"],
+  },
   output: {
     filename: "assets/js/[name].js",
     path: path.resolve(__dirname, "../dist"),

@@ -11,10 +11,6 @@ module.exports = merge(common, {
     new UglifyJSPlugin({
       sourceMap: false,
     }),
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name:'common',//指定公共bundle的名称。
-    //   minChunks: 2,
-    // }),
     new CleanWebpackPlugin(["dist"]),
     new webpack.DefinePlugin({
       "process.env": {
