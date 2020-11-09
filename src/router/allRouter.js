@@ -99,6 +99,13 @@ const TeamWorkStatistDetal = asyncComponent(() => import('pages/reportManage/Tea
 const OwnWorkStatise = asyncComponent(() => import('pages/reportManage/OwnWorkStatise'));
 const OwnWorkStatiseDetal = asyncComponent(() => import('pages/reportManage/OwnWorkStatise/TaskDetalList'));
 
+//导入4W报备
+const ImportFile = asyncComponent(() => import('pages/reportManage/ImportFile'));
+//日报信息查询
+const DailyInformation = asyncComponent(() => import('pages/reportManage/DailyInformation'));
+//请假/离深/补休信息查询
+const LeaveInformation = asyncComponent(() => import('pages/reportManage/LeaveInformation'));
+
 const Officer = asyncComponent(() => import('components/view/assess/Officer'));
 const DogFeed = asyncComponent(() => import('components/view/dog/DogFeed'));
 const DeviceInforList = asyncComponent(() => import('components/view/deviceManage/DeviceInforList'));
@@ -545,6 +552,18 @@ const routerArr = [
   {
     path: '/app/reportManage/OwnWorkStatise',
     component: OwnWorkStatise,
+  },
+  {
+    path: '/app/reportManage/ImportFile',
+    component: ImportFile,
+  },
+  {
+    path: '/app/reportManage/DailyInformation',
+    component: DailyInformation,
+  },
+  {
+    path: '/app/reportManage/LeaveInformation',
+    component: LeaveInformation,
   },
   {
     path: '/app/report/4wcommandEdit',

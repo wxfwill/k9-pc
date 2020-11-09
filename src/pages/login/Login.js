@@ -52,6 +52,7 @@ class Login extends Component {
     this.setState({
       validate: true,
     });
+    const { remUser, remPwd, username, password } = this.state;
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.setState({
@@ -81,6 +82,12 @@ class Login extends Component {
               message.success('登录成功！', 1, function () {
                 history.push({ pathname: '/app/home/index', menus: menuList });
               });
+
+              //登录成功后记住账号、密码 / 清除记住的账号、密码
+              remUser
+                ? localStorage.setItem('username', JSON.stringify(username))
+                : localStorage.removeItem('username');
+              remPwd ? localStorage.setItem('password', JSON.stringify(password)) : localStorage.removeItem('password');
             });
           }
         });
@@ -170,10 +177,18 @@ class Login extends Component {
               )}
             </FormItem>
             <FormItem>
-              <Checkbox checked={this.state.remUser} onChange={this.changeChecked.bind(this, 'remUser')}>
+              <Checkbox
+                checked={this.state.remUser}
+                onChange={this.changeChecked.bind(this, 'remUser')}
+                disabled={this.state.loginLoading}
+              >
                 记住账号
               </Checkbox>
-              <Checkbox checked={this.state.remPwd} onChange={this.changeChecked.bind(this, 'remPwd')}>
+              <Checkbox
+                checked={this.state.remPwd}
+                onChange={this.changeChecked.bind(this, 'remPwd')}
+                disabled={this.state.loginLoading}
+              >
                 记住密码
               </Checkbox>
             </FormItem>
