@@ -197,3 +197,69 @@ export const leaveInformationDetal = [
     dataIndex: '备注',
   },
 ];
+
+export const OvertimeInformationDetal = [
+  {
+    title: '序号',
+    dataIndex: 'id',
+  },
+  {
+    title: '人员名称',
+    dataIndex: '人员名称',
+  },
+  {
+    title: '开始时间',
+    dataIndex: '开始时间',
+  },
+  {
+    title: '结束时间',
+    dataIndex: '结束时间',
+  },
+  {
+    title: '类型',
+    dataIndex: '类型',
+  },
+  {
+    title: '时长',
+    dataIndex: '时长',
+  },
+  {
+    title: '事由',
+    dataIndex: '事由',
+  },
+];
+
+export const AwardInformationDetal = [
+  {
+    title: '序号',
+    dataIndex: 'id',
+  },
+  {
+    title: '人员名称',
+    dataIndex: '人员名称',
+  },
+  {
+    title: '完成时间',
+    dataIndex: '完成时间',
+  },
+  {
+    title: '加分原因',
+    dataIndex: '加分原因',
+  },
+  {
+    title: '详细情况',
+    dataIndex: '详细情况',
+  },
+  {
+    title: '审批人',
+    dataIndex: '审批人',
+  },
+  {
+    title: '审批时间',
+    dataIndex: '审批时间',
+  },
+  {
+    title: '备注',
+    dataIndex: '备注',
+  },
+];

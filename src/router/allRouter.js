@@ -105,6 +105,10 @@ const ImportFile = asyncComponent(() => import('pages/reportManage/ImportFile'))
 const DailyInformation = asyncComponent(() => import('pages/reportManage/DailyInformation'));
 //请假/离深/补休信息查询
 const LeaveInformation = asyncComponent(() => import('pages/reportManage/LeaveInformation'));
+//加班/夜班信息查询
+const OvertimeInformation = asyncComponent(() => import('pages/reportManage/OvertimeInformation'));
+//奖励信息查询
+const AwardInformation = asyncComponent(() => import('pages/reportManage/AwardInformation'));
 
 const Officer = asyncComponent(() => import('components/view/assess/Officer'));
 const DogFeed = asyncComponent(() => import('components/view/dog/DogFeed'));
@@ -564,6 +568,14 @@ const routerArr = [
   {
     path: '/app/reportManage/LeaveInformation',
     component: LeaveInformation,
+  },
+  {
+    path: '/app/reportManage/OvertimeInformation',
+    component: OvertimeInformation,
+  },
+  {
+    path: '/app/reportManage/AwardInformation',
+    component: AwardInformation,
   },
   {
     path: '/app/report/4wcommandEdit',
