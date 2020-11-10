@@ -1,22 +1,31 @@
 import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Radio, Icon, Select, DatePicker } from 'antd';
+import { Form, Row, Col, Input, Button, TreeSelect, Icon, Select, DatePicker } from 'antd';
 import { thirdLayout } from 'util/Layout';
-import httpAjax from 'libs/httpAjax';
+import { withRouter, Link } from 'react-router-dom';
+import { Debounce } from 'libs/util/index.js';
 import moment from 'moment';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 const { MonthPicker } = DatePicker;
+const { TreeNode } = TreeSelect;
 
 class SearchForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       time: null,
+      teamVal: util.urlParse(this.props.location.search)
+        ? util.urlParse(this.props.location.search).groupId
+        : undefined,
       isopen: false,
+      nameVal: undefined,
       checkYear: false,
       checkMonth: false,
       teamData: [],
+      userData: [],
+      queryName: [],
+      personnelTree: [],
     };
   }
   componentDidMount() {
@@ -24,13 +33,32 @@ class SearchForm extends Component {
     if (isShowTeam) {
       this.queryAllTeam();
     }
+    if (isShowName) {
+      this.queryGroupUser('');
+    }
+
+    // 是否下站过阿莱
+    if (JSON.stringify(util.urlParse(this.props.location.search)) != '{}') {
+      console.log('下钻过来的吗');
+      console.log(util.urlParse(this.props.location.search));
+      this.handleSearch();
+    }
   }
   handleSearch = (e) => {
-    e.preventDefault();
+    e && e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.setState({ checkYear: false });
-        this.props.handleSearchData && this.props.handleSearchData(values);
+        this.props.handleSearchData && this.props.handleSearchData(values, () => false);
+      }
+    });
+  };
+  handeExport = (e) => {
+    e && e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        // this.setState({ checkYear: false });
+        this.props.handeExport && this.props.handeExport(values);
       }
     });
   };
@@ -38,6 +66,7 @@ class SearchForm extends Component {
     this.props.form.resetFields();
     this.setState({ checkYear: false });
     this.props.form.setFieldsValue({ year: null });
+    this.setState({ teamVal: undefined });
     this.props.handleReset && this.props.handleReset();
   };
   handleChange(name, value) {
@@ -56,9 +85,6 @@ class SearchForm extends Component {
   queryAllTeam = () => {
     React.httpAjax('post', config.apiUrl + '/api/userCenter/queryAllGroups').then((res) => {
       if (res.code == 0) {
-        //  this.setState({ allHouseData: res.data });
-        console.log('查询所有的中队信息');
-        // console.log(res.data);
         let resObj = res.data;
         let newArr = [];
         for (let key in resObj) {
@@ -69,13 +95,35 @@ class SearchForm extends Component {
       }
     });
   };
+  queryGroupUser = Debounce(
+    (keyword) => {
+      React.httpAjax('post', config.apiUrl + '/api/userCenter/queryGroupUser', { keyword }).then((res) => {
+        if (res.code == 0) {
+          let resObj = res.data;
+          let arr = [];
+          console.log('keykey=========');
+          for (let key in resObj) {
+            if (resObj[key] && resObj[key].length > 0) {
+              arr.push({
+                name: key,
+                children: resObj[key],
+              });
+            }
+          }
+          this.setState({ personnelTree: arr });
+        }
+      });
+    },
+    200,
+    false
+  );
   onChangeYear = (time) => {
     if (this.props.form.getFieldValue('month')) {
       this.setState({ checkYear: true }, () => {
         this.props.form.setFields({
           year: {
             value: null,
-            error: [new Error('请选择年份12')],
+            error: [new Error('请选择年份')],
           },
         });
       });
@@ -86,7 +134,21 @@ class SearchForm extends Component {
   selectTaskType = () => {};
   hangdleFeedback = () => {};
   hangdleCatch = () => {};
-  handlePrif = () => {};
+
+  handleChangeName = (value) => {
+    this.setState({ nameVal: value });
+  };
+  handleSearchName = (value) => {
+    if (value) {
+      this.queryBaseKey(value);
+    } else {
+      this.setState({ queryName: [] });
+    }
+  };
+  handleTreeName = (val) => {
+    console.log(val);
+    console.log('valvalvalvalvalvalvalval');
+  };
   render() {
     const { getFieldDecorator, setFieldsValue } = this.props.form;
     const { isopen, time } = this.state;
@@ -97,7 +159,9 @@ class SearchForm extends Component {
           {isShowTeam ? (
             <Col xl={6} lg={6} md={8} sm={12} xs={12}>
               <FormItem label="中队:" {...thirdLayout}>
-                {getFieldDecorator('groupId')(
+                {getFieldDecorator('groupId', {
+                  initialValue: this.state.teamVal,
+                })(
                   <Select
                     placeholder="请选择"
                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
@@ -117,17 +181,24 @@ class SearchForm extends Component {
             </Col>
           ) : null}
 
-          {isShowName ? (
+          {/* {isShowName ? (
             <Col xl={6} lg={6} md={8} sm={12} xs={12}>
               <FormItem label="姓名:" {...thirdLayout}>
-                {getFieldDecorator('userId')(
+                {getFieldDecorator('userId', {
+                  initialValue: this.state.nameVal,
+                })(
                   <Select
                     placeholder="请选择"
+                    showSearch
                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                    allowClear
-                    onChange={this.selectHouseId}
+                    defaultActiveFirstOption={false}
+                    showArrow={false}
+                    filterOption={false}
+                    onChange={this.handleChangeName}
+                    onSearch={this.handleSearchName}
+                    notFoundContent={null}
                   >
-                    {this.state.teamData.map((item) => {
+                    {this.state.queryName.map((item) => {
                       return (
                         <Option key={item.id} value={item.id}>
                           {item.name}
@@ -138,7 +209,42 @@ class SearchForm extends Component {
                 )}
               </FormItem>
             </Col>
+          ) : null} */}
+          {isShowName ? (
+            <Col xl={6} lg={6} md={8} sm={12} xs={12}>
+              <FormItem label="姓名:" {...thirdLayout}>
+                {getFieldDecorator('userId')(
+                  <TreeSelect
+                    showSearch
+                    style={{ width: '100%' }}
+                    filterTreeNode={() => true}
+                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    placeholder="请选择"
+                    allowClear
+                    onSearch={(value) => {
+                      this.queryGroupUser(value);
+                    }}
+                    onChange={this.handleTreeName}
+                  >
+                    {this.state.personnelTree && this.state.personnelTree.length > 0
+                      ? this.state.personnelTree.map((item) => {
+                          return (
+                            <TreeNode value={item.name} title={item.name} key={item.name} selectable={false}>
+                              {item.children && item.children.length > 0
+                                ? item.children.map((el) => {
+                                    return <TreeNode value={el.id} title={el.name} key={el.id} />;
+                                  })
+                                : null}
+                            </TreeNode>
+                          );
+                        })
+                      : null}
+                  </TreeSelect>
+                )}
+              </FormItem>
+            </Col>
           ) : null}
+
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="年份" {...thirdLayout}>
               {getFieldDecorator('year', {
@@ -156,8 +262,6 @@ class SearchForm extends Component {
                   getCalendarContainer={(triggerNode) => triggerNode.parentNode}
                   format="YYYY"
                   onOpenChange={(status) => {
-                    console.log('status');
-                    console.log(status);
                     if (status) {
                       this.setState({ isopen: true });
                     } else {
@@ -205,7 +309,7 @@ class SearchForm extends Component {
             <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
               清空
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handlePrif}>
+            <Button style={{ marginLeft: 8 }} onClick={this.handeExport}>
               导出
             </Button>
           </Col>
@@ -216,4 +320,4 @@ class SearchForm extends Component {
 }
 
 const InfoSearch = Form.create()(SearchForm);
-export default InfoSearch;
+export default withRouter(InfoSearch);

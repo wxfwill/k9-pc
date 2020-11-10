@@ -31,7 +31,6 @@ class MainComponent extends React.Component {
     let differTime = 0; //时间差
     window.onunload = function () {
       differTime = new Date().getTime() - beginTime;
-      // debugger;
       if (differTime <= 3) {
         // 关闭
         _this.props.changeRouteAction('/app/home/index');
