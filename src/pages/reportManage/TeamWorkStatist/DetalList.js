@@ -41,8 +41,10 @@ class TeamWorkStatist extends Component {
   };
   componentDidMount() {
     React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '个人工作统计', '详情'] });
-    let { param, sortFieldName, sortType, pagination } = this.state;
-    this.getListData(param, sortFieldName, sortType, pagination);
+    if (JSON.stringify(util.urlParse(this.props.location.search)) == '{}') {
+      let { param, sortFieldName, sortType, pagination } = this.state;
+      this.getListData(param, sortFieldName, sortType, pagination);
+    }
   }
   handleChangeSize = (page) => {
     this.tableChange({ currPage: page, current: page, pageSize: 10 });
@@ -52,8 +54,6 @@ class TeamWorkStatist extends Component {
   };
 
   handleSearchData = (data) => {
-    // console.log('data');
-    // console.log(data);
     this.handleCommon(data);
   };
   handleCommon = (data) => {
@@ -65,19 +65,19 @@ class TeamWorkStatist extends Component {
       _param = Object.assign({}, param, {
         date: moment(data.year).format('YYYY'),
         dateType: 'year',
-        groupId: data && data.groupId ? [data.groupId] : [],
+        groupId: data && data.groupId ? [Number(data.groupId)] : [],
       });
     } else if (data && data.year && data.month) {
       _param = Object.assign({}, param, {
         date: moment(data.year).format('YYYY') + '-' + moment(data.month).format('M'),
         dateType: 'month',
-        groupId: data && data.groupId ? [data.groupId] : [],
+        groupId: data && data.groupId ? [Number(data.groupId)] : [],
       });
     } else {
       _param = Object.assign({}, param, {
         date: '',
         dateType: '',
-        groupId: data && data.groupId ? [data.groupId] : [],
+        groupId: data && data.groupId ? [Number(data.groupId)] : [],
       });
     }
 
@@ -108,7 +108,7 @@ class TeamWorkStatist extends Component {
   getListData = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
     this.setState({ loading: true });
-    React.httpAjax('post', config.apiUrl + '/api/report/pageStatistic4wGroupDetail', { ...newObj }).then((res) => {
+    React.httpAjax('post', config.apiUrl + '/api/report/pageStatisticGroupDetail', { ...newObj }).then((res) => {
       if (res && res.code === 0) {
         let resData = res.data;
         const pagination = { ...this.state.pagination };

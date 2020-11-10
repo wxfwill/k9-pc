@@ -26,7 +26,7 @@ class SliderCustom extends Component {
     //监控路由变化
     // window.addEventListener('hashchange', () => {
     //   // this.setState({ hash: true });
-    //   console.log('监听路由的变化');
+    //   ;
     //   this.setMenuOpen(this.props);
     // });
   }
@@ -63,7 +63,6 @@ class SliderCustom extends Component {
     });
   };
   menuClick = (e) => {
-    console.log('key====' + e.key);
     this.setState({
       selectedKey: e.key,
     });
@@ -108,11 +107,8 @@ class SliderCustom extends Component {
   };
   render() {
     const { menus } = this.props;
-    console.log('===========menus');
-    console.log(this.state.openKey);
-    console.log(this.props.routeUrl);
 
-    // console.log(menus);
+    // ;
     return (
       <Sider
         trigger={null}

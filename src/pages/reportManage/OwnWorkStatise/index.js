@@ -25,6 +25,7 @@ class TeamWorkStatist extends Component {
         groupId: [],
         userId: [],
       },
+      lastIndex: null,
       sortFieldName: '',
       sortType: 'desc',
       pagination: {
@@ -40,8 +41,10 @@ class TeamWorkStatist extends Component {
   };
   componentDidMount() {
     React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '个人工作统计'] });
-    let { param, sortFieldName, sortType, pagination } = this.state;
-    this.getListData(param, sortFieldName, sortType, pagination);
+    if (JSON.stringify(util.urlParse(this.props.location.search)) == '{}') {
+      let { param, sortFieldName, sortType, pagination } = this.state;
+      this.getListData(param, sortFieldName, sortType, pagination);
+    }
   }
   handleChangeSize = (page) => {
     this.tableChange({ currPage: page, current: page, pageSize: 10 });
@@ -64,19 +67,19 @@ class TeamWorkStatist extends Component {
       _param = Object.assign({}, param, {
         date: moment(data.year).format('YYYY'),
         dateType: 'year',
-        groupId: data && data.groupId ? [data.groupId] : [],
+        groupId: data && data.groupId ? [Number(data.groupId)] : [],
       });
     } else if (data && data.year && data.month) {
       _param = Object.assign({}, param, {
         date: moment(data.year).format('YYYY') + '-' + moment(data.month).format('M'),
         dateType: 'month',
-        groupId: data && data.groupId ? [data.groupId] : [],
+        groupId: data && data.groupId ? [Number(data.groupId)] : [],
       });
     } else {
       _param = Object.assign({}, param, {
         date: '',
         dateType: '',
-        groupId: data && data.groupId ? [data.groupId] : [],
+        groupId: data && data.groupId ? [Number(data.groupId)] : [],
       });
     }
     _pagination = Object.assign({}, pagination, { current: 1, currPage: 1, pageSize: 10 });
@@ -102,42 +105,82 @@ class TeamWorkStatist extends Component {
       this.getListData(param, sortFieldName, sortType, pagination);
     });
   };
-  handleRowClick = (recode) => {};
+  getObj = (item) => {
+    return {
+      title: item.columnName,
+      dataIndex: item.id,
+      key: item.columnName,
+      align: 'center',
+      render: (txt, record, index) => {
+        return (
+          // <span
+          //   className={record[item.id] ? 'tabEleRow' : ''}
+          //   key={'key-' + item.id}
+          //   onClick={record[item.id] ? this.handleRowClick.bind(this, txt, record) : null}
+          // >
+          //   {record[item.id] ? record[item.id].value : record[item.columnName]}
+          // </span>
+          <span
+            className={record[item.columnName] != '总计' && this.state.lastIndex != index ? 'tabEleRow' : ''}
+            key={'key-' + item.id}
+            onClick={this.state.lastIndex != index ? this.handleRowClick.bind(this, txt, record, index) : null}
+          >
+            {record[item.id] ? record[item.id].value : record[item.columnName]}
+          </span>
+        );
+      },
+    };
+  };
+  recursion = (obj, item) => {
+    obj = this.getObj(item);
+    if (item.children && item.children.length > 0) {
+      obj.children = [];
+      item.children.map((n) => {
+        obj.children.push(this.getObj(n));
+      });
+    }
+    return obj;
+  };
+  formatArrList = (list) => {
+    let obj = {};
+    let newArr = [];
+    if (list && list.length > 0) {
+      list.forEach((item) => {
+        obj = this.recursion(obj, item);
+        newArr.push(obj);
+      });
+    }
+    return newArr;
+  };
+  handleRowClick = (txt, record, index) => {
+    this.props.history.push({
+      pathname: '/app/reportManage/OwnWorkStatiseDetal',
+      search: `?groupId=${record.id}&id=${txt.id}`,
+    });
+  };
   getListData = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
     this.setState({ loading: true });
-    React.httpAjax('post', config.apiUrl + '/api/report/pageStatistic4wPersonal', { ...newObj }).then((res) => {
+    React.httpAjax('post', config.apiUrl + '/api/report/pageStatisticPersonal', { ...newObj }).then((res) => {
       if (res && res.code === 0) {
         let resData = res.data;
-        let heardArr = resData.data ? resData.data.title : [];
-        let newColumns = [];
-        heardArr.map((item, index) => {
-          let obj = {
-            title: ((item) => {
-              let arr = item && item.toString().split('##');
-              return arr[0];
-            })(item),
-            dataIndex: item,
-            key: item,
-            align: 'center',
-            render: (txt, record, index) => {
-              return (
-                <span className="tabEleRow" onClick={this.handleRowClick.bind(this, record)}>
-                  {record[item]}
-                </span>
-              );
-            },
-          };
-          newColumns.push(obj);
-        });
+        console.log('resData');
+        console.log(resData);
+        let titleArr = resData.data ? resData.data.columns : [];
+        let formatArr = [];
+        let resArr = resData.data && resData.data.data.length > 0 ? resData.data.data : [];
+
+        formatArr = this.formatArrList(titleArr);
+
         const pagination = { ...this.state.pagination };
         pagination.total = resData.totalCount;
         pagination.current = resData.currPage;
         pagination.pageSize = 11;
         this.setState({
-          dataSource: resData.data ? resData.data.data : [],
-          columns: newColumns,
+          dataSource: resArr,
+          columns: formatArr,
           loading: false,
+          lastIndex: pagination.pageSize - 1,
           pagination,
         });
       }

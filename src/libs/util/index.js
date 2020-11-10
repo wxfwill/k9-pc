@@ -131,6 +131,76 @@ let method = {
   },
   ArrMetho: ArrMethod,
 };
+// 获取url参数
+export const urlParse = (src) => {
+  let url = decodeURIComponent(src) || null;
+  let obj = {};
+  let reg = /[?&][^?&]+=[^?&]+/g;
+  let arr = url && url.match(reg);
+  if (arr) {
+    arr.forEach((item) => {
+      let temArr = item.substring(1).split('=');
+      let key = temArr[0];
+      let val = temArr[1];
+      obj[key] = val;
+    });
+  }
+  return obj;
+};
+/**
+ * @desc 函数防抖
+ * @param func 函数
+ * @param wait 延迟执行毫秒数
+ * @param immediate true 表立即执行，false 表非立即执行
+ */
+export const Debounce = (func, wait = 500, immediate = true) => {
+  let timeout;
+  return function () {
+    let context = this;
+    let args = arguments;
+
+    if (timeout) clearTimeout(timeout);
+    if (immediate) {
+      let callNow = !timeout;
+      timeout = setTimeout(() => {
+        timeout = null;
+      }, wait);
+      if (callNow) func.apply(context, args);
+    } else {
+      timeout = setTimeout(() => {
+        func.apply(context, args);
+      }, wait);
+    }
+  };
+};
+/**
+ * a 标签下载
+ * 文件流的形式 blob
+ * res 后台返回的文件流
+ * file 当前文件
+ */
+export const createFileDown = (res, file) => {
+  if (!res) {
+    throw new Error('获取的文件流为空');
+  }
+  const content = res;
+  const blob = new Blob([content]);
+  const fileName = file.name || file;
+  if ('download' in document.createElement('a')) {
+    // 非IE下载
+    const elink = document.createElement('a');
+    elink.download = fileName;
+    elink.style.display = 'none';
+    elink.href = URL.createObjectURL(blob);
+    document.body.appendChild(elink);
+    elink.click();
+    URL.revokeObjectURL(elink.href); // 释放URL 对象
+    document.body.removeChild(elink);
+  } else {
+    // IE10+下载
+    navigator.msSaveBlob(blob, fileName);
+  }
+};
 
 // 判断是否为数组
 export const isObject = (ele) => {
@@ -148,10 +218,3 @@ export const getMontDateRange = (year, month) => {
   return { start: startDate, end: endDate };
 };
 export { constant, Msg, method, cookieUtil };
-/*
-module.exports = {
-	constant,
-	Msg,
-	method,
-  cookieUtil
-};*/

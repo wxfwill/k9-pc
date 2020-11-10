@@ -40,8 +40,10 @@ class TeamWorkStatist extends Component {
   };
   componentDidMount() {
     React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '个人工作统计', '详情'] });
-    let { param, sortFieldName, sortType, pagination } = this.state;
-    this.getListData(param, sortFieldName, sortType, pagination);
+    if (JSON.stringify(util.urlParse(this.props.location.search)) == '{}') {
+      let { param, sortFieldName, sortType, pagination } = this.state;
+      this.getListData(param, sortFieldName, sortType, pagination);
+    }
   }
   handleChangeSize = (page) => {
     this.tableChange({ currPage: page, current: page, pageSize: 10 });
@@ -64,22 +66,22 @@ class TeamWorkStatist extends Component {
       _param = Object.assign({}, param, {
         date: moment(data.year).format('YYYY'),
         dateType: 'year',
-        groupId: data && data.groupId ? [data.groupId] : [],
-        userId: data && data.userId ? [data.userId] : [],
+        groupId: data && data.groupId ? [Number(data.groupId)] : [],
+        userId: data && data.userId ? [Number(data.userId)] : [],
       });
     } else if (data && data.year && data.month) {
       _param = Object.assign({}, param, {
         date: moment(data.year).format('YYYY') + '-' + moment(data.month).format('M'),
         dateType: 'month',
-        groupId: data && data.groupId ? [data.groupId] : [],
-        userId: data && data.userId ? [data.userId] : [],
+        groupId: data && data.groupId ? [Number(data.groupId)] : [],
+        userId: data && data.userId ? [Number(data.userId)] : [],
       });
     } else {
       _param = Object.assign({}, param, {
         date: '',
         dateType: '',
-        groupId: data && data.groupId ? [data.groupId] : [],
-        userId: data && data.userId ? [data.userId] : [],
+        groupId: data && data.groupId ? [Number(data.groupId)] : [],
+        userId: data && data.userId ? [Number(data.userId)] : [],
       });
     }
     _pagination = Object.assign({}, pagination, { current: 1, currPage: 1, pageSize: 10 });
@@ -105,11 +107,16 @@ class TeamWorkStatist extends Component {
       this.getListData(param, sortFieldName, sortType, pagination);
     });
   };
-  handleRowClick = (recode) => {};
+  handleRowClick = (txt, record, index) => {
+    this.props.history.push({
+      pathname: '/app/reportManage/OwnWorkStatiseDetal',
+      search: `?groupId=${record.groupId}&id=${txt.id}`,
+    });
+  };
   getListData = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
     this.setState({ loading: true });
-    React.httpAjax('post', config.apiUrl + '/api/report/pageStatistic4wPersonalDetail', { ...newObj }).then((res) => {
+    React.httpAjax('post', config.apiUrl + '/api/report/pageStatisticPersonalDetail', { ...newObj }).then((res) => {
       if (res && res.code === 0) {
         let resData = res.data;
         console.log('resData');
