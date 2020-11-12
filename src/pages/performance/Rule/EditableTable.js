@@ -1,6 +1,5 @@
 import React from 'react';
 import { Table, Input, InputNumber, Popconfirm, Form, Select, message, Badge } from 'antd';
-import httpAjax from 'libs/httpAjax';
 import Immutable from 'immutable';
 //import EditableCell from './EditableCell'
 
@@ -234,7 +233,8 @@ class EditableTable extends React.Component {
   }
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/performanceCheck/listSubjectItemByTypeId', { ...params })
+    React.$ajax
+      .postData('/api/performanceCheck/listSubjectItemByTypeId', { ...params })
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = res.totalCount;
@@ -274,7 +274,8 @@ class EditableTable extends React.Component {
         return;
       }
       row.id = key;
-      httpAjax('post', config.apiUrl + '/api/performanceCheck/updatePerformanceCheckItem', { ...row })
+      React.$ajax
+        .postData('/api/performanceCheck/updatePerformanceCheckItem', { ...row })
         .then((res) => {
           const newData = [...this.state.dataSource];
           const index = newData.findIndex((item) => key === item.key);

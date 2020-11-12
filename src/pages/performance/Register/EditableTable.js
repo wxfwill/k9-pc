@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, Table, Select, Popconfirm, Input, DatePicker, Form, message } from 'antd';
 import moment from 'moment';
 import Immutable from 'immutable';
-import httpAjax from 'libs/httpAjax';
 import 'style/app/performance.less';
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -27,8 +26,7 @@ class EditableTableForm extends React.Component {
     //获取科目信息和指标信息
     const { typeId } = this.props;
     let { itemData } = this.state;
-    const reqUrl = config.apiUrl + '/api/performanceCheck/listSubjectItemByTypeId';
-    httpAjax('post', reqUrl, { id: typeId }).then((res) => {
+    React.$ajax.common.listSubjectItemByTypeId({ id: typeId }).then((res) => {
       if (res.code == 0) {
         this.setState({ SubjectItems: res.data });
       }
@@ -311,7 +309,7 @@ class EditableTableForm extends React.Component {
           // this.setState({ itemData: newData });
 
           this.cacheData = newData.map((item) => ({ ...item }));
-          httpAjax('post', '/api/performanceCheck/savePerformanceCheckRecord', options).then((res) => {
+          React.$ajax.performance.savePerformanceCheckRecord(options).then((res) => {
             if (res.code == 0) {
               let data = [];
               newData.map((item) => {
@@ -346,13 +344,12 @@ class EditableTableForm extends React.Component {
     //const newData = [...this.state.itemData];
     const { selectedRowKeys } = this.state;
     const { autonomyData } = this.props;
-    let delUrl = config.apiUrl + '/api/performanceCheck/deletePerformanceCheckRecord';
     let newItemData = [];
     let options = {
       ids: selectedRowKeys,
     };
     if (selectedRowKeys.length >= 1) {
-      httpAjax('post', delUrl, options).then((res) => {
+      React.$ajax.performance.deletePerformanceCheckRecord(options).then((res) => {
         if (res.code == 0) {
           newItemData = autonomyData.filter(
             (item) => this.state.selectedRowKeys.map((rowid) => rowid).indexOf(item['id']) < 0

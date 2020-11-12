@@ -36,7 +36,8 @@ class AddRule extends Component {
         //新增小类或大类
         dataObj = pid ? { ...values, scoreType, pid } : { ...values, scoreType };
       }
-      React.httpAjax('post', config.apiUrl + '/api/integral-rule/create', dataObj)
+      React.$ajax
+        .postData('/api/integral-rule/create', dataObj)
         .then((res) => {
           if (res.code == 0) {
             message.success('操作成功');

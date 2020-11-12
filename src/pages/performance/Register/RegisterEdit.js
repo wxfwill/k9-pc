@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Select, Form, Collapse, Table, Modal, Row, Col, Input, Button, Icon, message, Tag } from 'antd';
 import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import EditableTable from './EditableTable';
 import SubjectDetail from './SubjectDetail';
 import { firstLayout, secondLayout } from 'util/Layout';
@@ -36,10 +35,11 @@ class RegisterEdit extends Component {
     }
   }
   fetch(record, checkDate) {
-    httpAjax('post', config.apiUrl + '/api/performanceCheck/performanceCheckInfo', {
-      userId: record.userId,
-      checkDate: checkDate,
-    })
+    React.$ajax.performance
+      .performanceCheckInfo({
+        userId: record.userId,
+        checkDate: checkDate,
+      })
       .then((res) => {
         let { autonomyData, automaticData } = this.state;
         automaticData.dogTrain = [];
@@ -102,7 +102,8 @@ class RegisterEdit extends Component {
         row.id = this.state.record.id;
         row.pageSize = this.state.pageSize;
         row.currPage = this.state.currPage;
-        httpAjax('post', config.apiUrl + '/api/performanceCheck/cancelRank', { ...row })
+        React.$ajax.performance
+          .cancelRank({ ...row })
           .then((res) => {
             this.setState({ isShow: false, visible: false });
 

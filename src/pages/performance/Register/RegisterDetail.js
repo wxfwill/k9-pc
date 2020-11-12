@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Select, Form, Collapse, Table, Icon, Modal, Tag } from 'antd';
 import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import SubjectDetail from './SubjectDetail';
 import { firstLayout, secondLayout } from 'util/Layout';
 import moment from 'moment';
@@ -29,10 +28,11 @@ class RegisterDetail extends Component {
     }
   }
   fetch(record, checkDate) {
-    httpAjax('post', config.apiUrl + '/api/performanceCheck/performanceCheckInfo', {
-      userId: record.userId,
-      checkDate: checkDate,
-    })
+    React.$ajax.performance
+      .performanceCheckInfo({
+        userId: record.userId,
+        checkDate: checkDate,
+      })
       .then((res) => {
         let { autonomyData, automaticData } = this.state;
         automaticData.dogTrain = [];
