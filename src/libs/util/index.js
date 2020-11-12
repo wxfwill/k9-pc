@@ -131,6 +131,30 @@ let method = {
   },
   ArrMetho: ArrMethod,
 };
+/* 格式化时间戳
+ */
+export function formatDate(date, fmt) {
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
+  }
+  let o = {
+    'M+': date.getMonth() + 1,
+    'd+': date.getDate(),
+    'h+': date.getHours(),
+    'm+': date.getMinutes(),
+    's+': date.getSeconds(),
+  };
+  for (let k in o) {
+    if (new RegExp(`(${k})`).test(fmt)) {
+      let str = o[k] + '';
+      fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? str : padLeftZero(str));
+    }
+  }
+  return fmt;
+}
+function padLeftZero(str) {
+  return ('00' + str).substr(str.length);
+}
 // 获取url参数
 export const urlParse = (src) => {
   let url = decodeURIComponent(src) || null;
@@ -185,6 +209,8 @@ export const createFileDown = (res, file) => {
   }
   const content = res;
   const blob = new Blob([content]);
+  console.log('blob====123');
+  console.log(blob);
   const fileName = file.name || file;
   if ('download' in document.createElement('a')) {
     // 非IE下载

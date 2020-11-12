@@ -36,7 +36,7 @@ class TeamWorkStatist extends Component {
     };
   }
   handleReset = () => {
-    this.handleCommon();
+    this.handleCommon(null, () => false);
   };
   componentDidMount() {
     React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '个人工作统计', '详情'] });
@@ -57,9 +57,25 @@ class TeamWorkStatist extends Component {
     return { start: startDate, end: endDate };
   };
   handleSearchData = (data) => {
-    this.handleCommon(data);
+    this.handleCommon(data, () => false);
   };
-  handleCommon = (data) => {
+  handeExport = (data) => {
+    this.handleCommon(data, this.exportExcel);
+  };
+  exportExcel = (param, sortFieldName, sortType, pagination) => {
+    let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
+    React.httpAjax(
+      'post',
+      config.apiUrl + '/api/report/exportStatisticPersonalDetail',
+      { ...newObj },
+      { responseType: 'blob' }
+    ).then((res) => {
+      let name = `个人统计明细列表.xlsx`;
+      util.createFileDown(res, name);
+    });
+    return true;
+  };
+  handleCommon = (data, methods) => {
     let { pagination, param } = this.state;
     let _param, _pagination;
     if (data && data.year && !data.month) {
@@ -93,7 +109,8 @@ class TeamWorkStatist extends Component {
       },
       () => {
         let { sortFieldName, sortType, pagination, param } = this.state;
-        this.getListData(param, sortFieldName, sortType, pagination);
+        methods(param, sortFieldName, sortType, pagination) ||
+          this.getListData(param, sortFieldName, sortType, pagination);
       }
     );
   };
@@ -142,6 +159,7 @@ class TeamWorkStatist extends Component {
             isShowName={true}
             handleSearchData={this.handleSearchData}
             handleReset={this.handleReset}
+            handeExport={this.handeExport}
           />
         </Card>
         <Card bordered={false}>

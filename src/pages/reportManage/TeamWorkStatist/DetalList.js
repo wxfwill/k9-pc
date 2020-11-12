@@ -37,7 +37,7 @@ class TeamWorkStatist extends Component {
     };
   }
   handleReset = () => {
-    this.handleCommon();
+    this.handleCommon(null, () => false);
   };
   componentDidMount() {
     React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '个人工作统计', '详情'] });
@@ -54,11 +54,25 @@ class TeamWorkStatist extends Component {
   };
 
   handleSearchData = (data) => {
-    this.handleCommon(data);
+    this.handleCommon(data, () => false);
   };
-  handleCommon = (data) => {
-    console.log('78=======78');
-    console.log(data);
+  handeExport = (data) => {
+    this.handleCommon(data, this.exportExcel);
+  };
+  exportExcel = (param, sortFieldName, sortType, pagination) => {
+    let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
+    React.httpAjax(
+      'post',
+      config.apiUrl + '/api/report/exportStatisticGroupDetail',
+      { ...newObj },
+      { responseType: 'blob' }
+    ).then((res) => {
+      let name = `中队统计明细列表.xlsx`;
+      util.createFileDown(res, name);
+    });
+    return true;
+  };
+  handleCommon = (data, methods) => {
     let { pagination, param } = this.state;
     let _param, _pagination;
     if (data && data.year && !data.month) {
@@ -90,7 +104,8 @@ class TeamWorkStatist extends Component {
       },
       () => {
         let { sortFieldName, sortType, pagination, param } = this.state;
-        this.getListData(param, sortFieldName, sortType, pagination);
+        methods(param, sortFieldName, sortType, pagination) ||
+          this.getListData(param, sortFieldName, sortType, pagination);
       }
     );
   };
@@ -122,7 +137,12 @@ class TeamWorkStatist extends Component {
     return (
       <div className="four-wrap">
         <Card title="按条件搜索" bordered={false}>
-          <Search isShowTeam={true} handleSearchData={this.handleSearchData} handleReset={this.handleReset} />
+          <Search
+            isShowTeam={true}
+            handleSearchData={this.handleSearchData}
+            handleReset={this.handleReset}
+            handeExport={this.handeExport}
+          />
         </Card>
         <Card bordered={false}>
           <CustomTable

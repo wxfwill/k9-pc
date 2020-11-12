@@ -1,15 +1,15 @@
 export const tableHeaderLabel = [
   {
-    title: '序号',
-    dataIndex: 'id',
-  },
-  {
     title: '人员名称',
     dataIndex: 'userName',
+    width: 100,
   },
   {
     title: '任务时间',
     dataIndex: 'repTime',
+    render: (txt, record) => {
+      return util.formatDate(new Date(txt), 'yyyy-MM-dd');
+    },
   },
   {
     title: '来源',
@@ -34,6 +34,9 @@ export const tableHeaderLabel = [
   {
     title: '是否反馈',
     dataIndex: 'isFeedback',
+    render: (txt, record) => {
+      return txt == 1 ? '是' : '否';
+    },
   },
   {
     title: '反馈详情',
@@ -47,10 +50,6 @@ export const tableHeaderLabel = [
 
 export const ownTableHeaderDetal = [
   {
-    title: '序号',
-    dataIndex: 'id',
-  },
-  {
     title: '任务类型',
     dataIndex: 'category',
   },
@@ -61,6 +60,9 @@ export const ownTableHeaderDetal = [
   {
     title: '任务时间',
     dataIndex: 'repTime',
+    render: (txt, record) => {
+      return util.formatDate(new Date(txt), 'yyyy-MM-dd');
+    },
   },
 
   {
@@ -69,23 +71,19 @@ export const ownTableHeaderDetal = [
   },
   {
     title: '来源',
-    dataIndex: 'source',
-  },
-  {
-    title: '详细情况',
-    dataIndex: 'repDetail',
+    dataIndex: 'sourceNote',
   },
   {
     title: '抓捕人数',
     dataIndex: 'arrestNum',
   },
+  {
+    title: '详细情况',
+    dataIndex: 'repDetail',
+  },
 ];
 
 export const teamTableHeaderDetal = [
-  {
-    title: '序号',
-    dataIndex: 'id',
-  },
   {
     title: '中队名称',
     dataIndex: 'groupName',
@@ -93,14 +91,23 @@ export const teamTableHeaderDetal = [
   {
     title: '队员姓名',
     dataIndex: 'userNames',
+    render: (txt, record) => {
+      return txt.join('、');
+    },
   },
   {
     title: '任务时间',
     dataIndex: 'repTime',
+    render: (txt, record) => {
+      return util.formatDate(new Date(txt), 'yyyy-MM-dd');
+    },
   },
   {
     title: '任务类型',
-    dataIndex: '',
+    dataIndex: 'category',
+    render: (txt, record) => {
+      return txt.join();
+    },
   },
   {
     title: '任务地点',

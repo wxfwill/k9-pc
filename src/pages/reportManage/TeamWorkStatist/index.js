@@ -83,7 +83,6 @@ class TeamWorkStatist extends Component {
   handeExport = (data) => {
     console.log('导出了额');
     console.log(data);
-    // this.exportExcel();
     this.handleSearchData(data, this.exportExcel);
   };
   getObj = (item) => {
@@ -143,8 +142,12 @@ class TeamWorkStatist extends Component {
   };
   exportExcel = () => {
     let { date, dateType } = this.state;
-    React.httpAjax('post', config.apiUrl + '/api/report/exportStatisticGroup', { date, dateType }).then((res) => {
-      console.log(res);
+    React.httpAjax(
+      'post',
+      config.apiUrl + '/api/report/exportStatisticGroup',
+      { date, dateType },
+      { responseType: 'blob' }
+    ).then((res) => {
       console.log('导出接口');
       let name = `中队统计列表.xlsx`;
       createFileDown(res, name);

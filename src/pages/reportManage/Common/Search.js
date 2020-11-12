@@ -39,8 +39,6 @@ class SearchForm extends Component {
 
     // 是否下站过阿莱
     if (JSON.stringify(util.urlParse(this.props.location.search)) != '{}') {
-      console.log('下钻过来的吗');
-      console.log(util.urlParse(this.props.location.search));
       this.handleSearch();
     }
   }

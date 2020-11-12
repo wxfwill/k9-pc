@@ -21,7 +21,7 @@ class FourReportListSearch extends Component {
         repDateEnd: null,
         repDateStart: null,
         taskLocation: null,
-        userName: '',
+        userId: [],
       },
       sortFieldName: '',
       sortType: 'desc',
@@ -38,22 +38,48 @@ class FourReportListSearch extends Component {
     let { param, sortFieldName, sortType, pagination } = this.state;
     this.getListData(param, sortFieldName, sortType, pagination);
   }
+  exportExcel = (data) => {
+    this.handleSearchData(data, this.handleExport);
+  };
+
+  handleExport = (param, sortFieldName, sortType, pagination) => {
+    let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
+    React.httpAjax(
+      'post',
+      config.apiUrl + '/api/report/export4wReportInfo',
+      { ...newObj },
+      { responseType: 'blob' }
+    ).then((res) => {
+      let name = `4w报备统计列表.xlsx`;
+      util.createFileDown(res, name);
+    });
+    return true;
+  };
+
   handleChangeSize = (page) => {
     this.tableChange({ currPage: page, current: page });
   };
   handleShowSizeChange = (cur, size) => {
     this.tableChange({ currPage: cur, pageSize: size, current: cur });
   };
-  handleSearchData = (data) => {
-    let per = data;
-    per.categoryIds = per.categoryIds != null ? [per.categoryIds] : [];
-    per.groupId = per.groupId != null ? [per.groupId] : [];
-    per.repDateEnd = per.repDateEnd && moment(per.repDateEnd).format('YYYY-MM-DD');
-    per.repDateStart = per.repDateStart && moment(per.repDateStart).format('YYYY-MM-DD');
+  handleSearchData = (data, methods) => {
+    let { pagination } = this.state;
+    let per = data || {};
+    let _pagination;
+
+    per.categoryIds = per.categoryIds ? [Number(per.categoryIds)] : [];
+    per.groupId = per.groupId ? [Number(per.groupId)] : [];
+    per.userId = per.userId ? [Number(per.userId)] : [];
+    per.repDateEnd = per.repDateEnd ? moment(per.repDateEnd).format('YYYY-MM-DD') : null;
+    per.repDateStart = per.repDateStart ? moment(per.repDateStart).format('YYYY-MM-DD') : null;
+    per.taskLocation = per.taskLocation ? per.taskLocation : null;
+
     let newObj = Object.assign({}, this.state.param, per);
-    this.setState({ param: newObj }, () => {
+    _pagination = Object.assign({}, pagination, { current: 1, currPage: 1, pageSize: 10 });
+    this.setState({ param: newObj, pagination: _pagination }, () => {
       let { param, sortFieldName, sortType, pagination } = this.state;
-      this.getListData(param, sortFieldName, sortType, pagination);
+      methods(param, sortFieldName, sortType, pagination) ||
+        this.getListData(param, sortFieldName, sortType, pagination);
     });
   };
   tableChange = (obj) => {
@@ -83,7 +109,7 @@ class FourReportListSearch extends Component {
     return (
       <div className="four-wrap">
         <Card title="按条件搜索" bordered={false}>
-          <Search handleSearchData={this.handleSearchData} />
+          <Search handleSearchData={this.handleSearchData} exportExcel={this.exportExcel} />
         </Card>
         <Card bordered={false}>
           <CustomTable

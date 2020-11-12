@@ -6,6 +6,7 @@ import moment from 'moment';
 import { withRouter, Link } from 'react-router-dom';
 import CustomTable from 'components/table/CustomTable';
 import { changeNavName } from 'store/actions/common';
+import { createFileDown } from 'libs/util/index.js';
 require('style/fourReport/reportList.less');
 
 @connect(
@@ -37,7 +38,7 @@ class TeamWorkStatist extends Component {
     };
   }
   handleReset = () => {
-    this.handleCommon();
+    this.handleCommon(null, () => false);
   };
   componentDidMount() {
     React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '个人工作统计'] });
@@ -58,9 +59,9 @@ class TeamWorkStatist extends Component {
     return { start: startDate, end: endDate };
   };
   handleSearchData = (data) => {
-    this.handleCommon(data);
+    this.handleCommon(data, () => false);
   };
-  handleCommon = (data) => {
+  handleCommon = (data, methods) => {
     let { pagination, param } = this.state;
     let _param, _pagination;
     if (data && data.year && !data.month) {
@@ -91,9 +92,27 @@ class TeamWorkStatist extends Component {
       },
       () => {
         let { sortFieldName, sortType, pagination, param } = this.state;
-        this.getListData(param, sortFieldName, sortType, pagination);
+        methods(param, sortFieldName, sortType, pagination) ||
+          this.getListData(param, sortFieldName, sortType, pagination);
       }
     );
+  };
+  handeExport = (data) => {
+    this.handleCommon(data, this.exportExcel);
+  };
+  exportExcel = (param, sortFieldName, sortType, pagination) => {
+    let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
+    React.httpAjax(
+      'post',
+      config.apiUrl + '/api/report/exportStatisticPersonal',
+      { ...newObj },
+      { responseType: 'blob' }
+    ).then((res) => {
+      console.log('导出接口');
+      let name = `个人统计列表.xlsx`;
+      createFileDown(res, name);
+    });
+    return true;
   };
   tableChange = (obj) => {
     if (!util.isObject(obj)) {
@@ -126,6 +145,7 @@ class TeamWorkStatist extends Component {
             onClick={this.state.lastIndex != index ? this.handleRowClick.bind(this, txt, record, index) : null}
           >
             {record[item.id] ? record[item.id].value : record[item.columnName]}
+            <i style={{ display: record[item.columnName] == '姓名' ? 'block' : 'none' }}>考核项</i>
           </span>
         );
       },
@@ -164,8 +184,6 @@ class TeamWorkStatist extends Component {
     React.httpAjax('post', config.apiUrl + '/api/report/pageStatisticPersonal', { ...newObj }).then((res) => {
       if (res && res.code === 0) {
         let resData = res.data;
-        console.log('resData');
-        console.log(resData);
         let titleArr = resData.data ? resData.data.columns : [];
         let formatArr = [];
         let resArr = resData.data && resData.data.data.length > 0 ? resData.data.data : [];
@@ -190,7 +208,12 @@ class TeamWorkStatist extends Component {
     return (
       <div className="four-wrap">
         <Card title="按条件搜索" bordered={false}>
-          <Search isShowTeam={true} handleSearchData={this.handleSearchData} handleReset={this.handleReset} />
+          <Search
+            isShowTeam={true}
+            handleSearchData={this.handleSearchData}
+            handleReset={this.handleReset}
+            handeExport={this.handeExport}
+          />
         </Card>
         <Card bordered={false}>
           <CustomTable
