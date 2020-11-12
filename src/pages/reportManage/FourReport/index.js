@@ -16,6 +16,7 @@ import {
   message,
 } from 'antd';
 import Moment from 'moment';
+import { columnsArr } from 'localData/reportManage/FourReport';
 
 import 'style/pages/reportManage/FourReport/index.less';
 
@@ -148,14 +149,6 @@ class EditableCell extends React.Component {
           <DatePicker ref={(node) => (this.input = node)} showTime placeholder="请选择时间" onChange={this.save} />
         );
         break;
-      // case '来源':
-      //   domHtml = (
-      //     <Radio.Group ref={(node) => (this.input = node)} onChange={this.save}>
-      //       <Radio value="wg">警犬大队工作群</Radio>
-      //       <Radio value="f2f">面对面口述</Radio>
-      //     </Radio.Group>
-      //   );
-      //   break;
       case '类别':
         domHtml = (
           <TreeSelect
@@ -302,7 +295,6 @@ class EditableCell extends React.Component {
         domHtml = <TextArea ref={(node) => (this.input = node)} rows={2} placeholder="请输入备注" onBlur={this.save} />;
         break;
     }
-    //return domHtml;
     return (
       <Form.Item style={{ margin: 0 }}>
         {form.getFieldDecorator(dataIndex, {
@@ -332,102 +324,7 @@ class FourReport extends Component {
   constructor(props) {
     super(props);
     this.columns = [
-      {
-        title: '序号',
-        dataIndex: 'key',
-        width: '70px',
-        fixed: 'left',
-      },
-      {
-        title: '时间',
-        dataIndex: 'repTime',
-        width: '220px',
-        editable: true,
-      },
-      {
-        title: '任务指派领导',
-        dataIndex: 'taskAssignLeader',
-        width: '150px',
-        editable: true,
-      },
-      // {
-      //   title: '来源',
-      //   dataIndex: 'source',
-      //   width: '150px',
-      //   editable: true,
-      // },
-      {
-        title: '类别',
-        dataIndex: 'categoryIds',
-        width: '140px',
-        editable: true,
-      },
-      {
-        title: '用车审核人',
-        dataIndex: 'carUseAuditor',
-        width: '150px',
-        editable: true,
-      },
-      {
-        title: '任务执行人',
-        dataIndex: 'taskExecutor',
-        width: '150px',
-        editable: true,
-      },
-      // {
-      //   title: '汇报人',
-      //   dataIndex: 'reporters',
-      //   width: '150px',
-      //   editable: true,
-      // },
-      // {
-      //   title: '同行人',
-      //   dataIndex: 'peers',
-      //   width: '140px',
-      //   editable: true,
-      // },
-      // {
-      //   title: '记录人',
-      //   dataIndex: 'loggers',
-      //   width: '140px',
-      //   editable: true,
-      // },
-      {
-        title: '详细情况',
-        dataIndex: 'repDetail',
-        width: '160px',
-        editable: true,
-      },
-      {
-        title: '是否反馈',
-        dataIndex: 'isFeedback',
-        width: '90px',
-        editable: true,
-      },
-      {
-        title: '反馈内容',
-        dataIndex: 'feedbackContext',
-        width: '160px',
-        editable: true,
-      },
-      {
-        title: '抓捕人数',
-        dataIndex: 'arrestNum',
-        width: '110px',
-        editable: true,
-      },
-      {
-        title: '任务地点',
-        dataIndex: 'taskLocation',
-        width: '140px',
-        editable: true,
-      },
-      {
-        title: '备注',
-        dataIndex: 'remark',
-        width: '140px',
-        editable: true,
-      },
+      ...columnsArr,
       {
         title: '操作',
         dataIndex: 'operationKey',
@@ -463,14 +360,10 @@ class FourReport extends Component {
       arrestNum: 0,
       categoryIds: [], //类别
       feedbackContext: '',
-      //id: 0,
       isFeedback: 0,
-      //loggers: [], //记录人
-      //peers: [], //同行人
       remark: '',
       repDetail: '',
       repTime: null,
-      //reporters: [], //汇报人
       source: '',
       taskLocation: '',
       taskAssignLeader: [], //任务指派领导
@@ -503,18 +396,18 @@ class FourReport extends Component {
       let arr = [];
       dataSource.map((item) => {
         arr.push({
+          arrestNum: item.arrestNum,
           categoryIds: item.categoryIds, //类别
           feedbackContext: item.feedbackContext,
-          //id: 0,
           isFeedback: item.isFeedback,
-          loggers: item.loggers, //记录人
-          peers: item.peers, //同行人
           remark: item.remark,
           repDetail: item.repDetail,
           repTime: Moment(item.repTime),
-          reporters: item.reporters, //汇报人
           source: item.source,
           taskLocation: item.taskLocation,
+          taskAssignLeader: item.taskAssignLeader, //任务指派领导
+          carUseAuditor: item.carUseAuditor, //用车审核人
+          taskExecutor: item.taskExecutor, //任务执行人
         });
       });
       const dataObj = {
@@ -559,7 +452,6 @@ class FourReport extends Component {
         <Col xl={24} lg={24} md={24} sm={24} xs={24}>
           <Card bordered={false}>
             <Button
-              //onClick={this.addReport}
               onClick={this.handleAdd}
               type="primary"
               style={{
