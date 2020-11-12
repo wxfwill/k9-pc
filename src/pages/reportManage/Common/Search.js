@@ -81,7 +81,7 @@ class SearchForm extends Component {
     }
   };
   queryAllTeam = () => {
-    React.httpAjax('post', config.apiUrl + '/api/userCenter/queryAllGroups').then((res) => {
+    React.$ajax.common.queryAllGroups().then((res) => {
       if (res.code == 0) {
         let resObj = res.data;
         let newArr = [];
@@ -95,11 +95,10 @@ class SearchForm extends Component {
   };
   queryGroupUser = Debounce(
     (keyword) => {
-      React.httpAjax('post', config.apiUrl + '/api/userCenter/queryGroupUser', { keyword }).then((res) => {
+      React.$ajax.common.queryGroupUser({ keyword }).then((res) => {
         if (res.code == 0) {
           let resObj = res.data;
           let arr = [];
-          console.log('keykey=========');
           for (let key in resObj) {
             if (resObj[key] && resObj[key].length > 0) {
               arr.push({

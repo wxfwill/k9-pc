@@ -10,7 +10,7 @@ class RequestTeamProps extends Component {
     this.queryAllTeam();
   }
   queryAllTeam = () => {
-    React.httpAjax('post', config.apiUrl + '/api/userCenter/queryAllGroups').then((res) => {
+    React.$ajax.common.queryAllGroups().then((res) => {
       if (res.code == 0) {
         let resObj = res.data;
         let newArr = [];

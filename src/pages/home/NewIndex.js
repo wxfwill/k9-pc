@@ -284,7 +284,7 @@ class NewIndex extends Component {
     );
   };
   getAreaDogs = () => {
-    httpAjax('post', config.apiUrl + '/api/overView/dogAreaStatistics').then((res) => {
+    React.$ajax.home.dogAreaStatistics().then((res) => {
       if (res.code == 0) {
         const AreaDogNum = res.data;
         this.setState({ AreaDogNum });
@@ -294,13 +294,25 @@ class NewIndex extends Component {
           let label = this.drawMapLabel(item);
           this.MapLableArr.push(label);
         });
-      } else {
-        message.error('系统错误，稍后再试');
       }
     });
+    // httpAjax('post', config.apiUrl + '/api/overView/dogAreaStatistics').then((res) => {
+    //   if (res.code == 0) {
+    //     const AreaDogNum = res.data;
+    //     this.setState({ AreaDogNum });
+
+    //     AreaDogNum.forEach((item) => {
+    //       this.allDogs += item.dogNumber;
+    //       let label = this.drawMapLabel(item);
+    //       this.MapLableArr.push(label);
+    //     });
+    //   } else {
+    //     message.error('系统错误，稍后再试');
+    //   }
+    // });
   };
   getDogsInfo = () => {
-    httpAjax('post', config.apiUrl + '/api/dog/getDogCountNum').then((res) => {
+    React.$ajax.home.getDogCountNum().then((res) => {
       if (res.code == 0) {
         const dogsInfo = [
           {
@@ -325,9 +337,34 @@ class NewIndex extends Component {
         this.setState({ dogsInfo });
       }
     });
+    // httpAjax('post', config.apiUrl + '/api/dog/getDogCountNum').then((res) => {
+    //   if (res.code == 0) {
+    //     const dogsInfo = [
+    //       {
+    //         title: '全部犬只',
+    //         num: res.data.totalNum,
+    //         bgColor: '#49a9ee',
+    //         type: 'all',
+    //       },
+    //       {
+    //         title: '出勤犬只',
+    //         num: res.data.onDutyNum,
+    //         bgColor: '#98d87d',
+    //         type: 'duty',
+    //       },
+    //       {
+    //         title: '服役犬只',
+    //         num: res.data.serviceNum,
+    //         bgColor: '#ffd86e',
+    //         type: 'service',
+    //       },
+    //     ];
+    //     this.setState({ dogsInfo });
+    //   }
+    // });
   };
   getDogCureData = () => {
-    httpAjax('post', config.apiUrl + '/api/overView/treatmentSituation').then((res) => {
+    React.$ajax.home.treatmentSituation().then((res) => {
       if (res.code == 0) {
         const { type1, type2, tips } = res.data;
         const cureCycleList = [
@@ -358,15 +395,49 @@ class NewIndex extends Component {
         this.setState({ cureCycleList, cureTips });
       }
     });
+
+    // httpAjax('post', config.apiUrl + '/api/overView/treatmentSituation').then((res) => {
+    //   if (res.code == 0) {
+    //     const { type1, type2, tips } = res.data;
+    //     const cureCycleList = [
+    //       {
+    //         bgColor: '#49a9ee',
+    //         name: '已处理',
+    //         num: type1,
+    //         unit: '条',
+    //       },
+    //       {
+    //         bgColor: '#ffd86e',
+    //         name: '待处理',
+    //         num: type2,
+    //         unit: '条',
+    //       },
+    //     ];
+    //     let cureTips = [];
+    //     tips.forEach((item, i) => {
+    //       if (i % 2 == 0) {
+    //         let obj = {
+    //           p1: tips[i],
+    //           p2: tips[i + 1] || ' ',
+    //         };
+    //         cureTips.push(obj);
+    //       }
+    //     });
+    //     this.cureEchart.setOption(transformOptions(cureCycleList));
+    //     this.setState({ cureCycleList, cureTips });
+    //   }
+    // });
   };
   getTeamData = () => {
-    httpAjax('post', config.apiUrl + '/api/trainCheck/listTrainerRank').then((res) => {
+    React.$ajax.home.listTrainerRank().then((res) => {
       this.setState({ rankData: res.data });
     });
   };
   // /api/train/getTrainSituation
   getTrainSituation = () => {
-    httpAjax('post', config.apiUrl + '/api/train/getTrainSituation').then((res) => {
+    React.$ajax.home.getTrainSituation().then((res) => {
+      console.log('res');
+      console.log(res);
       if (res.code == 0) {
         const newData = [
           {
@@ -406,7 +477,7 @@ class NewIndex extends Component {
     });
   };
   getDutyData = () => {
-    httpAjax('post', config.apiUrl + '/api/onDuty/getTodayOnDuty').then((res) => {
+    React.$ajax.home.getTodayOnDuty().then((res) => {
       const dutyList = [
         { label: '带班领导', value: res.data.onDutyLeaderName },
         {

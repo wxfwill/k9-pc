@@ -8,6 +8,7 @@ import { Layout, Menu, Icon, Row, Col, Badge, Button, message } from 'antd';
 
 import * as systomStatus from 'actions/systomStatus';
 import { showNavCollapsed } from 'store/actions/common';
+import { saveToken } from 'store/actions/loginAction';
 
 import httpAjax from 'libs/httpAjax';
 import { constant } from 'libs/util/index';
@@ -40,6 +41,10 @@ class HeaderComponent extends Component {
   componentWillMount() {
     this.props.sysActions.newSocket();
     this.timer = setInterval(this.openWebsocket, 30000);
+  }
+  componentDidMount() {
+    console.log('ceshi token 111');
+    console.log(this.props.token);
   }
   componentWillUnmount() {
     clearInterval(this.timer);
@@ -79,6 +84,7 @@ class HeaderComponent extends Component {
             hide();
             //util.cookieUtil.unset('token');
             this.props.changeRouteAction('/app/home/index');
+            this.props.tokenAction(null);
             history.push('/');
           }
         })
@@ -198,12 +204,14 @@ class HeaderComponent extends Component {
   }
 }
 const mapStateToProps = (state) => ({
+  token: state.loginReducer.token,
   socketMsg: state.system && state.system.socketMsg,
   isCollapsed: state.commonReducer.collapsed,
   userinfo: state.loginReducer.userInfo,
 });
 const mapDispatchToProps = (dispatch) => ({
   sysActions: bindActionCreators(systomStatus, dispatch),
+  tokenAction: (token) => dispatch(saveToken(token)),
   isCollapsedAction: () => dispatch(showNavCollapsed()),
   changeRouteAction: (url) => dispatch(changeRoute(url)),
 });

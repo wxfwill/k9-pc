@@ -33,19 +33,15 @@ class SearchForm extends Component {
     console.log(val);
   };
   queryTaskType = (rootName) => {
-    React.httpAjax('get', config.apiUrl + '/api/integral-rule/queryRulesByRootName', { params: { rootName } }).then(
-      (res) => {
-        console.log('rootName');
-        console.log(res);
-        if (res.code == 0) {
-          this.setState({ taskTypeList: res.data });
-        }
+    React.$ajax.common.queryRulesByRootName({ rootName }).then((res) => {
+      if (res.code == 0) {
+        this.setState({ taskTypeList: res.data });
       }
-    );
+    });
   };
   queryGroupUser = util.Debounce(
     (keyword) => {
-      React.httpAjax('post', config.apiUrl + '/api/userCenter/queryGroupUser', { keyword }).then((res) => {
+      React.$ajax.common.queryGroupUser({ keyword }).then((res) => {
         if (res.code == 0) {
           let resObj = res.data;
           let arr = [];
@@ -106,7 +102,12 @@ class SearchForm extends Component {
                 <Col xl={6} lg={6} md={8} sm={12} xs={12}>
                   <FormItem label="中队:" {...thirdLayout}>
                     {getFieldDecorator('groupId')(
-                      <Select placeholder="请选择" allowClear onChange={this.selectHouseId}>
+                      <Select
+                        placeholder="请选择"
+                        allowClear
+                        getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                        onChange={this.selectHouseId}
+                      >
                         {allTeam.map((item) => {
                           return (
                             <Option key={item.id} value={item.id}>
@@ -125,6 +126,7 @@ class SearchForm extends Component {
                         showSearch
                         style={{ width: '100%' }}
                         filterTreeNode={() => true}
+                        getPopupContainer={(triggerNode) => triggerNode.parentNode}
                         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                         placeholder="请选择"
                         allowClear
@@ -154,14 +156,26 @@ class SearchForm extends Component {
                   <FormItem label="开始时间" {...thirdLayout}>
                     {getFieldDecorator('repDateStart', {
                       initialValue: null,
-                    })(<DatePicker placeholder="请输入" onChange={this.onChangeStartTime} />)}
+                    })(
+                      <DatePicker
+                        getCalendarContainer={(triggerNode) => triggerNode.parentNode}
+                        placeholder="请输入"
+                        onChange={this.onChangeStartTime}
+                      />
+                    )}
                   </FormItem>
                 </Col>
                 <Col xl={6} lg={6} md={8} sm={12} xs={12}>
                   <FormItem label="结束时间" {...thirdLayout}>
                     {getFieldDecorator('repDateEnd', {
                       initialValue: null,
-                    })(<DatePicker placeholder="请输入" onChange={this.onChangeEndTime} />)}
+                    })(
+                      <DatePicker
+                        placeholder="请输入"
+                        getCalendarContainer={(triggerNode) => triggerNode.parentNode}
+                        onChange={this.onChangeEndTime}
+                      />
+                    )}
                   </FormItem>
                 </Col>
               </Row>
@@ -183,6 +197,7 @@ class SearchForm extends Component {
                       <TreeSelect
                         style={{ width: '100%' }}
                         filterTreeNode={() => true}
+                        getPopupContainer={(triggerNode) => triggerNode.parentNode}
                         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                         placeholder="请选择"
                         allowClear

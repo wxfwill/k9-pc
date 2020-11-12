@@ -4,11 +4,12 @@ import axios from '../axios';
 // 登录
 export const postLogin = (data) => {
   return axios({
-    url: '/api/userCenter/loginApp',
+    url: '/api/userCenter/login',
     method: 'post',
     data,
   });
 };
+
 // 退出
 export const loginOut = () => {
   return axios({

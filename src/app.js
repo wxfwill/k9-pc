@@ -11,6 +11,8 @@ import { persistor } from './store/index';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 
 // http
+import api from './http/index';
+React.$ajax = api;
 import httpAjax from 'libs/httpAjax';
 React.httpAjax = httpAjax;
 React.store = store;

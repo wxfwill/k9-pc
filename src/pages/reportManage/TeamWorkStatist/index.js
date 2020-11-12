@@ -81,8 +81,6 @@ class TeamWorkStatist extends Component {
     return { start: startDate, end: endDate };
   };
   handeExport = (data) => {
-    console.log('导出了额');
-    console.log(data);
     this.handleSearchData(data, this.exportExcel);
   };
   getObj = (item) => {
@@ -128,7 +126,7 @@ class TeamWorkStatist extends Component {
   getListData = () => {
     let { date, dateType } = this.state;
     this.setState({ loading: true });
-    React.httpAjax('post', config.apiUrl + '/api/report/statisticGroup', { date, dateType }).then((res) => {
+    React.$ajax.fourManage.statisticGroup({ date, dateType }).then((res) => {
       if (res && res.code === 0) {
         let resData = res.data;
         let titleArr = resData ? resData.columns : [];
@@ -142,13 +140,7 @@ class TeamWorkStatist extends Component {
   };
   exportExcel = () => {
     let { date, dateType } = this.state;
-    React.httpAjax(
-      'post',
-      config.apiUrl + '/api/report/exportStatisticGroup',
-      { date, dateType },
-      { responseType: 'blob' }
-    ).then((res) => {
-      console.log('导出接口');
+    React.$ajax.fourManage.exportStatisticGroup({ date, dateType }).then((res) => {
       let name = `中队统计列表.xlsx`;
       createFileDown(res, name);
     });

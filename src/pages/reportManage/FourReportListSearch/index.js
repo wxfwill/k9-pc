@@ -44,12 +44,7 @@ class FourReportListSearch extends Component {
 
   handleExport = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
-    React.httpAjax(
-      'post',
-      config.apiUrl + '/api/report/export4wReportInfo',
-      { ...newObj },
-      { responseType: 'blob' }
-    ).then((res) => {
+    React.$ajax.fourManage.export4wReportInfo(newObj).then((res) => {
       let name = `4w报备统计列表.xlsx`;
       util.createFileDown(res, name);
     });
@@ -95,7 +90,7 @@ class FourReportListSearch extends Component {
   getListData = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
     this.setState({ loading: true });
-    React.httpAjax('post', config.apiUrl + '/api/report/page4wReportInfo', { ...newObj }).then((res) => {
+    React.$ajax.fourManage.page4wReportInfo(newObj).then((res) => {
       if (res && res.code === 0) {
         let resData = res.data;
         const pagination = { ...this.state.pagination };

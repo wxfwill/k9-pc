@@ -36,7 +36,8 @@ const EditableFormRow = Form.create()(EditableRow);
 //查询人员列表
 let personnelList = [];
 (function () {
-  React.httpAjax('post', config.apiUrl + '/api/userCenter/getCombatStaff')
+  React.$ajax.common
+    .getCombatStaff()
     .then((res) => {
       if (res.code == 0) {
         personnelList = res.data;
@@ -57,7 +58,8 @@ function queryGroupUser(keyword) {
   let dataObj = {
     keyword: keyword,
   };
-  React.httpAjax('post', config.apiUrl + '/api/userCenter/queryGroupUser', dataObj)
+  React.$ajax.common
+    .queryGroupUser(dataObj)
     .then((res) => {
       if (res.code == 0) {
         let arr = [];
@@ -83,9 +85,8 @@ let ruleList = [];
   let dataObj = {
     rootName: '4W报备',
   };
-  React.httpAjax('get', config.apiUrl + '/api/integral-rule/queryRulesByRootName', {
-    params: dataObj,
-  })
+  React.$ajax.common
+    .queryRulesByRootName(dataObj)
     .then((res) => {
       if (res.code == 0) {
         ruleList = res.data;
@@ -98,7 +99,8 @@ let ruleList = [];
 //地点列表
 let areaList = [];
 (function () {
-  React.httpAjax('post', config.apiUrl + '/api/basicData/subordinateAreaList')
+  React.$ajax.common
+    .subordinateAreaList()
     .then((res) => {
       if (res.code == 0) {
         areaList = res.data;
@@ -518,18 +520,12 @@ class FourReport extends Component {
       const dataObj = {
         reports: arr,
       };
-      React.httpAjax('post', config.apiUrl + '/api/report/create4wReport', dataObj)
-        .then((res) => {
-          if (res.code == 0) {
-            message.success('上报成功！');
-            this.props.history.push('/app/reportManage/FourReportListSearch');
-          } else {
-            message.error(res.msg);
-          }
-        })
-        .catch((error) => {
-          message.error(error.msg);
-        });
+      React.$ajax.fourManage.create4wReport(dataObj).then((res) => {
+        if (res.code == 0) {
+          message.success('上报成功！');
+          this.props.history.push('/app/reportManage/FourReportListSearch');
+        }
+      });
     } else {
       message.error('请新增上报内容！');
     }
@@ -599,4 +595,6 @@ class FourReport extends Component {
   }
 }
 
-export default FourReport;
+const FourReportList = Form.create()(FourReport);
+
+export default FourReportList;

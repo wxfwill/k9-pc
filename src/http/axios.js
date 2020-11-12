@@ -1,5 +1,3 @@
-/** @format */
-
 import axios from 'axios';
 import config from './config';
 import { message } from 'antd';
@@ -13,6 +11,7 @@ let ajax = function $axios(options) {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
       baseURL: config.baseUrl,
+      method: config.method,
       headers: config.headers,
       timeout: config.timeout,
       withCredentials: config.withCredentials,
@@ -21,17 +20,15 @@ let ajax = function $axios(options) {
     // request 拦截器
     instance.interceptors.request.use(
       (config) => {
+        message.destroy();
         loading = message.loading('加载中...', 0);
-        console.log('token123');
-        console.log(store.getState().loginReducer.token);
-        config.headers['Authorization'] = store.getState().loginReducer.token
-          ? store.getState().loginReducer.token
-          : null;
+        config.headers['k9token'] = store.getState().loginReducer.token ? store.getState().loginReducer.token : null;
         return config;
       },
 
       (error) => {
         // 请求错误时
+        console.log('请求错误');
         console.log(error);
         // 1. 判断请求超时
         if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
@@ -44,7 +41,6 @@ let ajax = function $axios(options) {
     // response 拦截器
     instance.interceptors.response.use(
       (response) => {
-        loading();
         let data;
         // IE9时response.data是undefined，因此需要使用response.request.responseText(Stringify后的字符串)
         if (response.data == undefined) {
@@ -55,17 +51,27 @@ let ajax = function $axios(options) {
         const headers = response.headers;
         // 文件下载响应的文件流
         if (headers['content-type'] && headers['content-type'].indexOf('application/octet-stream') > -1) {
+          // 异步关闭loading
+          new Promise((resolve, reject) => {
+            loading();
+          });
           return response.data;
         }
         // 根据返回的code值来做不同的处理
         if (data.code == 0) {
+          // 异步关闭loading
+          new Promise((resolve, reject) => {
+            loading();
+          });
           return data;
         } else {
           data && message.info(data.msg);
         }
       },
       (err) => {
-        loading();
+        new Promise((resolve, reject) => {
+          loading();
+        });
         var error = JSON.parse(JSON.stringify(err));
         if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
           // return instance.request(originalRequest); // 再重复请求一次

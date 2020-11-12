@@ -1,5 +1,5 @@
 export default {
-  method: 'get',
+  method: 'post',
   // 基础url前缀
   baseUrl: config.localUrl,
   // 请求头信息

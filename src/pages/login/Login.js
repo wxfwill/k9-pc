@@ -59,38 +59,64 @@ class Login extends Component {
           loginLoading: true,
         });
         let hide = message.loading('正在验证...', 0);
-        React.httpAjax('post', config.apiUrl + '/api/userCenter/login', {
-          account: values.userName.trim(),
-          password: values.password.trim(),
-        }).then((res) => {
-          if (res && res.code == 0) {
-            hide();
-            this.setState({ loading: false }, () => {
-              let { user, menuList, token } = res.data;
-              // let newMenuList = [...menuList, ...addMenu];
-
-              let userJson = JSON.stringify(user);
-              let munuJson = JSON.stringify(menuList);
-
-              this.props.tokenAction(token);
-              this.props.menuAction(menuList);
-              this.props.userinfoAction(user);
-              this.props.changeRouteAction('/app/home/index');
-
-              sessionStorage.setItem('user', userJson);
-              sessionStorage.setItem('menus', munuJson);
-              message.success('登录成功！', 1, function () {
-                history.push({ pathname: '/app/home/index', menus: menuList });
+        React.$ajax.login
+          .postLogin({ account: values.userName.trim(), password: values.password.trim() })
+          .then((res) => {
+            if (res && res.code == 0) {
+              hide();
+              this.setState({ loading: false }, () => {
+                let { user, menuList, token } = res.data;
+                let userJson = JSON.stringify(user);
+                let munuJson = JSON.stringify(menuList);
+                this.props.tokenAction(token);
+                this.props.menuAction(menuList);
+                this.props.userinfoAction(user);
+                this.props.changeRouteAction('/app/home/index');
+                sessionStorage.setItem('user', userJson);
+                sessionStorage.setItem('menus', munuJson);
+                message.success('登录成功！', 1, function () {
+                  history.push({ pathname: '/app/home/index', menus: menuList });
+                });
+                //登录成功后记住账号、密码 / 清除记住的账号、密码
+                remUser
+                  ? localStorage.setItem('username', JSON.stringify(username))
+                  : localStorage.removeItem('username');
+                remPwd
+                  ? localStorage.setItem('password', JSON.stringify(password))
+                  : localStorage.removeItem('password');
               });
+            }
+          });
+        // React.httpAjax('post', config.apiUrl + '/api/userCenter/login', {
 
-              //登录成功后记住账号、密码 / 清除记住的账号、密码
-              remUser
-                ? localStorage.setItem('username', JSON.stringify(username))
-                : localStorage.removeItem('username');
-              remPwd ? localStorage.setItem('password', JSON.stringify(password)) : localStorage.removeItem('password');
-            });
-          }
-        });
+        // }).then((res) => {
+        //   if (res && res.code == 0) {
+        //     hide();
+        //     this.setState({ loading: false }, () => {
+        //       let { user, menuList, token } = res.data;
+
+        //       let userJson = JSON.stringify(user);
+        //       let munuJson = JSON.stringify(menuList);
+
+        //       this.props.tokenAction(token);
+        //       this.props.menuAction(menuList);
+        //       this.props.userinfoAction(user);
+        //       this.props.changeRouteAction('/app/home/index');
+
+        //       sessionStorage.setItem('user', userJson);
+        //       sessionStorage.setItem('menus', munuJson);
+        //       message.success('登录成功！', 1, function () {
+        //         history.push({ pathname: '/app/home/index', menus: menuList });
+        //       });
+
+        //       //登录成功后记住账号、密码 / 清除记住的账号、密码
+        //       remUser
+        //         ? localStorage.setItem('username', JSON.stringify(username))
+        //         : localStorage.removeItem('username');
+        //       remPwd ? localStorage.setItem('password', JSON.stringify(password)) : localStorage.removeItem('password');
+        //     });
+        //   }
+        // });
       }
     });
   };

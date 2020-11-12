@@ -64,12 +64,7 @@ class TeamWorkStatist extends Component {
   };
   exportExcel = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
-    React.httpAjax(
-      'post',
-      config.apiUrl + '/api/report/exportStatisticPersonalDetail',
-      { ...newObj },
-      { responseType: 'blob' }
-    ).then((res) => {
+    React.$ajax.fourManage.exportStatisticPersonalDetail(newObj).then((res) => {
       let name = `个人统计明细列表.xlsx`;
       util.createFileDown(res, name);
     });
@@ -133,7 +128,7 @@ class TeamWorkStatist extends Component {
   getListData = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
     this.setState({ loading: true });
-    React.httpAjax('post', config.apiUrl + '/api/report/pageStatisticPersonalDetail', { ...newObj }).then((res) => {
+    React.$ajax.fourManage.pageStatisticPersonalDetail(newObj).then((res) => {
       if (res && res.code === 0) {
         let resData = res.data;
         console.log('resData');

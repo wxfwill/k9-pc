@@ -36,7 +36,8 @@ const EditableFormRow = Form.create()(EditableRow);
 //查询人员列表
 let personnelList = [];
 (function () {
-  React.httpAjax('post', config.apiUrl + '/api/userCenter/getCombatStaff')
+  React.$ajax.common
+    .getCombatStaff()
     .then((res) => {
       if (res.code == 0) {
         personnelList = res.data;
@@ -57,7 +58,8 @@ function queryGroupUser(keyword) {
   let dataObj = {
     keyword: keyword,
   };
-  React.httpAjax('post', config.apiUrl + '/api/userCenter/queryGroupUser', dataObj)
+  React.$ajax.common
+    .queryGroupUser(dataObj)
     .then((res) => {
       if (res.code == 0) {
         let arr = [];
@@ -80,7 +82,8 @@ queryGroupUser();
 //查询类
 let ruleList = [];
 (function () {
-  React.httpAjax('get', config.apiUrl + '/api/integral-rule/queryAll')
+  React.$ajax.common
+    .queryAllType()
     .then((res) => {
       if (res.code == 0) {
         res.data && res.data.length > 0
