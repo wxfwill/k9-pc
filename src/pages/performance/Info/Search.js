@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
 import { thirdLayout } from 'util/Layout';
-import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -27,13 +26,13 @@ class SearchForm extends React.Component {
     let timeData = 'range-time-picker';
     this.props.form.validateFields((err, values) => {
       console.log(values, 'values');
-      values.checkDate = moment(values.checkDate).format('YYYY-MM');
+      values.checkDate = moment(values.checkDate).format('YYYY-M');
       limit(values);
     });
   };
 
   searchPeople = (name = '') => {
-    httpAjax('post', config.apiUrl + '/api/userCenter/getTrainer', { name }).then((res) => {
+    React.$ajax.common.getTrainer({ name }).then((res) => {
       if (res.code == 0) {
         this.setState({ peoples: res.data });
       }

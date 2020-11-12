@@ -64,7 +64,8 @@ class AssessmentSetting extends Component {
   }
   // 获取全部规则树
   getAllRule() {
-    React.httpAjax('get', config.apiUrl + '/api/integral-rule/queryAll')
+    React.$ajax
+      .getData('/api/integral-rule/queryAll')
       .then((res) => {
         if (res.code == 0) {
           this.setState({
@@ -80,7 +81,8 @@ class AssessmentSetting extends Component {
   redact() {}
   //删除
   deleteRule(id) {
-    React.httpAjax('get', config.apiUrl + '/api/integral-rule/delCascade', { params: { id: id } })
+    React.$ajax
+      .getData('/api/integral-rule/delCascade', { id })
       .then((res) => {
         if (res.code == 0) {
           message.success('操作成功');

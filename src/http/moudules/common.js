@@ -54,3 +54,22 @@ export const subordinateAreaList = (data) => {
     data,
   });
 };
+
+// 获取训犬人员接口
+export const getTrainer = (data) => {
+  return axios({
+    url: '/api/userCenter/getTrainer',
+    method: 'post',
+    data,
+  });
+};
+
+// 根据类别查出对应的科目和指标 /api/performanceCheck/listSubjectItemByTypeId
+
+export const listSubjectItemByTypeId = (data) => {
+  return axios({
+    url: '/api/performanceCheck/listSubjectItemByTypeId',
+    method: 'post',
+    data,
+  });
+};

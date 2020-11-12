@@ -4,7 +4,6 @@ import { Link, withRouter } from 'react-router-dom';
 import Immutable from 'immutable';
 import { firstLayout, secondLayout } from 'util/Layout';
 import moment from 'moment';
-import httpAjax from 'libs/httpAjax';
 const FormItem = Form.Item;
 class HolidayTable extends Component {
   constructor(props) {
@@ -47,7 +46,8 @@ class HolidayTable extends Component {
         row.id = this.state.selectedId;
         row.pageSize = this.state.pageSize;
         row.currPage = this.state.currPage;
-        httpAjax('post', config.apiUrl + '/api/performanceCheck/cancelRank', { ...row })
+        React.$ajax.performance
+          .cancelRank({ ...row })
           .then((res) => {
             const newData = [...this.state.dataSource];
             const index = newData.findIndex((item) => this.state.selectedId === item.id);
@@ -99,7 +99,10 @@ class HolidayTable extends Component {
   }
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage, checkDate: this.state.checkDate }) {
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/performanceCheck/listPerformanceCheckRank', { ...params })
+    React.$ajax.performance
+      .listPerformanceCheckRank({
+        ...params,
+      })
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = res.totalCount;
