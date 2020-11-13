@@ -1,7 +1,6 @@
 import React,{ Component } from 'react';
 import { Radio, Form, Input , Modal, Icon, Card ,Spin, Tag, message,Row,Col,Affix} from 'antd';
 import { tMap } from 'components/view/common/map';
-import { Button } from 'element-react';
 import moment from 'moment';
 const Search = Input.Search;
 import 'style/view/monitoring/mapModal.less';

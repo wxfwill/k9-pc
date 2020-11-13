@@ -1,2 +1,2 @@
 # own-staging 
-react+reflux+redux+react-router+webpack+antd-mobile+jssdk
+react+redux+react-router+webpack+antd-mobile+jssdk

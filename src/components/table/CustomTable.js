@@ -30,7 +30,7 @@ class CustomTable extends Component {
     this.props.handleSelectChange && this.props.handleSelectChange(selectedRowKeys);
   };
   render() {
-    let { dataSource, columns, isBordered, pagination, loading, isRowSelects, rowSelectKeys } = this.props;
+    let { dataSource, columns, isBordered, pagination, loading, isRowSelects, isScroll, rowSelectKeys } = this.props;
     if (!dataSource) {
       throw new Error('dataSource是必传参数');
     }
@@ -48,6 +48,7 @@ class CustomTable extends Component {
       selectedRowKeys: rowSelectKeys,
     };
     let newisRowSelects = isRowSelects ? rowSelection : null;
+    let setScroll = isScroll ? isScroll : false;
 
     return (
       <Table
@@ -66,6 +67,7 @@ class CustomTable extends Component {
           })(),
         }}
         loading={newloading}
+        scroll={setScroll}
         rowSelection={newisRowSelects}
         bordered={isBordered == true ? true : false}
         pagination={newPage}

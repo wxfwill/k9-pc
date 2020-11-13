@@ -46,12 +46,12 @@ const commonSet = {
         test: /\.(png|svg|jpg|gif)/,
         use: [
           "file-loader?name=assets/images/[hash:8].[name].[ext]",
-          {
-            loader: "image-webpack-loader",
-            options: {
-              bypassOnDebug: true,
-            },
-          },
+          // {
+          //   loader: "image-webpack-loader",
+          //   options: {
+          //     disable: true,
+          //   },
+          // },
         ],
       },
       {
@@ -96,10 +96,6 @@ const commonSet = {
       pages: `${srcPath}/pages`,
       store: `${srcPath}/store`,
       components: `${srcPath}/components`,
-      actions: `${srcPath}/redux/actions`,
-      constants: `${srcPath}/redux/constants`,
-      containers: `${srcPath}/redux/containers`,
-      reducers: `${srcPath}/redux/reducers`,
       router: `${srcPath}/router`,
       style: `${srcPath}/style`,
       images: `${srcPath}/images`,

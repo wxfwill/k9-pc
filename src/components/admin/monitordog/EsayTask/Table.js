@@ -5,7 +5,6 @@ import Immutable from 'immutable';
 import moment from 'moment';
 import httpAjax from 'libs/httpAjax';
 import { firstLayout } from 'util/Layout';
-// import { Card } from 'element-react';
 const { Meta } = Card;
 class DogTable extends Component {
   constructor(props) {

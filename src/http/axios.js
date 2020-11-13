@@ -72,25 +72,25 @@ let ajax = function $axios(options) {
         new Promise((resolve, reject) => {
           loading();
         });
-        var error = JSON.parse(JSON.stringify(err));
-        if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
-          // return instance.request(originalRequest); // 再重复请求一次
-          // 请求处理
-          repeat_count++;
-          if (repeat_count > config.retry) {
-            repeat_count = 0;
-            return;
-          }
-          // 重新在请求一次
-          return instance(options)
-            .then((res) => {
-              resolve(res);
-              return false;
-            })
-            .catch((error) => {
-              reject(error);
-            });
-        }
+        // var error = JSON.parse(JSON.stringify(err));
+        // if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
+        //   // return instance.request(originalRequest); // 再重复请求一次
+        //   // 请求处理
+        //   repeat_count++;
+        //   if (repeat_count > config.retry) {
+        //     repeat_count = 0;
+        //     return;
+        //   }
+        //   // 重新在请求一次
+        //   return instance(options)
+        //     .then((res) => {
+        //       resolve(res);
+        //       return false;
+        //     })
+        //     .catch((error) => {
+        //       reject(error);
+        //     });
+        // }
         return Promise.reject(err);
       }
     );

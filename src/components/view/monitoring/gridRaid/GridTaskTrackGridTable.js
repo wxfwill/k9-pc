@@ -5,7 +5,7 @@ import httpAjax from 'libs/httpAjax';
 const localSVG = require('images/banglocation.svg');
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as systomStatus from 'actions/systomStatus';
+// import * as systomStatus from 'actions/systomStatus';
 const columns = [
   {
     title: '轨迹颜色',
@@ -278,7 +278,7 @@ const mapStateToProps = (state) => ({
   socketMsg: state.system && state.system.socketMsg,
 });
 const mapDispatchToProps = (dispatch) => ({
-  sysActions: bindActionCreators(systomStatus, dispatch),
+  // sysActions: bindActionCreators(systomStatus, dispatch),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(GridTaskTrackGridTable);
 

@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import { Row, Col, Card, Tooltip, Icon, Radio, Button, Form, Carousel, Table, message } from 'antd';
 import Moment from 'moment';
 import echart from 'echarts';
-import httpAjax from 'libs/httpAjax';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import { socketon, leaveHome } from 'actions/systomStatus';
 import { transformOptions, EchartPie } from './chart/chartPie';
 import { tMap } from 'components/view/common/map';
 import TodayCard from './card/TodayCard';
@@ -154,9 +151,6 @@ class NewIndex extends Component {
     this.getDogsInfo();
     this.getTrainSituation();
     this.TMap.initEvents('zoom_changed', this.mapZoomChange);
-    setTimeout(() => {
-      socketon(this.socketOnmessage);
-    }, 500);
 
     // if(!window.k9_webSocketServer) {
     //     this.websocket = new WebSocket(`ws://${config.host}/ws/webSocketServer?userId=${user.id}`);
@@ -165,9 +159,6 @@ class NewIndex extends Component {
   }
   componentWillReceiveProps(nextProps) {
     const socketMsg = this.props.socketMsg;
-    if (socketMsg && socketMsg.msgType == 'locationMap') {
-      this.socketOnmessage(socketMsg);
-    }
   }
   socketOnmessage = (resData) => {
     const self = this;
@@ -205,7 +196,6 @@ class NewIndex extends Component {
   componentWillUnmount() {
     // this.websocket.close();
     // this.websocket.send(JSON.stringify({msgType:"map_end"}));
-    leaveHome();
   }
   mouseoverDogsPoint = (e, item) => {
     this.setState({

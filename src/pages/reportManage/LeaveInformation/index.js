@@ -21,7 +21,7 @@ class LeaveInformation extends Component {
     };
   }
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '日报信息查询'] });
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '请假信息查询'] });
   }
   handleChangeSize = (page) => {
     this.tableChange({ currPage: page, current: page });

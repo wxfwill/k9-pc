@@ -11,7 +11,6 @@ import HeaderComponent from 'components/HeaderComponent';
 
 const { Content, Footer, Sider } = Layout;
 require('style/index.less');
-const logoPic = require('images/logo.png');
 
 class MainComponent extends React.Component {
   constructor(props) {

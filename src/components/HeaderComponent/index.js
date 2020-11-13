@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { Link, withRouter } from 'react-router-dom';
 import { Layout, Menu, Icon, Row, Col, Badge, Button, message } from 'antd';
 
-import * as systomStatus from 'actions/systomStatus';
+// import * as systomStatus from 'actions/systomStatus';
 import { showNavCollapsed } from 'store/actions/common';
 import { saveToken } from 'store/actions/loginAction';
 
@@ -39,8 +39,8 @@ class HeaderComponent extends Component {
     this.timer = null;
   }
   componentWillMount() {
-    this.props.sysActions.newSocket();
-    this.timer = setInterval(this.openWebsocket, 30000);
+    // this.props.sysActions.newSocket();
+    // this.timer = setInterval(this.openWebsocket, 30000);
   }
   componentDidMount() {
     console.log('ceshi token 111');
@@ -48,7 +48,7 @@ class HeaderComponent extends Component {
   }
   componentWillUnmount() {
     clearInterval(this.timer);
-    systomStatus.closeSocket();
+    // systomStatus.closeSocket();
   }
   componentWillReceiveProps(nextProps) {
     const socketMsg = nextProps.socketMsg;
@@ -71,14 +71,15 @@ class HeaderComponent extends Component {
     }
   }
   clearMsg = (typeId) => {
-    httpAjax('post', config.apiUrl + '/api/msgTips/clearMsg', { type: typeId }).then(() => {});
+    React.$ajax.postData('/api/msgTips/clearMsg', { type: typeId }).then(() => {});
   };
   menuClick(data) {
     let { history } = this.props;
     let { item, key, keyPath } = data;
     if (key == 'logout') {
       let hide = message.loading('正在退出系统...', 0);
-      httpAjax('post', config.apiUrl + '/api/userCenter/logout')
+      React.$ajax
+        .postData('/api/userCenter/logout')
         .then((res) => {
           if (res.code == 0) {
             hide();
@@ -96,12 +97,12 @@ class HeaderComponent extends Component {
     }
   }
   openWebsocket = () => {
-    if (systomStatus.reWebsocket().readyState == 2 || systomStatus.reWebsocket().readyState == 3) {
-      //	systomStatus.closeSocket();
-      this.props.sysActions.newSocket();
-    } else {
-      systomStatus.reWebsocket().send(JSON.stringify({ msgType: 'HeartBeat' }));
-    }
+    // if (systomStatus.reWebsocket().readyState == 2 || systomStatus.reWebsocket().readyState == 3) {
+    //   //	systomStatus.closeSocket();
+    //   this.props.sysActions.newSocket();
+    // } else {
+    //   systomStatus.reWebsocket().send(JSON.stringify({ msgType: 'HeartBeat' }));
+    // }
   };
   renderList = () => {
     const socketMsg = this.props.socketMsg;
@@ -121,7 +122,8 @@ class HeaderComponent extends Component {
   };
 
   downloadApp = (obj, type) => {
-    httpAjax('post', config.apiUrl + '/api/downLoad/getFileLocation?dlType=1')
+    React.$ajax
+      .postData('/api/downLoad/getFileLocation?dlType=1')
       .then((res) => {
         if (res.code == 0) {
           window.location.href = '' + res.data;
@@ -132,7 +134,8 @@ class HeaderComponent extends Component {
       });
   };
   downloadIM = (obj, type) => {
-    httpAjax('post', config.apiUrl + '/api/downLoad/getFileLocation?dlType=2')
+    React.$ajax
+      .postData('/api/downLoad/getFileLocation?dlType=2')
       .then((res) => {
         if (res.code == 0) {
           window.location.href = '' + res.data;
@@ -210,7 +213,7 @@ const mapStateToProps = (state) => ({
   userinfo: state.loginReducer.userInfo,
 });
 const mapDispatchToProps = (dispatch) => ({
-  sysActions: bindActionCreators(systomStatus, dispatch),
+  // sysActions: bindActionCreators(systomStatus, dispatch),
   tokenAction: (token) => dispatch(saveToken(token)),
   isCollapsedAction: () => dispatch(showNavCollapsed()),
   changeRouteAction: (url) => dispatch(changeRoute(url)),

@@ -49,7 +49,9 @@ const PerformanceRegister = asyncComponent(() => import('pages/performance/Regis
 const PerformanceDetail = asyncComponent(() => import('pages/performance/Register/RegisterDetail'));
 const PerformanceEdit = asyncComponent(() => import('pages/performance/Register/RegisterEdit'));
 const PerformanceAssessmentSetting = asyncComponent(() => import('pages/performance/AssessmentSetting/index'));
-const PerformanceAssessmentDetail = asyncComponent(() => import('pages/performance/AssessmentSetting/detail'));
+// const PerformanceAssessmentDetail = asyncComponent(() => import('pages/performance/AssessmentSetting/detail'));
+const PerformanceAssessmentList = asyncComponent(() => import('pages/performance/AssessmentList/index'));
+const PerformanceAssessmentDetail = asyncComponent(() => import('pages/performance/AssessmentList/detail'));
 
 // 智能排版
 const ScheduleManage = asyncComponent(() => import('pages/scheduleManage/ScheduleManage'));
@@ -75,15 +77,6 @@ const AddUser = asyncComponent(() => import('pages/baseData/userInfor/addUserFor
 //基础数据 智能颈环
 const Bracelet = asyncComponent(() => import('pages/baseData/bracelet/Bracelet'));
 const BraceletEdit = asyncComponent(() => import('pages/baseData/bracelet/BraceletEdit'));
-
-// 上报管理
-const Command = asyncComponent(() => import('pages/reportManageOld/Command/index'));
-const CommandEdit = asyncComponent(() => import('pages/reportManageOld/Command/CommandEdit'));
-const ReportApproval = asyncComponent(() => import('pages/reportManageOld/Approval/index'));
-//上报统计
-const ReportStatistics = asyncComponent(() => import('pages/reportManageOld/Statistics/index'));
-//工作信息统计
-const WorkLog = asyncComponent(() => import('pages/reportManageOld/WorkLog/index'));
 
 // 新版--上报统计
 // 上报
@@ -442,11 +435,6 @@ const routerArr = [
     component: Call,
   },
   {
-    path: '/app/report/workLog',
-    component: WorkLog,
-  },
-
-  {
     path: '/app/holiday/holidayList',
     component: HolidayList,
   },
@@ -483,15 +471,6 @@ const routerArr = [
     component: ApprovalDetail,
   },
   {
-    path: '/app/report/approve',
-    component: ReportApproval,
-  },
-
-  {
-    path: '/app/report/statistics',
-    component: ReportStatistics,
-  },
-  {
     path: '/app/performance/rule',
     component: PerformanceRule,
   },
@@ -520,8 +499,8 @@ const routerArr = [
     component: PerformanceAssessmentDetail,
   },
   {
-    path: '/app/report/4wcommand',
-    component: Command,
+    path: '/app/performance/assessmentList',
+    component: PerformanceAssessmentList,
   },
   {
     path: '/app/reportManage/fourReport',
@@ -576,14 +555,6 @@ const routerArr = [
   {
     path: '/app/reportManage/AwardInformation',
     component: AwardInformation,
-  },
-  {
-    path: '/app/report/4wcommandEdit',
-    component: CommandEdit,
-  },
-  {
-    path: '/app/report/4wcommandDetail',
-    component: CommandEdit,
   },
 ];
 

@@ -6,10 +6,19 @@ const { TextArea } = Input;
 class AssessmentDetail extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      detalObj: null,
+    };
   }
   componentDidMount() {
     React.store.dispatch({ type: 'NAV_DATA', nav: ['绩效考核', '绩效考核详情'] });
   }
+  getDetalData = (assessmentId) => {
+    React.$ajax.postData('/api/performanceAssessment/getSelfEvaluation', { assessmentId }).then((res) => {
+      if (res.code == 0) {
+      }
+    });
+  };
   render() {
     const { form } = this.props;
     const { getFieldDecorator } = form;
