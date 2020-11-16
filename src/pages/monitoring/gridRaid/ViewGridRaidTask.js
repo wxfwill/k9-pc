@@ -22,7 +22,6 @@ import {
 import { tMap } from 'components/view/common/createGridMap'; // map.js改为重写的createGridMap.js
 import GridTable from './GridTaskTrackGridTable';
 import TaskInfoListView from './GridTaskTaskInfoListView';
-import httpAjax from 'libs/httpAjax';
 const Panel = Collapse.Panel;
 const Search = Input.Search;
 const antIcon = <Icon type="loading" style={{ fontSize: 30 }} spin />;
@@ -74,7 +73,7 @@ class ViewGridRaidTask extends Component {
         taskId: _this.props.match.params.taskID,
       };
 
-      httpAjax('post', config.apiUrl + '/api/cmdMonitor/getGridTaskById', { ...params })
+      React.$ajax.postData('/api/cmdMonitor/getGridTaskById', { ...params })  
         .then((res) => {
           let users = [];
           // res.data.taskStatus = 2;
@@ -249,7 +248,7 @@ class ViewGridRaidTask extends Component {
       msg = '任务已结束！';
     }
     let status = type == 0 ? 1 : 2;
-    httpAjax('post', config.apiUrl + method, { id: this.props.match.params.taskID })
+    React.$ajax.postData(method, { id: this.props.match.params.taskID })
       .then((res) => {
         this.setState({
           taskStatus: status,

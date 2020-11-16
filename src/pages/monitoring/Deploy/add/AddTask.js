@@ -4,7 +4,6 @@ import { firstLayout, secondLayout } from 'util/Layout';
 import OrgModal from './OrgModal';
 import PeoModal from './PeoModal';
 import MapModal from './MapModal';
-import httpAjax from 'libs/httpAjax';
 import Moment from 'moment';
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -42,7 +41,7 @@ class AddForm extends Component {
   componentDidMount() {
     if (this.props.location.query) {
       const id = this.props.location.query.id;
-      httpAjax('post', config.apiUrl + '/api/cmdMonitor/emergencyDeploymentPlanInfo', { id }).then((res) => {
+      React.$ajax.postData('/api/cmdMonitor/emergencyDeploymentPlanInfo', { id }).then((res) => {
         if (res.code == 0) {
           let reportArr = [];
           let nameArr = res.data.userNames.split(',');
@@ -56,7 +55,6 @@ class AddForm extends Component {
             targetKeys: (res.data.userIds && res.data.userIds.split(',').map((t) => Number(t))) || [],
             peoValue: res.data.userNames,
           });
-          // debugger;
         }
       });
     }
@@ -90,7 +88,7 @@ class AddForm extends Component {
           subData.id = this.state.saveId;
         }
         const apiType = type == 'save' ? 'saveEmergencyDeploymentPlan' : 'publishEmergencyDeploymentPlan';
-        httpAjax('post', config.apiUrl + `/api/cmdMonitor/${apiType}`, { ...subData }).then((res) => {
+        React.$ajax.postData(`/api/cmdMonitor/${apiType}`, { ...subData }).then((res) => {
           if (res.code == 0) {
             /*   this.sendReport(res.data, (result) => {
                 
@@ -121,9 +119,9 @@ class AddForm extends Component {
       userId: this.reportUserId,
       approveUserId: user.id,
     };
-    httpAjax('post', config.apiUrl + '/api/taskReport/saveInfo', data).then((result) => {
+    React.$ajax.postData('/api/taskReport/saveInfo', data).then((res) => {
       if (result.code == 0) {
-        backCall && backCall(result);
+        backCall && backCall(res);
       }
     });
   }

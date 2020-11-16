@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Radio, Form, Input, Modal, Transfer, Button, notification, Tag, Switch, Icon, Select } from 'antd';
 import { firstLayout, secondLayout, thirdLayout } from 'util/Layout';
-import httpAjax from 'libs/httpAjax';
 const FormItem = Form.Item;
 const Option = Select.Option;
 require('style/view/monitoring/peoModal.less');
@@ -27,8 +26,8 @@ class PeoModal extends Component {
   }
   getSelectData() {
     let _this = this;
-    let typeOption = httpAjax('post', config.apiUrl + '/api/userCenter/getAllAgency');
-    let LevelOption = httpAjax('post', config.apiUrl + '/api/userCenter/getAllPatrolsTeam');
+    let typeOption = React.$ajax.postData('/api/userCenter/getAllAgency');
+    let LevelOption = React.$ajax.postData('/api/userCenter/getAllPatrolsTeam');
     Promise.all([typeOption, LevelOption])
       .then((resArr) => {
         _this.setState({
@@ -43,7 +42,7 @@ class PeoModal extends Component {
   //取数据
   getData(address = '/api/userCenter/getCombatStaff') {
     this.setState({ userData: [] });
-    httpAjax('post', config.apiUrl + address)
+    React.$ajax.postData(address)
       .then((res) => {
         this.changeUserData(res);
       })
@@ -154,7 +153,7 @@ class PeoModal extends Component {
     this.selectChangeData({ address: '/api/userCenter/getUserByPatrolsTeam', paramsKey: 'teamId', paramsValue: value });
   }
   selectChangeData(params) {
-    httpAjax('post', config.apiUrl + params.address, { [params.paramsKey]: params.paramsValue })
+    React.$ajax.postData(params.address, { [params.paramsKey]: params.paramsValue })
       .then((res) => {
         this.changeUserData(res);
       })

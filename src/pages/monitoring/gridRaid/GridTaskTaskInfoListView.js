@@ -1,7 +1,6 @@
 import React ,{ Component } from 'react';
 import { Table, Button , Tag , Badge} from 'antd';
 import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 const localSVG = require('images/banglocation.svg');
 
 const columns = [{
@@ -41,7 +40,7 @@ class GridTaskTaskInfoListView extends React.Component {
 
     var me=this;
     this.setState({ loading: true });
-    httpAjax('post',config.apiUrl+'/api/cmdMonitor/getTaskById',{...params,...this.state.filter}).then((res)=>{
+    React.$ajax.postData('/api/cmdMonitor/getTaskById',{...params,...this.state.filter}).then((res)=>{
        var ti=res.data;
        var gmtCreate = new Date(ti.createDate);
        var taskDate = new Date(ti.taskDate);

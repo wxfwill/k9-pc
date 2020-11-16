@@ -3,7 +3,6 @@ import { Table, Button, Tag, Badge, Form, Row, Col, Input, Icon, DatePicker } fr
 import { Link } from 'react-router-dom';
 import { thirdLayout } from 'util/Layout';
 import { firstLayout, secondLayout } from 'util/Layout';
-import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -86,7 +85,7 @@ class SearchForm extends React.Component {
   fetchTaskInfo(params) {
     var me = this;
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/dailyPatrols/getDailyPatrolsById', { id: params })
+    React.$ajax.postData('/api/dailyPatrols/getDailyPatrolsById', { id: params })
       .then((res) => {
         me._taskInfo = res.data;
         this.setState({
@@ -115,7 +114,7 @@ class SearchForm extends React.Component {
     var me = this;
     me.setState({ loading: true });
 
-    httpAjax('post', config.apiUrl + '/api/cmdMonitor/showAppTrochoidHis', { ...params, ...this.state.filter })
+    React.$ajax.postData('/api/cmdMonitor/showAppTrochoidHis', { ...params, ...this.state.filter })
       .then((res) => {
         me.setState({ loading: false });
         const pathsHis = res.data.pathsHis;
@@ -170,7 +169,7 @@ class SearchForm extends React.Component {
         trochoiInfo = item;
       }
     });
-    httpAjax('post', config.apiUrl + '/api/cmdMonitor/showAppTrochoid', {
+    React.$ajax.postData('/api/cmdMonitor/showAppTrochoid', {
       lastPointTime: trochoiInfo.lastPointTime,
       taskType: trochoiInfo ? trochoiInfo.taskType : '',
       taskDetailId: trochoiInfo ? trochoiInfo.taskDetailId : '',
@@ -237,7 +236,7 @@ class SearchForm extends React.Component {
       params = { pageSize: this.state.pageSize, currPage: this.state.currPage, taskId: this.state.taskID };
     }
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + url, { ...params, ...this.state.filter })
+    React.$ajax.postData(url, { ...params, ...this.state.filter })
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = parseInt(res.pageSize) * parseInt(res.totalPage);
