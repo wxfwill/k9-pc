@@ -1,11 +1,7 @@
-/**
- * Created by hao.cheng on 2017/4/13.
- */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Layout, Menu, Icon } from 'antd';
 import { withRouter, Link } from 'react-router-dom';
-import SiderMenu from './SiderMenu';
 import { showNavCollapsed, changeRoute } from 'store/actions/common';
 
 const { Sider } = Layout;
@@ -15,20 +11,15 @@ class SliderCustom extends Component {
     super(props);
     this.state = {
       mode: 'inline',
-      openKey: this.props.routeUrl.substr(0, this.props.routeUrl.lastIndexOf('/')),
+      // openKey: this.props.routeUrl.substr(0, this.props.routeUrl.lastIndexOf('/')),
+      openKey: '',
       selectedKey: '',
       firstHide: false, // 点击收缩菜单，第一次隐藏展开子菜单，openMenu时恢复
     };
   }
   componentDidMount() {
     this.props.onRef(this);
-    // this.setMenuOpen(this.props);
-    //监控路由变化
-    // window.addEventListener('hashchange', () => {
-    //   // this.setState({ hash: true });
-    //   ;
-    //   this.setMenuOpen(this.props);
-    // });
+    this.setMenuOpen(this.props.routeUrl);
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.isCollapsed) {
@@ -36,26 +27,15 @@ class SliderCustom extends Component {
     } else {
       this.setState({ firstHide: false });
     }
+    this.setMenuOpen(nextProps.routeUrl);
   }
-  setMenuOpen = (props) => {
-    const { pathname } = props.location;
+  setMenuOpen = (pathname) => {
     let menuUrl = pathname;
-    if (pathname.includes('Add')) {
-      menuUrl = pathname.substr(0, pathname.lastIndexOf('Add'));
-    } else if (pathname.includes('Schedule')) {
-      menuUrl = pathname.substr(0, pathname.lastIndexOf('Schedule'));
-    } else if (pathname.includes('Detail')) {
+    if (pathname.includes('Detail')) {
       menuUrl = pathname.substr(0, pathname.lastIndexOf('Detail'));
-    } else if (pathname.includes('EditUser')) {
-      menuUrl = pathname.substr(0, pathname.lastIndexOf('EditUser'));
-    } else if (pathname.includes('UserData')) {
-      menuUrl = pathname.substr(0, pathname.lastIndexOf('UserData'));
-    } else if (pathname.includes('View')) {
-      menuUrl = pathname.substr(0, pathname.lastIndexOf('View'));
-    } else if (pathname.includes('Edit')) {
-      menuUrl = pathname.substr(0, pathname.lastIndexOf('Edit'));
+    } else if (pathname.includes('Add')) {
+      menuUrl = pathname.substr(0, pathname.lastIndexOf('Add'));
     }
-
     this.setState({
       openKey: pathname.substr(0, pathname.lastIndexOf('/')),
       selectedKey: menuUrl,
@@ -66,10 +46,6 @@ class SliderCustom extends Component {
     this.setState({
       selectedKey: e.key,
     });
-    // const { popoverHide } = this.props; // 响应式布局控制小屏幕点击菜单时隐藏菜单操作
-    // popoverHide && popoverHide();
-
-    // this.props.history.push(e.key);
   };
   openMenu = (v) => {
     this.setState({
@@ -107,8 +83,6 @@ class SliderCustom extends Component {
   };
   render() {
     const { menus } = this.props;
-
-    // ;
     return (
       <Sider
         trigger={null}
@@ -118,16 +92,17 @@ class SliderCustom extends Component {
         collapsed={this.props.isCollapsed}
         style={{ background: 'rgb(53,64,82)', overflowY: 'auto', height: '100%', overflowX: 'hidden' }}
       >
-        {/* <SiderMenu
-          menus={menus}
-          onClick={this.menuClick}
+        <Menu
           mode="inline"
+          onClick={this.menuClick}
           selectedKeys={[this.state.selectedKey]}
           openKeys={this.state.firstHide ? null : [this.state.openKey]}
           onOpenChange={this.openMenu}
           style={{ height: '100%', borderRight: 0 }}
-        /> */}
-        <Menu
+        >
+          {this.createMenu(menus)}
+        </Menu>
+        {/* <Menu
           mode="inline"
           onClick={this.menuClick}
           selectedKeys={[this.props.routeUrl]}
@@ -136,7 +111,7 @@ class SliderCustom extends Component {
           style={{ height: '100%', borderRight: 0 }}
         >
           {this.createMenu(menus)}
-        </Menu>
+        </Menu> */}
       </Sider>
     );
   }

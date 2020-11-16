@@ -85,9 +85,6 @@ const commonSet = {
       allChunks: true,
     }),
   ],
-  // externals:{
-  //   'jquery':'window.jQuery'
-  // },
   resolve: {
     extensions: [".js", ".json", ".jsx"],
     alias: {

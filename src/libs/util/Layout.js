@@ -52,3 +52,14 @@ export const thirdLayout = {
     xxl: { span: 16 },
   },
 };
+
+export const editModel = {
+  labelCol: {
+    xs: { span: 8 },
+    sm: { span: 4 },
+  },
+  wrapperCol: {
+    xs: { span: 16 },
+    sm: { span: 16 },
+  },
+};

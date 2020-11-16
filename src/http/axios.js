@@ -28,8 +28,10 @@ let ajax = function $axios(options) {
 
       (error) => {
         // 请求错误时
-        console.log('请求错误');
-        console.log(error);
+        // 异步关闭loading
+        new Promise(() => {
+          loading();
+        });
         // 1. 判断请求超时
         if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
           // return instance.request(originalRequest);// 再重复请求一次

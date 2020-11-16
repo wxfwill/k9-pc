@@ -71,12 +71,19 @@ const Call = asyncComponent(() => import('pages/holiday/Call/index'));
 //基础数据 犬舍管理
 const RoomInfo = asyncComponent(() => import('pages/baseData/dogHouse/Room'));
 const RoomEdit = asyncComponent(() => import('pages/baseData/dogHouse/RoomEdit'));
-//基础数据 用户管理
-const UserInfo = asyncComponent(() => import('pages/baseData/userInfor/UserInfo'));
-const AddUser = asyncComponent(() => import('pages/baseData/userInfor/addUserForm'));
 //基础数据 智能颈环
 const Bracelet = asyncComponent(() => import('pages/baseData/bracelet/Bracelet'));
 const BraceletEdit = asyncComponent(() => import('pages/baseData/bracelet/BraceletEdit'));
+
+//新版本--用户管理
+
+// 用户列表
+const UserInfo = asyncComponent(() => import('pages/userManage/user/UserInfo'));
+const AddUser = asyncComponent(() => import('pages/userManage/user/addUserForm'));
+// 角色列表
+const RoleInfo = asyncComponent(() => import('pages/userManage/role/List'));
+// 菜单维护
+const MenuInfo = asyncComponent(() => import('pages/userManage/menu/index'));
 
 // 新版--上报统计
 // 上报
@@ -355,6 +362,14 @@ const routerArr = [
     component: PerformanceDetailTable,
   },
   {
+    path: '/app/user/menuList',
+    component: MenuInfo,
+  },
+  {
+    path: '/app/user/roleList',
+    component: RoleInfo,
+  },
+  {
     path: '/app/user/info',
     component: UserInfo,
   },
@@ -495,7 +510,7 @@ const routerArr = [
     component: PerformanceAssessmentSetting,
   },
   {
-    path: '/app/performance/assessmentDetail',
+    path: '/app/performance/assessmentListDetail',
     component: PerformanceAssessmentDetail,
   },
   {

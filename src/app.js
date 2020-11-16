@@ -28,6 +28,9 @@ import 'element-theme-default';
 require('style/App.less');
 require('normalize.css');
 
+// 打印
+require('libs/util/print');
+
 class App extends React.Component {
   render() {
     return (

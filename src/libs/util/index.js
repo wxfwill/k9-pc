@@ -131,6 +131,20 @@ let method = {
   },
   ArrMetho: ArrMethod,
 };
+
+//打印
+export const jQPrintPartialHtml = (select, { title = document.title } = {}) => {
+  window.Print(select, {
+    title: title,
+    onStart: () => {
+      console.log('onStart', new Date());
+    },
+    onEnd: () => {
+      console.log('onEnd', new Date());
+    },
+  });
+};
+
 /* 格式化时间戳
  */
 export function formatDate(date, fmt) {

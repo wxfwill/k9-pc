@@ -17,7 +17,7 @@ class SearchForm extends React.Component {
   }
   componentWillMount() {
     //获取职务信息
-    httpAjax('post', config.apiUrl + '/api/basicData/dutyList', {}).then((res) => {
+    React.$ajax.postData('/api/basicData/dutyList').then((res) => {
       if (res.code == 0) {
         this.setState({ dutyList: res.data });
         sessionStorage.setItem('dutyList', JSON.stringify(res.data));

@@ -60,7 +60,7 @@ class Room extends Component {
   //删除
   deleteDogs = (record, index) => {
     let { pagination } = this.state;
-    React.httpAjax('post', config.apiUrl + '/api/dogRoom/deleteByIds', { ids: [record.id] }).then((res) => {
+    React.$ajax.postData('/api/dogRoom/deleteByIds', { ids: [record.id] }).then((res) => {
       if (res.code == 0) {
         message.success('删除成功');
         this.fetch({
@@ -78,7 +78,7 @@ class Room extends Component {
     if (selectedRowKeys.length < 1) {
       message.warn('请选择要删除的视频');
     } else {
-      React.httpAjax('post', config.apiUrl + '/api/dogRoom/deleteByIds', { ids: selectedRowKeys }).then((res) => {
+      React.$ajax.postData('/api/dogRoom/deleteByIds', { ids: selectedRowKeys }).then((res) => {
         if (res.code == 0) {
           message.success('删除成功');
           this.setState({ selectedRowKeys: [] }, () => {
@@ -99,7 +99,8 @@ class Room extends Component {
   };
   fetch(params = this.state.pagination) {
     this.setState({ loading: true });
-    React.httpAjax('post', config.apiUrl + '/api/dogRoom/listRoomData', { ...params })
+    React.$ajax
+      .postData('/api/dogRoom/listRoomData', { ...params })
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = res.totalCount;
@@ -174,6 +175,9 @@ class Room extends Component {
                 <Button onClick={this.deleteMore}>批量删除</Button>
               </div>
               <CustomTable
+                setTableKey={(row) => {
+                  return 'key-' + row.id + '-' + row.name;
+                }}
                 dataSource={this.state.dataSource}
                 pagination={this.state.pagination}
                 loading={this.state.loading}

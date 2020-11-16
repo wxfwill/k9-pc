@@ -150,15 +150,6 @@ class AssessmentDetail extends Component {
       );
     });
   };
-  handleCustomRules = async (rule, value, callback) => {
-    if (!value) {
-      throw new Error('请输入修改意见');
-    }
-    if (!value.match(/^\d+$/g)) {
-      callback('请输入纯数字(⊙o⊙)…');
-    }
-    callback();
-  };
   render() {
     const { form } = this.props;
     const { getFieldDecorator } = form;
@@ -200,7 +191,7 @@ class AssessmentDetail extends Component {
                         <td>
                           <Form.Item>
                             {getFieldDecorator('itemOneSquadronMark', {
-                              rules: [{ validator: this.handleCustomRules }],
+                              rules: [{ required: true, message: '请填写修改意见！' }],
                             })(<TextArea rows={1} disabled={this.state.isable} />)}
                           </Form.Item>
                         </td>
@@ -212,7 +203,7 @@ class AssessmentDetail extends Component {
                         <td>
                           <Form.Item>
                             {getFieldDecorator('itemTwoSquadronMark', {
-                              rules: [{ validator: this.handleCustomRules }],
+                              rules: [{ required: true, message: '请填写修改意见！' }],
                             })(<TextArea rows={1} disabled={this.state.isable} />)}
                           </Form.Item>
                         </td>
@@ -224,7 +215,7 @@ class AssessmentDetail extends Component {
                         <td>
                           <Form.Item>
                             {getFieldDecorator('itemThreeSquadronMark', {
-                              rules: [{ validator: this.handleCustomRules }],
+                              rules: [{ required: true, message: '请填写修改意见！' }],
                             })(<TextArea rows={1} disabled={this.state.isable} />)}
                           </Form.Item>
                         </td>
@@ -236,7 +227,7 @@ class AssessmentDetail extends Component {
                         <td>
                           <Form.Item>
                             {getFieldDecorator('itemFourSquadronMark', {
-                              rules: [{ validator: this.handleCustomRules }],
+                              rules: [{ required: true, message: '请填写修改意见！' }],
                             })(<TextArea rows={1} disabled={this.state.isable} />)}
                           </Form.Item>
                         </td>
@@ -255,7 +246,7 @@ class AssessmentDetail extends Component {
                         <td>
                           <Form.Item>
                             {getFieldDecorator('valueSquadronSumMark', {
-                              rules: [{ validator: this.handleCustomRules }],
+                              rules: [{ required: true, message: '请填写修改意见！' }],
                             })(<TextArea rows={1} disabled={this.state.isable} />)}
                           </Form.Item>
                         </td>
@@ -333,7 +324,7 @@ class AssessmentDetail extends Component {
                         <td>
                           <Form.Item>
                             {getFieldDecorator('businessSquadronSumMark', {
-                              rules: [{ validator: this.handleCustomRules }],
+                              rules: [{ required: true, message: '请填写修改意见！' }],
                             })(<TextArea rows={1} />)}
                           </Form.Item>
                         </td>
@@ -348,7 +339,7 @@ class AssessmentDetail extends Component {
                         <td>
                           <Form.Item>
                             {getFieldDecorator('selfEvaluationSumMark', {
-                              rules: [{ validator: this.handleCustomRules }],
+                              rules: [{ required: true, message: '请填写修改意见！' }],
                             })(<TextArea rows={1} disabled={this.state.isable} />)}
                           </Form.Item>
                         </td>

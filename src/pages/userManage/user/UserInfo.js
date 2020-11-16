@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Row, Col, Card, Button } from 'antd';
 import CustomTable from 'components/table/CustomTable';
+import { Link } from 'react-router-dom';
 // import UserTable from './UserTable';
+import { userHeaderLabel } from 'localData/userManage/userListTableH';
 import UserSearch from './UserSearch';
 class UserInfo extends Component {
   constructor(props) {
@@ -25,6 +27,24 @@ class UserInfo extends Component {
   handleLimit = (limit) => {
     this.setState({ limit });
   };
+  componentDidMount() {
+    this.fetch();
+  }
+  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
+    this.setState({ loading: true });
+    React.$ajax
+      .postData('/api/user/list', { ...params })
+      .then((res) => {
+        const pagination = { ...this.state.pagination };
+        pagination.total = res.totalCount;
+        pagination.current = res.currPage;
+        pagination.pageSize = res.pageSize;
+        this.setState({ dataSource: res.list, loading: false, pagination });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
   // 多选
   handleSelectChange = (arrs) => {
     this.setState({ selectedRowKeys: arrs });
@@ -81,7 +101,6 @@ class UserInfo extends Component {
     }
   };
   render() {
-    const columns = [];
     return (
       <div className="DutyComponent">
         <Row gutter={24}>
@@ -108,7 +127,7 @@ class UserInfo extends Component {
                 dataSource={this.state.dataSource}
                 pagination={this.state.pagination}
                 loading={this.state.loading}
-                columns={columns}
+                columns={userHeaderLabel()}
                 isBordered={true}
                 isRowSelects={true}
                 rowSelectKeys={this.state.selectedRowKeys}

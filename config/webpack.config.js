@@ -46,6 +46,9 @@ const config = {
       },
     }),
   ].concat(commonSet.plugins),
+  // externals: {
+  //   Print: "Print",
+  // },
   resolve: commonSet.resolve,
 };
 function ConsoleLogWebpackStart() {}

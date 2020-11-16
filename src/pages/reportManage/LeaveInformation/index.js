@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Card } from 'antd';
+import { Card, Button } from 'antd';
 import Search from './Search';
 import { leaveInformationDetal } from 'localData/reportManage/tableHeader';
 import CustomTable from 'components/table/CustomTable';
 require('style/fourReport/reportList.less');
 import moment from 'moment';
+import EditModel from './EditModel';
 
 class LeaveInformation extends Component {
   constructor(props) {
@@ -64,6 +65,9 @@ class LeaveInformation extends Component {
     //   }
     // });
   };
+  handleEdit = () => {
+    this.child.openModel();
+  };
 
   render() {
     const { dataSource, pagination, loading, columns } = this.state;
@@ -72,6 +76,10 @@ class LeaveInformation extends Component {
         <Card title="按条件搜索" bordered={false}>
           <Search handleSearchData={this.handleSearchData} />
         </Card>
+        <Button type="primary" onClick={this.handleEdit}>
+          编辑
+        </Button>
+        <EditModel onRef={(ref) => (this.child = ref)}></EditModel>
         <Card bordered={false}>
           <CustomTable
             setTableKey={(row) => {

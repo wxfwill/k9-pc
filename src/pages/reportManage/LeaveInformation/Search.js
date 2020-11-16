@@ -126,7 +126,7 @@ class SearchForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col xl={4} lg={4} md={8} sm={12} xs={12}>
+          <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem
               label="审批状态"
               labelCol={{ xl: { span: 9 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
@@ -141,7 +141,7 @@ class SearchForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col xl={4} lg={4} md={8} sm={12} xs={12}>
+          <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="地点" {...thirdLayout}>
               {getFieldDecorator('taskLocation', {
                 initialValue: '',

@@ -112,14 +112,14 @@ class AssessmentList extends Component {
   // 详情
   handleDetal = (row) => {
     this.props.history.push({
-      pathname: '/app/performance/assessmentListDetail',
+      pathname: '/app/performance/assessmentDetail',
       search: `?detalId=${row.id}&type=detal`,
     });
   };
   // 审批
   handleApproval = (row) => {
     this.props.history.push({
-      pathname: '/app/performance/assessmentListDetail',
+      pathname: '/app/performance/assessmentDetail',
       search: `?detalId=${row.id}&type=approval`,
     });
   };
@@ -129,7 +129,8 @@ class AssessmentList extends Component {
         <Card title="按条件搜索" bordered={false}>
           <Search handleSearchData={this.handleSearchData} exportExcel={this.exportExcel} />
         </Card>
-        <Card bordered={false}>
+        {this.props.children}
+        {/* <Card bordered={false}>
           <CustomTable
             setTableKey={(row) => {
               return 'key-' + row.id + row.reportingDate;
@@ -144,7 +145,7 @@ class AssessmentList extends Component {
             handleChangeSize={this.handleChangeSize}
             handleShowSizeChange={this.handleShowSizeChange}
           ></CustomTable>
-        </Card>
+        </Card> */}
       </div>
     );
   }

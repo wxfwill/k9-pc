@@ -1,0 +1,91 @@
+import React from 'react';
+import { formatDate } from 'util/index.js';
+import { Button, Popconfirm } from 'antd';
+
+export const userHeaderLabel = (callbackView, callbackEdit, callbackDel) => {
+  let data = [
+    {
+      title: '姓名',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: '性别',
+      dataIndex: 'sexStr',
+    },
+    {
+      title: '警员编号',
+      dataIndex: 'number',
+    },
+    {
+      title: '职务',
+      dataIndex: 'dutyStr',
+    },
+    {
+      title: '职称',
+      dataIndex: 'titleStr',
+    },
+    {
+      title: '工作单位',
+      dataIndex: 'workUnit',
+    },
+    {
+      title: '电话',
+      dataIndex: 'telPhone',
+    },
+    {
+      title: '操作',
+      dataIndex: 'opreation',
+      width: 200,
+      align: 'center',
+      render: (text, record, index) => {
+        return (
+          <div>
+            <Button size="small" onClick={() => callbackView && callbackView(record)}>
+              查看
+            </Button>
+            <Button
+              type="primary"
+              size="small"
+              style={{ margin: '0 10px' }}
+              onClick={() => callbackEdit && callbackEdit(record)}
+            >
+              编辑
+            </Button>
+
+            <Popconfirm title="确认删除此警员?" onConfirm={() => callbackDel && callbackDel(record)}>
+              {/* <span style={{ cursor: 'pointer', color: '#1890ff' }}>
+                <Icon type="delete" style={{ margin: '0 10px' }} />
+                删除
+              </span> */}
+              <Button type="danger" size="small">
+                删除
+              </Button>
+            </Popconfirm>
+            {/* <span style={{ cursor: 'pointer', color: '#1890ff' }} onClick={() => this.viewDetail(record)}>
+              <Link to={{ pathname: '/app/user/infoUserData', query: { userId: record.id, targetText: '查看' } }}>
+                <span style={{ cursor: 'pointer', color: '#1890ff' }}>
+                  <Icon type="eye" style={{ margin: '0 10px' }} />
+                  查看
+                </span>
+              </Link>
+            </span> */}
+            {/* <Link to={{ pathname: '/app/user/infoEditUser', query: { userId: record.id, targetText: '编辑' } }}>
+              <span style={{ cursor: 'pointer', color: '#1890ff' }} onClick={() => this.editInfo(record)}>
+                <Icon type="edit" style={{ margin: '0 10px' }} />
+                编辑
+              </span>
+            </Link>
+            <Popconfirm title="确认删除此警员?" onConfirm={() => this.deleteUser(record, index)}>
+              <span style={{ cursor: 'pointer', color: '#1890ff' }}>
+                <Icon type="delete" style={{ margin: '0 10px' }} />
+                删除
+              </span>
+            </Popconfirm> */}
+          </div>
+        );
+      },
+    },
+  ];
+  return data;
+};
