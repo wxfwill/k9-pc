@@ -1,5 +1,4 @@
 import React,{ Component } from 'react';
-import httpAjax from 'libs/httpAjax';
 import { Tree } from 'antd';
 const TreeNode = Tree.TreeNode;
 

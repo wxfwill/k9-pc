@@ -29,7 +29,6 @@ import GridUserInfoTable from './GridUserInfoTable';
 import GridTable from './GridTable';
 import moment from 'moment';
 import { tMap } from 'components/view/common/createGridMap';
-import httpAjax from 'libs/httpAjax';
 
 const Panel = Collapse.Panel;
 const antIcon = <Icon type="loading" style={{ fontSize: 30 }} spin />;
@@ -233,7 +232,7 @@ class _GridRaid extends Component {
             referencePoint: t.searchArea.latLng,
           };
         });
-        httpAjax('post', config.apiUrl + '/api/cmdMonitor/saveGridTask', { ...params })
+        React.$ajax.postData('/api/cmdMonitor/saveGridTask', { ...params })
           .then((res) => {
             message.success('发布成功！页面即将跳转...', 2, function () {
               history.push({ pathname: '/view/monitoring/grid' });
@@ -428,7 +427,7 @@ class _GridRaid extends Component {
     };
 
     var me = this;
-    httpAjax('post', config.apiUrl + '/api/userCenter/gridSearchUser', { ...params })
+    React.$ajax.postData('/api/userCenter/gridSearchUser', { ...params })
       .then((res) => {
         me.selPeopleArr = res.data; //保存到当前对象中,后面要获取这个用户的id
         const selPeopleOptions = [];
@@ -453,7 +452,7 @@ class _GridRaid extends Component {
 
   getTeamPeople = (id, qryStr = '') => {
     const teamId = id == 0 || id ? id : this.state.selectTeamId;
-    httpAjax('post', config.apiUrl + '/api/userCenter/getUserByPatrolsTeam', { teamId, qryStr }).then((res) => {
+    React.$ajax.postData(config.apiUrl + '/api/userCenter/getUserByPatrolsTeam', { teamId, qryStr }).then((res) => {
       if (res.code == 0) {
         this.setState({ allPeoples: res.data });
       }
@@ -675,7 +674,7 @@ class _GridRaid extends Component {
   };
   // /api/userCenter/getAllPatrolsTeam
   getAllTeam = () => {
-    httpAjax('post', config.apiUrl + '/api/userCenter/getAllPatrolsTeam').then((res) => {
+    React.$ajax.postData('/api/userCenter/getAllPatrolsTeam').then((res) => {
       if (res.code == 0) {
         this.setState({ teamList: res.data, selectTeamId: res.data[0].id });
         this.getTeamPeople(res.data[0].id);
@@ -685,7 +684,7 @@ class _GridRaid extends Component {
   getGridSearchSet = () => {
     //2020 获取网格化搜捕配置
     return new Promise((reslove, reject) => {
-      httpAjax('post', config.apiUrl + '/api/cmdMonitor/gridSearchSet')
+      React.$ajax.postData('/api/cmdMonitor/gridSearchSet')
         .then((res) => {
           let radiusList = JSON.parse(res.data.pvalue.replace(/\'/g, '"'));
           let radius = radiusList[0].radius,

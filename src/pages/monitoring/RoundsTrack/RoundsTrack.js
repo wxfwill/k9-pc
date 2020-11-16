@@ -21,7 +21,6 @@ import {
 import GridTable from './RoundsTrackGridTable';
 import TaskInfoListView from './TaskInfoListView';
 import { tMap } from 'components/view/common/map';
-import httpAjax from 'libs/httpAjax';
 const Panel = Collapse.Panel;
 const Search = Input.Search;
 const antIcon = <Icon type="loading" style={{ fontSize: 30 }} spin />;
@@ -96,7 +95,7 @@ class RoundsTrack extends Component {
 
     var me = this;
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + url, { ...params, ...this.state.filter })
+    React.$ajax.postData(url, { ...params, ...this.state.filter })
       .then((res) => {
         //var gmtCreate = new Date(ti.gmtCreate);
         //ti.gmtCreate=gmtCreate.Format("yyyy-MM-dd hh:mm:ss");
@@ -171,7 +170,7 @@ class RoundsTrack extends Component {
       url = type == 1 ? '/api/cmdMonitor/stopPatrols' : '/api/cmdMonitor/beginPatrols';
     }
     let status = type == 0 ? 1 : 2;
-    httpAjax('post', config.apiUrl + url, { id: this.props.match.params.taskID })
+    React.$ajax.postData(url, { id: this.props.match.params.taskID })
       .then((res) => {
         this.setState({
           taskStatus: status,
@@ -189,7 +188,7 @@ class RoundsTrack extends Component {
 
   //开启视频设备
   startVideo = (id) => {
-    httpAjax('post', config.apiUrl + '/api/sdjw/startVideo', { id: id })
+    React.$ajax.postData('/api/sdjw/startVideo', { id: id })
       .then((res) => {
         if (res.code == 0) {
           this.getPlayUrl(id);
@@ -203,7 +202,7 @@ class RoundsTrack extends Component {
   //获取视频路径
   getPlayUrl = (id) => {
     let { display } = this.state;
-    httpAjax('post', config.apiUrl + '/api/sdjw/getPlayUrl', { id: id })
+    React.$ajax.postData('/api/sdjw/getPlayUrl', { id: id })
       .then((res) => {
         if (res.code == 0) {
           if (res.data.url == '') {
@@ -243,7 +242,7 @@ class RoundsTrack extends Component {
 
   //判断视频路径是否过期
   heartbeat = (id) => {
-    httpAjax('post', config.apiUrl + '/api/sdjw/heartbeat', { id: id })
+    React.$ajax.postData('/api/sdjw/heartbeat', { id: id })
       .then((res) => {})
       .catch(function (error) {});
   };
@@ -268,7 +267,7 @@ class RoundsTrack extends Component {
   //无人机视频
   showUAV = () => {
     if (this.UAVplayer == null) {
-      httpAjax('post', config.apiUrl + '/api/basicData/liveUrl', {})
+      React.$ajax.postData('/api/basicData/liveUrl', {})
         .then((res) => {
           if (res.code == 0) {
             this.UAVplayer = new flowplayer('#UAVDplayer', {

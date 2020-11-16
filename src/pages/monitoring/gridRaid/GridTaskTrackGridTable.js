@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Button, Tag, Badge } from 'antd';
 import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 const localSVG = require('images/banglocation.svg');
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -146,7 +145,7 @@ class GridTaskTrackGridTable extends React.Component {
     var me = this;
     this.setState({ loading: true });
 
-    httpAjax('post', config.apiUrl + '/api/cmdMonitor/showAppTrochoidHis', { ...params, ...this.state.filter })
+    React.$ajax.postData('/api/cmdMonitor/showAppTrochoidHis', { ...params, ...this.state.filter })
       .then((res) => {
         this.setState({ loading: false });
 
@@ -202,7 +201,7 @@ class GridTaskTrackGridTable extends React.Component {
         trochoiInfo = item;
       }
     });
-    httpAjax('post', config.apiUrl + '/api/cmdMonitor/showAppTrochoid', {
+    React.$ajax.postData('/api/cmdMonitor/showAppTrochoid', {
       lastPointTime: trochoiInfo.lastPointTime,
       taskType: 3,
       taskDetailId: trochoiInfo ? trochoiInfo.taskDetailId : '',

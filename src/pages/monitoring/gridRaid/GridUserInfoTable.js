@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Button, Tag, Badge } from 'antd';
 import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 const localSVG = require('images/banglocation.svg');
 
 const columns = [

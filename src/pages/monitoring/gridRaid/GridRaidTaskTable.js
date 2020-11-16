@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Button, Tag, Badge, Icon, Divider } from 'antd';
 import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 import Immutable from 'immutable';
 const localSVG = require('images/banglocation.svg');
@@ -134,7 +133,7 @@ class GridRaidTaskTable extends React.Component {
 
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/cmdMonitor/listGridTask', { ...params })
+    React.$ajax.postData('/api/cmdMonitor/listGridTask', { ...params })
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = res.totalCount;

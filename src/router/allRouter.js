@@ -52,6 +52,7 @@ const PerformanceAssessmentSetting = asyncComponent(() => import('pages/performa
 // const PerformanceAssessmentDetail = asyncComponent(() => import('pages/performance/AssessmentSetting/detail'));
 const PerformanceAssessmentList = asyncComponent(() => import('pages/performance/AssessmentList/index'));
 const PerformanceAssessmentDetail = asyncComponent(() => import('pages/performance/AssessmentList/detail'));
+const PerformanceTitleSetting = asyncComponent(() => import('pages/performance/TitleSetting/index'));
 
 // 智能排版
 const ScheduleManage = asyncComponent(() => import('pages/scheduleManage/ScheduleManage'));
@@ -516,6 +517,10 @@ const routerArr = [
   {
     path: '/app/performance/assessmentList',
     component: PerformanceAssessmentList,
+  },
+  {
+    path: '/app/performance/titleSetting',
+    component: PerformanceTitleSetting,
   },
   {
     path: '/app/reportManage/fourReport',
