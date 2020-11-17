@@ -59,14 +59,15 @@ let ajax = function $axios(options) {
           });
           return response.data;
         }
+        // 异步关闭loading
+        new Promise(() => {
+          loading();
+        });
         // 根据返回的code值来做不同的处理
         if (!data.code || data.code == 0) {
-          // 异步关闭loading
-          new Promise(() => {
-            loading();
-          });
           return data;
         } else {
+          message.destroy();
           data && message.info(data.msg);
         }
       },

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, Button } from 'antd';
+import { Row, Col, Card, Button, message } from 'antd';
 import CustomTable from 'components/table/CustomTable';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 // import UserTable from './UserTable';
 import { userHeaderLabel } from 'localData/userManage/userListTableH';
 import UserSearch from './UserSearch';
@@ -29,6 +29,7 @@ class UserInfo extends Component {
   };
   componentDidMount() {
     this.fetch();
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['用户管理', '用户列表'] });
   }
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
@@ -47,6 +48,8 @@ class UserInfo extends Component {
   }
   // 多选
   handleSelectChange = (arrs) => {
+    console.log(arrs);
+    console.log('多选==');
     this.setState({ selectedRowKeys: arrs });
   };
   // 每页条数
@@ -64,28 +67,13 @@ class UserInfo extends Component {
       this.fetch(this.state.pagination);
     });
   };
-  //删除
-  deleteDogs = (record, index) => {
-    let { pagination } = this.state;
-    React.$ajax.postData('/api/dogRoom/deleteByIds', { ids: [record.id] }).then((res) => {
-      if (res.code == 0) {
-        message.success('删除成功');
-        this.fetch({
-          pageSize: pagination.pageSize,
-          currPage: 1,
-        });
-      } else {
-        message.serror('删除失败');
-      }
-    });
-  };
   //批量删除
   deleteMore = () => {
     const { selectedRowKeys, pagination } = this.state;
     if (selectedRowKeys.length < 1) {
-      message.warn('请选择要删除的视频');
+      message.info('请选择要删除的警员');
     } else {
-      React.$ajax.postData('/api/dogRoom/deleteByIds', { ids: selectedRowKeys }).then((res) => {
+      React.$ajax.postData('/api/user/deleteUserByIds', { ids: selectedRowKeys }).then((res) => {
         if (res.code == 0) {
           message.success('删除成功');
           this.setState({ selectedRowKeys: [] }, () => {
@@ -99,6 +87,34 @@ class UserInfo extends Component {
         }
       });
     }
+  };
+  // 新增
+  addInfo = () => {
+    this.props.history.push({ pathname: '/app/user/infoAddUser', search: `?formStatus=add` });
+  };
+  // 查看
+  viewDetail = (record) => {
+    this.props.history.push({ pathname: '/app/user/infoUserData', search: `?userId=${record.id}&formStatus=view` });
+  };
+  // 编辑
+  viewEdit = (record) => {
+    this.props.history.push({ pathname: '/app/user/infoEditUser', search: `?userId=${record.id}&formStatus=edit` });
+  };
+  //删除警员
+  deleteUser = (record, index) => {
+    let dataSource = this.state.dataSource;
+    let { pagination } = this.state;
+    React.$ajax.postData('/api/user/deleteUserByIds', { ids: [record.id] }).then((res) => {
+      if (res.code == 0) {
+        message.success('删除成功');
+        // dataSource.splice(index, 1);
+        // this.setState({ dataSource });
+        this.fetch({
+          pageSize: pagination.pageSize,
+          currPage: 1,
+        });
+      }
+    });
   };
   render() {
     return (
@@ -122,12 +138,12 @@ class UserInfo extends Component {
               </div>
               <CustomTable
                 setTableKey={(row) => {
-                  return 'key-' + row.id + '-' + row.name;
+                  return row.id;
                 }}
                 dataSource={this.state.dataSource}
                 pagination={this.state.pagination}
                 loading={this.state.loading}
-                columns={userHeaderLabel()}
+                columns={userHeaderLabel(this.viewDetail, this.viewEdit, this.deleteUser)}
                 isBordered={true}
                 isRowSelects={true}
                 rowSelectKeys={this.state.selectedRowKeys}
@@ -142,7 +158,4 @@ class UserInfo extends Component {
     );
   }
 }
-export default UserInfo;
-
-// WEBPACK FOOTER //
-// ./src/components/admin/userInfor/UserInfo.js
+export default withRouter(UserInfo);

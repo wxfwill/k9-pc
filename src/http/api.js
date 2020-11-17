@@ -16,6 +16,16 @@ const postData = (url, data) => {
     data,
   });
 };
+const formDataPost = (url, data, config) => {
+  return axios({
+    url,
+    method: 'post',
+    data,
+    headers: {
+      'Content-Type': config || 'application/json;charset=UTF-8',
+    },
+  });
+};
 // get
 const getData = (url, params) => {
   return axios({
@@ -55,4 +65,5 @@ export default {
   postData,
   fileDataPost,
   fileDataGet,
+  formDataPost,
 };

@@ -35,6 +35,11 @@ class AssessmentDetail extends Component {
     } else {
       // this.props.history.goBack();
     }
+    if (util.urlParse(this.props.location.search).type == 'detal') {
+      this.setState({ isable: true });
+    } else {
+      this.setState({ isable: false });
+    }
   }
   getDetalData = (assessmentId) => {
     React.$ajax.postData('/api/performanceAssessment/getSelfEvaluation', { assessmentId }).then((res) => {

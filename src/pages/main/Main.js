@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { Layout, BackTop } from 'antd';
 import ReactDOM from 'react-dom';
-import { showNavCollapsed, changeRoute } from 'store/actions/common';
+import { showNavCollapsed, changeRoute, changeNavName } from 'store/actions/common';
 import SliderCustom from 'components/customMenu/SliderCustom';
 import CustomBreadcrumb from 'components/BeardComponent';
 import HeaderComponent from 'components/HeaderComponent';
@@ -49,6 +49,8 @@ class MainComponent extends React.Component {
     this.child = ref;
   };
   componentWillReceiveProps(nextProps) {
+    // console.log('nextProps.location');
+    // console.log(nextProps.location);
     if (nextProps.location.pathname != this.props.location.pathname) {
       this.props.changeRouteAction(nextProps.location.pathname);
     }
@@ -89,6 +91,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   isCollapsedAction: () => dispatch(showNavCollapsed()),
   changeRouteAction: (url) => dispatch(changeRoute(url)),
+  changeNavNameAction: (bread) => dispatch(changeNavName(bread)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(MainComponent));

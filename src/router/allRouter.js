@@ -517,6 +517,9 @@ const routerArr = [
   {
     path: '/app/performance/assessmentList',
     component: PerformanceAssessmentList,
+    meta: {
+      name: '绩效考核信息列表',
+    },
   },
   {
     path: '/app/performance/titleSetting',

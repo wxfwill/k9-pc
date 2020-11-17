@@ -19,6 +19,8 @@ class SliderCustom extends Component {
   }
   componentDidMount() {
     this.props.onRef(this);
+    // console.log('this.props.routeUrl');
+    // console.log(this.props.routeUrl);
     this.setMenuOpen(this.props.routeUrl);
   }
   componentWillReceiveProps(nextProps) {
@@ -31,11 +33,18 @@ class SliderCustom extends Component {
   }
   setMenuOpen = (pathname) => {
     let menuUrl = pathname;
-    if (pathname.includes('Detail')) {
-      menuUrl = pathname.substr(0, pathname.lastIndexOf('Detail'));
-    } else if (pathname.includes('Add')) {
-      menuUrl = pathname.substr(0, pathname.lastIndexOf('Add'));
-    }
+    // console.log(menuUrl);
+    const arr = ['Detail', 'Add', 'Edit', 'UserData'];
+    arr.map((item) => {
+      if (pathname.includes(item)) {
+        menuUrl = pathname.substr(0, pathname.lastIndexOf(item));
+      }
+    });
+    // if (pathname.includes('Detail')) {
+    //   menuUrl = pathname.substr(0, pathname.lastIndexOf('Detail'));
+    // } else if (pathname.includes('Add')) {
+    //   menuUrl = pathname.substr(0, pathname.lastIndexOf('Add'));
+    // }
     this.setState({
       openKey: pathname.substr(0, pathname.lastIndexOf('/')),
       selectedKey: menuUrl,
@@ -90,7 +99,7 @@ class SliderCustom extends Component {
         breakpoint="lg"
         collapsible
         collapsed={this.props.isCollapsed}
-        style={{ background: 'rgb(53,64,82)', overflowY: 'auto', height: '100%', overflowX: 'hidden' }}
+        style={{ background: '#fff', overflowY: 'auto', height: '100%', overflowX: 'hidden' }}
       >
         <Menu
           mode="inline"

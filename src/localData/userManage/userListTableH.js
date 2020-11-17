@@ -53,7 +53,7 @@ export const userHeaderLabel = (callbackView, callbackEdit, callbackDel) => {
               编辑
             </Button>
 
-            <Popconfirm title="确认删除此警员?" onConfirm={() => callbackDel && callbackDel(record)}>
+            <Popconfirm title="确认删除此警员?" onConfirm={() => callbackDel && callbackDel(record, index)}>
               {/* <span style={{ cursor: 'pointer', color: '#1890ff' }}>
                 <Icon type="delete" style={{ margin: '0 10px' }} />
                 删除

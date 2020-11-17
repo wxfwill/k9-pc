@@ -68,6 +68,9 @@ class LeaveInformation extends Component {
   handleEdit = () => {
     this.child.openModel();
   };
+  editFormData = (data) => {
+    console.log(data);
+  };
 
   render() {
     const { dataSource, pagination, loading, columns } = this.state;
@@ -79,7 +82,7 @@ class LeaveInformation extends Component {
         <Button type="primary" onClick={this.handleEdit}>
           编辑
         </Button>
-        <EditModel onRef={(ref) => (this.child = ref)}></EditModel>
+        <EditModel onRef={(ref) => (this.child = ref)} editFormData={this.editFormData}></EditModel>
         <Card bordered={false}>
           <CustomTable
             setTableKey={(row) => {

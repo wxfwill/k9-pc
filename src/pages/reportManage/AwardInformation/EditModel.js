@@ -27,21 +27,6 @@ class ShowModel extends Component {
   componentDidMount() {
     this.props.onRef(this);
   }
-  disabledStartDate = (startValue) => {
-    const { endValue } = this.state;
-    if (!startValue || !endValue) {
-      return false;
-    }
-    return startValue.valueOf() > endValue.valueOf();
-  };
-
-  disabledEndDate = (endValue) => {
-    const { startValue } = this.state;
-    if (!endValue || !startValue) {
-      return false;
-    }
-    return endValue.valueOf() <= startValue.valueOf();
-  };
   onChange = (field, value) => {
     this.setState({
       [field]: value,
@@ -88,7 +73,7 @@ class ShowModel extends Component {
     return (
       <Modal
         wrapClassName="customModel"
-        title="请假信息编辑"
+        title="奖励信息编辑"
         visible={this.state.visible}
         width={'50%'}
         centered={false}
@@ -108,63 +93,25 @@ class ShowModel extends Component {
               </Form.Item>
             </Col>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
-              <Form.Item label="类型">
-                {getFieldDecorator('type', {
-                  initialValue: undefined,
-                })(
-                  <Select placeholder="请选择" style={{ width: '100%' }} allowClear onChange={this.selectTaskType}>
-                    {this.state.taksTypeData.map((item) => {
-                      return (
-                        <Option key={item.id} value={item.id}>
-                          {item.title}
-                        </Option>
-                      );
-                    })}
-                  </Select>
-                )}
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={24}>
-            <Col xl={12} lg={12} md={12} sm={12} xs={12}>
-              <Form.Item label="开始时间">
+              <Form.Item label="完成时间">
                 {getFieldDecorator('satrtTime', {
                   initialValue: startValue,
                 })(
                   <DatePicker
-                    // disabledDate={this.disabledStartDate}
                     style={{ width: '100%' }}
                     showTime
                     format="YYYY-MM-DD HH:mm:ss"
-                    placeholder="开始时间"
+                    placeholder="完成时间"
                     onChange={this.onStartChange}
                     onOpenChange={this.handleStartOpenChange}
                   />
                 )}
               </Form.Item>
             </Col>
-            <Col xl={12} lg={12} md={12} sm={12} xs={12}>
-              <Form.Item label="结束时间">
-                {getFieldDecorator('endTime', {
-                  initialValue: endValue,
-                })(
-                  <DatePicker
-                    // disabledDate={this.disabledEndDate}
-                    showTime
-                    style={{ width: '100%' }}
-                    format="YYYY-MM-DD HH:mm:ss"
-                    placeholder="结束时间"
-                    onChange={this.onEndChange}
-                    open={endOpen}
-                    onOpenChange={this.handleEndOpenChange}
-                  />
-                )}
-              </Form.Item>
-            </Col>
           </Row>
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
-              <Form.Item label="请假目的地">
+              <Form.Item label="加分原因">
                 {getFieldDecorator('address', {
                   initialValue: undefined,
                 })(<Input placeholder="请输入" style={{ width: '460px' }} />)}
@@ -173,7 +120,7 @@ class ShowModel extends Component {
           </Row>
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
-              <Form.Item label="请假事由">
+              <Form.Item label="详细情况">
                 {getFieldDecorator('mark', {
                   initialValue: undefined,
                 })(
@@ -188,10 +135,6 @@ class ShowModel extends Component {
               </Form.Item>
             </Col>
           </Row>
-
-          {/* <Form.Item {...tailFormItemLayout}>
-            <Button htmlType="submit">确定</Button>
-          </Form.Item> */}
         </Form>
       </Modal>
     );
