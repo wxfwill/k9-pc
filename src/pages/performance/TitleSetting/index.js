@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, Button, Input, InputNumber, message } from 'antd';
+import { Row, Col, Card, Button, Input, InputNumber, message, Popconfirm } from 'antd';
 import NoData from 'components/NoData/index';
 import 'style/pages/performance/TitleSetting/index.less';
 class TitleSetting extends Component {
@@ -199,9 +199,11 @@ class TitleSetting extends Component {
                         </td>
                         <td>
                           {dataLen - 1 == index ? null : (
-                            <Button type="danger" size="small" onClick={() => this.deleteTitles(item)}>
-                              删除
-                            </Button>
+                            <Popconfirm title="确定删除?" onConfirm={() => this.deleteTitles(item)}>
+                              <Button type="danger" size="small">
+                                删除
+                              </Button>
+                            </Popconfirm>
                           )}
                         </td>
                       </tr>
@@ -220,9 +222,9 @@ class TitleSetting extends Component {
               <Button type="primary" onClick={this.onSubmit}>
                 确定
               </Button>
-              <Button style={{ marginLeft: 16 }} onClick={this.onCancel}>
-                取消
-              </Button>
+              <Popconfirm title="确定取消?" onConfirm={() => this.onCancel()}>
+                <Button style={{ marginLeft: 16 }}>取消</Button>
+              </Popconfirm>
             </div>
           </Card>
         </Col>

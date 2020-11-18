@@ -4,7 +4,6 @@ import { firstLayout, secondLayout } from 'util/Layout';
 import OrgModal from './OrgModal';
 import PeoModal from './PeoModal';
 import MapModal from './MapModal';
-import httpAjax from 'libs/httpAjax';
 import Moment from 'moment';
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -35,7 +34,7 @@ class AddForm extends Component {
   componentDidMount() {
     if (this.props.location.query) {
       const id = this.props.location.query.id;
-      httpAjax('post', config.apiUrl + 'api/cmdMonitor/emergencyDeploymentPlanInfo', { id }).then((res) => {
+      React.$ajax.postData('/api/cmdMonitor/emergencyDeploymentPlanInfo', { id }).then((res) => {
         if (res.code == 0) {
           this.setState({
             ...res.data,
@@ -72,7 +71,7 @@ class AddForm extends Component {
           subData.id = id;
         }
         const apiType = type == 'save' ? 'saveEmergencyDeploymentPlan' : 'publishEmergencyDeploymentPlan';
-        httpAjax('post', config.apiUrl + `/api/cmdMonitor/${apiType}`, { ...subData }).then((res) => {
+        React.$ajax.postData(`/api/cmdMonitor/${apiType}`, { ...subData }).then((res) => {
           if (res.code == 0) {
             if (type == 'save') {
               message.success('保存成功！');

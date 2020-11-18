@@ -4,7 +4,6 @@ import { firstLayout, secondLayout } from 'util/Layout';
 import OrgModal from './add/OrgModal';
 import PeoModal from './add/PeoModal';
 import MapModal from './add/MapModal';
-import httpAjax from 'libs/httpAjax';
 import Moment from 'moment';
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -57,7 +56,7 @@ class AddForm extends Component {
           lng: point.lng,
         };
         this.isRequest = true;
-        httpAjax('post', config.apiUrl + '/api/cmdMonitor/saveAssemblePoint', { ...subData }).then((res) => {
+        React.$ajax.postData('/api/cmdMonitor/saveAssemblePoint', { ...subData }).then((res) => {
           this.isRequest = false;
           if (res.code == 0) {
             /* this.sendReport(res.data, (result) => {
@@ -86,7 +85,7 @@ class AddForm extends Component {
       userId: this.reportUserId,
       approveUserId: user.id,
     };
-    httpAjax('post', config.apiUrl + '/api/taskReport/saveInfo', data).then((result) => {
+    React.$ajax.postData('/api/taskReport/saveInfo', data).then((result) => {
       if (result.code == 0) {
         backCall && backCall(result);
       }

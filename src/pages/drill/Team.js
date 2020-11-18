@@ -11,6 +11,9 @@ class Team extends Component{
       limit:null
     }
   }
+  componentDidMount() {
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['指挥作战', '分组管理'] });
+  }
   handleLimit= (limit)=>{
     this.setState({limit});
   }

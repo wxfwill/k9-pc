@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Button, Icon, message, Card, Row, Col, DatePicker, Form, Input, Tooltip, Select } from 'antd';
-import httpAjax from 'libs/httpAjax';
 import { firstLayout } from 'util/Layout';
 import PeoModal from 'components/view/monitoring/Deploy/add/PeoModal';
 import moment from 'moment';
@@ -51,7 +50,7 @@ class AddPlan extends Component {
           params.id = id;
         }
         this.isRequest = true;
-        httpAjax('post', config.apiUrl + '/api/outdoorTask/distributeTask', params).then((res) => {
+        React.$ajax.postData('/api/outdoorTask/distributeTask', params).then((res) => {
           this.isRequest = false;
           if (res.code == 0) {
             message.success('发布成功！');
@@ -76,7 +75,7 @@ class AddPlan extends Component {
       userId: this.reportUserId,
       approveUserId: user.id,
     };
-    httpAjax('post', config.apiUrl + '/api/taskReport/saveInfo', data).then((result) => {
+    React.$ajax.postData('/api/taskReport/saveInfo', data).then((result) => {
       if (result.code == 0) {
         backCall && backCall(result);
       }
@@ -86,7 +85,7 @@ class AddPlan extends Component {
     this.reportUserId = data;
   };
   searchPeople = (name = '') => {
-    httpAjax('post', config.apiUrl + '/api/userCenter/getTrainer', { name }).then((res) => {
+    React.$ajax.postData('/api/userCenter/getTrainer', { name }).then((res) => {
       if (res.code == 0) {
         res.data.map((item) => {
           this.peoplesMap[item.id] = item;

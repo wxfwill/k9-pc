@@ -3,7 +3,6 @@ import { Table,Button,Icon,Popconfirm,message} from 'antd';
 import {Link} from 'react-router-dom';
 import Immutable from 'immutable';
 import moment from 'moment';
-import httpAjax from 'libs/httpAjax';
 class DogTable extends Component{
   constructor(props){
     super(props);
@@ -40,15 +39,15 @@ class DogTable extends Component{
   }
   fetch(params = {pageSize:this.state.pageSize,currPage:this.state.currPage}){
     this.setState({ loading: true });
-    httpAjax('post',config.apiUrl+'/api/cmdMonitor/listAssembleTask',{...params}).then((res)=>{
-      const pagination = { ...this.state.pagination };
-      pagination.total =res.data.totalCount;
-      pagination.current = res.data.currPage;
-      pagination.pageSize = res.data.pageSize;
-      this.setState({dataSource:res.data.list,loading:false,pagination})
-    }).catch(function(error){
-      console.log(error);
-    })
+    React.$ajax.postData('/api/cmdMonitor/listAssembleTask', {...params}).then((res) => {
+      if (res && res.code === 0) {
+        const pagination = { ...this.state.pagination };
+        pagination.total =res.data.totalCount;
+        pagination.current = res.data.currPage;
+        pagination.pageSize = res.data.pageSize;
+        this.setState({dataSource:res.data.list,loading:false,pagination})
+      }
+    });
   }
   handleTableChange=(pagination, filters, sorter)=>{
     const pager = { ...this.state.pagination };
@@ -68,7 +67,7 @@ class DogTable extends Component{
   //删除
   deleteDogs=(record,index)=>{
     let {pagination}=this.state;
-    httpAjax('post',config.apiUrl+'/api/cmdMonitor/deleteAssembleTaskByIds',{ids:[record.id]}).then(res=>{
+    React.$ajax.postData('/api/cmdMonitor/deleteAssembleTaskByIds', {ids:[record.id]}).then((res) => {
       if(res.code==0){       
         message.success("删除成功");
           this.fetch({
@@ -78,7 +77,7 @@ class DogTable extends Component{
       }else{
         message.serror("删除失败")
       }
-    })
+    });
   }
   //批量删除
   deleteMore=()=>{
@@ -86,7 +85,7 @@ class DogTable extends Component{
     if(selectedRowKeys.length<1){
       message.warn("请选择要删除的集合点")
     }else{
-      httpAjax('post',config.apiUrl+'/api/cmdMonitor/deleteAssembleTaskByIds',{ids:selectedRowKeys}).then(res=>{
+      React.$ajax.postData('/api/cmdMonitor/deleteAssembleTaskByIds', {ids:selectedRowKeys}).then((res) => {
         if(res.code==0){
           message.success("删除成功");
           this.fetch({

@@ -3,7 +3,6 @@ import { Form, Table, Button, Icon, Popconfirm, message, Modal, Row, Col, Input,
 import { Link } from 'react-router-dom';
 import Immutable from 'immutable';
 import moment from 'moment';
-import httpAjax from 'libs/httpAjax';
 import { firstLayout } from 'util/Layout';
 const { Meta } = Card;
 class DogTable extends Component {
@@ -29,7 +28,7 @@ class DogTable extends Component {
   }
   fetch = (params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) => {
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/outdoorTask/listPlanData', params).then((res) => {
+    React.$ajax.postData('/api/outdoorTask/listPlanData', params).then((res) => {
       this.setState({
         dataSource: [...this.state.dataSource, ...res.data.list],
         loading: false,
@@ -69,7 +68,7 @@ class DogTable extends Component {
     );
   };
   deleteOne = (id) => {
-    httpAjax('post', config.apiUrl + '/api/outdoorTask/deletePlanByIds', { ids: [id] }).then((res) => {
+    React.$ajax.postData('/api/outdoorTask/deletePlanByIds', { ids: [id] }).then((res) => {
       if (res.code == 0) {
         message.success('删除成功！');
         this.setState({ dataSource: [], currPage: 1 }, this.fetch({ currPage: 1, pageSize: 10 }));

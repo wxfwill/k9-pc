@@ -11,6 +11,9 @@ class GridRaidTaskList extends Component {
       limit: null,
     };
   }
+  componentDidMount() {
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['指挥作战', '网格化搜捕'] });
+  }
   handleLimit = (limit) => {
     console.log(limit);
     console.log('filter');

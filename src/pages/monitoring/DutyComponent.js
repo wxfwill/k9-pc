@@ -11,6 +11,9 @@ class DutyComponent extends Component{
       limit:null
     }
   }
+  componentDidMount() {
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['指挥作战', '日常巡逻'] });
+  }
   handleLimit= (limit)=>{
     this.setState({limit});
   }

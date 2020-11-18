@@ -10,6 +10,9 @@ class Video extends Component{
       limit:null
     }
   }
+  componentDidMount() {
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['指挥作战', '外勤任务'] });
+  }
    handleLimit= (limit)=>{
     this.setState({limit});
   }
