@@ -1,52 +1,69 @@
-export const tableHeaderLabel = [
-  {
-    title: '人员名称',
-    dataIndex: 'userName',
-    width: 100,
-  },
-  {
-    title: '任务时间',
-    dataIndex: 'repTime',
-    render: (txt, record) => {
-      return util.formatDate(new Date(txt), 'yyyy-MM-dd');
+import React from 'react';
+import { Button } from 'antd';
+
+export const tableHeaderLabel = (editCallback) => {
+  let data = [
+    {
+      title: '人员名称',
+      dataIndex: 'userName',
+      width: 100,
     },
-  },
-  {
-    title: '来源',
-    dataIndex: 'source',
-  },
-  {
-    title: '任务类型',
-    dataIndex: 'category',
-  },
-  {
-    title: '地点',
-    dataIndex: 'taskLocation',
-  },
-  {
-    title: '详细情况',
-    dataIndex: 'repDetail',
-  },
-  {
-    title: '抓捕人数',
-    dataIndex: 'arrestNum',
-  },
-  {
-    title: '是否反馈',
-    dataIndex: 'isFeedback',
-    render: (txt, record) => {
-      return txt == 1 ? '是' : '否';
+    {
+      title: '任务时间',
+      dataIndex: 'repTime',
+      render: (txt, record) => {
+        return util.formatDate(new Date(txt), 'yyyy-MM-dd');
+      },
     },
-  },
-  {
-    title: '反馈详情',
-    dataIndex: 'feedbackContext',
-  },
-  {
-    title: '备注',
-    dataIndex: 'remark',
-  },
-];
+    {
+      title: '来源',
+      dataIndex: 'source',
+    },
+    {
+      title: '任务类型',
+      dataIndex: 'category',
+    },
+    {
+      title: '地点',
+      dataIndex: 'taskLocation',
+    },
+    {
+      title: '详细情况',
+      dataIndex: 'repDetail',
+    },
+    {
+      title: '抓捕人数',
+      dataIndex: 'arrestNum',
+    },
+    {
+      title: '是否反馈',
+      dataIndex: 'isFeedback',
+      render: (txt, record) => {
+        return txt == 1 ? '是' : '否';
+      },
+    },
+    {
+      title: '反馈详情',
+      dataIndex: 'feedbackContext',
+    },
+    {
+      title: '备注',
+      dataIndex: 'remark',
+    },
+    {
+      title: '操作',
+      dataIndex: 'inoption',
+      render: (txt, record, index) => {
+        return (
+          <Button size="small" type="primary" onClick={() => editCallback && editCallback(record)}>
+            编辑
+          </Button>
+        );
+      },
+    },
+  ];
+  return data;
+};
 
 export const ownTableHeaderDetal = [
   {

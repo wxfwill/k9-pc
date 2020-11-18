@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { Layout, BackTop } from 'antd';
 import ReactDOM from 'react-dom';
+import { renderRoutes } from 'react-router-config';
 import { showNavCollapsed, changeRoute, changeNavName } from 'store/actions/common';
 import SliderCustom from 'components/customMenu/SliderCustom';
 import CustomBreadcrumb from 'components/BeardComponent';
@@ -56,7 +57,9 @@ class MainComponent extends React.Component {
     }
   }
   render() {
-    const { location, history } = this.props;
+    const { location, history, route } = this.props;
+    console.log('main===123');
+    console.log(this.props);
     return (
       <Layout className={classNames('indexComponent')} style={{ height: '100%' }}>
         <HeaderComponent />
@@ -65,10 +68,11 @@ class MainComponent extends React.Component {
             <SliderCustom menus={this.menus} onRef={this.onRef} isCollapsed={this.props.isCollapsed} />
           </div>
           <Layout id="mainWrapper">
-            <CustomBreadcrumb arr={this.props.navData} />
             <div className="midder-content" id="mainWrapper1" ref={this.mainWrapper1}>
+              <CustomBreadcrumb arr={this.props.navData} />
               <Content style={{ background: '#f0f2f5', margin: 0, padding: '0 24px 0px' }}>
-                {this.props.children}
+                {/* {this.props.children} */}
+                {renderRoutes(route.routes)}
               </Content>
             </div>
             <BackTop target={() => document.getElementById('mainWrapper1')} visibilityHeight={200} />

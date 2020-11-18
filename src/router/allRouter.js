@@ -1,5 +1,9 @@
-import asyncComponent from './asyncComponent';
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
+import LoginComponent from 'pages/login/Login';
+//main
+import Main from 'pages/main/Main';
 
+import asyncComponent from './asyncComponent';
 // 首页
 import IndexComponent from 'pages/home/NewIndex';
 
@@ -51,6 +55,7 @@ const PerformanceEdit = asyncComponent(() => import('pages/performance/Register/
 const PerformanceAssessmentSetting = asyncComponent(() => import('pages/performance/AssessmentSetting/index'));
 // const PerformanceAssessmentDetail = asyncComponent(() => import('pages/performance/AssessmentSetting/detail'));
 const PerformanceAssessmentList = asyncComponent(() => import('pages/performance/AssessmentList/index'));
+const PerformanceAssessmentListHome = asyncComponent(() => import('pages/performance/AssessmentList/ListHome'));
 const PerformanceAssessmentDetail = asyncComponent(() => import('pages/performance/AssessmentList/detail'));
 const PerformanceTitleSetting = asyncComponent(() => import('pages/performance/TitleSetting/index'));
 
@@ -155,429 +160,460 @@ const Assemble = asyncComponent(() => import('components/admin/monitordog/assemb
 const AssembleAdd = asyncComponent(() => import('components/admin/monitordog/assemble/AssembleAdd'));
 
 const routerArr = [
-  { path: '/app/home/index', component: IndexComponent, meta: { name: '首页' } },
-  { path: '/app/monitoring/duty', component: DutyComponent },
-  { path: '/app/monitoring/deploy', component: Deploy, meta: { name: '紧急调配' } },
   {
-    path: '/app/monitoring/assemble',
-    component: Assemble,
-  },
-  {
-    path: '/app/monitoring/assembleAdd',
-    component: AssembleAdd,
-  },
-  {
-    path: '/app/statisticalQuery/leaveCheck',
-    component: LeaveCheck,
-  },
-  {
-    path: '/app/monitoring/itinerancy',
-    component: EsayTask,
-  },
-  {
-    path: '/app/monitoring/itinerancyAdd',
-    component: EsayTaskAdd,
-  },
-  {
-    path: '/app/monitoring/itinerancyEdit',
-    component: EsayTaskAdd,
-  },
-  { path: '/app/monitoring/deployAdd', component: AddTask },
-  {
-    path: '/app/monitoring/dutyAdd', // 新增日常巡逻
-    component: AddPatrols,
-  },
-  {
-    path: '/app/monitoring/dutyEdit', // 编辑日常巡逻
-    component: AddPatrols,
-  },
-  { path: '/app/monitoring/grid', component: GridRaidTaskList },
-  { path: '/app/monitoring/addGrid', component: GridRaid },
-  { path: '/app/monitoring/ViewGridRaidTask/:taskID', component: ViewGridRaidTask },
-  { path: '/app/monitoring/ViewGridRaidRealTime/:realID', component: ViewGridRaidRealTime },
-  { path: '/app/drill/pdogdrill', component: Pdogdrill },
-  { path: '/app/drill/drillsub', component: Drillsub },
-  { path: '/app/assess/officer', component: Officer },
-  { path: '/app/dog/feed', component: DogFeed },
-  { path: '/app/config/message', component: DeviceInforList },
-  { path: '/app/test', component: TestMap },
-  { path: '/app/statisticalQuery/attendance', component: Attend },
-  { path: '/app/monitoring/RoundsTrack/:taskID', component: RoundsTrack },
-  {
-    path: '/app/drill/plan',
-    component: DrillPlan,
-  },
-  {
-    path: '/app/drill/planAdd',
-    component: AddPlan,
-  },
-  {
-    path: '/app/drill/drillsubAdd',
-    component: AddDrillsub,
-  },
-  {
-    path: '/app/drill/drillsubEdit',
-    component: AddDrillsub,
-  },
-  {
-    path: '/app/drill/planEdit',
-    component: AddPlan,
-  },
-  {
-    path: '/app/drill/planDetail',
-    component: AddPlan,
-  },
-  {
-    path: '/app/equipment/materialInfo',
-    component: Goods,
-  },
-  {
-    path: '/app/equipment/materialInfoAdd',
-    component: AddGoods,
-  },
-  {
-    path: '/app/equipment/materialInfoEdit',
-    component: AddGoods,
-  },
-  {
-    path: '/app/equipment/carInfoAdd',
-    component: AddCar,
-  },
-  {
-    path: '/app/equipment/carInfoEdit',
-    component: AddCar,
-  },
-  { path: '/app/dog/breed', component: BreedInfo },
-  {
-    path: '/app/dog/reproduce',
-    component: BreedInfo,
-  },
-  {
-    path: '/app/dog/reproduceAdd',
-    component: BreedAdd,
-  },
-  {
-    path: '/app/dog/reproduceEdit/:id',
-    component: EditDogChildren,
-  },
-  { path: '/app/dog/breedAdd', component: BreedAdd },
-  { path: '/app/dog/breedEdit', component: BreedAdd },
-  { path: '/app/drill/team', component: Team },
-  { path: '/app/drill/teamAdd', component: AddTeam },
-  { path: '/app/drill/teamEdit', component: AddTeam },
-  { path: '/app/duty/dutyWeek', component: ScheduleManage },
-  { path: '/app/duty/groupInfo', component: GroupSchedule },
-  { path: '/app/duty/groupInfoAdd', component: AddGropSchedule },
-  { path: '/app/duty/groupInfoEdit', component: AddGropSchedule },
-  { path: '/app/duty/groupInfoDetail', component: AddGropSchedule },
-  {
-    path: '/app/equipment/bracelet',
-    component: Bracelet,
-  },
-  {
-    path: '/app/equipment/uwb',
-    component: Uwb,
-  },
-  {
-    path: '/app/equipment/uwbAdd',
-    component: UwbEdit,
-  },
-  {
-    path: '/app/equipment/uwbEdit',
-    component: UwbEdit,
-  },
-  {
-    path: '/app/equipment/uwbDetail',
-    component: UwbEdit,
-  },
-  {
-    path: '/app/equipment/braceletDetail',
-    component: BraceletEdit,
-  },
-  {
-    path: '/app/equipment/braceletAdd',
-    component: BraceletEdit,
-  },
-  {
-    path: '/app/equipment/braceletEdit',
-    component: BraceletEdit,
-  },
-  {
-    path: '/app/basicData/trainPlace',
-    component: TrainPlace,
-  },
-  {
-    path: '/app/basicData/trainPlaceDetail',
-    component: TrainPlaceEdit,
-  },
-  {
-    path: '/app/basicData/trainPlaceAdd',
-    component: TrainPlaceEdit,
-  },
-  {
-    path: '/app/basicData/trainPlaceEdit',
-    component: TrainPlaceEdit,
-  },
-  {
-    path: '/app/room/info',
-    component: RoomInfo,
-  },
-  {
-    path: '/app/room/infoEdit',
-    component: RoomEdit,
-  },
-  {
-    path: '/app/room/infoAdd',
-    component: RoomEdit,
-  },
-  {
-    path: '/app/room/infoDetail',
-    component: RoomEdit,
-  },
-  {
-    path: '/app/equipment/video',
-    component: Video,
-  },
-  {
-    path: '/app/equipment/videoDetail',
-    component: AddVideo,
-  },
-  {
-    path: '/app/equipment/videoAdd',
-    component: AddVideo,
-  },
-  {
-    path: '/app/equipment/videoEdit',
-    component: AddVideo,
-  },
-  {
-    path: '/app/duty/dutyWeekSchedule',
-    component: SmartSchedule,
-  },
-  {
-    path: '/app/assess/performance',
-    component: PerformanceAppraisal,
-  },
-  {
-    path: '/app/assess/performanceDetail',
-    component: PerformanceDetailTable,
-  },
-  {
-    path: '/app/user/menuList',
-    component: MenuInfo,
-  },
-  {
-    path: '/app/user/roleList',
-    component: RoleInfo,
-  },
-  {
-    path: '/app/user/info',
-    component: UserInfo,
-  },
-  {
-    path: '/app/user/infoAddUser',
-    component: AddUser,
-  },
-  {
-    path: '/app/user/infoUserData',
-    component: AddUser,
-  },
-  {
-    path: '/app/user/infoEditUser',
-    component: AddUser,
-  },
-  {
-    path: '/app/dog/info',
-    component: DogInfo,
-  },
-  {
-    path: '/app/dog/infoAdd',
-    component: AddDog,
-  },
-  {
-    path: '/app/dog/infoView',
-    component: DogInfoView,
-  },
-  {
-    path: '/app/dog/infoEdit',
-    component: AddDog,
-  },
-  {
-    path: '/app/dog/prevention',
-    component: DogPrevention,
-  },
-  {
-    path: '/app/dog/preventionAdd',
-    component: AddPrevention,
-  },
-  {
-    path: '/app/dog/preventionTodo',
-    component: ExecutePlan,
-  },
-  {
-    path: '/app/dog/preventionEdit',
-    component: AddPrevention,
-  },
-  {
-    path: '/app/dog/preventionView',
-    component: ViewPrevention,
-  },
-  {
-    path: '/app/dog/cure',
-    component: DogCure,
-  },
-  {
-    path: '/app/dog/cureAdd',
-    component: AddCure,
-  },
-  {
-    path: '/app/dog/cureView',
-    component: AddCure,
-  },
-  {
-    path: '/app/dog/cureEdit',
-    component: AddCure,
-  },
-  {
-    path: '/app/dog/health',
-    component: Doghealth,
-  },
-  {
-    path: '/app/monitor/dogHouse',
-    component: MonitorDogInfoList,
-  },
-  {
-    path: '/app/holiday/attendance',
-    component: Call,
-  },
-  {
-    path: '/app/holiday/holidayList',
-    component: HolidayList,
-  },
-  {
-    path: '/app/holiday/holidayListAdd',
-    component: AddHolidayList,
-  },
-  {
-    path: '/app/holiday/holidayListView',
-    component: AddHolidayList,
-  },
-  {
-    path: '/app/holiday/holidayListEdit',
-    component: AddHolidayList,
-  },
-  {
-    path: '/app/car/carList',
-    component: CarList,
-  },
-  {
-    path: '/app/car/enterInfoList',
-    component: EnterInfoList,
-  },
-  {
-    path: '/app/car/outList',
-    component: OutList,
-  },
-  {
-    path: '/app/holiday/approve',
-    component: Approval,
-  },
-  {
-    path: '/app/holiday/approvalDetail',
-    component: ApprovalDetail,
-  },
-  {
-    path: '/app/performance/rule',
-    component: PerformanceRule,
-  },
-  {
-    path: '/app/performance/register',
-    component: PerformanceRegister,
-  },
-  {
-    path: '/app/performance/registerDetail',
-    component: PerformanceDetail,
-  },
-  {
-    path: '/app/performance/info',
-    component: PerformanceInfo,
-  },
-  {
-    path: '/app/performance/registerEdit',
-    component: PerformanceEdit,
-  },
-  {
-    path: '/app/performance/assessmentSetting',
-    component: PerformanceAssessmentSetting,
-  },
-  {
-    path: '/app/performance/assessmentListDetail',
-    component: PerformanceAssessmentDetail,
-  },
-  {
-    path: '/app/performance/assessmentList',
-    component: PerformanceAssessmentList,
-    meta: {
-      name: '绩效考核信息列表',
-    },
-  },
-  {
-    path: '/app/performance/titleSetting',
-    component: PerformanceTitleSetting,
-  },
-  {
-    path: '/app/reportManage/fourReport',
-    component: FourReport,
-  },
-  {
-    path: '/app/reportManage/FourReportListSearch',
-    component: FourReportListSearch,
-  },
-  {
-    path: '/app/reportManage/otherThingsReport',
-    component: OtherThingsReport,
-  },
-  {
-    path: '/app/reportManage/TeamWorkStatist',
-    component: TeamWorkStatist,
-  },
-  {
-    path: '/app/reportManage/TeamWorkStatistDetal',
-    component: TeamWorkStatistDetal,
-    meta: {
-      name: '团队任务详情列表',
-    },
-  },
-  {
-    path: '/app/reportManage/OwnWorkStatiseDetal',
-    component: OwnWorkStatiseDetal,
-    meta: {
-      name: '个人任务详情列表',
-    },
-  },
-  {
-    path: '/app/reportManage/OwnWorkStatise',
-    component: OwnWorkStatise,
-  },
-  {
-    path: '/app/reportManage/ImportFile',
-    component: ImportFile,
-  },
-  {
-    path: '/app/reportManage/DailyInformation',
-    component: DailyInformation,
-  },
-  {
-    path: '/app/reportManage/LeaveInformation',
-    component: LeaveInformation,
-  },
-  {
-    path: '/app/reportManage/OvertimeInformation',
-    component: OvertimeInformation,
-  },
-  {
-    path: '/app/reportManage/AwardInformation',
-    component: AwardInformation,
+    path: '/',
+    exact: true,
+    component: LoginComponent,
+  },
+  {
+    path: '/login',
+    component: LoginComponent,
+    requiresAuth: false,
+  },
+  {
+    path: '/app',
+    component: Main,
+    routes: [
+      // {
+      //   path: '/',
+      //   exact: true,
+      //   render: () => <Redirect to={'/app/home/index'} />,
+      // },
+      { path: '/app/home/index', component: IndexComponent, meta: { name: '首页' } },
+      { path: '/app/monitoring/duty', component: DutyComponent },
+      { path: '/app/monitoring/deploy', component: Deploy, meta: { name: '紧急调配' } },
+      {
+        path: '/app/monitoring/assemble',
+        component: Assemble,
+      },
+      {
+        path: '/app/monitoring/assembleAdd',
+        component: AssembleAdd,
+      },
+      {
+        path: '/app/statisticalQuery/leaveCheck',
+        component: LeaveCheck,
+      },
+      {
+        path: '/app/monitoring/itinerancy',
+        component: EsayTask,
+      },
+      {
+        path: '/app/monitoring/itinerancyAdd',
+        component: EsayTaskAdd,
+      },
+      {
+        path: '/app/monitoring/itinerancyEdit',
+        component: EsayTaskAdd,
+      },
+      { path: '/app/monitoring/deployAdd', component: AddTask },
+      {
+        path: '/app/monitoring/dutyAdd', // 新增日常巡逻
+        component: AddPatrols,
+      },
+      {
+        path: '/app/monitoring/dutyEdit', // 编辑日常巡逻
+        component: AddPatrols,
+      },
+      { path: '/app/monitoring/grid', component: GridRaidTaskList },
+      { path: '/app/monitoring/addGrid', component: GridRaid },
+      { path: '/app/monitoring/ViewGridRaidTask/:taskID', component: ViewGridRaidTask },
+      { path: '/app/monitoring/ViewGridRaidRealTime/:realID', component: ViewGridRaidRealTime },
+      { path: '/app/drill/pdogdrill', component: Pdogdrill },
+      { path: '/app/drill/drillsub', component: Drillsub },
+      { path: '/app/assess/officer', component: Officer },
+      { path: '/app/dog/feed', component: DogFeed },
+      { path: '/app/config/message', component: DeviceInforList },
+      { path: '/app/test', component: TestMap },
+      { path: '/app/statisticalQuery/attendance', component: Attend },
+      { path: '/app/monitoring/RoundsTrack/:taskID', component: RoundsTrack },
+      {
+        path: '/app/drill/plan',
+        component: DrillPlan,
+      },
+      {
+        path: '/app/drill/planAdd',
+        component: AddPlan,
+      },
+      {
+        path: '/app/drill/drillsubAdd',
+        component: AddDrillsub,
+      },
+      {
+        path: '/app/drill/drillsubEdit',
+        component: AddDrillsub,
+      },
+      {
+        path: '/app/drill/planEdit',
+        component: AddPlan,
+      },
+      {
+        path: '/app/drill/planDetail',
+        component: AddPlan,
+      },
+      {
+        path: '/app/equipment/materialInfo',
+        component: Goods,
+      },
+      {
+        path: '/app/equipment/materialInfoAdd',
+        component: AddGoods,
+      },
+      {
+        path: '/app/equipment/materialInfoEdit',
+        component: AddGoods,
+      },
+      {
+        path: '/app/equipment/carInfoAdd',
+        component: AddCar,
+      },
+      {
+        path: '/app/equipment/carInfoEdit',
+        component: AddCar,
+      },
+      { path: '/app/dog/breed', component: BreedInfo },
+      {
+        path: '/app/dog/reproduce',
+        component: BreedInfo,
+      },
+      {
+        path: '/app/dog/reproduceAdd',
+        component: BreedAdd,
+      },
+      {
+        path: '/app/dog/reproduceEdit/:id',
+        component: EditDogChildren,
+      },
+      { path: '/app/dog/breedAdd', component: BreedAdd },
+      { path: '/app/dog/breedEdit', component: BreedAdd },
+      { path: '/app/drill/team', component: Team },
+      { path: '/app/drill/teamAdd', component: AddTeam },
+      { path: '/app/drill/teamEdit', component: AddTeam },
+      { path: '/app/duty/dutyWeek', component: ScheduleManage },
+      { path: '/app/duty/groupInfo', component: GroupSchedule },
+      { path: '/app/duty/groupInfoAdd', component: AddGropSchedule },
+      { path: '/app/duty/groupInfoEdit', component: AddGropSchedule },
+      { path: '/app/duty/groupInfoDetail', component: AddGropSchedule },
+      {
+        path: '/app/equipment/bracelet',
+        component: Bracelet,
+      },
+      {
+        path: '/app/equipment/uwb',
+        component: Uwb,
+      },
+      {
+        path: '/app/equipment/uwbAdd',
+        component: UwbEdit,
+      },
+      {
+        path: '/app/equipment/uwbEdit',
+        component: UwbEdit,
+      },
+      {
+        path: '/app/equipment/uwbDetail',
+        component: UwbEdit,
+      },
+      {
+        path: '/app/equipment/braceletDetail',
+        component: BraceletEdit,
+      },
+      {
+        path: '/app/equipment/braceletAdd',
+        component: BraceletEdit,
+      },
+      {
+        path: '/app/equipment/braceletEdit',
+        component: BraceletEdit,
+      },
+      {
+        path: '/app/basicData/trainPlace',
+        component: TrainPlace,
+      },
+      {
+        path: '/app/basicData/trainPlaceDetail',
+        component: TrainPlaceEdit,
+      },
+      {
+        path: '/app/basicData/trainPlaceAdd',
+        component: TrainPlaceEdit,
+      },
+      {
+        path: '/app/basicData/trainPlaceEdit',
+        component: TrainPlaceEdit,
+      },
+      {
+        path: '/app/room/info',
+        component: RoomInfo,
+      },
+      {
+        path: '/app/room/infoEdit',
+        component: RoomEdit,
+      },
+      {
+        path: '/app/room/infoAdd',
+        component: RoomEdit,
+      },
+      {
+        path: '/app/room/infoDetail',
+        component: RoomEdit,
+      },
+      {
+        path: '/app/equipment/video',
+        component: Video,
+      },
+      {
+        path: '/app/equipment/videoDetail',
+        component: AddVideo,
+      },
+      {
+        path: '/app/equipment/videoAdd',
+        component: AddVideo,
+      },
+      {
+        path: '/app/equipment/videoEdit',
+        component: AddVideo,
+      },
+      {
+        path: '/app/duty/dutyWeekSchedule',
+        component: SmartSchedule,
+      },
+      {
+        path: '/app/assess/performance',
+        component: PerformanceAppraisal,
+      },
+      {
+        path: '/app/assess/performanceDetail',
+        component: PerformanceDetailTable,
+      },
+      {
+        path: '/app/user/menuList',
+        component: MenuInfo,
+      },
+      {
+        path: '/app/user/roleList',
+        component: RoleInfo,
+      },
+      {
+        path: '/app/user/info',
+        component: UserInfo,
+      },
+      {
+        path: '/app/user/infoAddUser',
+        component: AddUser,
+      },
+      {
+        path: '/app/user/infoUserData',
+        component: AddUser,
+      },
+      {
+        path: '/app/user/infoEditUser',
+        component: AddUser,
+      },
+      {
+        path: '/app/dog/info',
+        component: DogInfo,
+      },
+      {
+        path: '/app/dog/infoAdd',
+        component: AddDog,
+      },
+      {
+        path: '/app/dog/infoView',
+        component: DogInfoView,
+      },
+      {
+        path: '/app/dog/infoEdit',
+        component: AddDog,
+      },
+      {
+        path: '/app/dog/prevention',
+        component: DogPrevention,
+      },
+      {
+        path: '/app/dog/preventionAdd',
+        component: AddPrevention,
+      },
+      {
+        path: '/app/dog/preventionTodo',
+        component: ExecutePlan,
+      },
+      {
+        path: '/app/dog/preventionEdit',
+        component: AddPrevention,
+      },
+      {
+        path: '/app/dog/preventionView',
+        component: ViewPrevention,
+      },
+      {
+        path: '/app/dog/cure',
+        component: DogCure,
+      },
+      {
+        path: '/app/dog/cureAdd',
+        component: AddCure,
+      },
+      {
+        path: '/app/dog/cureView',
+        component: AddCure,
+      },
+      {
+        path: '/app/dog/cureEdit',
+        component: AddCure,
+      },
+      {
+        path: '/app/dog/health',
+        component: Doghealth,
+      },
+      {
+        path: '/app/monitor/dogHouse',
+        component: MonitorDogInfoList,
+      },
+      {
+        path: '/app/holiday/attendance',
+        component: Call,
+      },
+      {
+        path: '/app/holiday/holidayList',
+        component: HolidayList,
+      },
+      {
+        path: '/app/holiday/holidayListAdd',
+        component: AddHolidayList,
+      },
+      {
+        path: '/app/holiday/holidayListView',
+        component: AddHolidayList,
+      },
+      {
+        path: '/app/holiday/holidayListEdit',
+        component: AddHolidayList,
+      },
+      {
+        path: '/app/car/carList',
+        component: CarList,
+      },
+      {
+        path: '/app/car/enterInfoList',
+        component: EnterInfoList,
+      },
+      {
+        path: '/app/car/outList',
+        component: OutList,
+      },
+      {
+        path: '/app/holiday/approve',
+        component: Approval,
+      },
+      {
+        path: '/app/holiday/approvalDetail',
+        component: ApprovalDetail,
+      },
+      {
+        path: '/app/reportManage/fourReport',
+        component: FourReport,
+      },
+      {
+        path: '/app/reportManage/FourReportListSearch',
+        component: FourReportListSearch,
+      },
+      {
+        path: '/app/reportManage/otherThingsReport',
+        component: OtherThingsReport,
+      },
+      {
+        path: '/app/reportManage/TeamWorkStatist',
+        component: TeamWorkStatist,
+      },
+      {
+        path: '/app/reportManage/TeamWorkStatistDetal',
+        component: TeamWorkStatistDetal,
+        meta: {
+          name: '团队任务详情列表',
+        },
+      },
+      {
+        path: '/app/reportManage/OwnWorkStatiseDetal',
+        component: OwnWorkStatiseDetal,
+        meta: {
+          name: '个人任务详情列表',
+        },
+      },
+      {
+        path: '/app/reportManage/OwnWorkStatise',
+        component: OwnWorkStatise,
+      },
+      {
+        path: '/app/reportManage/ImportFile',
+        component: ImportFile,
+      },
+      {
+        path: '/app/reportManage/DailyInformation',
+        component: DailyInformation,
+      },
+      {
+        path: '/app/reportManage/LeaveInformation',
+        component: LeaveInformation,
+      },
+      {
+        path: '/app/reportManage/OvertimeInformation',
+        component: OvertimeInformation,
+      },
+      {
+        path: '/app/reportManage/AwardInformation',
+        component: AwardInformation,
+      },
+      {
+        path: '/app/performance/rule',
+        component: PerformanceRule,
+        breadcrumb: '规则',
+      },
+      {
+        path: '/app/performance/register',
+        component: PerformanceRegister,
+      },
+      {
+        path: '/app/performance/registerDetail',
+        component: PerformanceDetail,
+      },
+      {
+        path: '/app/performance/info',
+        component: PerformanceInfo,
+      },
+      {
+        path: '/app/performance/registerEdit',
+        component: PerformanceEdit,
+      },
+      {
+        path: '/app/performance/assessmentSetting',
+        component: PerformanceAssessmentSetting,
+      },
+      {
+        path: '/app/performance/titleSetting',
+        component: PerformanceTitleSetting,
+      },
+      {
+        path: '/app/performance',
+        component: PerformanceAssessmentListHome,
+        breadcrumb: '绩效考核',
+        routes: [
+          {
+            breadcrumb: '列表',
+            path: '/app/performance/assessmentList',
+            component: PerformanceAssessmentList,
+            requiresAuth: true,
+            exact: true,
+          },
+          {
+            breadcrumb: '详情',
+            path: '/app/performance/assessmentListDetail',
+            component: PerformanceAssessmentDetail,
+            exact: true,
+          },
+        ],
+      },
+    ],
   },
 ];
 

@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Form, Row, Col, Input, Button, Radio, TreeSelect, Select, DatePicker } from 'antd';
 import { thirdLayout } from 'util/Layout';
 import RequestTeamProps from '../Common/RequestTeamProps';
-import moment from 'moment';
-import httpAjax from 'libs/httpAjax';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const { TreeNode } = TreeSelect;
