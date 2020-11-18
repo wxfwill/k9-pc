@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Card, Button } from 'antd';
 import RegisterTable from './Table';
 import RegisterSearch from './Search';
+import { withRouter } from 'react-router-dom';
 class PerformanceRegister extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +17,9 @@ class PerformanceRegister extends Component {
     this.setState = (state, callback) => {
       return;
     };
+  }
+  componentDidMount() {
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['绩效考核', '考核列表'] });
   }
   render() {
     return (
@@ -38,4 +42,4 @@ class PerformanceRegister extends Component {
     );
   }
 }
-export default PerformanceRegister;
+export default withRouter(PerformanceRegister);

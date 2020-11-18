@@ -9,8 +9,8 @@ const CustomBreadcrumb = (props) => {
     <div id="Breadcrumb" style={{ padding: '10px 25px 10px 24px' }}>
       <Breadcrumb>
         {/* <Breadcrumb.Item>
-        <Link to="/index">首页</Link>
-      </Breadcrumb.Item> */}
+          <Link to="/index">首页</Link>
+        </Breadcrumb.Item> */}
         {props.arr.map((res) => {
           if (typeof res === 'object') {
             return (

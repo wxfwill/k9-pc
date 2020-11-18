@@ -46,12 +46,19 @@ const commonSet = {
         test: /\.(png|svg|jpg|gif)/,
         use: [
           "file-loader?name=assets/images/[hash:8].[name].[ext]",
-          // {
-          //   loader: "image-webpack-loader",
-          //   options: {
-          //     disable: true,
-          //   },
-          // },
+          {
+            loader: "image-webpack-loader",
+            options: {
+              optipng: {
+                enabled: false,
+              },
+              pngquant: {
+                enabled: false,
+                quality: [0.65, 0.9],
+                speed: 4,
+              },
+            },
+          },
         ],
       },
       {

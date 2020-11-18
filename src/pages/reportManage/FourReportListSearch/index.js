@@ -4,6 +4,7 @@ import Search from './Search';
 import { tableHeaderLabel } from 'localData/reportManage/tableHeader';
 import CustomTable from 'components/table/CustomTable';
 require('style/fourReport/reportList.less');
+import EditModel from './EditModel';
 import moment from 'moment';
 
 class FourReportListSearch extends Component {
@@ -11,7 +12,6 @@ class FourReportListSearch extends Component {
     super(props);
     this.state = {
       dataSource: [],
-      columns: tableHeaderLabel,
       loading: false,
       param: {
         arrest: null,
@@ -34,7 +34,7 @@ class FourReportListSearch extends Component {
   }
 
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '4w信息查询'] });
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '用车信息列表'] });
     let { param, sortFieldName, sortType, pagination } = this.state;
     this.getListData(param, sortFieldName, sortType, pagination);
   }
@@ -50,7 +50,10 @@ class FourReportListSearch extends Component {
     });
     return true;
   };
-
+  handleEditInfo = (row) => {
+    console.log(row);
+    this.childCar.openModel();
+  };
   handleChangeSize = (page) => {
     this.tableChange({ currPage: page, current: page });
   };
@@ -106,6 +109,7 @@ class FourReportListSearch extends Component {
         <Card title="按条件搜索" bordered={false}>
           <Search handleSearchData={this.handleSearchData} exportExcel={this.exportExcel} />
         </Card>
+        <EditModel onRef={(ref) => (this.childCar = ref)}></EditModel>
         <Card bordered={false}>
           <CustomTable
             setTableKey={(row) => {
@@ -114,7 +118,7 @@ class FourReportListSearch extends Component {
             dataSource={this.state.dataSource}
             pagination={this.state.pagination}
             loading={this.state.loading}
-            columns={this.state.columns}
+            columns={tableHeaderLabel(this.handleEditInfo)}
             isBordered={true}
             isRowSelects={false}
             handleChangeSize={this.handleChangeSize}

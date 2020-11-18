@@ -86,7 +86,7 @@ class HeaderComponent extends Component {
             //util.cookieUtil.unset('token');
             this.props.changeRouteAction('/app/home/index');
             this.props.tokenAction(null);
-            history.push('/');
+            history.push('/login');
           }
         })
         .catch(function (err) {

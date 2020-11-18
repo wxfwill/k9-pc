@@ -111,6 +111,8 @@ class AssessmentList extends Component {
   };
   // 详情
   handleDetal = (row) => {
+    console.log(row);
+    console.log('999');
     this.props.history.push({
       pathname: '/app/performance/assessmentListDetail',
       search: `?detalId=${row.id}&type=detal`,

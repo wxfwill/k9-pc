@@ -1,6 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Routes from './router/router';
+// import Routes from './router/router';
+
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
+import routerArr from './router/allRouter';
+// import { renderRoutes } from 'react-router-config';
+import renderRoutes from './router/renderRoutes';
+
+const authed = false; // 如果登陆之后可以利用redux修改该值(关于redux不在我们这篇文章的讨论范围之内）
+const authPath = '/login'; // 默认未登录的时候返回的页面，可以自行设置
 
 // redux
 import { Provider } from 'react-redux';
@@ -37,7 +45,11 @@ class App extends React.Component {
       <PersistGate loading={null} persistor={persistor}>
         <Provider store={store}>
           <ConfigProvider locale={zh_CN}>
-            <Routes />
+            {/* <Routes /> */}
+            <HashRouter>
+              {renderRoutes(routerArr, authed, authPath)}
+              {/* <Switch>{renderRoutes(routerArr, authed, authPath)}</Switch> */}
+            </HashRouter>
           </ConfigProvider>
         </Provider>
       </PersistGate>
