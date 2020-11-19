@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card } from 'antd';
+import { Card, message } from 'antd';
 import Search from './Search';
 import { tableHeaderLabel } from 'localData/reportManage/tableHeader';
 import CustomTable from 'components/table/CustomTable';
@@ -23,6 +23,10 @@ class FourReportListSearch extends Component {
         taskLocation: null,
         userId: [],
       },
+      personnelTree: [],
+      personnelTree1: [],
+      personnelTree2: [],
+      taskTypeList: [],
       sortFieldName: '',
       sortType: 'desc',
       pagination: {
@@ -37,22 +41,32 @@ class FourReportListSearch extends Component {
     React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '用车信息列表'] });
     let { param, sortFieldName, sortType, pagination } = this.state;
     this.getListData(param, sortFieldName, sortType, pagination);
+    // 查询用户
+    this.queryGroupUser('', 'all');
+    // 任务类型
+    this.queryTaskType('4w报备');
   }
   exportExcel = (data) => {
     this.handleSearchData(data, this.handleExport);
   };
-
+  queryTaskType = (rootName) => {
+    React.$ajax.common.queryRulesByRootName({ rootName }).then((res) => {
+      if (res.code == 0) {
+        this.setState({ taskTypeList: res.data });
+      }
+    });
+  };
   handleExport = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
     React.$ajax.fourManage.export4wReportInfo(newObj).then((res) => {
-      let name = `4w报备统计列表.xlsx`;
+      let name = `用车审批列表.xlsx`;
       util.createFileDown(res, name);
     });
     return true;
   };
   handleEditInfo = (row) => {
-    console.log(row);
-    this.childCar.openModel();
+    // console.log(row);
+    this.childCar.openModel(row.id);
   };
   handleChangeSize = (page) => {
     this.tableChange({ currPage: page, current: page });
@@ -60,11 +74,20 @@ class FourReportListSearch extends Component {
   handleShowSizeChange = (cur, size) => {
     this.tableChange({ currPage: cur, pageSize: size, current: cur });
   };
+  editFormData = (per) => {
+    React.$ajax.postData('/api/report/createCarUseReport', { ...per }).then((res) => {
+      if (res && res.code == 0) {
+        this.childCar.handleCancel();
+        message.info('编辑成功');
+        let { param, sortFieldName, sortType, pagination } = this.state;
+        this.getListData(param, sortFieldName, sortType, pagination);
+      }
+    });
+  };
   handleSearchData = (data, methods) => {
     let { pagination } = this.state;
     let per = data || {};
     let _pagination;
-
     per.categoryIds = per.categoryIds ? [Number(per.categoryIds)] : [];
     per.groupId = per.groupId ? [Number(per.groupId)] : [];
     per.userId = per.userId ? [Number(per.userId)] : [];
@@ -103,13 +126,56 @@ class FourReportListSearch extends Component {
       }
     });
   };
+  queryGroupUser = util.Debounce(
+    (keyword, title) => {
+      React.$ajax.common.queryGroupUser({ keyword }).then((res) => {
+        if (res.code == 0) {
+          let resObj = res.data;
+          let arr = [];
+          for (let key in resObj) {
+            if (resObj[key] && resObj[key].length > 0) {
+              arr.push({
+                name: key,
+                children: resObj[key],
+              });
+            }
+          }
+          if (title == 'leader') {
+            this.setState({ personnelTree1: arr });
+          } else if (title == 'name') {
+            this.setState({ personnelTree: arr });
+          } else if (title == 'collage') {
+            this.setState({ personnelTree2: arr });
+          } else {
+            this.setState({ personnelTree: arr, personnelTree1: arr, personnelTree2: arr });
+          }
+        }
+      });
+    },
+    300,
+    false
+  );
   render() {
     return (
       <div className="four-wrap">
         <Card title="按条件搜索" bordered={false}>
-          <Search handleSearchData={this.handleSearchData} exportExcel={this.exportExcel} />
+          <Search
+            handleSearchData={this.handleSearchData}
+            personnelTree={this.state.personnelTree}
+            queryGroupUser={this.queryGroupUser}
+            taskTypeList={this.state.taskTypeList}
+            exportExcel={this.exportExcel}
+          />
         </Card>
-        <EditModel onRef={(ref) => (this.childCar = ref)}></EditModel>
+        <EditModel
+          onRef={(ref) => (this.childCar = ref)}
+          taskTypeList={this.state.taskTypeList}
+          personnelTree2={this.state.personnelTree2}
+          personnelTree1={this.state.personnelTree1}
+          personnelTree={this.state.personnelTree}
+          queryGroupUser={this.queryGroupUser}
+          editFormData={this.editFormData}
+        ></EditModel>
         <Card bordered={false}>
           <CustomTable
             setTableKey={(row) => {

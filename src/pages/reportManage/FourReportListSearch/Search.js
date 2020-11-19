@@ -18,9 +18,9 @@ class SearchForm extends Component {
   }
   componentDidMount() {
     // 查询用户
-    this.queryGroupUser('');
+    // this.queryGroupUser('');
     // 任务类型
-    this.queryTaskType('4w报备');
+    // this.queryTaskType('4w报备');
   }
   handleTreeName = (val) => {
     console.log(val);
@@ -129,12 +129,12 @@ class SearchForm extends Component {
                         placeholder="请选择"
                         allowClear
                         onSearch={(value) => {
-                          this.queryGroupUser(value);
+                          this.props.queryGroupUser && this.props.queryGroupUser(value);
                         }}
                         onChange={this.handleTreeName}
                       >
-                        {this.state.personnelTree && this.state.personnelTree.length > 0
-                          ? this.state.personnelTree.map((item) => {
+                        {this.props.personnelTree && this.props.personnelTree.length > 0
+                          ? this.props.personnelTree.map((item) => {
                               return (
                                 <TreeNode value={item.name} title={item.name} key={item.name} selectable={false}>
                                   {item.children && item.children.length > 0
@@ -201,8 +201,8 @@ class SearchForm extends Component {
                         allowClear
                         onChange={this.handleTaskName}
                       >
-                        {this.state.taskTypeList && this.state.taskTypeList.length > 0
-                          ? this.state.taskTypeList.map((item) => {
+                        {this.props.taskTypeList && this.props.taskTypeList.length > 0
+                          ? this.props.taskTypeList.map((item) => {
                               return (
                                 <TreeNode value={item.id} title={item.ruleName} key={item.ruleName} selectable={false}>
                                   {item.children && item.children.length > 0

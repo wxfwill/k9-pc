@@ -159,6 +159,9 @@ const EsayTaskAdd = asyncComponent(() => import('components/admin/monitordog/Esa
 const Assemble = asyncComponent(() => import('components/admin/monitordog/assemble/index'));
 const AssembleAdd = asyncComponent(() => import('components/admin/monitordog/assemble/AssembleAdd'));
 
+// 档案
+const Archivew = asyncComponent(() => import('pages/archives/index'));
+
 const routerArr = [
   {
     path: '/',
@@ -171,6 +174,10 @@ const routerArr = [
     requiresAuth: false,
   },
   {
+    path: '/archivew',
+    component: Archivew,
+  },
+  {
     path: '/app',
     component: Main,
     routes: [
@@ -179,44 +186,52 @@ const routerArr = [
       //   exact: true,
       //   render: () => <Redirect to={'/app/home/index'} />,
       // },
-      { path: '/app/home/index', component: IndexComponent, meta: { name: '首页' } },
+      { path: '/app/home/index', component: IndexComponent, name: '首页' },
       { path: '/app/monitoring/duty', component: DutyComponent },
-      { path: '/app/monitoring/deploy', component: Deploy, meta: { name: '紧急调配' } },
+      { path: '/app/monitoring/deploy', component: Deploy, name: '紧急调配' },
       {
         path: '/app/monitoring/assemble',
         component: Assemble,
+        name: 'assemble',
       },
       {
         path: '/app/monitoring/assembleAdd',
         component: AssembleAdd,
+        name: 'assemble',
       },
       {
         path: '/app/statisticalQuery/leaveCheck',
         component: LeaveCheck,
+        name: 'assemble',
       },
       {
         path: '/app/monitoring/itinerancy',
         component: EsayTask,
+        name: 'assemble',
       },
       {
         path: '/app/monitoring/itinerancyAdd',
         component: EsayTaskAdd,
+        name: 'assemble',
       },
       {
         path: '/app/monitoring/itinerancyEdit',
         component: EsayTaskAdd,
+        name: 'assemble',
       },
-      { path: '/app/monitoring/deployAdd', component: AddTask },
+      { path: '/app/monitoring/deployAdd', component: AddTask, name: 'assemble' },
       {
         path: '/app/monitoring/dutyAdd', // 新增日常巡逻
         component: AddPatrols,
+        name: '日常巡逻',
       },
       {
         path: '/app/monitoring/dutyEdit', // 编辑日常巡逻
         component: AddPatrols,
+        name: '编辑',
       },
-      { path: '/app/monitoring/grid', component: GridRaidTaskList },
-      { path: '/app/monitoring/addGrid', component: GridRaid },
+      { path: '/app/monitoring/grid', component: GridRaidTaskList, name: 'grid' },
+      { path: '/app/monitoring/addGrid', component: GridRaid, name: 'grid' },
       { path: '/app/monitoring/ViewGridRaidTask/:taskID', component: ViewGridRaidTask },
       { path: '/app/monitoring/ViewGridRaidRealTime/:realID', component: ViewGridRaidRealTime },
       { path: '/app/drill/pdogdrill', component: Pdogdrill },
@@ -567,15 +582,17 @@ const routerArr = [
       {
         path: '/app/performance/rule',
         component: PerformanceRule,
-        breadcrumb: '规则',
+        name: '规则',
       },
       {
         path: '/app/performance/register',
         component: PerformanceRegister,
+        name: '注册',
       },
       {
         path: '/app/performance/registerDetail',
         component: PerformanceDetail,
+        name: '注册',
       },
       {
         path: '/app/performance/info',
@@ -596,17 +613,17 @@ const routerArr = [
       {
         path: '/app/performance',
         component: PerformanceAssessmentListHome,
-        breadcrumb: '绩效考核',
+        name: '绩效考核',
         routes: [
           {
-            breadcrumb: '列表',
+            name: '列表',
             path: '/app/performance/assessmentList',
             component: PerformanceAssessmentList,
             requiresAuth: true,
             exact: true,
           },
           {
-            breadcrumb: '详情',
+            name: '详情',
             path: '/app/performance/assessmentListDetail',
             component: PerformanceAssessmentDetail,
             exact: true,

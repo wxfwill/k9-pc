@@ -258,4 +258,12 @@ export const getMontDateRange = (year, month) => {
   return { start: moment(startDate).format('YYYY-MM-DD'), end: moment(endDate).format('YYYY-MM-DD') };
 };
 
+// 开始时间和结束时间之间的小时
+export const getStartEndHours = (start, end) => {
+  let s = moment(start);
+  let e = moment(end);
+  // let dura = e - s;
+  return e.diff(s, 'hours', ture);
+};
+
 export { constant, Msg, method, cookieUtil };

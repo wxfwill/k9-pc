@@ -22,7 +22,7 @@ export const create4wReport = (data) => {
 // 4w报备信息列表导出
 export const export4wReportInfo = (data) => {
   return axios({
-    url: '/api/report/export4wReportInfo',
+    url: '/api/report/exportCarUseReportInfo',
     method: 'post',
     data,
     responseType: 'blob',
@@ -32,7 +32,7 @@ export const export4wReportInfo = (data) => {
 // 4w报备信息查询列表
 export const page4wReportInfo = (data) => {
   return axios({
-    url: '/api/report/page4wReportInfo',
+    url: '/api/report/pageCarUseReportInfo',
     method: 'post',
     data,
   });

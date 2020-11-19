@@ -54,11 +54,11 @@ export const tableHeaderLabel = (editCallback) => {
       title: '操作',
       dataIndex: 'inoption',
       render: (txt, record, index) => {
-        return (
+        return record.repStatus == 'error' ? (
           <Button size="small" type="primary" onClick={() => editCallback && editCallback(record)}>
             编辑
           </Button>
-        );
+        ) : null;
       },
     },
   ];

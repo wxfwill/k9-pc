@@ -99,14 +99,14 @@ class SearchForm extends Component {
             <FormItem label="开始时间" {...thirdLayout}>
               {getFieldDecorator('repDateStart', {
                 initialValue: null,
-              })(<DatePicker placeholder="请输入" onChange={this.onChangeStartTime} />)}
+              })(<DatePicker showTime placeholder="请输入" onChange={this.onChangeStartTime} />)}
             </FormItem>
           </Col>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="结束时间" {...thirdLayout}>
               {getFieldDecorator('repDateEnd', {
                 initialValue: null,
-              })(<DatePicker placeholder="请输入" onChange={this.onChangeEndTime} />)}
+              })(<DatePicker showTime placeholder="请输入" onChange={this.onChangeEndTime} />)}
             </FormItem>
           </Col>
         </Row>
