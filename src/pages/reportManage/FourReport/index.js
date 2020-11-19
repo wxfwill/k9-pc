@@ -179,24 +179,24 @@ class EditableCell extends React.Component {
           </TreeSelect>
         );
         break;
-      case '任务指派领导':
-        domHtml = (
-          <Select
-            ref={(node) => (this.input = node)}
-            mode="multiple"
-            optionFilterProp="children"
-            style={{ width: '100%' }}
-            placeholder="请输入任务指派领导"
-            onChange={this.save}
-          >
-            {personnelList && personnelList.length > 0
-              ? personnelList.map((item) => {
-                  return <Option key={item.id}>{item.name}</Option>;
-                })
-              : null}
-          </Select>
-        );
-        break;
+      // case '任务指派领导':
+      //   domHtml = (
+      //     <Select
+      //       ref={(node) => (this.input = node)}
+      //       mode="multiple"
+      //       optionFilterProp="children"
+      //       style={{ width: '100%' }}
+      //       placeholder="请输入任务指派领导"
+      //       onChange={this.save}
+      //     >
+      //       {personnelList && personnelList.length > 0
+      //         ? personnelList.map((item) => {
+      //             return <Option key={item.id}>{item.name}</Option>;
+      //           })
+      //         : null}
+      //     </Select>
+      //   );
+      //   break;
       case '任务执行人':
         domHtml = (
           <TreeSelect
@@ -366,7 +366,7 @@ class FourReport extends Component {
       repTime: null,
       source: '',
       taskLocation: '',
-      taskAssignLeader: [], //任务指派领导
+      //taskAssignLeader: [], //任务指派领导
       carUseAuditor: [], //用车审核人
       taskExecutor: [], //任务执行人
     };
@@ -406,11 +406,8 @@ class FourReport extends Component {
           repTime: Moment(item.repTime),
           source: item.source,
           taskLocation: item.taskLocation,
-          //taskAssignLeader: item.taskAssignLeader, //任务指派领导
-          //carUseAuditor: item.carUseAuditor, //用车审核人
-          //taskExecutor: item.taskExecutor, //任务执行人
           users: {
-            taskAssignLeader: item.taskAssignLeader, //任务指派领导
+            //taskAssignLeader: item.taskAssignLeader, //任务指派领导
             carUseAuditor: item.carUseAuditor, //用车审核人
             taskExecutor: item.taskExecutor, //任务执行人
           },
@@ -472,7 +469,7 @@ class FourReport extends Component {
               bordered
               dataSource={dataSource}
               columns={columns}
-              scroll={{ x: 1750 }}
+              scroll={{ x: 1600 }}
               pagination={false}
             />
             {dataSource && dataSource.length > 0 ? (

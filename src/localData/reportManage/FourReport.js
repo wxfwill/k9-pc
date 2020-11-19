@@ -11,12 +11,12 @@ export const columnsArr = [
     width: '220px',
     editable: true,
   },
-  {
-    title: '任务指派领导',
-    dataIndex: 'taskAssignLeader',
-    width: '150px',
-    editable: true,
-  },
+  // {
+  //   title: '任务指派领导',
+  //   dataIndex: 'taskAssignLeader',
+  //   width: '150px',
+  //   editable: true,
+  // },
   // {
   //   title: '来源',
   //   dataIndex: 'source',

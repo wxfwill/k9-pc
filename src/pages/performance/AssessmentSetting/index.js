@@ -10,26 +10,22 @@ class AssessmentSetting extends Component {
       {
         title: '小类',
         dataIndex: 'ruleName',
-        key: 'ruleName',
       },
       {
         title: '周期',
-        dataIndex: 'ruleCycle',
-        key: 'ruleCycle',
+        dataIndex: 'ruleCycleNote',
       },
       {
         title: '周期内积分限制',
         dataIndex: 'integralLimit',
-        key: 'integralLimit',
+        render: (text) => <span>{text ? text : '无'}</span>,
       },
       {
         title: '分数',
-        key: 'baseScore',
         dataIndex: 'baseScore',
       },
       {
         title: '操作',
-        key: 'action',
         render: (text, record) => (
           <span>
             <a
@@ -154,7 +150,7 @@ class AssessmentSetting extends Component {
                           </Button>,
                         ]}
                       >
-                        <Table columns={this.columns} dataSource={item.children} pagination={false} />
+                        <Table columns={this.columns} dataSource={item.children} pagination={false} rowKey="id" />
                       </Card>
                     );
                   })

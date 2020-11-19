@@ -77,6 +77,12 @@ class AddRule extends Component {
                 initialValue: redactData ? redactData.ruleName : '',
               })(<Input />)}
             </Form.Item>
+            <Form.Item label="别名">
+              {getFieldDecorator('ruleCode', {
+                rules: [{ required: true, message: '请填写别名!' }],
+                initialValue: redactData ? redactData.ruleCode : '',
+              })(<Input />)}
+            </Form.Item>
           </Form>
         ) : (
           <Form>
@@ -84,6 +90,12 @@ class AddRule extends Component {
               {getFieldDecorator('ruleName', {
                 rules: [{ required: true, message: '请填写名称!' }],
                 initialValue: redactData ? redactData.ruleName : '',
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="别名">
+              {getFieldDecorator('ruleCode', {
+                rules: [{ required: true, message: '请填写别名!' }],
+                initialValue: redactData ? redactData.ruleCode : '',
               })(<Input />)}
             </Form.Item>
             <Form.Item label="周期">
