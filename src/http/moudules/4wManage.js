@@ -13,7 +13,8 @@ export const getCombatStaff = (data) => {
 // 4w提交上报  create4wReport
 export const create4wReport = (data) => {
   return axios({
-    url: '/api/report/create4wReport',
+    //url: '/api/report/create4wReport',
+    url:'/api/report/createCarUseReport',
     method: 'post',
     data,
   });

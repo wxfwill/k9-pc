@@ -131,10 +131,10 @@ class EditableCell extends React.Component {
     console.log(e);
     const { record, handleSave } = this.props;
     this.form.validateFields((error, values) => {
-      if (error && error[e.currentTarget.id]) {
-        return;
-      }
-      this.toggleEdit();
+      // if (error && error[e.currentTarget.id]) {
+      //   return;
+      // }
+      //this.toggleEdit();
       handleSave({ ...record, ...values });
     });
   };
@@ -376,7 +376,8 @@ class FourReport extends Component {
     });
   };
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '4w上报'] });
+    // React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '4w上报'] });
+    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '用车审批信息上报'] });
   }
   handleSave = (row) => {
     const newData = [...this.state.dataSource];
@@ -405,9 +406,14 @@ class FourReport extends Component {
           repTime: Moment(item.repTime),
           source: item.source,
           taskLocation: item.taskLocation,
-          taskAssignLeader: item.taskAssignLeader, //任务指派领导
-          carUseAuditor: item.carUseAuditor, //用车审核人
-          taskExecutor: item.taskExecutor, //任务执行人
+          //taskAssignLeader: item.taskAssignLeader, //任务指派领导
+          //carUseAuditor: item.carUseAuditor, //用车审核人
+          //taskExecutor: item.taskExecutor, //任务执行人
+          users: {
+            taskAssignLeader: item.taskAssignLeader, //任务指派领导
+            carUseAuditor: item.carUseAuditor, //用车审核人
+            taskExecutor: item.taskExecutor, //任务执行人
+          },
         });
       });
       const dataObj = {
