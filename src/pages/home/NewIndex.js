@@ -589,6 +589,10 @@ class NewIndex extends Component {
       <div className="newIndex">
         <div className="newindex-top">
           <div style={{ width: '360px' }}>
+            <Link to="/archivew">
+              <Button type="primary">跳转档案</Button>
+            </Link>
+
             <Card
               title="今日值班"
               extra={Moment().format('YYYY-MM-DD')}
