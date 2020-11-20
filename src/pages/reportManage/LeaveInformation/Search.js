@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Radio, Icon, Select, DatePicker } from 'antd';
+import { Form, Row, Col, Input, Button, TreeSelect, Icon, Select, DatePicker } from 'antd';
 import { thirdLayout } from 'util/Layout';
 import moment from 'moment';
-import httpAjax from 'libs/httpAjax';
+const { TreeNode } = TreeSelect;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -12,31 +12,12 @@ class SearchForm extends Component {
     this.state = {
       expand: true,
       dutyList: [],
-      allHouseData: [
-        {
-          id: 1,
-          name: '一中队',
-        },
-        {
-          id: 2,
-          name: '二中队',
-        },
-      ],
-      taksTypeData: [
-        {
-          id: 0,
-          title: '外出任务',
-        },
-        {
-          id: 1,
-          title: '内务任务',
-        },
-      ],
+      teamData: [],
       feedbalVal: null,
     };
   }
   componentDidMount() {
-    // this.getAllHouse();
+    this.queryAllTeam();
   }
   handleSearch = (e) => {
     e.preventDefault();
@@ -53,11 +34,21 @@ class SearchForm extends Component {
       [name]: value,
     });
   }
-  getAllHouse = () => {
-    this.setState({ roomIdvisible: true });
-    httpAjax('post', config.apiUrl + '/api/dogRoom/allHouse').then((res) => {
-      if (res.code == '0') {
-        this.setState({ allHouseData: res.data });
+  componentWillReceiveProps(nextProps) {}
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
+  }
+  //中队
+  queryAllTeam = () => {
+    React.$ajax.common.queryAllGroups().then((res) => {
+      if (res.code == 0) {
+        let resObj = res.data;
+        let newArr = [];
+        for (let key in resObj) {
+          let obj = { id: key, name: resObj[key] };
+          newArr.push(obj);
+        }
+        this.setState({ teamData: newArr });
       }
     });
   };
@@ -67,17 +58,34 @@ class SearchForm extends Component {
   selectTaskType = () => {};
   hangdleFeedback = () => {};
   handlePrif = () => {};
+  handleTreeName = () => {};
+  treeNodes = (arr) => {
+    arr.map((item) => {
+      if (item.children && item.children.length > 0) {
+        return this.treeNodes(item.children);
+      } else {
+        return (
+          <TreeNode
+            value={item.name || item.id}
+            title={item.name}
+            key={item.name || item.id}
+            selectable={false}
+          ></TreeNode>
+        );
+      }
+    });
+  };
   render() {
-    const { getFieldDecorator } = this.props.form;
-    let { expand, dutyList } = this.state;
+    const { getFieldDecorator, setFieldsValue } = this.props.form;
+    console.log('render');
     return (
       <Form onSubmit={this.handleSearch}>
         <Row gutter={24}>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="中队:" {...thirdLayout}>
-              {getFieldDecorator('groupId')(
+              {getFieldDecorator('groupIds')(
                 <Select placeholder="请选择" allowClear onChange={this.selectHouseId}>
-                  {this.state.allHouseData.map((item) => {
+                  {this.state.teamData.map((item) => {
                     return (
                       <Option key={item.id} value={item.id}>
                         {item.name}
@@ -90,21 +98,51 @@ class SearchForm extends Component {
           </Col>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="姓名:" {...thirdLayout}>
-              {getFieldDecorator('userName', {
-                initialValue: '',
-              })(<Input placeholder="请输入" allowClear />)}
+              {getFieldDecorator('userIds', {
+                initialValue: undefined,
+              })(
+                <TreeSelect
+                  showSearch
+                  style={{ width: '100%' }}
+                  filterTreeNode={() => true}
+                  getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                  dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                  placeholder="请选择"
+                  allowClear
+                  onSearch={(value) => {
+                    const { setFieldsValue, getFieldValue } = this.props.form;
+                    setFieldsValue({ userIds: undefined });
+                    this.props.queryGroupUser && this.props.queryGroupUser(value);
+                  }}
+                  onChange={this.handleTreeName}
+                >
+                  {this.props.userArr && this.props.userArr.length > 0
+                    ? this.props.userArr.map((item) => {
+                        return (
+                          <TreeNode value={item.name} title={item.name} key={item.name} selectable={false}>
+                            {item.children && item.children.length > 0
+                              ? item.children.map((el) => {
+                                  return <TreeNode value={el.id} title={el.name} key={el.name} />;
+                                })
+                              : null}
+                          </TreeNode>
+                        );
+                      })
+                    : null}
+                </TreeSelect>
+              )}
             </FormItem>
           </Col>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="开始时间" {...thirdLayout}>
-              {getFieldDecorator('repDateStart', {
+              {getFieldDecorator('startDate', {
                 initialValue: null,
               })(<DatePicker showTime placeholder="请输入" onChange={this.onChangeStartTime} />)}
             </FormItem>
           </Col>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="结束时间" {...thirdLayout}>
-              {getFieldDecorator('repDateEnd', {
+              {getFieldDecorator('endDate', {
                 initialValue: null,
               })(<DatePicker showTime placeholder="请输入" onChange={this.onChangeEndTime} />)}
             </FormItem>
@@ -112,13 +150,13 @@ class SearchForm extends Component {
         </Row>
         <Row>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
-            <FormItem label="任务类型" {...thirdLayout} hasFeedback>
-              {getFieldDecorator('categoryIds')(
+            <FormItem label="请假类型" {...thirdLayout} hasFeedback>
+              {getFieldDecorator('leaveType')(
                 <Select placeholder="请选择" style={{ width: '100%' }} allowClear onChange={this.selectTaskType}>
-                  {this.state.taksTypeData.map((item) => {
+                  {this.props.leaveType.map((item) => {
                     return (
-                      <Option key={item.id} value={item.id}>
-                        {item.title}
+                      <Option key={item.id} value={item.ruleName}>
+                        {item.ruleName}
                       </Option>
                     );
                   })}
@@ -126,7 +164,7 @@ class SearchForm extends Component {
               )}
             </FormItem>
           </Col>
-          <Col xl={6} lg={6} md={8} sm={12} xs={12}>
+          {/* <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem
               label="审批状态"
               labelCol={{ xl: { span: 9 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
@@ -140,11 +178,11 @@ class SearchForm extends Component {
                 </Radio.Group>
               )}
             </FormItem>
-          </Col>
+          </Col> */}
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
-            <FormItem label="地点" {...thirdLayout}>
-              {getFieldDecorator('taskLocation', {
-                initialValue: '',
+            <FormItem label="目的地" {...thirdLayout}>
+              {getFieldDecorator('destination', {
+                initialValue: undefined,
               })(<Input placeholder="请输入" allowClear />)}
             </FormItem>
           </Col>

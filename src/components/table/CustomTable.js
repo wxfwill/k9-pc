@@ -58,7 +58,7 @@ class CustomTable extends Component {
       selectedRowKeys: rowSelectKeys,
     };
     let newisRowSelects = isRowSelects ? rowSelection : null;
-    let setScroll = isScroll ? isScroll : false;
+    let setScroll = isScroll ? isScroll : { x: null };
     return (
       <Table
         dataSource={dataSource}
