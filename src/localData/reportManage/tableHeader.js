@@ -179,48 +179,65 @@ export const dailyInformationDetal = [
   },
 ];
 
-export const leaveInformationDetal = [
-  {
-    title: '序号',
-    dataIndex: 'id',
-  },
-  {
-    title: '人员名称',
-    dataIndex: '人员名称',
-  },
-  {
-    title: '开始时间',
-    dataIndex: '开始时间',
-  },
-  {
-    title: '结束时间',
-    dataIndex: '结束时间',
-  },
-  {
-    title: '类型',
-    dataIndex: '类型',
-  },
-  {
-    title: '请休假目的地',
-    dataIndex: '请休假目的地',
-  },
-  {
-    title: '请休假事由',
-    dataIndex: '请休假事由',
-  },
-  {
-    title: '审批状态',
-    dataIndex: '审批状态',
-  },
-  {
-    title: '审批人',
-    dataIndex: '审批人',
-  },
-  {
-    title: '备注',
-    dataIndex: '备注',
-  },
-];
+export const leaveInformationDetal = (editCallback) => {
+  let data = [
+    {
+      title: '序号',
+      dataIndex: 'id',
+      render: (txt, row, index) => {
+        return index + 1;
+      },
+    },
+    {
+      title: '人员名称',
+      dataIndex: 'userName',
+    },
+    {
+      title: '开始时间',
+      dataIndex: 'startDate',
+    },
+    {
+      title: '结束时间',
+      dataIndex: 'endDate',
+    },
+    {
+      title: '类型',
+      dataIndex: 'leaveType',
+    },
+    {
+      title: '请休假目的地',
+      dataIndex: 'destination',
+    },
+    {
+      title: '请休假事由',
+      dataIndex: 'reason',
+    },
+    {
+      title: '审批状态',
+      dataIndex: 'approvalState',
+    },
+    {
+      title: '审批人',
+      dataIndex: 'approvalUserName',
+    },
+    {
+      title: '备注',
+      dataIndex: 'remarks',
+    },
+    {
+      title: '操作',
+      dataIndex: 'option',
+      render: (txt, record, index) => {
+        return (
+          <Button type="primary" onClick={() => editCallback && editCallback(record)}>
+            编辑
+          </Button>
+        );
+      },
+    },
+  ];
+  return data;
+};
 
 export const OvertimeInformationDetal = [
   {

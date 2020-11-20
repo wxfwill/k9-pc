@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Button } from 'antd';
+import { Card, Button, message } from 'antd';
 import Search from './Search';
 import { leaveInformationDetal } from 'localData/reportManage/tableHeader';
 import CustomTable from 'components/table/CustomTable';
@@ -12,17 +12,35 @@ class LeaveInformation extends Component {
     super(props);
     this.state = {
       dataSource: [],
-      columns: leaveInformationDetal,
+      personnelTree: [],
       loading: false,
+      sortFieldName: null,
+      sortType: 'desc',
+      id: null,
+      param: {
+        destination: null,
+        leaveType: null,
+        endDate: null,
+        startDate: null,
+        groupIds: [],
+        userIds: [],
+      },
       pagination: {
         currPage: 1,
         pageSize: 10,
         total: 0,
       },
+      leaveType: [],
     };
   }
   componentDidMount() {
     React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '请假信息查询'] });
+    let { param, sortFieldName, sortType, pagination } = this.state;
+    this.getListData(param, sortFieldName, sortType, pagination);
+    // 请假类型
+    this.getQjData();
+    // 姓名
+    this.queryGroupUser('');
   }
   handleChangeSize = (page) => {
     this.tableChange({ currPage: page, current: page });
@@ -32,11 +50,14 @@ class LeaveInformation extends Component {
   };
   handleSearchData = (data) => {
     let per = data;
-    per.categoryIds = per.categoryIds != null ? [per.categoryIds] : [];
-    per.groupId = per.groupId != null ? [per.groupId] : [];
-    per.repDateEnd = per.repDateEnd && moment(per.repDateEnd).format('YYYY-MM-DD');
-    per.repDateStart = per.repDateStart && moment(per.repDateStart).format('YYYY-MM-DD');
+    per.groupIds = per.groupIds != null ? [Number(per.groupIds)] : [];
+    per.userIds = per.userIds != null ? [Number(per.userIds)] : [];
+    per.destination = per.destination != null ? per.destination : null;
+    per.leaveType = per.leaveType != null ? per.leaveType : null;
+    per.endDate = per.endDate ? moment(per.endDate).format('YYYY-MM-DD') : null;
+    per.startDate = per.startDate ? moment(per.startDate).format('YYYY-MM-DD') : null;
     let newObj = Object.assign({}, this.state.param, per);
+    console.log(newObj);
     this.setState({ param: newObj }, () => {
       let { param, sortFieldName, sortType, pagination } = this.state;
       this.getListData(param, sortFieldName, sortType, pagination);
@@ -55,43 +76,101 @@ class LeaveInformation extends Component {
   getListData = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
     this.setState({ loading: true });
-    // React.httpAjax('post', config.apiUrl + '/api/report/page4wReportInfo', { ...newObj }).then((res) => {
-    //   if (res && res.code === 0) {
-    //     let resData = res.data;
-    //     const pagination = { ...this.state.pagination };
-    //     pagination.total = resData.totalCount;
-    //     pagination.current = resData.currPage;
-    //     this.setState({ dataSource: resData.list, loading: false, pagination });
-    //   }
-    // });
+    React.$ajax.postData('/api/leaveAfterSync/getPageLeaveAfterSync', newObj).then((res) => {
+      if (res && res.code === 0) {
+        let resData = res.data;
+        const pagination = { ...this.state.pagination };
+        pagination.total = resData.totalCount;
+        pagination.current = resData.currPage;
+        this.setState({ dataSource: resData.list, loading: false, pagination });
+      }
+    });
   };
-  handleEdit = () => {
-    this.child.openModel();
+  queryGroupUser = util.Debounce(
+    (keyword) => {
+      React.$ajax.common.queryGroupUser({ keyword }).then((res) => {
+        if (res.code == 0) {
+          let resObj = res.data;
+          let arr = [];
+          for (let key in resObj) {
+            if (resObj[key] && resObj[key].length > 0) {
+              arr.push({
+                name: key,
+                children: resObj[key],
+              });
+            }
+          }
+          console.log('arr');
+          console.log(arr);
+          this.setState({ personnelTree: arr });
+        }
+      });
+    },
+    300,
+    false
+  );
+  // 请假类型
+  getQjData = () => {
+    React.$ajax.getData('/api/integral-rule/queryRulesByRootCode', { rootCode: 'qjType' }).then((res) => {
+      if (res && res.code == 0) {
+        console.log(res);
+        this.setState({ leaveType: res.data[0].children });
+      }
+    });
   };
   editFormData = (data) => {
     console.log(data);
+    let { destination, endDate, leaveTime, leaveType, reason, startDate, userName } = data;
+    let per = {
+      destination,
+      id: this.state.id,
+      endDate: moment(endDate).format('x'),
+      leaveTime: Number(leaveTime),
+      leaveType,
+      reason,
+      startDate: moment(startDate).format('x'),
+      userName,
+    };
+    React.$ajax.postData('/api/leaveAfterSync/editLeaveAfterSyncInfo', per).then((res) => {
+      if (res && res.code == 0) {
+        message.info('编辑成功');
+        this.child.handleCancel();
+        let { param, sortFieldName, sortType, pagination } = this.state;
+        this.getListData(param, sortFieldName, sortType, pagination);
+      }
+    });
   };
-
+  showEditModel = (row) => {
+    this.setState({ id: row.id });
+    this.child.openModel(row.id);
+  };
   render() {
-    const { dataSource, pagination, loading, columns } = this.state;
+    const { dataSource, pagination, loading } = this.state;
+    console.log('父render');
     return (
       <div className="four-wrap">
         <Card title="按条件搜索" bordered={false}>
-          <Search handleSearchData={this.handleSearchData} />
+          <Search
+            userArr={this.state.personnelTree}
+            queryGroupUser={this.queryGroupUser}
+            handleSearchData={this.handleSearchData}
+            leaveType={this.state.leaveType}
+          />
         </Card>
-        <Button type="primary" onClick={this.handleEdit}>
-          编辑
-        </Button>
-        <EditModel onRef={(ref) => (this.child = ref)} editFormData={this.editFormData}></EditModel>
+        <EditModel
+          onRef={(ref) => (this.child = ref)}
+          editFormData={this.editFormData}
+          leaveType={this.state.leaveType}
+        ></EditModel>
         <Card bordered={false}>
           <CustomTable
             setTableKey={(row) => {
-              return 'key-' + row.userId + row.repTime;
+              return 'key-' + row.id + row.userName;
             }}
             dataSource={dataSource}
             pagination={pagination}
             loading={loading}
-            columns={columns}
+            columns={leaveInformationDetal(this.showEditModel)}
             isBordered={true}
             isRowSelects={false}
             handleChangeSize={this.handleChangeSize}

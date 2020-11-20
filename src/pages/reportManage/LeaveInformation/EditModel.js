@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Modal, Button, DatePicker, Select, Row, Col, Form, Input } from 'antd';
+import { Modal, InputNumber, DatePicker, Select, Row, Col, Form, Input } from 'antd';
 import { editModel } from 'util/Layout';
+import moment from 'moment';
 const { TextArea } = Input;
 const Option = Select.Option;
 
@@ -9,70 +10,101 @@ class ShowModel extends Component {
     super(props);
     this.state = {
       visible: false,
-      startValue: null,
-      endValue: null,
+      startDate: null,
+      endDate: null,
       endOpen: false,
-      taksTypeData: [
-        {
-          id: 1,
-          title: '测试',
-        },
-        {
-          id: 2,
-          title: 'hah',
-        },
-      ],
+      userName: undefined,
+      leaveType: undefined,
+      leaveTime: undefined,
+      startDate: null,
+      endDate: null,
+      destination: undefined,
+      reason: undefined,
     };
   }
   componentDidMount() {
     this.props.onRef(this);
   }
-  disabledStartDate = (startValue) => {
-    const { endValue } = this.state;
-    if (!startValue || !endValue) {
+  disabledStartDate = (startDate) => {
+    const { endDate } = this.state;
+    if (!startDate || !endDate) {
       return false;
     }
-    return startValue.valueOf() > endValue.valueOf();
+    return startDate.valueOf() > endDate.valueOf();
   };
 
-  disabledEndDate = (endValue) => {
-    const { startValue } = this.state;
-    if (!endValue || !startValue) {
+  disabledEndDate = (endDate) => {
+    const { startDate } = this.state;
+    if (!endDate || !startDate) {
       return false;
     }
-    return endValue.valueOf() <= startValue.valueOf();
+    return endDate.valueOf() <= startDate.valueOf();
   };
-  onChange = (field, value) => {
-    this.setState({
-      [field]: value,
-    });
+  onChange = (field, value, callback) => {
+    this.setState(
+      {
+        [field]: value,
+      },
+      () => {
+        return callback && callback();
+      }
+    );
   };
 
   onStartChange = (value) => {
-    this.onChange('startValue', value);
+    this.onChange('startDate', value, () => {
+      let { startDate, endDate } = this.state;
+      if (endDate && startDate) {
+        let time = util.getStartEndHours(startDate, endDate);
+        this.setState({ leaveTime: Number(time).toFixed(1) });
+      }
+    });
   };
 
   onEndChange = (value) => {
-    this.onChange('endValue', value);
+    this.onChange('endDate', value, () => {
+      let { startDate, endDate } = this.state;
+      if (startDate && endDate) {
+        let time = util.getStartEndHours(startDate, endDate);
+        this.setState({ leaveTime: Number(time).toFixed(1) });
+      }
+    });
   };
   handleStartOpenChange = (open) => {
-    if (!open) {
-      this.setState({ endOpen: true });
-    }
+    // if (!open) {
+    //   this.setState({ endOpen: true });
+    // }
   };
 
   handleEndOpenChange = (open) => {
     this.setState({ endOpen: open });
   };
 
-  openModel = () => {
-    this.setState({ visible: true });
+  openModel = (id) => {
+    React.$ajax.postData('/api/leaveAfterSync/getLeaveAfterSyncInfo', { id }).then((res) => {
+      if (res && res.code == 0) {
+        this.setState({ visible: true });
+        let resData = res.data;
+        let { reason, destination, userName, leaveType, startDate, endDate, leaveHours } = resData;
+        let long = Number(leaveHours) * 1000;
+        this.setState({
+          reason,
+          destination,
+          userName,
+          leaveType,
+          leaveTime: Number(leaveHours),
+          // leaveTime: Number(moment.duration(long).asHours()),
+          startDate: moment(startDate),
+          endDate: moment(endDate),
+        });
+      }
+    });
   };
   handleOk = () => {
-    console.log('ok');
     this.props.form.validateFields((err, val) => {
-      console.log(val);
-      this.props.editFormData && this.props.editFormData(val);
+      if (!err) {
+        this.props.editFormData && this.props.editFormData(val);
+      }
     });
   };
   handleCancel = () => {
@@ -82,9 +114,10 @@ class ShowModel extends Component {
   selectTaskType = () => {};
   handleSubmit = () => {};
   onChangeTextArea = () => {};
+  onChangeLeaveTime = () => {};
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { startValue, endValue, endOpen } = this.state;
+    const { startDate, endDate, endOpen } = this.state;
     return (
       <Modal
         wrapClassName="customModel"
@@ -102,21 +135,21 @@ class ShowModel extends Component {
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="姓名">
-                {getFieldDecorator('name', {
-                  initialValue: undefined,
+                {getFieldDecorator('userName', {
+                  initialValue: this.state.userName,
                 })(<Input placeholder="请输入" />)}
               </Form.Item>
             </Col>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
-              <Form.Item label="类型">
-                {getFieldDecorator('type', {
-                  initialValue: undefined,
+              <Form.Item label="请假类型">
+                {getFieldDecorator('leaveType', {
+                  initialValue: this.state.leaveType,
                 })(
                   <Select placeholder="请选择" style={{ width: '100%' }} allowClear onChange={this.selectTaskType}>
-                    {this.state.taksTypeData.map((item) => {
+                    {this.props.leaveType.map((item) => {
                       return (
-                        <Option key={item.id} value={item.id}>
-                          {item.title}
+                        <Option key={item.id} value={item.ruleName}>
+                          {item.ruleName}
                         </Option>
                       );
                     })}
@@ -128,11 +161,17 @@ class ShowModel extends Component {
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="开始时间">
-                {getFieldDecorator('satrtTime', {
-                  initialValue: startValue,
+                {getFieldDecorator('startDate', {
+                  initialValue: this.state.startDate,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择开始时间',
+                    },
+                  ],
                 })(
                   <DatePicker
-                    // disabledDate={this.disabledStartDate}
+                    disabledDate={this.disabledStartDate}
                     style={{ width: '100%' }}
                     showTime
                     format="YYYY-MM-DD HH:mm:ss"
@@ -145,11 +184,17 @@ class ShowModel extends Component {
             </Col>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="结束时间">
-                {getFieldDecorator('endTime', {
-                  initialValue: endValue,
+                {getFieldDecorator('endDate', {
+                  initialValue: this.state.endDate,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择结束时间',
+                    },
+                  ],
                 })(
                   <DatePicker
-                    // disabledDate={this.disabledEndDate}
+                    disabledDate={this.disabledEndDate}
                     showTime
                     style={{ width: '100%' }}
                     format="YYYY-MM-DD HH:mm:ss"
@@ -162,11 +207,30 @@ class ShowModel extends Component {
               </Form.Item>
             </Col>
           </Row>
+
+          <Row gutter={24}>
+            <Col xl={12} lg={12} md={12} sm={12} xs={12}>
+              <Form.Item label="请假时长(h)">
+                {getFieldDecorator('leaveTime', {
+                  initialValue: this.state.leaveTime,
+                })(
+                  <InputNumber
+                    placeholder="请输入"
+                    style={{ width: '460px' }}
+                    min={0}
+                    max={10000}
+                    step={0.1}
+                    onChange={this.onChangeLeaveTime}
+                  />
+                )}
+              </Form.Item>
+            </Col>
+          </Row>
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="请假目的地">
-                {getFieldDecorator('address', {
-                  initialValue: undefined,
+                {getFieldDecorator('destination', {
+                  initialValue: this.state.destination,
                 })(<Input placeholder="请输入" style={{ width: '460px' }} />)}
               </Form.Item>
             </Col>
@@ -174,8 +238,8 @@ class ShowModel extends Component {
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="请假事由">
-                {getFieldDecorator('mark', {
-                  initialValue: undefined,
+                {getFieldDecorator('reason', {
+                  initialValue: this.state.reason,
                 })(
                   <TextArea
                     placeholder="请输入"
@@ -188,7 +252,6 @@ class ShowModel extends Component {
               </Form.Item>
             </Col>
           </Row>
-
           {/* <Form.Item {...tailFormItemLayout}>
             <Button htmlType="submit">确定</Button>
           </Form.Item> */}

@@ -263,7 +263,7 @@ export const getStartEndHours = (start, end) => {
   let s = moment(start);
   let e = moment(end);
   // let dura = e - s;
-  return e.diff(s, 'hours', ture);
+  return e.diff(s, 'hours', true);
 };
 
 export { constant, Msg, method, cookieUtil };
