@@ -79,7 +79,13 @@ class AddRule extends Component {
             </Form.Item>
             <Form.Item label="别名">
               {getFieldDecorator('ruleCode', {
-                rules: [{ required: true, message: '请填写别名!' }],
+                rules: [
+                  {
+                    required: true,
+                    pattern: new RegExp(/^[0-9a-zA-Z]{1,32}$/g),
+                    message: '请填写别名，别名只能填写字母和数字，长度1-32位!',
+                  },
+                ],
                 initialValue: redactData ? redactData.ruleCode : '',
               })(<Input />)}
             </Form.Item>
@@ -94,7 +100,13 @@ class AddRule extends Component {
             </Form.Item>
             <Form.Item label="别名">
               {getFieldDecorator('ruleCode', {
-                rules: [{ required: true, message: '请填写别名!' }],
+                rules: [
+                  {
+                    required: true,
+                    pattern: new RegExp(/^[0-9a-zA-Z]{1,32}$/g),
+                    message: '请填写别名，别名只能填写字母和数字，长度1-32位!',
+                  },
+                ],
                 initialValue: redactData ? redactData.ruleCode : '',
               })(<Input />)}
             </Form.Item>
