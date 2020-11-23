@@ -219,7 +219,7 @@ class HolidayTable extends Component {
               {record.valid == 0 && moment(checkDate).format('YYYY-MM') == moment(new Date()).format('YYYY-MM') ? (
                 <div>
                   <Link
-                    to={{ pathname: '/app/performance/registerEdit', query: { record: record, checkDate: checkDate } }}
+                    to={{ pathname: '/app/performance/register/edit', query: { record: record, checkDate: checkDate } }}
                   >
                     <span style={{ cursor: 'pointer', color: '#1890ff' }}>
                       <Icon type="edit" style={{ margin: '0 10px' }} />

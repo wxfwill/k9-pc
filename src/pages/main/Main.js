@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 import { renderRoutes } from 'react-router-config';
 import { showNavCollapsed, changeRoute, changeNavName } from 'store/actions/common';
 import SliderCustom from 'components/customMenu/SliderCustom';
-import CustomBreadcrumb from 'components/BeardComponent';
+import CustomBreadcrumb from 'components/BeardComponent/Breadcrumbs';
 import HeaderComponent from 'components/HeaderComponent';
 import routerArr from '../../router/allRouter';
 
@@ -126,13 +126,14 @@ class MainComponent extends React.Component {
           <div>
             <SliderCustom menus={this.menus} onRef={this.onRef} isCollapsed={this.props.isCollapsed} />
           </div>
+
           <Layout id="mainWrapper">
+            <CustomBreadcrumb />
             <div className="midder-content" id="mainWrapper1" ref={this.mainWrapper1}>
-              <CustomBreadcrumb arr={this.props.navData} />
-              {/* <CustomBreadcrumb /> */}
+              {/* <CustomBreadcrumb arr={this.props.navData} /> */}
               <Content style={{ background: '#f0f2f5', margin: 0, padding: '0 24px 0px' }}>
                 {/* {this.props.children} */}
-                {renderRoutes(route.routes)}
+                {renderRoutes(route.items)}
               </Content>
             </div>
             <BackTop target={() => document.getElementById('mainWrapper1')} visibilityHeight={200} />

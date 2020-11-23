@@ -78,6 +78,8 @@ const commonSet = {
     new HtmlWebpackPlugin({
       title: "learn redux",
       template: "./template/index.html",
+      inject: true,
+      favicon: "./template/one.jpg",
     }), //自动生成html
     new webpack.ProvidePlugin({
       util: "util",

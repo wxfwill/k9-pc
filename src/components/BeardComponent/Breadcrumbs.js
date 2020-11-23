@@ -1,22 +1,24 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import BreadcrumbsHoc from 'react-router-breadcrumb';
+import BreadcrumbsHoc from './IndexHoc';
 import routerArr from '../../router/allRouter';
-import imgURL from 'images/home.png';
+require('style/view/common/Breadcrumbs.less');
+
 const BreadcrumbsComponent = ({ breadcrumbs }) => {
+  console.log('breadcrumbs');
   console.log(breadcrumbs);
-  console.log('===breadcrumbs');
-  return (
-    <div>
-      <img src={imgURL} alt="home" style={{ width: '16px' }} />
+  return breadcrumbs.length > 1 ? (
+    <div className="customBread">
+      <span className="leftBlue"></span>
       {breadcrumbs.map((breadcrumb, index) => (
-        <span key={breadcrumb.props.path}>
-          <Link to={breadcrumb.props.path}>{breadcrumb}</Link>
+        <span key={breadcrumb.props.path} className="txt">
+          {/* <Link to={breadcrumb.props.path}>{breadcrumb}</Link> */}
+          {breadcrumb}
           {index < breadcrumbs.length - 1 && <i> / </i>}
         </span>
       ))}
     </div>
-  );
+  ) : null;
 };
 
 const Breadcrumbs = withRouter((props) => {

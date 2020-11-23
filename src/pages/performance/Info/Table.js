@@ -207,9 +207,7 @@ class HolidayTable extends Component {
         render: (text, record, index) => {
           return (
             <div>
-              <Link
-                to={{ pathname: '/app/performance/registerDetail', query: { record: record, checkDate: checkDate } }}
-              >
+              <Link to={{ pathname: '/app/performance/info/view', query: { record: record, checkDate: checkDate } }}>
                 <span style={{ cursor: 'pointer', color: '#1890ff' }}>
                   <Icon type="eye" style={{ margin: '0 10px' }} />
                   查看

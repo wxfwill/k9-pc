@@ -90,15 +90,15 @@ class UserInfo extends Component {
   };
   // 新增
   addInfo = () => {
-    this.props.history.push({ pathname: '/app/user/infoAddUser', search: `?formStatus=add` });
+    this.props.history.push({ pathname: '/app/user/info/add', search: `?formStatus=add` });
   };
   // 查看
   viewDetail = (record) => {
-    this.props.history.push({ pathname: '/app/user/infoUserData', search: `?userId=${record.id}&formStatus=view` });
+    this.props.history.push({ pathname: '/app/user/info/view', search: `?userId=${record.id}&formStatus=view` });
   };
   // 编辑
   viewEdit = (record) => {
-    this.props.history.push({ pathname: '/app/user/infoEditUser', search: `?userId=${record.id}&formStatus=edit` });
+    this.props.history.push({ pathname: '/app/user/info/edit', search: `?userId=${record.id}&formStatus=edit` });
   };
   //删除警员
   deleteUser = (record, index) => {

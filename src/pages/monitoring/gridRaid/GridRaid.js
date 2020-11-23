@@ -92,8 +92,8 @@ class _GridRaid extends Component {
     this.rectIndex = 1; //当前编辑栅格 index
   }
   componentWillMount() {
-    let { unfold } = this.props.systomActions;
-    unfold(true);
+    // let { unfold } = this.props.systomActions;
+    // unfold(true);
   }
   componentDidMount() {
     let _this = this;
@@ -232,7 +232,8 @@ class _GridRaid extends Component {
             referencePoint: t.searchArea.latLng,
           };
         });
-        React.$ajax.postData('/api/cmdMonitor/saveGridTask', { ...params })
+        React.$ajax
+          .postData('/api/cmdMonitor/saveGridTask', { ...params })
           .then((res) => {
             message.success('发布成功！页面即将跳转...', 2, function () {
               history.push({ pathname: '/view/monitoring/grid' });
@@ -427,7 +428,8 @@ class _GridRaid extends Component {
     };
 
     var me = this;
-    React.$ajax.postData('/api/userCenter/gridSearchUser', { ...params })
+    React.$ajax
+      .postData('/api/userCenter/gridSearchUser', { ...params })
       .then((res) => {
         me.selPeopleArr = res.data; //保存到当前对象中,后面要获取这个用户的id
         const selPeopleOptions = [];
@@ -684,7 +686,8 @@ class _GridRaid extends Component {
   getGridSearchSet = () => {
     //2020 获取网格化搜捕配置
     return new Promise((reslove, reject) => {
-      React.$ajax.postData('/api/cmdMonitor/gridSearchSet')
+      React.$ajax
+        .postData('/api/cmdMonitor/gridSearchSet')
         .then((res) => {
           let radiusList = JSON.parse(res.data.pvalue.replace(/\'/g, '"'));
           let radius = radiusList[0].radius,
@@ -711,7 +714,8 @@ class _GridRaid extends Component {
   };
 
   render() {
-    const { collapsed } = this.props.systomState;
+    // const { collapsed } = this.props.systomState;
+    const collapsed = false;
     const { getFieldProps, getFieldDecorator } = this.props.form;
     const {
       allPeopleH,
@@ -1031,7 +1035,7 @@ const mapDispatchToProps = (dispatch) => ({
   systomActions: bindActionCreators(systomState, dispatch),
 });
 
-const GridRaid = connect(mapStateToProps, mapDispatchToProps)(_GridRaid);
+const GridRaid = connect()(_GridRaid);
 
 export default Form.create()(GridRaid);
 

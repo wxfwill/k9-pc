@@ -28,9 +28,10 @@ class ViewGridRaidRealTime extends Component {
   getGridTaskById() {
     //根据id请求数据
     let _this = this;
-    return React.$ajax.postData('/api/cmdMonitor/getGridTaskById', {
-      taskId: this.props.match.params.realID,
-    })
+    return React.$ajax
+      .postData('/api/cmdMonitor/getGridTaskById', {
+        taskId: this.props.match.params.realID,
+      })
       .then((res) => {
         if (res.code == 0) {
           this.setState({
@@ -47,10 +48,11 @@ class ViewGridRaidRealTime extends Component {
   showAllAppTrochoidHis(taskType) {
     //根据任务ID及任务类型 获取所有人员的轨迹信息
     let _this = this;
-    return React.$ajax.postData('/api/cmdMonitor/showAllAppTrochoidHis', {
-      taskId: this.props.match.params.realID,
-      taskType,
-    })
+    return React.$ajax
+      .postData('/api/cmdMonitor/showAllAppTrochoidHis', {
+        taskId: this.props.match.params.realID,
+        taskType,
+      })
       .then((res) => {
         if (res.code == 0) {
           this.setState({
@@ -67,8 +69,9 @@ class ViewGridRaidRealTime extends Component {
     // 获取“后续”轨迹信息
     let _this = this;
     let { allPathsHis } = _this.state;
-    return React.$ajax.postData('/api/cmdMonitor/showTrochoid', { id: trackId, taskDetailId })
-    .then((res) => {
+    return React.$ajax
+      .postData('/api/cmdMonitor/showTrochoid', { id: trackId, taskDetailId })
+      .then((res) => {
         if (res.code == 0) {
           let newAllPathsHis = JSON.parse(JSON.stringify(allPathsHis));
           newAllPathsHis.forEach((ele) => {
@@ -190,7 +193,8 @@ class ViewGridRaidRealTime extends Component {
 
   render() {
     let _this = this;
-    const { collapsed } = this.props.systomState;
+    // const { collapsed } = this.props.systomState;
+    const { collapsed } = true;
     let { detail, allPathsHis } = this.state;
     return (
       _this.state.allPathsHis && (

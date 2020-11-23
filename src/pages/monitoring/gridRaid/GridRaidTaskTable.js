@@ -133,7 +133,8 @@ class GridRaidTaskTable extends React.Component {
 
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
-    React.$ajax.postData('/api/cmdMonitor/listGridTask', { ...params })
+    React.$ajax
+      .postData('/api/cmdMonitor/listGridTask', { ...params })
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = res.totalCount;
@@ -152,7 +153,7 @@ class GridRaidTaskTable extends React.Component {
       <div>
         <div className="table-operations">
           <Button type="primary">
-            <Link to="/app/monitoring/addGrid">
+            <Link to="/app/monitoring/grid/addGrid">
               <Icon type="plus-circle-o" />
               新建网格搜捕任务
             </Link>

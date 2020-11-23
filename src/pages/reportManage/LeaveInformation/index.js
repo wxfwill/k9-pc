@@ -86,6 +86,24 @@ class LeaveInformation extends Component {
       }
     });
   };
+  exportLeaveLiust = (data) => {
+    let per = data;
+    per.groupIds = per.groupIds != null ? [Number(per.groupIds)] : [];
+    per.userIds = per.userIds != null ? [Number(per.userIds)] : [];
+    per.destination = per.destination != null ? per.destination : null;
+    per.leaveType = per.leaveType != null ? per.leaveType : null;
+    per.endDate = per.endDate ? moment(per.endDate).format('YYYY-MM-DD') : null;
+    per.startDate = per.startDate ? moment(per.startDate).format('YYYY-MM-DD') : null;
+    let newObj = Object.assign({}, this.state.param, per);
+    this.setState({ param: newObj }, () => {
+      let { param, sortFieldName, sortType, pagination } = this.state;
+      let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
+      React.$ajax.fileDataPost('/api/leaveAfterSync/exportLeaveAfterSyncInfo', newObj).then((res) => {
+        let name = `请假信息列表.xlsx`;
+        util.createFileDown(res, name);
+      });
+    });
+  };
   queryGroupUser = util.Debounce(
     (keyword) => {
       React.$ajax.common.queryGroupUser({ keyword }).then((res) => {
@@ -146,7 +164,6 @@ class LeaveInformation extends Component {
   };
   render() {
     const { dataSource, pagination, loading } = this.state;
-    console.log('父render');
     return (
       <div className="four-wrap">
         <Card title="按条件搜索" bordered={false}>
@@ -155,6 +172,7 @@ class LeaveInformation extends Component {
             queryGroupUser={this.queryGroupUser}
             handleSearchData={this.handleSearchData}
             leaveType={this.state.leaveType}
+            exportLeaveLiust={this.exportLeaveLiust}
           />
         </Card>
         <EditModel

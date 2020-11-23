@@ -114,14 +114,14 @@ class AssessmentList extends Component {
     console.log(row);
     console.log('999');
     this.props.history.push({
-      pathname: '/app/performance/assessmentListDetail',
+      pathname: '/app/performance/assessmentList/detal',
       search: `?detalId=${row.id}&type=detal`,
     });
   };
   // 审批
   handleApproval = (row) => {
     this.props.history.push({
-      pathname: '/app/performance/assessmentListDetail',
+      pathname: '/app/performance/assessmentList/detal',
       search: `?detalId=${row.id}&type=approval`,
     });
   };

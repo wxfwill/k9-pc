@@ -1,3 +1,4 @@
+import React from 'react';
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import LoginComponent from 'pages/login/Login';
 //main
@@ -6,6 +7,8 @@ import Main from 'pages/main/Main';
 import asyncComponent from './asyncComponent';
 // 首页
 import IndexComponent from 'pages/home/NewIndex';
+// 承载路由
+import BearerRoute from 'pages/BearerRoute';
 
 // 网格化搜捕
 const DutyComponent = asyncComponent(() => import('pages/monitoring/DutyComponent'));
@@ -14,6 +17,7 @@ const AddTask = asyncComponent(() => import('pages/monitoring/Deploy/add/AddTask
 const AddPatrols = asyncComponent(() => import('pages/monitoring/AddPatrols/AddTask'));
 const GridRaid = asyncComponent(() => import('pages/monitoring/GridRaid/GridRaid'));
 const GridRaidTaskList = asyncComponent(() => import('pages/monitoring/GridRaid/GridRaidTaskList'));
+
 const ViewGridRaidTask = asyncComponent(() => import('pages/monitoring/GridRaid/ViewGridRaidTask'));
 const ViewGridRaidRealTime = asyncComponent(() => import('pages/monitoring/GridRaid/ViewGridRaidRealTime'));
 const RoundsTrack = asyncComponent(() => import('pages/monitoring/RoundsTrack/RoundsTrack'));
@@ -50,12 +54,12 @@ const EditDogChildren = asyncComponent(() => import('pages/dogManage/breed/EditD
 const PerformanceInfo = asyncComponent(() => import('pages/performance/Info/index'));
 const PerformanceRule = asyncComponent(() => import('pages/performance/Rule/index'));
 const PerformanceRegister = asyncComponent(() => import('pages/performance/Register/index'));
+
 const PerformanceDetail = asyncComponent(() => import('pages/performance/Register/RegisterDetail'));
 const PerformanceEdit = asyncComponent(() => import('pages/performance/Register/RegisterEdit'));
 const PerformanceAssessmentSetting = asyncComponent(() => import('pages/performance/AssessmentSetting/index'));
 // const PerformanceAssessmentDetail = asyncComponent(() => import('pages/performance/AssessmentSetting/detail'));
 const PerformanceAssessmentList = asyncComponent(() => import('pages/performance/AssessmentList/index'));
-const PerformanceAssessmentListHome = asyncComponent(() => import('pages/performance/AssessmentList/ListHome'));
 const PerformanceAssessmentDetail = asyncComponent(() => import('pages/performance/AssessmentList/detail'));
 const PerformanceTitleSetting = asyncComponent(() => import('pages/performance/TitleSetting/index'));
 
@@ -180,60 +184,77 @@ const routerArr = [
   {
     path: '/app',
     component: Main,
-    routes: [
+    items: [
       // {
       //   path: '/',
       //   exact: true,
       //   render: () => <Redirect to={'/app/home/index'} />,
       // },
-      { path: '/app/home/index', component: IndexComponent, name: '首页' },
-      { path: '/app/monitoring/duty', component: DutyComponent },
-      { path: '/app/monitoring/deploy', component: Deploy, name: '紧急调配' },
+      { path: '/app/index', component: IndexComponent, name: '首页' },
       {
-        path: '/app/monitoring/assemble',
-        component: Assemble,
-        name: 'assemble',
+        path: '/app/monitoring',
+        component: BearerRoute,
+        name: '指挥作战',
+        items: [
+          { path: '/app/monitoring/duty', component: DutyComponent, name: '日常巡逻' },
+          { path: '/app/monitoring/deploy', component: Deploy, name: '紧急调配' },
+          {
+            path: '/app/monitoring/assemble',
+            component: Assemble,
+            name: '定点集合',
+          },
+          {
+            path: '/app/monitoring/assembleAdd',
+            component: AssembleAdd,
+            name: '新增定点集合',
+          },
+          {
+            path: '/app/monitoring/itinerancy',
+            component: EsayTask,
+            name: '外勤任务',
+          },
+          {
+            path: '/app/monitoring/itinerancyAdd',
+            component: EsayTaskAdd,
+            name: '创建任务',
+          },
+          {
+            path: '/app/monitoring/itinerancyEdit',
+            component: EsayTaskAdd,
+            name: 'assemble',
+          },
+          { path: '/app/monitoring/deployAdd', component: AddTask, name: 'assemble' },
+          {
+            path: '/app/monitoring/dutyAdd', // 新增日常巡逻
+            component: AddPatrols,
+            name: '日常巡逻',
+          },
+          {
+            path: '/app/monitoring/dutyEdit', // 编辑日常巡逻
+            component: AddPatrols,
+            name: '编辑',
+          },
+          {
+            path: '/app/monitoring/grid',
+            component: BearerRoute,
+            name: '网格化任务',
+            items: [
+              { path: '/app/monitoring/grid/list', component: GridRaidTaskList, name: '列表' },
+              { path: '/app/monitoring/grid/addGrid', component: GridRaid, name: '新建' },
+            ],
+          },
+          { path: '/app/monitoring/ViewGridRaidTask/:taskID', component: ViewGridRaidTask },
+          { path: '/app/monitoring/ViewGridRaidRealTime/:realID', component: ViewGridRaidRealTime },
+          { path: '/app/monitoring/RoundsTrack/:taskID', component: RoundsTrack },
+        ],
       },
-      {
-        path: '/app/monitoring/assembleAdd',
-        component: AssembleAdd,
-        name: 'assemble',
-      },
+
       {
         path: '/app/statisticalQuery/leaveCheck',
         component: LeaveCheck,
         name: 'assemble',
       },
-      {
-        path: '/app/monitoring/itinerancy',
-        component: EsayTask,
-        name: 'assemble',
-      },
-      {
-        path: '/app/monitoring/itinerancyAdd',
-        component: EsayTaskAdd,
-        name: 'assemble',
-      },
-      {
-        path: '/app/monitoring/itinerancyEdit',
-        component: EsayTaskAdd,
-        name: 'assemble',
-      },
-      { path: '/app/monitoring/deployAdd', component: AddTask, name: 'assemble' },
-      {
-        path: '/app/monitoring/dutyAdd', // 新增日常巡逻
-        component: AddPatrols,
-        name: '日常巡逻',
-      },
-      {
-        path: '/app/monitoring/dutyEdit', // 编辑日常巡逻
-        component: AddPatrols,
-        name: '编辑',
-      },
-      { path: '/app/monitoring/grid', component: GridRaidTaskList, name: 'grid' },
-      { path: '/app/monitoring/addGrid', component: GridRaid, name: 'grid' },
-      { path: '/app/monitoring/ViewGridRaidTask/:taskID', component: ViewGridRaidTask },
-      { path: '/app/monitoring/ViewGridRaidRealTime/:realID', component: ViewGridRaidRealTime },
+
       { path: '/app/drill/pdogdrill', component: Pdogdrill },
       { path: '/app/drill/drillsub', component: Drillsub },
       { path: '/app/assess/officer', component: Officer },
@@ -241,7 +262,7 @@ const routerArr = [
       { path: '/app/config/message', component: DeviceInforList },
       { path: '/app/test', component: TestMap },
       { path: '/app/statisticalQuery/attendance', component: Attend },
-      { path: '/app/monitoring/RoundsTrack/:taskID', component: RoundsTrack },
+
       {
         path: '/app/drill/plan',
         component: DrillPlan,
@@ -402,29 +423,50 @@ const routerArr = [
         component: PerformanceDetailTable,
       },
       {
-        path: '/app/user/menuList',
-        component: MenuInfo,
+        path: '/app/user',
+        name: '用户管理',
+        component: BearerRoute,
+        items: [
+          {
+            path: '/app/user/menuList',
+            component: MenuInfo,
+            name: '菜单列表',
+          },
+          {
+            path: '/app/user/roleList',
+            component: RoleInfo,
+            name: '角色列表',
+          },
+          {
+            path: '/app/user/info',
+            component: BearerRoute,
+            name: '用户列表',
+            items: [
+              {
+                path: '/app/user/info/list',
+                component: UserInfo,
+                name: '列表',
+              },
+              {
+                path: '/app/user/info/add',
+                component: AddUser,
+                name: '新增',
+              },
+              {
+                path: '/app/user/info/view',
+                component: AddUser,
+                name: '查看',
+              },
+              {
+                path: '/app/user/info/edit',
+                component: AddUser,
+                name: '编辑',
+              },
+            ],
+          },
+        ],
       },
-      {
-        path: '/app/user/roleList',
-        component: RoleInfo,
-      },
-      {
-        path: '/app/user/info',
-        component: UserInfo,
-      },
-      {
-        path: '/app/user/infoAddUser',
-        component: AddUser,
-      },
-      {
-        path: '/app/user/infoUserData',
-        component: AddUser,
-      },
-      {
-        path: '/app/user/infoEditUser',
-        component: AddUser,
-      },
+
       {
         path: '/app/dog/info',
         component: DogInfo,
@@ -526,107 +568,146 @@ const routerArr = [
         component: ApprovalDetail,
       },
       {
-        path: '/app/reportManage/fourReport',
-        component: FourReport,
-      },
-      {
-        path: '/app/reportManage/FourReportListSearch',
-        component: FourReportListSearch,
-      },
-      {
-        path: '/app/reportManage/otherThingsReport',
-        component: OtherThingsReport,
-      },
-      {
-        path: '/app/reportManage/TeamWorkStatist',
-        component: TeamWorkStatist,
-      },
-      {
-        path: '/app/reportManage/TeamWorkStatistDetal',
-        component: TeamWorkStatistDetal,
-        meta: {
-          name: '团队任务详情列表',
-        },
-      },
-      {
-        path: '/app/reportManage/OwnWorkStatiseDetal',
-        component: OwnWorkStatiseDetal,
-        meta: {
-          name: '个人任务详情列表',
-        },
-      },
-      {
-        path: '/app/reportManage/OwnWorkStatise',
-        component: OwnWorkStatise,
-      },
-      {
-        path: '/app/reportManage/ImportFile',
-        component: ImportFile,
-      },
-      {
-        path: '/app/reportManage/DailyInformation',
-        component: DailyInformation,
-      },
-      {
-        path: '/app/reportManage/LeaveInformation',
-        component: LeaveInformation,
-      },
-      {
-        path: '/app/reportManage/OvertimeInformation',
-        component: OvertimeInformation,
-      },
-      {
-        path: '/app/reportManage/AwardInformation',
-        component: AwardInformation,
-      },
-      {
-        path: '/app/performance/rule',
-        component: PerformanceRule,
-        name: '规则',
-      },
-      {
-        path: '/app/performance/register',
-        component: PerformanceRegister,
-        name: '注册',
-      },
-      {
-        path: '/app/performance/registerDetail',
-        component: PerformanceDetail,
-        name: '注册',
-      },
-      {
-        path: '/app/performance/info',
-        component: PerformanceInfo,
-      },
-      {
-        path: '/app/performance/registerEdit',
-        component: PerformanceEdit,
-      },
-      {
-        path: '/app/performance/assessmentSetting',
-        component: PerformanceAssessmentSetting,
-      },
-      {
-        path: '/app/performance/titleSetting',
-        component: PerformanceTitleSetting,
-      },
-      {
-        path: '/app/performance',
-        component: PerformanceAssessmentListHome,
-        name: '绩效考核',
-        routes: [
+        path: '/app/reportManage',
+        component: BearerRoute,
+        name: '上报管理',
+        items: [
           {
-            name: '列表',
-            path: '/app/performance/assessmentList',
-            component: PerformanceAssessmentList,
-            requiresAuth: true,
-            exact: true,
+            path: '/app/reportManage/fourReport',
+            component: FourReport,
+            name: '4w信息上报',
           },
           {
-            name: '详情',
-            path: '/app/performance/assessmentListDetail',
-            component: PerformanceAssessmentDetail,
-            exact: true,
+            path: '/app/reportManage/FourReportListSearch',
+            component: FourReportListSearch,
+            name: '用车信息列表',
+          },
+          {
+            path: '/app/reportManage/otherThingsReport',
+            component: OtherThingsReport,
+            name: '其他事物上报',
+          },
+          {
+            path: '/app/reportManage/TeamWorkStatist',
+            component: TeamWorkStatist,
+            name: '中队工作统计',
+          },
+          {
+            path: '/app/reportManage/TeamWorkStatistDetal',
+            component: TeamWorkStatistDetal,
+            name: '中队任务详细列表',
+          },
+          {
+            path: '/app/reportManage/OwnWorkStatiseDetal',
+            component: OwnWorkStatiseDetal,
+            name: '个人任务详情列表',
+          },
+          {
+            path: '/app/reportManage/OwnWorkStatise',
+            component: OwnWorkStatise,
+            name: '个人工作统计',
+          },
+          {
+            path: '/app/reportManage/ImportFile',
+            component: ImportFile,
+            name: '导入4w报备',
+          },
+          {
+            path: '/app/reportManage/DailyInformation',
+            component: DailyInformation,
+            name: '日报列表',
+          },
+          {
+            path: '/app/reportManage/LeaveInformation',
+            component: LeaveInformation,
+            name: '请假列表',
+          },
+          {
+            path: '/app/reportManage/OvertimeInformation',
+            component: OvertimeInformation,
+            name: '加班列表',
+          },
+          {
+            path: '/app/reportManage/AwardInformation',
+            component: AwardInformation,
+            name: '奖励列表',
+          },
+        ],
+      },
+
+      {
+        path: '/app/performance',
+        component: BearerRoute,
+        name: '绩效考核',
+        items: [
+          {
+            path: '/app/performance/info',
+            component: BearerRoute,
+            name: '绩效列表',
+            items: [
+              {
+                path: '/app/performance/info/list',
+                component: PerformanceInfo,
+                // name: '列表',
+              },
+              {
+                path: '/app/performance/info/view',
+                component: PerformanceDetail,
+                name: '查看',
+              },
+            ],
+          },
+
+          {
+            path: '/app/performance/register',
+            component: BearerRoute,
+            name: '登记列表',
+            items: [
+              {
+                path: '/app/performance/register/list',
+                component: PerformanceRegister,
+                name: '列表',
+              },
+              {
+                path: '/app/performance/register/edit',
+                component: PerformanceEdit,
+                name: '编辑',
+              },
+            ],
+          },
+          {
+            path: '/app/performance/rule',
+            component: PerformanceRule,
+            name: '绩效规则',
+          },
+          {
+            path: '/app/performance/assessmentSetting',
+            component: PerformanceAssessmentSetting,
+            name: '考核指标设置',
+          },
+          {
+            name: '考核列表',
+            path: '/app/performance/assessmentList',
+            component: BearerRoute,
+            requiresAuth: true,
+            items: [
+              {
+                path: '/app/performance/assessmentList/list',
+                // exact: true,
+                // name: '列表',
+                component: PerformanceAssessmentList,
+              },
+              {
+                name: '详情',
+                path: '/app/performance/assessmentList/detal',
+                component: PerformanceAssessmentDetail,
+              },
+            ],
+          },
+          {
+            path: '/app/performance/titleSetting',
+            component: PerformanceTitleSetting,
+            name: '头衔设置',
           },
         ],
       },

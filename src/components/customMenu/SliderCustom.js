@@ -19,9 +19,10 @@ class SliderCustom extends Component {
   }
   componentDidMount() {
     this.props.onRef(this);
-    // console.log('this.props.routeUrl');
-    // console.log(this.props.routeUrl);
-    this.setMenuOpen(this.props.routeUrl);
+    if (this.props.isCollapsed) {
+      this.setState({ firstHide: true });
+    }
+    this.setMenuOpen(this.props.history.location.pathname);
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.isCollapsed) {
@@ -29,26 +30,13 @@ class SliderCustom extends Component {
     } else {
       this.setState({ firstHide: false });
     }
-    this.setMenuOpen(nextProps.routeUrl);
+    this.setMenuOpen(nextProps.location.pathname);
   }
   setMenuOpen = (pathname) => {
     let menuUrl = pathname;
-    // console.log(menuUrl);
-    const arr = ['Detail', 'Add', 'Edit', 'UserData'];
-    arr.map((item) => {
-      if (pathname.includes(item)) {
-        menuUrl = pathname.substr(0, pathname.lastIndexOf(item));
-      }
-    });
-    // if (pathname.includes('Detail')) {
-    //   menuUrl = pathname.substr(0, pathname.lastIndexOf('Detail'));
-    // } else if (pathname.includes('Add')) {
-    //   menuUrl = pathname.substr(0, pathname.lastIndexOf('Add'));
-    // }
     this.setState({
-      openKey: pathname.substr(0, pathname.lastIndexOf('/')),
-      selectedKey: menuUrl,
-      firstHide: false,
+      openKey: menuUrl.split('/').slice(0, 3).join('/'),
+      selectedKey: menuUrl.split('/').slice(0, 4).join('/'),
     });
   };
   menuClick = (e) => {
@@ -57,19 +45,19 @@ class SliderCustom extends Component {
     });
   };
   openMenu = (v) => {
+    console.log('v');
+    console.log(v);
     this.setState({
       openKey: v[v.length - 1],
       firstHide: false,
     });
   };
   createMenu = (menu = []) => {
-    // console.log(menu);
-    // console.log('menu====');
     return menu.map((item) => {
       if (item.sub && item.sub.length > 0) {
         return (
           <Menu.SubMenu
-            key={item.pathname}
+            key={item.pathname.split('/').slice(0, 3).join('/')}
             title={
               <span>
                 {item.icon && <Icon type={item.icon} />}
@@ -82,7 +70,7 @@ class SliderCustom extends Component {
         );
       } else {
         return (
-          <Menu.Item key={item.pathname}>
+          <Menu.Item key={item.pathname.split('/').slice(0, 4).join('/')}>
             <Link to={item.pathname}>
               {item.icon && <Icon type={item.icon} />}
               <span className="nav-text">{item.title}</span>

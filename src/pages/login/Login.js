@@ -75,7 +75,7 @@ class Login extends Component {
                 sessionStorage.setItem('user', userJson);
                 sessionStorage.setItem('menus', munuJson);
                 message.success('登录成功！', 1, function () {
-                  history.push({ pathname: '/app/home/index', menus: menuList });
+                  history.push({ pathname: '/app/index', menus: menuList });
                 });
                 //登录成功后记住账号、密码 / 清除记住的账号、密码
                 remUser

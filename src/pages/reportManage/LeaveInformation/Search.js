@@ -57,7 +57,12 @@ class SearchForm extends Component {
   onChangeEndTime = () => {};
   selectTaskType = () => {};
   hangdleFeedback = () => {};
-  handlePrif = () => {};
+  handlePrif = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      this.props.exportLeaveLiust && this.props.exportLeaveLiust(values);
+    });
+  };
   handleTreeName = () => {};
   treeNodes = (arr) => {
     arr.map((item) => {
@@ -77,7 +82,6 @@ class SearchForm extends Component {
   };
   render() {
     const { getFieldDecorator, setFieldsValue } = this.props.form;
-    console.log('render');
     return (
       <Form onSubmit={this.handleSearch}>
         <Row gutter={24}>

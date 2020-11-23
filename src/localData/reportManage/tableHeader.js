@@ -195,10 +195,16 @@ export const leaveInformationDetal = (editCallback) => {
     {
       title: '开始时间',
       dataIndex: 'startDate',
+      render: (txt, row, index) => {
+        return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
+      },
     },
     {
       title: '结束时间',
       dataIndex: 'endDate',
+      render: (txt, row, index) => {
+        return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
+      },
     },
     {
       title: '类型',
@@ -228,11 +234,11 @@ export const leaveInformationDetal = (editCallback) => {
       title: '操作',
       dataIndex: 'option',
       render: (txt, record, index) => {
-        return (
-          <Button type="primary" onClick={() => editCallback && editCallback(record)}>
+        return record.repStatus == 'error' ? (
+          <Button type="primary" size="small" onClick={() => editCallback && editCallback(record)}>
             编辑
           </Button>
-        );
+        ) : null;
       },
     },
   ];
