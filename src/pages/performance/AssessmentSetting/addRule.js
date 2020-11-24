@@ -30,7 +30,8 @@ class AddRule extends Component {
       if (redactData) {
         //编辑小类或大类
         const ruleName = values.ruleName;
-        dataObj = { ...redactData, ruleName };
+        const ruleCode = values.ruleCode;
+        dataObj = { ...redactData, ruleName, ruleCode };
       } else {
         const scoreType = 'base'; //区分单个分数 和 区间分数，目前写死为单个分数
         //新增小类或大类
@@ -40,8 +41,11 @@ class AddRule extends Component {
         .postData('/api/integral-rule/create', dataObj)
         .then((res) => {
           if (res.code == 0) {
-            message.success('操作成功');
             this.handleCancel();
+            const timer = setTimeout(() => {
+              message.success('操作成功');
+              clearTimeout(timer);
+            });
           }
         })
         .catch((error) => {

@@ -81,8 +81,11 @@ class AssessmentSetting extends Component {
       .getData('/api/integral-rule/delCascade', { id })
       .then((res) => {
         if (res.code == 0) {
-          message.success('操作成功');
           this.getAllRule();
+          const timer = setTimeout(() => {
+            message.success('操作成功');
+            clearTimeout(timer);
+          });
         }
       })
       .catch((error) => {

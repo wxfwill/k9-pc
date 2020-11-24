@@ -9,25 +9,13 @@ const { Option } = Select;
 //文件类型列表
 const fileTypeList = [
   {
-    label: '用车审批',
-    value: '用车审批',
-  },
-  {
-    label: '绩效加分上报',
-    value: '绩效加分上报',
-  },
-  {
-    label: '请假/调休',
-    value: '请假/调休',
-  },
-  {
-    label: '加班/夜班',
-    value: '加班/夜班',
-  },
-  {
     label: '日报',
     value: '日报',
   },
+  // {
+  //   label: '考勤',
+  //   value: '考勤',
+  // },
 ];
 //上传的文件类型 .xls,.xlsx
 const accept = 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
@@ -36,7 +24,8 @@ class ImportFile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileType: '用车审批',
+      fileType: '日报',
+      file: null,
       fileName: '',
       isImport: false,
     };
@@ -54,6 +43,7 @@ class ImportFile extends Component {
     this.setState(
       {
         fileName: file.name,
+        file: file,
       },
       () => {
         this.setState({
@@ -66,8 +56,30 @@ class ImportFile extends Component {
   //取消导入
   onCancel = () => {
     this.setState({
+      file: null,
       fileName: '',
       isImport: false,
+    });
+  };
+  //导入
+  onSubmit = () => {
+    const { file, fileType } = this.state;
+    if (!file) {
+      message.error('请选择需要导入的文件！');
+      return;
+    }
+    let $url = '';
+    if (fileType == '日报') {
+      $url = '/api/report/dailyWorkImport';
+    }
+    let formData = new FormData();
+    formData.append('file', file);
+    React.$ajax.postData($url, formData).then((res) => {
+      console.log(res);
+      if (res && res.code === 0) {
+        message.success('导入成功！');
+        this.onCancel();
+      }
     });
   };
 
@@ -98,7 +110,7 @@ class ImportFile extends Component {
               </Upload>
             </InputGroup>
             <div className="txt-c">
-              <Button type="primary" disabled={!isImport}>
+              <Button type="primary" disabled={!isImport} onClick={this.onSubmit}>
                 导入
               </Button>
               <Button style={{ marginLeft: 16 }} onClick={this.onCancel}>
