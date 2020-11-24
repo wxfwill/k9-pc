@@ -97,7 +97,6 @@ class ShowModel extends Component {
   handleOk = () => {
     console.log('ok');
     this.props.form.validateFields((err, val) => {
-      console.log(val);
       let obj = {};
       let {
         rep,
@@ -111,7 +110,12 @@ class ShowModel extends Component {
         repDetail,
         feedbackContext,
       } = val;
-      let users = { rep: [Number(rep)], peer, carUseAuditor, taskAssignLeader: [Number(taskAssignLeader)] };
+      let users = {
+        rep: rep ? [Number(rep)] : null,
+        peer,
+        carUseAuditor,
+        taskAssignLeader: taskAssignLeader ? [Number(taskAssignLeader)] : null,
+      };
       obj.id = this.state.id;
       obj.users = users;
       obj.category = category ? [Number(category)] : null;
