@@ -1,138 +1,58 @@
 import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Radio, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import { Form, Row, Col, Input, Button, Radio, TreeSelect, Select, DatePicker } from 'antd';
 import moment from 'moment';
-import httpAjax from 'libs/httpAjax';
+import GlobalName from 'components/searchForm/GlobalUserName';
+import GlobalTeam from 'components/searchForm/GlobalTeam';
+import GlobalTaskType from 'components/searchForm/GlobalTaskType';
+import GlobalSatrtEndTime from 'components/searchForm/GlobalSatrtEndTime';
 const FormItem = Form.Item;
+const { TreeNode } = TreeSelect;
 const Option = Select.Option;
 
 class SearchForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      expand: true,
-      dutyList: [],
-      allHouseData: [
-        {
-          id: 1,
-          name: '一中队',
-        },
-        {
-          id: 2,
-          name: '二中队',
-        },
-      ],
-      taksTypeData: [
-        {
-          id: 0,
-          title: '外出任务',
-        },
-        {
-          id: 1,
-          title: '内务任务',
-        },
-      ],
       feedbalVal: null,
     };
   }
-  componentDidMount() {
-    // this.getAllHouse();
-  }
+  componentDidMount() {}
   handleSearch = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      console.log(values);
-      this.props.handleSearchData && this.props.handleSearchData(values);
+      this.props.handleSearchData && this.props.handleSearchData(values, () => false);
     });
   };
   handleReset = () => {
     this.props.form.resetFields();
+    this.props.handleSearchData && this.props.handleSearchData(null, () => false);
   };
   handleChange(name, value) {
     this.setState({
       [name]: value,
     });
   }
-  getAllHouse = () => {
-    this.setState({ roomIdvisible: true });
-    httpAjax('post', config.apiUrl + '/api/dogRoom/allHouse').then((res) => {
-      if (res.code == '0') {
-        this.setState({ allHouseData: res.data });
-      }
+  onChangeStartTime = () => {};
+  hangdleFeedback = () => {};
+  handlePrif = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      this.props.handleExportData && this.props.handleExportData(values);
     });
   };
-  selectHouseId = () => {};
-  onChangeStartTime = () => {};
-  onChangeEndTime = () => {};
-  selectTaskType = () => {};
-  hangdleFeedback = () => {};
-  handlePrif = () => {};
   render() {
-    const { getFieldDecorator } = this.props.form;
-    let { expand, dutyList } = this.state;
     return (
       <Form onSubmit={this.handleSearch}>
         <Row gutter={24}>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
-            <FormItem label="中队:" {...thirdLayout}>
-              {getFieldDecorator('groupId')(
-                <Select placeholder="请选择" allowClear onChange={this.selectHouseId}>
-                  {this.state.allHouseData.map((item) => {
-                    return (
-                      <Option key={item.id} value={item.id}>
-                        {item.name}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              )}
-            </FormItem>
+            <GlobalTeam form={this.props.form} teamLabel="groupIds"></GlobalTeam>
           </Col>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
-            <FormItem label="姓名:" {...thirdLayout}>
-              {getFieldDecorator('userName', {
-                initialValue: '',
-              })(<Input placeholder="请输入" allowClear />)}
-            </FormItem>
+            <GlobalName form={this.props.form} userLabel="userIds"></GlobalName>
           </Col>
+          <GlobalSatrtEndTime form={this.props.form}></GlobalSatrtEndTime>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
-            <FormItem label="完成时间" {...thirdLayout}>
-              {getFieldDecorator('repDateStart', {
-                initialValue: null,
-              })(<DatePicker placeholder="请输入" onChange={this.onChangeStartTime} />)}
-            </FormItem>
-          </Col>
-          <Col xl={6} lg={6} md={8} sm={12} xs={12}>
-            <FormItem label="任务类型" {...thirdLayout} hasFeedback>
-              {getFieldDecorator('categoryIds')(
-                <Select placeholder="请选择" style={{ width: '100%' }} allowClear onChange={this.selectTaskType}>
-                  {this.state.taksTypeData.map((item) => {
-                    return (
-                      <Option key={item.id} value={item.id}>
-                        {item.title}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col xl={6} lg={6} md={8} sm={12} xs={12}>
-            <FormItem
-              label="审批状态"
-              labelCol={{ xl: { span: 9 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
-            >
-              {getFieldDecorator('isFeedback', {
-                initialValue: this.state.feedbalVal,
-              })(
-                <Radio.Group onChange={this.hangdleFeedback}>
-                  <Radio value={true}>已通过</Radio>
-                  <Radio value={false}>已撤销</Radio>
-                </Radio.Group>
-              )}
-            </FormItem>
+            <GlobalTaskType form={this.props.form} taskCode="jxType" taskLabel="rewardType"></GlobalTaskType>
           </Col>
           <Col xl={6} lg={6} md={8} sm={12} xs={12} style={{ textAlign: 'center' }}>
             <Button type="primary" htmlType="submit">

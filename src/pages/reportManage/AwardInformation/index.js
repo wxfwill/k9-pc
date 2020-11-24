@@ -12,8 +12,17 @@ class AwardInformation extends Component {
     super(props);
     this.state = {
       dataSource: [],
-      columns: AwardInformationDetal,
       loading: false,
+      sortFieldName: null,
+      sortType: 'desc',
+      id: null,
+      param: {
+        rewardType: null,
+        endDate: null,
+        startDate: null,
+        groupIds: [],
+        userIds: [],
+      },
       pagination: {
         currPage: 1,
         pageSize: 10,
@@ -22,7 +31,9 @@ class AwardInformation extends Component {
     };
   }
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '奖励信息查询'] });
+    // React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '奖励信息查询'] });
+    let { param, sortFieldName, sortType, pagination } = this.state;
+    this.getListData(param, sortFieldName, sortType, pagination);
   }
   handleChangeSize = (page) => {
     this.tableChange({ currPage: page, current: page });
@@ -30,16 +41,18 @@ class AwardInformation extends Component {
   handleShowSizeChange = (cur, size) => {
     this.tableChange({ currPage: cur, pageSize: size, current: cur });
   };
-  handleSearchData = (data) => {
-    let per = data;
-    per.categoryIds = per.categoryIds != null ? [per.categoryIds] : [];
-    per.groupId = per.groupId != null ? [per.groupId] : [];
-    per.repDateEnd = per.repDateEnd && moment(per.repDateEnd).format('YYYY-MM-DD');
-    per.repDateStart = per.repDateStart && moment(per.repDateStart).format('YYYY-MM-DD');
+  handleSearchData = (data, init) => {
+    console.log(data);
+    let per = data || {};
+    per.userIds = per.userIds ? [Number(per.userIds)] : [];
+    per.groupIds = per.groupIds ? [Number(per.groupIds)] : [];
+    per.endDate = per.endDate ? moment(per.endDate).format('YYYY-MM-DD') : null;
+    per.startDate = per.startDate ? moment(per.startDate).format('YYYY-MM-DD') : null;
+    per.rewardType = per.rewardType ? per.rewardType : null;
     let newObj = Object.assign({}, this.state.param, per);
     this.setState({ param: newObj }, () => {
       let { param, sortFieldName, sortType, pagination } = this.state;
-      this.getListData(param, sortFieldName, sortType, pagination);
+      init(param, sortFieldName, sortType, pagination) || this.getListData(param, sortFieldName, sortType, pagination);
     });
   };
   tableChange = (obj) => {
@@ -55,19 +68,38 @@ class AwardInformation extends Component {
   getListData = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
     this.setState({ loading: true });
-    // React.httpAjax('post', config.apiUrl + '/api/report/page4wReportInfo', { ...newObj }).then((res) => {
-    //   if (res && res.code === 0) {
-    //     let resData = res.data;
-    //     const pagination = { ...this.state.pagination };
-    //     pagination.total = resData.totalCount;
-    //     pagination.current = resData.currPage;
-    //     this.setState({ dataSource: resData.list, loading: false, pagination });
-    //   }
-    // });
+    React.$ajax.postData('/api/reward/getPageRewardSync', { ...newObj }).then((res) => {
+      if (res && res.code === 0) {
+        let resData = res.data;
+        const pagination = { ...this.state.pagination };
+        pagination.total = resData.totalCount;
+        pagination.current = resData.currPage;
+        this.setState({ dataSource: resData.list, loading: false, pagination });
+      }
+    });
   };
-  editFormData = () => {};
-  handleEdit = () => {
-    this.child.openModel();
+  handleExportData = (data) => {
+    this.handleSearchData(data, this.exportExcel);
+  };
+  exportExcel = (param, sortFieldName, sortType, pagination) => {
+    let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
+    React.$ajax.fileDataPost('/api/reward/exportRewardSyncInfo', { ...newObj }).then((res) => {
+      let name = `奖励信息列表.xlsx`;
+      util.createFileDown(res, name);
+    });
+    return true;
+  };
+  editFormData = (data) => {
+    React.$ajax.postData('/api/reward/editRewardSyncInfo', { ...data }).then((res) => {
+      if (res && res.code == 0) {
+        this.child.handleCancel();
+        let { param, sortFieldName, sortType, pagination } = this.state;
+        this.getListData(param, sortFieldName, sortType, pagination);
+      }
+    });
+  };
+  handleEditInfo = (row) => {
+    this.child.openModel(row);
   };
 
   render() {
@@ -75,11 +107,8 @@ class AwardInformation extends Component {
     return (
       <div className="four-wrap">
         <Card title="按条件搜索" bordered={false}>
-          <Search handleSearchData={this.handleSearchData} />
+          <Search handleSearchData={this.handleSearchData} handleExportData={this.handleExportData} />
         </Card>
-        <Button type="primary" onClick={this.handleEdit}>
-          编辑
-        </Button>
         <EditModel onRef={(ref) => (this.child = ref)} editFormData={this.editFormData}></EditModel>
         <Card bordered={false}>
           <CustomTable
@@ -89,7 +118,7 @@ class AwardInformation extends Component {
             dataSource={dataSource}
             pagination={pagination}
             loading={loading}
-            columns={columns}
+            columns={AwardInformationDetal(this.handleEditInfo)}
             isBordered={true}
             isRowSelects={false}
             handleChangeSize={this.handleChangeSize}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Button, DatePicker, Select, Row, Col, Form, Input } from 'antd';
 import { editModel } from 'util/Layout';
+import moment from 'moment';
 const { TextArea } = Input;
 const Option = Select.Option;
 
@@ -9,19 +10,10 @@ class ShowModel extends Component {
     super(props);
     this.state = {
       visible: false,
-      startValue: null,
-      endValue: null,
-      endOpen: false,
-      taksTypeData: [
-        {
-          id: 1,
-          title: '测试',
-        },
-        {
-          id: 2,
-          title: 'hah',
-        },
-      ],
+      userName: undefined,
+      completeDate: null,
+      reason: undefined,
+      particulars: undefined,
     };
   }
   componentDidMount() {
@@ -50,14 +42,26 @@ class ShowModel extends Component {
     this.setState({ endOpen: open });
   };
 
-  openModel = () => {
-    this.setState({ visible: true });
+  openModel = (row) => {
+    // React.$ajax.postData('/api/reward/getRewardSyncInfo', { id }).then((res) => {
+    //   if (res && res.code == 0) {
+    //     this.setState({ visible: true });
+    //     console.log('res');
+    //     console.log(res);
+    //   }
+    // });
+    console.log('row');
+    console.log(row);
+    let { userName, completeDate, reason, particulars, id } = row;
+    this.setState({ userName, completeDate: moment(completeDate), reason, id, particulars, visible: true });
   };
   handleOk = () => {
     console.log('ok');
     this.props.form.validateFields((err, val) => {
       console.log(val);
-      this.props.editFormData && this.props.editFormData(val);
+      val.completeDate = moment(val.completeDate).format('YYYY-MM-DD');
+      let obj = Object.assign({}, val, { id: this.state.id });
+      this.props.editFormData && this.props.editFormData(obj);
     });
   };
   handleCancel = () => {
@@ -69,7 +73,6 @@ class ShowModel extends Component {
   onChangeTextArea = () => {};
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { startValue, endValue, endOpen } = this.state;
     return (
       <Modal
         wrapClassName="customModel"
@@ -83,19 +86,19 @@ class ShowModel extends Component {
         onOk={this.handleOk}
         onCancel={this.handleCancel}
       >
-        <Form onSubmit={this.handleSubmit} {...editModel}>
+        <Form {...editModel}>
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="姓名">
-                {getFieldDecorator('name', {
-                  initialValue: undefined,
+                {getFieldDecorator('userName', {
+                  initialValue: this.state.userName,
                 })(<Input placeholder="请输入" />)}
               </Form.Item>
             </Col>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="完成时间">
-                {getFieldDecorator('satrtTime', {
-                  initialValue: startValue,
+                {getFieldDecorator('completeDate', {
+                  initialValue: this.state.completeDate,
                 })(
                   <DatePicker
                     style={{ width: '100%' }}
@@ -112,8 +115,8 @@ class ShowModel extends Component {
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="加分原因">
-                {getFieldDecorator('address', {
-                  initialValue: undefined,
+                {getFieldDecorator('reason', {
+                  initialValue: this.state.reason,
                 })(<Input placeholder="请输入" style={{ width: '460px' }} />)}
               </Form.Item>
             </Col>
@@ -121,8 +124,8 @@ class ShowModel extends Component {
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="详细情况">
-                {getFieldDecorator('mark', {
-                  initialValue: undefined,
+                {getFieldDecorator('particulars', {
+                  initialValue: this.state.particulars,
                 })(
                   <TextArea
                     placeholder="请输入"

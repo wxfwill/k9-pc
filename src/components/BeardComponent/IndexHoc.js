@@ -38,8 +38,6 @@ export const getBreadcrumbs = ({ flattenRoutes, location }) => {
   let res = [];
   // 取得路径名，然后将路径分割成每一路由部分.
   // 对每一部分执行一次`getBreadcrumb()`获取到面包屑名称.
-  console.log(' location.pathname');
-  console.log(location);
   location.pathname
     .split('?')[0]
     .split('/')
@@ -52,8 +50,6 @@ export const getBreadcrumbs = ({ flattenRoutes, location }) => {
           curSection,
           pathSection,
         });
-        console.log('res');
-        console.log(breadcrumb);
         // 将面包屑导入到 res 数组中
         breadcrumb && res.push(breadcrumb);
       }

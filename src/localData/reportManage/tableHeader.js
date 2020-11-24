@@ -140,42 +140,48 @@ export const dailyInformationDetal = [
   {
     title: '序号',
     dataIndex: 'id',
+    render: (txt, record, index) => {
+      return index + 1;
+    },
   },
   {
     title: '人员名称',
-    dataIndex: '人员名称',
+    dataIndex: 'repUser',
   },
   {
     title: '汇报时间',
-    dataIndex: '汇报时间',
+    dataIndex: 'repTime',
+    render: (txt, record) => {
+      return txt ? util.formatDate(new Date(txt), 'yyyy-MM-dd') : '';
+    },
   },
   {
     title: '早晨(7:00-8:00)',
-    dataIndex: '早晨(7:00-8:00)',
+    dataIndex: 'morn',
   },
   {
     title: '上午(9:00-11:30)',
-    dataIndex: '上午(9:00-11:30)',
+    dataIndex: 'night',
   },
   {
     title: '下午(15:00-18:00)',
-    dataIndex: '下午(15:00-18:00)',
+    dataIndex: 'afternoon',
   },
   {
     title: '晚上(19:00-22:00)',
-    dataIndex: '晚上(19:00-22:00)',
+    dataIndex: 'repId',
   },
   {
     title: '加分事项',
-    dataIndex: '加分事项',
+    dataIndex: 'forenoon',
   },
   {
     title: '今日完成加分事项次数',
-    dataIndex: '今日完成加分事项次数',
+    dataIndex: 'repTarget',
   },
   {
     title: '评论',
-    dataIndex: '评论',
+    dataIndex: 'comments',
   },
 ];
 
@@ -276,37 +282,60 @@ export const OvertimeInformationDetal = [
   },
 ];
 
-export const AwardInformationDetal = [
-  {
-    title: '序号',
-    dataIndex: 'id',
-  },
-  {
-    title: '人员名称',
-    dataIndex: '人员名称',
-  },
-  {
-    title: '完成时间',
-    dataIndex: '完成时间',
-  },
-  {
-    title: '加分原因',
-    dataIndex: '加分原因',
-  },
-  {
-    title: '详细情况',
-    dataIndex: '详细情况',
-  },
-  {
-    title: '审批人',
-    dataIndex: '审批人',
-  },
-  {
-    title: '审批时间',
-    dataIndex: '审批时间',
-  },
-  {
-    title: '备注',
-    dataIndex: '备注',
-  },
-];
+export const AwardInformationDetal = (editCallback) => {
+  let data = [
+    {
+      title: '序号',
+      dataIndex: 'id',
+      render: (txt, row, index) => {
+        return index + 1;
+      },
+    },
+    {
+      title: '人员名称',
+      dataIndex: 'userName',
+    },
+    {
+      title: '完成时间',
+      dataIndex: 'completeDate',
+      render: (txt, row, index) => {
+        return util.formatDate(new Date(txt), 'yyyy-MM-dd');
+      },
+    },
+    {
+      title: '加分原因',
+      dataIndex: 'reason',
+    },
+    {
+      title: '详细情况',
+      dataIndex: 'particulars',
+    },
+    {
+      title: '审批人',
+      dataIndex: 'approvalUserName',
+    },
+    {
+      title: '审批时间',
+      dataIndex: 'approvalDate',
+      render: (txt, row, index) => {
+        return util.formatDate(new Date(txt), 'yyyy-MM-dd');
+      },
+    },
+    {
+      title: '备注',
+      dataIndex: 'remarks',
+    },
+    {
+      title: '操作',
+      dataIndex: 'option',
+      render: (txt, record, index) => {
+        return record.repStatus == 'error' ? (
+          <Button type="primary" size="small" onClick={() => editCallback && editCallback(record)}>
+            编辑
+          </Button>
+        ) : null;
+      },
+    },
+  ];
+  return data;
+};
