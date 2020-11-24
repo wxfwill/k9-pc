@@ -5,8 +5,6 @@ import routerArr from '../../router/allRouter';
 require('style/view/common/Breadcrumbs.less');
 
 const BreadcrumbsComponent = ({ breadcrumbs }) => {
-  console.log('breadcrumbs');
-  console.log(breadcrumbs);
   return breadcrumbs.length > 1 ? (
     <div className="customBread">
       <span className="leftBlue"></span>
