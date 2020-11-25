@@ -15,9 +15,9 @@ class ShowModel extends Component {
       endOpen: false,
       personnelTree: [],
       id: 0,
-      rep: undefined, // 申请人
+      apply: undefined, // 申请人
       peer: undefined, // 同行人
-      category: undefined, // 任务类型
+      categoryIds: undefined, // 任务类型
       repTime: null, //任务时间
       carUseAuditor: undefined, // 用车审核人
       arrestNum: undefined, // 抓捕人数
@@ -80,7 +80,7 @@ class ShowModel extends Component {
         this.setState({ visible: true });
         let resData = res.data;
         console.log(resData);
-        let { arrestNum, category, repTime, taskLocation, repDetail, feedbackContext, users } = resData;
+        let { arrestNum, categoryIds, repTime, taskLocation, repDetail, feedbackContext, users } = resData;
         if (users) {
           for (let key in users) {
             this.setUser(key, users[key]);
@@ -99,9 +99,9 @@ class ShowModel extends Component {
     this.props.form.validateFields((err, val) => {
       let obj = {};
       let {
-        rep,
+        apply,
         peer,
-        category,
+        categoryIds,
         repTime,
         carUseAuditor,
         arrestNum,
@@ -111,14 +111,14 @@ class ShowModel extends Component {
         feedbackContext,
       } = val;
       let users = {
-        rep: rep ? [Number(rep)] : null,
+        apply: apply ? apply : null,
         peer,
         carUseAuditor,
-        taskAssignLeader: taskAssignLeader ? [Number(taskAssignLeader)] : null,
+        taskAssignLeader: taskAssignLeader ? [taskAssignLeader.toString()] : null,
       };
       obj.id = this.state.id;
       obj.users = users;
-      obj.category = category ? [Number(category)] : null;
+      obj.categoryIds = categoryIds ? [categoryIds] : null;
       obj.arrestNum = arrestNum ? arrestNum : null;
       obj.taskLocation = taskLocation ? taskLocation : null;
       obj.repDetail = repDetail ? repDetail : null;
@@ -172,8 +172,8 @@ class ShowModel extends Component {
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="申请人">
-                {getFieldDecorator('rep', {
-                  initialValue: this.state.rep,
+                {getFieldDecorator('apply', {
+                  initialValue: this.state.apply,
                 })(
                   <TreeSelect
                     showSearch
@@ -243,8 +243,8 @@ class ShowModel extends Component {
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="任务类型">
-                {getFieldDecorator('category', {
-                  initialValue: this.state.category,
+                {getFieldDecorator('categoryIds', {
+                  initialValue: this.state.categoryIds,
                 })(
                   <TreeSelect
                     style={{ width: '100%' }}

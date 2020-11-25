@@ -94,6 +94,8 @@ const AddUser = asyncComponent(() => import('pages/userManage/user/addUserForm')
 const RoleInfo = asyncComponent(() => import('pages/userManage/role/List'));
 // 菜单维护
 const MenuInfo = asyncComponent(() => import('pages/userManage/menu/index'));
+// 机构列表
+const OrganList = asyncComponent(() => import('pages/userManage/organ/index'));
 
 // 新版--上报统计
 // 上报
@@ -163,8 +165,9 @@ const EsayTaskAdd = asyncComponent(() => import('components/admin/monitordog/Esa
 const Assemble = asyncComponent(() => import('components/admin/monitordog/assemble/index'));
 const AssembleAdd = asyncComponent(() => import('components/admin/monitordog/assemble/AssembleAdd'));
 
-// 档案
+// 档案管理
 const Archivew = asyncComponent(() => import('pages/archives/index'));
+const ArchivewList = asyncComponent(() => import('pages/archives/List'));
 
 const routerArr = [
   {
@@ -431,6 +434,11 @@ const routerArr = [
             path: '/app/user/menuList',
             component: MenuInfo,
             name: '菜单列表',
+          },
+          {
+            path: '/app/user/organList',
+            component: OrganList,
+            name: '机构列表',
           },
           {
             path: '/app/user/roleList',
@@ -708,6 +716,18 @@ const routerArr = [
             path: '/app/performance/titleSetting',
             component: PerformanceTitleSetting,
             name: '头衔设置',
+          },
+        ],
+      },
+      {
+        path: '/app/archivew',
+        component: BearerRoute,
+        name: '档案管理',
+        items: [
+          {
+            path: '/app/archivew/list',
+            component: ArchivewList,
+            name: '列表',
           },
         ],
       },

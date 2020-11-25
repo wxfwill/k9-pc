@@ -15,3 +15,6 @@ export const MENU_HIGH_LINE = 'MENU_HIGH_LINE';
 
 // websocket  消息
 export const SOCKET_LIST_NEWS_MSG = 'SOCKET_LIST_NEWS_MSG';
+
+// 用户管理 职务信息
+export const USER_DUTY_LIST = 'USER_DUTY_LIST';

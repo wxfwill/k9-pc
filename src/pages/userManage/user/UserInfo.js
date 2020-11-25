@@ -22,6 +22,7 @@ class UserInfo extends Component {
       pageSize: 10,
       currPage: 1,
       selectedRowKeys: [],
+      // dutyList: [], // 职务信息
     };
   }
   handleLimit = (limit) => {
@@ -29,7 +30,13 @@ class UserInfo extends Component {
   };
   componentDidMount() {
     this.fetch();
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['用户管理', '用户列表'] });
+    // React.store.dispatch({ type: 'NAV_DATA', nav: ['用户管理', '用户列表'] });
+    // React.$ajax.postData('/api/basicData/dutyList').then((res) => {
+    //   if (res.code == 0) {
+    //     this.setState({ dutyList: res.data });
+    //     sessionStorage.setItem('dutyList', JSON.stringify(res.data));
+    //   }
+    // });
   }
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
@@ -129,7 +136,6 @@ class UserInfo extends Component {
         <Row gutter={24}>
           <Col xl={24} lg={24} md={24} sm={24} xs={24}>
             <Card bordered={false}>
-              {/* <UserTable filter={this.state.limit} /> */}
               <div style={{ marginBottom: '20px' }}>
                 <Button type="primary" style={{ marginRight: '20px' }} onClick={this.addInfo}>
                   <Link to={{ pathname: '/app/user/infoAddUser', query: { targetText: '新增' } }}>新增人员</Link>

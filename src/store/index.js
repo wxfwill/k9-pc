@@ -9,11 +9,13 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 import loginReducer from './reducers/loginReducer';
 import socketReducer from './reducers/websocketReducer';
 import commonReducer from './reducers/common';
+import userReducer from './reducers/userReducer';
 
 const rootReducer = combineReducers({
   loginReducer,
   socketReducer,
   commonReducer,
+  userReducer,
 });
 
 // redux持久化
@@ -22,7 +24,7 @@ import storage from 'redux-persist/lib/storage';
 const persistConfig = {
   key: 'root',
   storage: storage,
-  whitelist: ['loginReducer', 'socketReducer', 'commonReducer'], // 白名单
+  whitelist: ['loginReducer', 'socketReducer', 'commonReducer', 'userReducer'], // 白名单
 };
 
 const myPersistReducer = persistReducer(persistConfig, rootReducer);

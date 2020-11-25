@@ -95,6 +95,10 @@ class DailyInformation extends Component {
         const pagination = { ...this.state.pagination };
         pagination.total = resData.totalCount;
         pagination.current = resData.currPage;
+        resData.list &&
+          resData.list.forEach((value, index) => {
+            value.pageNumber = resData.currPage;
+          });
         this.setState({ dataSource: resData.list ? resData.list : [], loading: false, pagination });
       }
     });

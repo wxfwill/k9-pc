@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import CustomTable from 'components/table/CustomTable';
-
 import { Card, Button, Popconfirm } from 'antd';
 import AddEditModel from './AddEditModel';
 
@@ -158,7 +157,7 @@ class MenuList extends Component {
     ];
     return (
       <div>
-        <Card title="系统菜单维护" bordered={false}>
+        <Card title="机构维护" bordered={false}>
           <AddEditModel onRef={(ref) => (this.childEle = ref)} type={this.state.type} />
           <CustomTable
             setTableKey={(row) => {

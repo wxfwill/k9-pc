@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Select, DatePicker, Divider } from 'antd';
+import { saveDutyList } from 'store/actions/userAction';
 import { thirdLayout } from 'util/Layout';
+import { connect } from 'react-redux';
+import * as formData from './userData';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 require('style/view/common/conduct.less');
+
+@connect(
+  (state) => ({ navData: state.commonReducer.navData }),
+  (dispatch) => ({ changeDutyList: (list) => dispatch(saveDutyList(list)) })
+)
 class SearchForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       expand: false,
-      dutyList: [],
+      dutyList: [], //职务信息
     };
   }
   componentDidMount() {
@@ -19,6 +27,7 @@ class SearchForm extends React.Component {
     React.$ajax.postData('/api/basicData/dutyList').then((res) => {
       if (res.code == 0) {
         this.setState({ dutyList: res.data });
+        this.props.changeDutyList(res.data);
         sessionStorage.setItem('dutyList', JSON.stringify(res.data));
       }
     });
@@ -72,29 +81,28 @@ class SearchForm extends React.Component {
               {getFieldDecorator('duty')(<Select placeholder="职务">{dutyListOption}</Select>)}
             </FormItem>
           </Col>
-        </Row>
-        <Row gutter={24}>
-          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ display: expand ? 'none' : 'block' }}>
+          <Col xl={8} lg={12} md={12} sm={24} xs={24} style={{ display: expand ? 'none' : 'block' }}>
             <FormItem label="职称" {...thirdLayout}>
               {getFieldDecorator('title')(
-                <Select placeholder="职称">
-                  <Option value="1">高级工程师</Option>
-                  <Option value="2">工程师</Option>
-                  <Option value="2">助理工程师</Option>
+                <Select placeholder="职称" allowClear>
+                  {formData.titleArr.map((item, index) => {
+                    return (
+                      <Option value={item.id} key={index}>
+                        {item.name}
+                      </Option>
+                    );
+                  })}
                 </Select>
               )}
             </FormItem>
           </Col>
-          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ textAlign: 'center' }}>
+          <Col xl={8} lg={12} md={12} sm={24} xs={24} style={{ textAlign: 'center' }}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
             <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
               清空
             </Button>
-            {/* <a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>
-              {this.state.expand ? '展开' : '收起'} <Icon type={this.state.expand ? 'down' : 'up'} />
-            </a> */}
           </Col>
         </Row>
       </Form>
