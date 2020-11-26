@@ -83,19 +83,24 @@ queryGroupUser();
 //根据大类名查询该类下的规则
 let ruleList = [];
 (function () {
-  let dataObj = {
-    rootName: '4W报备',
-  };
-  React.$ajax.common
-    .queryRulesByRootName(dataObj)
-    .then((res) => {
-      if (res.code == 0) {
-        ruleList = res.data;
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  // let dataObj = {
+  //   rootName: '4W报备',
+  // };
+  // React.$ajax.common
+  //   .queryRulesByRootName(dataObj)
+  //   .then((res) => {
+  //     if (res.code == 0) {
+  //       ruleList = res.data;
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
+  React.$ajax.getData('/api/integral-rule/queryRulesByRootCode', { rootCode: 'gzyc' }).then((res) => {
+    if (res.code == 0) {
+      ruleList = res.data;
+    }
+  });
 })();
 //地点列表
 let areaList = [];
