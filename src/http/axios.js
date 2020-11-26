@@ -1,6 +1,8 @@
 import axios from 'axios';
 import config from './config';
 import { message } from 'antd';
+import React from 'react';
+const history = require('history').createHashHistory();
 // 请求次数
 let repeat_count = 0;
 let loading = null;
@@ -66,9 +68,17 @@ let ajax = function $axios(options) {
         // 根据返回的code值来做不同的处理
         if (!data.code || data.code == 0) {
           return data;
+        } else if (data.code == 10001) {
+          // token 过期
+          message.destroy();
+          data && message.info(data.msg);
+          React.store.dispatch({ type: 'USER_TOKEN', token: null });
+          history.push('/login');
+          return data;
         } else {
           message.destroy();
           data && message.info(data.msg);
+          return;
         }
       },
       (err) => {

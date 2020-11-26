@@ -23,7 +23,7 @@ class SearchForm extends Component {
     // 查询用户
     this.queryGroupUser('');
     // 任务类型
-    this.queryTaskType('4w报备');
+    this.queryTaskType('gzyc');
   }
   handleTreeName = (val) => {
     console.log(val);
@@ -33,8 +33,8 @@ class SearchForm extends Component {
     console.log('任务类型');
     console.log(val);
   };
-  queryTaskType = (rootName) => {
-    React.$ajax.common.queryRulesByRootName({ rootName }).then((res) => {
+  queryTaskType = (rootCode) => {
+    React.$ajax.common.queryRulesByRootCode({ rootCode }).then((res) => {
       if (res.code == 0) {
         this.setState({ taskTypeList: res.data });
       }

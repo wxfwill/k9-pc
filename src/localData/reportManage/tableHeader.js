@@ -141,7 +141,7 @@ export const dailyInformationDetal = [
     title: '序号',
     dataIndex: 'id',
     render: (txt, record, index) => {
-      return index + 1;
+      return (record.pageNumber - 1) * 10 + index + 1;
     },
   },
   {
@@ -161,7 +161,7 @@ export const dailyInformationDetal = [
   },
   {
     title: '上午(9:00-11:30)',
-    dataIndex: 'night',
+    dataIndex: 'forenoon',
   },
   {
     title: '下午(15:00-18:00)',
@@ -169,16 +169,16 @@ export const dailyInformationDetal = [
   },
   {
     title: '晚上(19:00-22:00)',
-    dataIndex: 'repId',
+    dataIndex: 'night',
   },
-  {
-    title: '加分事项',
-    dataIndex: 'forenoon',
-  },
-  {
-    title: '今日完成加分事项次数',
-    dataIndex: 'repTarget',
-  },
+  // {
+  //   title: '加分事项',
+  //   dataIndex: 'forenoon',
+  // },
+  // {
+  //   title: '今日完成加分事项次数',
+  //   dataIndex: 'repTarget',
+  // },
   {
     title: '评论',
     dataIndex: 'comments',

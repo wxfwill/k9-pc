@@ -62,26 +62,56 @@ export const userHeaderLabel = (callbackView, callbackEdit, callbackDel) => {
                 删除
               </Button>
             </Popconfirm>
-            {/* <span style={{ cursor: 'pointer', color: '#1890ff' }} onClick={() => this.viewDetail(record)}>
-              <Link to={{ pathname: '/app/user/infoUserData', query: { userId: record.id, targetText: '查看' } }}>
-                <span style={{ cursor: 'pointer', color: '#1890ff' }}>
-                  <Icon type="eye" style={{ margin: '0 10px' }} />
-                  查看
-                </span>
-              </Link>
-            </span> */}
-            {/* <Link to={{ pathname: '/app/user/infoEditUser', query: { userId: record.id, targetText: '编辑' } }}>
-              <span style={{ cursor: 'pointer', color: '#1890ff' }} onClick={() => this.editInfo(record)}>
-                <Icon type="edit" style={{ margin: '0 10px' }} />
-                编辑
-              </span>
-            </Link>
-            <Popconfirm title="确认删除此警员?" onConfirm={() => this.deleteUser(record, index)}>
-              <span style={{ cursor: 'pointer', color: '#1890ff' }}>
-                <Icon type="delete" style={{ margin: '0 10px' }} />
-                删除
-              </span>
-            </Popconfirm> */}
+          </div>
+        );
+      },
+    },
+  ];
+  return data;
+};
+
+export const archivesHeaderLabel = (callbackViewArchive) => {
+  let data = [
+    {
+      title: '姓名',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: '性别',
+      dataIndex: 'sexStr',
+    },
+    {
+      title: '警员编号',
+      dataIndex: 'number',
+    },
+    {
+      title: '职务',
+      dataIndex: 'dutyStr',
+    },
+    {
+      title: '职称',
+      dataIndex: 'titleStr',
+    },
+    {
+      title: '工作单位',
+      dataIndex: 'workUnit',
+    },
+    {
+      title: '电话',
+      dataIndex: 'telPhone',
+    },
+    {
+      title: '操作',
+      dataIndex: 'opreation',
+      width: 200,
+      align: 'center',
+      render: (text, record, index) => {
+        return (
+          <div>
+            <Button size="small" type="primary" onClick={() => callbackViewArchive && callbackViewArchive(record)}>
+              查看档案
+            </Button>
           </div>
         );
       },

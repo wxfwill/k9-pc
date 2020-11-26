@@ -29,7 +29,7 @@ class GlobalTeam extends Component {
     return (
       <FormItem label="中队:" {...thirdLayout}>
         {getFieldDecorator(this.props.teamLabel)(
-          <Select placeholder="请选择" allowClear>
+          <Select placeholder="请选择" allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode}>
             {this.state.teamData.map((item) => {
               return (
                 <Option key={item.id} value={item.id}>

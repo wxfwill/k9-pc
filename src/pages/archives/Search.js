@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Select, DatePicker, Divider } from 'antd';
-import { saveDutyList } from 'store/actions/userAction';
 import { thirdLayout } from 'util/Layout';
 import { connect } from 'react-redux';
-import * as formData from './userData';
+import * as formData from 'pages/userManage/user/userData';
+import GlobalTeam from 'components/searchForm/GlobalTeam';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 require('style/view/common/conduct.less');
 
-@connect(
-  (state) => ({ navData: state.commonReducer.navData }),
-  (dispatch) => ({ changeDutyList: (list) => dispatch(saveDutyList(list)) })
-)
+@connect((state) => ({ navData: state.commonReducer.navData }))
 class SearchForm extends React.Component {
   constructor(props) {
     super(props);
@@ -27,8 +24,6 @@ class SearchForm extends React.Component {
     React.$ajax.postData('/api/basicData/dutyList').then((res) => {
       if (res.code == 0) {
         this.setState({ dutyList: res.data });
-        this.props.changeDutyList(res.data);
-        sessionStorage.setItem('dutyList', JSON.stringify(res.data));
       }
     });
   }
@@ -54,15 +49,6 @@ class SearchForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     let { expand, dutyList } = this.state;
-    const dutyListOption =
-      dutyList &&
-      dutyList.map((item, index) => {
-        return (
-          <Option value={item.id} key={index}>
-            {item.name}
-          </Option>
-        );
-      });
     return (
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
         <Row gutter={24}>
@@ -78,10 +64,21 @@ class SearchForm extends React.Component {
           </Col>
           <Col xl={8} lg={12} md={12} sm={24} xs={24}>
             <FormItem label="职务" {...thirdLayout}>
-              {getFieldDecorator('duty')(<Select placeholder="职务">{dutyListOption}</Select>)}
+              {getFieldDecorator('duty')(
+                <Select placeholder="职务">
+                  {dutyList &&
+                    dutyList.map((item, index) => {
+                      return (
+                        <Option value={item.id} key={index}>
+                          {item.name}
+                        </Option>
+                      );
+                    })}
+                </Select>
+              )}
             </FormItem>
           </Col>
-          <Col xl={8} lg={12} md={12} sm={24} xs={24} style={{ display: expand ? 'none' : 'block' }}>
+          <Col xl={8} lg={12} md={12} sm={24} xs={24}>
             <FormItem label="职称" {...thirdLayout}>
               {getFieldDecorator('title')(
                 <Select placeholder="职称" allowClear>
@@ -96,6 +93,10 @@ class SearchForm extends React.Component {
               )}
             </FormItem>
           </Col>
+          <Col xl={8} lg={12} md={12} sm={24} xs={24}>
+            <GlobalTeam form={this.props.form} teamLabel="groupId"></GlobalTeam>
+          </Col>
+
           <Col xl={8} lg={12} md={12} sm={24} xs={24} style={{ textAlign: 'center' }}>
             <Button type="primary" htmlType="submit">
               查询

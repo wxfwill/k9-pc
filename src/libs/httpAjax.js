@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { message } from 'antd';
-import jwtDecode from 'jwt-decode';
+// import jwtDecode from 'jwt-decode';
 // import createHashHistory  from require('history').createHashHistory';
 const history = require('history').createHashHistory();
 let timer = null;

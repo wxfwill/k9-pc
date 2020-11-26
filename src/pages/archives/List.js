@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { Row, Col, Card, Button, message } from 'antd';
 import CustomTable from 'components/table/CustomTable';
 import { Link, withRouter } from 'react-router-dom';
-// import UserTable from './UserTable';
-import { userHeaderLabel } from 'localData/userManage/userListTableH';
-import UserSearch from './UserSearch';
-class UserInfo extends Component {
+import { archivesHeaderLabel } from 'localData/userManage/userListTableH';
+import UserSearch from './Search';
+class ArchivesList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,17 +25,11 @@ class UserInfo extends Component {
     };
   }
   handleLimit = (limit) => {
+    console.log(limit);
     this.setState({ limit });
   };
   componentDidMount() {
     this.fetch();
-    // React.store.dispatch({ type: 'NAV_DATA', nav: ['用户管理', '用户列表'] });
-    // React.$ajax.postData('/api/basicData/dutyList').then((res) => {
-    //   if (res.code == 0) {
-    //     this.setState({ dutyList: res.data });
-    //     sessionStorage.setItem('dutyList', JSON.stringify(res.data));
-    //   }
-    // });
   }
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
@@ -95,17 +88,9 @@ class UserInfo extends Component {
       });
     }
   };
-  // 新增
-  addInfo = () => {
-    this.props.history.push({ pathname: '/app/user/info/add', search: `?formStatus=add` });
-  };
-  // 查看
+  // 查看档案
   viewDetail = (record) => {
-    this.props.history.push({ pathname: '/app/user/info/view', search: `?userId=${record.id}&formStatus=view` });
-  };
-  // 编辑
-  viewEdit = (record) => {
-    this.props.history.push({ pathname: '/app/user/info/edit', search: `?userId=${record.id}&formStatus=edit` });
+    this.props.history.push({ pathname: '/archivew', search: `?userId=${record.id}&formStatus=view` });
   };
   //删除警员
   deleteUser = (record, index) => {
@@ -137,10 +122,10 @@ class UserInfo extends Component {
           <Col xl={24} lg={24} md={24} sm={24} xs={24}>
             <Card bordered={false}>
               <div style={{ marginBottom: '20px' }}>
-                <Button type="primary" style={{ marginRight: '20px' }} onClick={this.addInfo}>
+                {/* <Button type="primary" style={{ marginRight: '20px' }} onClick={this.addInfo}>
                   <Link to={{ pathname: '/app/user/infoAddUser', query: { targetText: '新增' } }}>新增人员</Link>
                 </Button>
-                <Button onClick={this.deleteMore}>批量删除</Button>
+                <Button onClick={this.deleteMore}>批量删除</Button> */}
               </div>
               <CustomTable
                 setTableKey={(row) => {
@@ -149,7 +134,7 @@ class UserInfo extends Component {
                 dataSource={this.state.dataSource}
                 pagination={this.state.pagination}
                 loading={this.state.loading}
-                columns={userHeaderLabel(this.viewDetail, this.viewEdit, this.deleteUser)}
+                columns={archivesHeaderLabel(this.viewDetail)}
                 isBordered={true}
                 isRowSelects={true}
                 rowSelectKeys={this.state.selectedRowKeys}
@@ -164,4 +149,4 @@ class UserInfo extends Component {
     );
   }
 }
-export default withRouter(UserInfo);
+export default withRouter(ArchivesList);

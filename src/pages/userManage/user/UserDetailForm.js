@@ -129,6 +129,7 @@ class AddUserForm extends React.Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="出生日期" {...secondLayout}>
                         {getFieldDecorator('birthDate', {
+                          initialValue: null,
                           rules: [{ required: true, message: '请选择出生日期' }],
                         })(<DatePicker />)}
                       </FormItem>
