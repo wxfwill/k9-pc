@@ -183,10 +183,12 @@ const routerArr = [
   {
     path: '/archivew',
     component: Archivew,
+    requiresAuth: false,
   },
   {
     path: '/app',
     component: Main,
+    requiresAuth: false,
     items: [
       // {
       //   path: '/',

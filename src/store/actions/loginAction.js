@@ -8,8 +8,6 @@ export function saveUserInfo(userInfo) {
 }
 
 export function saveMenuList(list) {
-  console.log('saveMenuList');
-  console.log(list);
   return {
     type: MENU_LIST,
     list,

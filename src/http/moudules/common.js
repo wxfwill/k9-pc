@@ -37,6 +37,15 @@ export const queryRulesByRootName = (params) => {
   });
 };
 
+// 根据code名查询该类下的规则
+export const queryRulesByRootCode = (params) => {
+  return axios({
+    url: '/api/integral-rule/queryRulesByRootCode',
+    method: 'get',
+    params,
+  });
+};
+
 // 查询类 /api/integral-rule/queryAll
 export const queryAllType = (params) => {
   return axios({

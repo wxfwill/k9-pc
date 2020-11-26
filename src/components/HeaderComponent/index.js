@@ -84,7 +84,7 @@ class HeaderComponent extends Component {
           if (res.code == 0) {
             hide();
             //util.cookieUtil.unset('token');
-            this.props.changeRouteAction('/app/home/index');
+            this.props.changeRouteAction('/app/index');
             this.props.tokenAction(null);
             history.push('/login');
           }

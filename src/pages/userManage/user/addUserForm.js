@@ -52,7 +52,7 @@ class FormCompomnent extends React.Component {
     };
   }
   componentWillMount() {
-    console.log(this.props.dutyList);
+    // console.log(this.props.dutyList);
     //工作单位
     React.$ajax.postData('/api/basicData/workUnitList').then((res) => {
       if (res.code == 0) {
