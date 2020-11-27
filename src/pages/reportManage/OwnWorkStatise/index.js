@@ -7,6 +7,7 @@ import { withRouter, Link } from 'react-router-dom';
 import CustomTable from 'components/table/CustomTable';
 import { changeNavName } from 'store/actions/common';
 import { createFileDown } from 'libs/util/index.js';
+import ExportFileHoc from 'components/exportFile/exportFileHoc';
 require('style/fourReport/reportList.less');
 
 @connect(
@@ -102,11 +103,14 @@ class TeamWorkStatist extends Component {
   };
   exportExcel = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
-    React.$ajax.fourManage.exportStatisticPersonal(newObj).then((res) => {
-      let name = `个人统计列表.xlsx`;
-      createFileDown(res, name);
-    });
+    this.props.exportExcel('/api/report/exportStatisticPersonal', newObj);
     return true;
+
+    // React.$ajax.fourManage.exportStatisticPersonal(newObj).then((res) => {
+    //   let name = `个人统计列表.xlsx`;
+    //   createFileDown(res, name);
+    // });
+    // return true;
   };
   tableChange = (obj) => {
     if (!util.isObject(obj)) {
@@ -118,12 +122,14 @@ class TeamWorkStatist extends Component {
       this.getListData(param, sortFieldName, sortType, pagination);
     });
   };
-  getObj = (item) => {
+  getObj = (item, index) => {
     return {
       title: item.columnName,
       dataIndex: item.id,
-      key: item.columnName,
+      key: item.columnName + item.id + Math.random(),
       align: 'center',
+      width: 100,
+      fixed: 0 == index ? 'left' : null,
       render: (txt, record, index) => {
         return (
           // <span
@@ -145,8 +151,8 @@ class TeamWorkStatist extends Component {
       },
     };
   };
-  recursion = (obj, item) => {
-    obj = this.getObj(item);
+  recursion = (obj, item, index) => {
+    obj = this.getObj(item, index);
     if (item.children && item.children.length > 0) {
       obj.children = [];
       item.children.map((n) => {
@@ -159,8 +165,8 @@ class TeamWorkStatist extends Component {
     let obj = {};
     let newArr = [];
     if (list && list.length > 0) {
-      list.forEach((item) => {
-        obj = this.recursion(obj, item);
+      list.forEach((item, index) => {
+        obj = this.recursion(obj, item, index);
         newArr.push(obj);
       });
     }
@@ -217,6 +223,7 @@ class TeamWorkStatist extends Component {
             dataSource={this.state.dataSource}
             pagination={this.state.pagination}
             loading={this.state.loading}
+            isScroll={{ x: 1366 }}
             columns={this.state.columns}
             isBordered={true}
             isRowSelects={false}
@@ -229,4 +236,4 @@ class TeamWorkStatist extends Component {
   }
 }
 
-export default withRouter(TeamWorkStatist);
+export default ExportFileHoc()(withRouter(TeamWorkStatist));

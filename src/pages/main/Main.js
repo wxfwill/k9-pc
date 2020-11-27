@@ -22,13 +22,13 @@ class MainComponent extends React.Component {
   }
   componentDidMount() {
     // let dom = ReactDOM.findDOMNode(this.mainWrapper1.current);
-    // console.log(dom);
+    // ;
     // dom.onscroll = function (e) {
-    //   console.log(e);
-    //   console.log(dom.scrollTop);
+    //   ;
+    //   ;
     // };
-    // console.log('routerArr====');
-    // console.log(this.flattenRoutes(routerArr));
+    // ;
+    // );
     let _this = this;
     let beginTime = 0; //执行onbeforeunload的开始时间
     let differTime = 0; //时间差
@@ -53,8 +53,8 @@ class MainComponent extends React.Component {
     this.child = ref;
   };
   componentWillReceiveProps(nextProps) {
-    // console.log('nextProps.location');
-    // console.log(nextProps.location);
+    // ;
+    // ;
     if (nextProps.location.pathname != this.props.location.pathname) {
       this.props.changeRouteAction(nextProps.location.pathname);
     }
@@ -117,8 +117,6 @@ class MainComponent extends React.Component {
     }, []);
   render() {
     const { location, history, route } = this.props;
-    console.log('main===123');
-    console.log(this.props);
     return (
       <Layout className={classNames('indexComponent')} style={{ height: '100%' }}>
         <HeaderComponent />

@@ -6,6 +6,7 @@ import CustomTable from 'components/table/CustomTable';
 require('style/fourReport/reportList.less');
 import moment from 'moment';
 import EditModel from './EditModel';
+import ExportFileHoc from 'components/exportFile/exportFileHoc';
 
 class AwardInformation extends Component {
   constructor(props) {
@@ -83,11 +84,13 @@ class AwardInformation extends Component {
   };
   exportExcel = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
-    React.$ajax.fileDataPost('/api/reward/exportRewardSyncInfo', { ...newObj }).then((res) => {
-      let name = `奖励信息列表.xlsx`;
-      util.createFileDown(res, name);
-    });
+    this.props.exportExcel('/api/reward/exportRewardSyncInfo', newObj);
     return true;
+    // React.$ajax.fileDataPost('/api/reward/exportRewardSyncInfo', { ...newObj }).then((res) => {
+    //   let name = `奖励信息列表.xlsx`;
+    //   util.createFileDown(res, name);
+    // });
+    // return true;
   };
   editFormData = (data) => {
     React.$ajax.postData('/api/reward/editRewardSyncInfo', { ...data }).then((res) => {
@@ -130,4 +133,4 @@ class AwardInformation extends Component {
   }
 }
 
-export default AwardInformation;
+export default ExportFileHoc()(AwardInformation);

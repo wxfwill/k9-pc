@@ -59,7 +59,14 @@ let ajax = function $axios(options) {
           new Promise((resolve, reject) => {
             loading();
           });
-          return response.data;
+          console.log('response.data');
+          let name = headers['content-disposition'].split(';')[1].split('filename=')[1];
+          console.log(decodeURIComponent(name));
+          let bobleObj = {
+            name: decodeURIComponent(name),
+            file: response.data,
+          };
+          return bobleObj;
         }
         // 异步关闭loading
         new Promise(() => {
@@ -78,7 +85,7 @@ let ajax = function $axios(options) {
         } else {
           message.destroy();
           data && message.info(data.msg);
-          return;
+          return data;
         }
       },
       (err) => {

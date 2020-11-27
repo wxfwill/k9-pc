@@ -42,10 +42,7 @@ class HeaderComponent extends Component {
     // this.props.sysActions.newSocket();
     // this.timer = setInterval(this.openWebsocket, 30000);
   }
-  componentDidMount() {
-    console.log('ceshi token 111');
-    console.log(this.props.token);
-  }
+  componentDidMount() {}
   componentWillUnmount() {
     clearInterval(this.timer);
     // systomStatus.closeSocket();
@@ -89,9 +86,7 @@ class HeaderComponent extends Component {
             history.push('/login');
           }
         })
-        .catch(function (err) {
-          console.log(err);
-        });
+        .catch(function (err) {});
     } else {
       this.clearMsg(key);
     }
@@ -129,9 +124,7 @@ class HeaderComponent extends Component {
           window.location.href = '' + res.data;
         }
       })
-      .catch(function (err) {
-        console.log(err);
-      });
+      .catch(function (err) {});
   };
   downloadIM = (obj, type) => {
     React.$ajax
@@ -141,9 +134,7 @@ class HeaderComponent extends Component {
           window.location.href = '' + res.data;
         }
       })
-      .catch(function (err) {
-        console.log(err);
-      });
+      .catch(function (err) {});
   };
   handleCollapsed = () => {
     this.props.isCollapsedAction();

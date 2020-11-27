@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Card } from 'antd';
+import { Card, message } from 'antd';
 import Search from 'pages/reportManage/Common/Search';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 import CustomTable from 'components/table/CustomTable';
-import { createFileDown } from 'libs/util/index.js';
 require('style/fourReport/reportList.less');
+import ExportFileHoc from 'components/exportFile/exportFileHoc';
 
 class TeamWorkStatist extends Component {
   constructor(props) {
@@ -18,6 +18,7 @@ class TeamWorkStatist extends Component {
       dateType: '',
       sortFieldName: '',
       lastIndex: null,
+      tableHeader: [],
       sortType: 'desc',
       pagination: {
         currPage: 1,
@@ -44,11 +45,14 @@ class TeamWorkStatist extends Component {
   componentDidMount() {
     React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '中队工作统计'] });
     this.getListData();
+    console.log('this.props');
+    console.log(this.props);
   }
   handleReset = () => {
     this.handleSearchData(null, () => false);
   };
   handleSearchData = (data, methods) => {
+    // this.setState({ tableHeader: [] });
     if (data && data.year && !data.month) {
       this.setState({ date: moment(data.year).format('YYYY'), dateType: 'year' }, () => {
         methods() || this.getListData();
@@ -83,12 +87,15 @@ class TeamWorkStatist extends Component {
   handeExport = (data) => {
     this.handleSearchData(data, this.exportExcel);
   };
-  getObj = (item) => {
+  getObj = (item, index) => {
     return {
       title: item.columnName,
       dataIndex: item.id,
-      key: item.columnName,
+      width: 100,
+      key: item.columnName + item.id + Math.random(),
       align: 'center',
+      // fixed: this.state.num - 1 == index ? 'left' : null,
+      fixed: 0 == index ? 'left' : null,
       render: (txt, record, index) => {
         return (
           <span
@@ -102,8 +109,8 @@ class TeamWorkStatist extends Component {
       },
     };
   };
-  recursion = (obj, item) => {
-    obj = this.getObj(item);
+  recursion = (obj, item, index) => {
+    obj = this.getObj(item, index);
     if (item.children && item.children.length > 0) {
       obj.children = [];
       item.children.map((n) => {
@@ -115,12 +122,14 @@ class TeamWorkStatist extends Component {
   formatArrList = (list) => {
     let obj = {};
     let newArr = [];
+    this.setState({ num: list.length });
     if (list && list.length > 0) {
-      list.forEach((item) => {
-        obj = this.recursion(obj, item);
+      list.forEach((item, index) => {
+        obj = this.recursion(obj, item, index);
         newArr.push(obj);
       });
     }
+    this.setState({ tableHeader: newArr });
     return newArr;
   };
   getListData = () => {
@@ -134,16 +143,14 @@ class TeamWorkStatist extends Component {
         let resArr = resData.data && resData.data.length > 0 ? resData.data : [];
         this.setState({ lastIndex: resArr.length - 1 });
         formatArr = this.formatArrList(titleArr);
+
         this.setState({ columns: formatArr, dataSource: resArr, loading: false });
       }
     });
   };
   exportExcel = () => {
     let { date, dateType } = this.state;
-    React.$ajax.fourManage.exportStatisticGroup({ date, dateType }).then((res) => {
-      let name = `中队统计列表.xlsx`;
-      createFileDown(res, name);
-    });
+    this.props.exportExcel('/api/report/exportStatisticGroup', { date, dateType });
     return true;
   };
   render() {
@@ -162,6 +169,7 @@ class TeamWorkStatist extends Component {
               return 'key-' + row.groupId;
             }}
             dataSource={this.state.dataSource}
+            isScroll={{ x: 1366 }}
             loading={this.state.loading}
             columns={this.state.columns}
             isBordered={true}
@@ -173,4 +181,4 @@ class TeamWorkStatist extends Component {
   }
 }
 
-export default withRouter(TeamWorkStatist);
+export default ExportFileHoc()(withRouter(TeamWorkStatist));

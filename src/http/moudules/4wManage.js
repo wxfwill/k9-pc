@@ -14,7 +14,7 @@ export const getCombatStaff = (data) => {
 export const create4wReport = (data) => {
   return axios({
     //url: '/api/report/create4wReport',
-    url:'/api/report/createCarUseReport',
+    url: '/api/report/createCarUseReport',
     method: 'post',
     data,
   });

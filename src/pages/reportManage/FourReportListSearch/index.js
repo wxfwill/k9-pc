@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, message } from 'antd';
 import Search from './Search';
 import { tableHeaderLabel } from 'localData/reportManage/tableHeader';
+import ExportFileHoc from 'components/exportFile/exportFileHoc';
 import CustomTable from 'components/table/CustomTable';
 require('style/fourReport/reportList.less');
 import EditModel from './EditModel';
@@ -38,19 +39,19 @@ class FourReportListSearch extends Component {
   }
 
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '用车信息列表'] });
+    // React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '用车信息列表'] });
     let { param, sortFieldName, sortType, pagination } = this.state;
     this.getListData(param, sortFieldName, sortType, pagination);
     // 查询用户
     this.queryGroupUser('', 'all');
     // 任务类型
-    this.queryTaskType('4w报备');
+    this.queryTaskType('gzyc');
   }
   exportExcel = (data) => {
     this.handleSearchData(data, this.handleExport);
   };
-  queryTaskType = (rootName) => {
-    React.$ajax.common.queryRulesByRootName({ rootName }).then((res) => {
+  queryTaskType = (rootCode) => {
+    React.$ajax.common.queryRulesByRootCode({ rootCode }).then((res) => {
       if (res.code == 0) {
         this.setState({ taskTypeList: res.data });
       }
@@ -58,10 +59,7 @@ class FourReportListSearch extends Component {
   };
   handleExport = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
-    React.$ajax.fourManage.export4wReportInfo(newObj).then((res) => {
-      let name = `用车审批列表.xlsx`;
-      util.createFileDown(res, name);
-    });
+    this.props.exportExcel('/api/report/exportCarUseReportInfo', newObj);
     return true;
   };
   handleEditInfo = (row) => {
@@ -196,4 +194,4 @@ class FourReportListSearch extends Component {
   }
 }
 
-export default FourReportListSearch;
+export default ExportFileHoc()(FourReportListSearch);

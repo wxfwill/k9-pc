@@ -8,6 +8,7 @@ import { ownTableHeaderDetal } from 'localData/reportManage/tableHeader';
 import CustomTable from 'components/table/CustomTable';
 import { changeNavName } from 'store/actions/common';
 require('style/fourReport/reportList.less');
+import ExportFileHoc from 'components/exportFile/exportFileHoc';
 
 @connect(
   (state) => ({ navData: state.commonReducer.navData }),
@@ -64,10 +65,7 @@ class TeamWorkStatist extends Component {
   };
   exportExcel = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
-    React.$ajax.fourManage.exportStatisticPersonalDetail(newObj).then((res) => {
-      let name = `个人统计明细列表.xlsx`;
-      util.createFileDown(res, name);
-    });
+    this.props.exportExcel('/api/report/exportStatisticPersonalDetail', newObj);
     return true;
   };
   handleCommon = (data, methods) => {
@@ -177,4 +175,4 @@ class TeamWorkStatist extends Component {
   }
 }
 
-export default withRouter(TeamWorkStatist);
+export default ExportFileHoc()(withRouter(TeamWorkStatist));
