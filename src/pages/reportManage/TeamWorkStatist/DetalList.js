@@ -7,6 +7,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { teamTableHeaderDetal } from 'localData/reportManage/tableHeader';
 import CustomTable from 'components/table/CustomTable';
 import { changeNavName } from 'store/actions/common';
+import ExportFileHoc from 'components/exportFile/exportFileHoc';
 require('style/fourReport/reportList.less');
 
 @connect(
@@ -61,10 +62,7 @@ class TeamWorkStatist extends Component {
   };
   exportExcel = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
-    React.$ajax.fourManage.exportStatisticGroupDetail(newObj).then((res) => {
-      let name = `中队统计明细列表.xlsx`;
-      util.createFileDown(res, name);
-    });
+    this.props.exportExcel('/api/report/exportStatisticGroupDetail', newObj);
     return true;
   };
   handleCommon = (data, methods) => {
@@ -159,4 +157,4 @@ class TeamWorkStatist extends Component {
   }
 }
 
-export default withRouter(TeamWorkStatist);
+export default ExportFileHoc()(withRouter(TeamWorkStatist));

@@ -6,6 +6,7 @@ import CustomTable from 'components/table/CustomTable';
 require('style/fourReport/reportList.less');
 import moment from 'moment';
 import EditModel from './EditModel';
+import ExportFileHoc from 'components/exportFile/exportFileHoc';
 
 class LeaveInformation extends Component {
   constructor(props) {
@@ -98,10 +99,14 @@ class LeaveInformation extends Component {
     this.setState({ param: newObj }, () => {
       let { param, sortFieldName, sortType, pagination } = this.state;
       let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
-      React.$ajax.fileDataPost('/api/leaveAfterSync/exportLeaveAfterSyncInfo', newObj).then((res) => {
-        let name = `请假信息列表.xlsx`;
-        util.createFileDown(res, name);
-      });
+
+      this.props.exportExcel('/api/leaveAfterSync/exportLeaveAfterSyncInfo', newObj);
+      return true;
+
+      // React.$ajax.fileDataPost('/api/leaveAfterSync/exportLeaveAfterSyncInfo', newObj).then((res) => {
+      //   let name = `请假信息列表.xlsx`;
+      //   util.createFileDown(res, name);
+      // });
     });
   };
   queryGroupUser = util.Debounce(
@@ -200,4 +205,4 @@ class LeaveInformation extends Component {
   }
 }
 
-export default LeaveInformation;
+export default ExportFileHoc()(LeaveInformation);

@@ -4,6 +4,7 @@ import Search from './Search';
 import { dailyInformationDetal } from 'localData/reportManage/tableHeader';
 import CustomTable from 'components/table/CustomTable';
 require('style/fourReport/reportList.less');
+import ExportFileHoc from 'components/exportFile/exportFileHoc';
 import moment from 'moment';
 
 class DailyInformation extends Component {
@@ -43,11 +44,14 @@ class DailyInformation extends Component {
   };
   exportExcel = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
-    React.$ajax.fileDataPost('/api/report/exportPageDailyWork', newObj).then((res) => {
-      let name = `日报信息列表.xlsx`;
-      util.createFileDown(res, name);
-    });
+
+    this.props.exportExcel('/api/report/exportPageDailyWork', newObj);
     return true;
+    // React.$ajax.fileDataPost('/api/report/exportPageDailyWork', newObj).then((res) => {
+    //   let name = `日报信息列表.xlsx`;
+    //   util.createFileDown(res, name);
+    // });
+    // return true;
   };
   handeExport = (data) => {
     this.handleSearchData(data, this.exportExcel);
@@ -131,4 +135,4 @@ class DailyInformation extends Component {
   }
 }
 
-export default DailyInformation;
+export default ExportFileHoc()(DailyInformation);

@@ -217,18 +217,18 @@ export const Debounce = (func, wait = 500, immediate = true) => {
  * res 后台返回的文件流
  * file 当前文件
  */
-export const createFileDown = (res, file) => {
-  if (!res) {
+export const createFileDown = (res, name) => {
+  if (res && !res.file) {
     throw new Error('获取的文件流为空');
   }
-  const content = res;
+  const content = res.file;
+  // const filename = content.headers['content-disposition'];
   const blob = new Blob([content]);
-  console.log('blob====123');
-  console.log(blob);
-  const fileName = file.name || file;
+  const fileName = res.name || name || '默认表格';
   if ('download' in document.createElement('a')) {
     // 非IE下载
     const elink = document.createElement('a');
+    // elink.download = filename.split('filename=')[1];
     elink.download = fileName;
     elink.style.display = 'none';
     elink.href = URL.createObjectURL(blob);

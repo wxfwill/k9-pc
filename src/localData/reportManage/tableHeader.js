@@ -17,7 +17,7 @@ export const tableHeaderLabel = (editCallback) => {
     },
     {
       title: '来源',
-      dataIndex: 'source',
+      dataIndex: 'sourceNote',
     },
     {
       title: '任务类型',

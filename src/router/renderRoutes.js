@@ -9,8 +9,8 @@ import store from '../store/index';
 )
 class Child extends React.Component {
   componentDidMount() {
-    console.log('child===www');
-    console.log(this.props.userInfo);
+    // console.log('child===www');
+    // console.log(this.props.userInfo);
   }
   render() {
     return null;
@@ -30,7 +30,6 @@ const renderRoutes = (arr, authed, authPath = '/login', extraProps = {}, switchP
           strict={item.strict}
           render={(props) => {
             token = store.getState().loginReducer.token;
-            console.log('token====' + token);
             // if (!item.requiresAuth || authed || item.path === authPath) {
             //   return <item.component {...props} {...extraProps} route={item} />;
             // }
