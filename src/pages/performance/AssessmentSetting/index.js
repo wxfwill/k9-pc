@@ -73,8 +73,7 @@ class AssessmentSetting extends Component {
         message.error(error.msg);
       });
   }
-  //编辑
-  redact() {}
+
   //删除
   deleteRule(id) {
     React.$ajax

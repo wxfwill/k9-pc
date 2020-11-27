@@ -31,7 +31,15 @@ class AddRule extends Component {
         //编辑小类或大类
         const ruleName = values.ruleName;
         const ruleCode = values.ruleCode;
-        dataObj = { ...redactData, ruleName, ruleCode };
+
+        const ruleCycle = values.ruleCycle;
+        const integralLimit = values.integralLimit;
+        const operation = values.operation;
+        const baseScore = values.baseScore;
+        dataObj =
+          this.props.title === '大类'
+            ? { ...redactData, ruleName, ruleCode }
+            : { ...redactData, ruleName, ruleCode, ruleCycle, integralLimit, operation, baseScore };
       } else {
         const scoreType = 'base'; //区分单个分数 和 区间分数，目前写死为单个分数
         //新增小类或大类
