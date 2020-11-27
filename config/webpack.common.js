@@ -14,8 +14,9 @@ const commonSet = {
   output: {
     filename: 'assets/js/[name].js',
     path: path.resolve(__dirname, '../dist'),
+    publicPath: './',
   },
-  devtool: 'inline-source-map',
+  // devtool: 'eval-source-map',
   module: {
     rules: [
       {
@@ -35,6 +36,13 @@ const commonSet = {
         test: /\.(png|svg|jpg|gif)/,
         use: [
           'file-loader?name=assets/images/[hash:8].[name].[ext]',
+          // {
+          //   loader: 'file-loader',
+          //   options: {
+          //     // name: 'images/[(hash:8)][name][ext]',
+          //     outputPath: 'images/[(hash:8)][name][ext]',
+          //   },
+          // },
           {
             loader: 'image-webpack-loader',
             options: {

@@ -9,7 +9,6 @@ import { transformOptions, EchartPie } from './chart/chartPie';
 import { tMap } from 'components/view/common/map';
 import TodayCard from './card/TodayCard';
 import 'style/view/page/newIndex.less';
-
 const list = [
   { label: '带班领导', value: '--' },
   {
@@ -25,7 +24,6 @@ const list = [
     value: '--',
   },
 ];
-
 const dogList = [
   {
     title: '全部犬只',
@@ -142,7 +140,6 @@ class NewIndex extends Component {
 
     this.cureEchart = echart.init(this.refs.cureCycle);
     this.cureEchart.setOption(transformOptions(mockJb));
-
     this.TMap = new tMap({ labelText: '', lat, lng, zoom: 11, id: 'container' });
     this.getAreaDogs();
     this.getDogCureData();
@@ -151,7 +148,6 @@ class NewIndex extends Component {
     this.getDogsInfo();
     this.getTrainSituation();
     this.TMap.initEvents('zoom_changed', this.mapZoomChange);
-
     // if(!window.k9_webSocketServer) {
     //     this.websocket = new WebSocket(`ws://${config.host}/ws/webSocketServer?userId=${user.id}`);
     //     window.k9_webSocketServer = 'webSocketServer';
@@ -418,6 +414,7 @@ class NewIndex extends Component {
     //   }
     // });
   };
+
   getTeamData = () => {
     React.$ajax.home.listTrainerRank().then((res) => {
       this.setState({ rankData: res.data });

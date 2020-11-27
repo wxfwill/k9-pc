@@ -1,19 +1,18 @@
 //生产环境配置
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const common = require('./webpack.common.js');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const optimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = merge(common, {
-  devtool: 'eval', // none | source-map
   mode: 'production',
   optimization: {
-    runtimeChunk: {
-      name: 'manifest',
-    },
+    // runtimeChunk: {
+    //   name: 'manifest',
+    // },
     splitChunks: {
       chunks: 'all', // 同步 异步 都采用代码分割
       minSize: 30000, // 30kib 引入的库大于 30000  才会做代码分割
@@ -21,7 +20,7 @@ module.exports = merge(common, {
       maxAsyncRequests: 5, // 同时加载模块的个数
       maxInitialRequests: 3, //首页入口文件 最多同时加载3个
       automaticNameDelimiter: '~', // 连接符
-      name: true,
+      name: 'common',
       cacheGroups: {
         styles: {
           name: 'styles',
@@ -54,8 +53,8 @@ module.exports = merge(common, {
         },
       },
     },
+    minimize: true,
     minimizer: [
-      new optimizeCssAssetsWebpackPlugin({}),
       new TerserPlugin({
         parallel: 4,
         extractComments: true,
@@ -68,6 +67,7 @@ module.exports = merge(common, {
           },
         },
       }),
+      new optimizeCssAssetsWebpackPlugin({}),
     ],
   },
   stats: {
@@ -79,6 +79,15 @@ module.exports = merge(common, {
   plugins: [
     // 删除
     new CleanWebpackPlugin(),
+    // new UglifyJSPlugin({
+    //   uglifyOptions: {
+    //     compress: {
+    //       drop_console: true, //console
+    //       drop_debugger: true,
+    //       pure_funcs: ['console.log'], //移除console
+    //     },
+    //   },
+    // }),
     // new webpack.DefinePlugin({
     //   'process.env': {
     //     NODE_ENV: '"production"', //node提供的常量api

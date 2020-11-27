@@ -16,7 +16,7 @@ const config = {
     publicPath: '/',
   },
   mode: 'development',
-  devtool: commonSet.devtool, //定位错位位置
+  devtool: 'cheap-eval-source-map',
   devServer: {
     //浏览器自动刷新,需下载webpack-dev-server
     // contentBase:path.join(__dirname, "../dist"),
@@ -49,7 +49,7 @@ const config = {
       maxAsyncRequests: 5, // 同时加载模块的个数
       maxInitialRequests: 5, //首页入口文件 最多同时加载3个
       automaticNameDelimiter: '~', // 连接符
-      name: true,
+      name: 'common',
       cacheGroups: {
         styles: {
           name: 'styles',

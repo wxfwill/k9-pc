@@ -7,7 +7,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import * as systomStatus from 'actions/systomStatus';
-import { userInfo } from 'os';
+// import { userInfo } from 'os';
 const localSVG = require('images/banglocation.svg');
 const visibleHeight = document.body.offsetHeight;
 
@@ -85,7 +85,8 @@ class SearchForm extends React.Component {
   fetchTaskInfo(params) {
     var me = this;
     this.setState({ loading: true });
-    React.$ajax.postData('/api/dailyPatrols/getDailyPatrolsById', { id: params })
+    React.$ajax
+      .postData('/api/dailyPatrols/getDailyPatrolsById', { id: params })
       .then((res) => {
         me._taskInfo = res.data;
         this.setState({
@@ -114,7 +115,8 @@ class SearchForm extends React.Component {
     var me = this;
     me.setState({ loading: true });
 
-    React.$ajax.postData('/api/cmdMonitor/showAppTrochoidHis', { ...params, ...this.state.filter })
+    React.$ajax
+      .postData('/api/cmdMonitor/showAppTrochoidHis', { ...params, ...this.state.filter })
       .then((res) => {
         me.setState({ loading: false });
         const pathsHis = res.data.pathsHis;
@@ -169,34 +171,36 @@ class SearchForm extends React.Component {
         trochoiInfo = item;
       }
     });
-    React.$ajax.postData('/api/cmdMonitor/showAppTrochoid', {
-      lastPointTime: trochoiInfo.lastPointTime,
-      taskType: trochoiInfo ? trochoiInfo.taskType : '',
-      taskDetailId: trochoiInfo ? trochoiInfo.taskDetailId : '',
-    }).then((res) => {
-      const pathsCurr = res.data.pathsCurr;
-      if (pathsCurr && pathsCurr.length > 0) {
-        trochoiInfos.map((item) => {
-          if (item.taskDetailId == data.taskDetailId) {
-            item.lastPointTime = res.data.lastPointTime;
-          }
-        });
-        this.setState({
-          trochoiInfos: trochoiInfos,
-        });
-        //任务已经结束
-        if (res.data.isEnd == 1) {
-          timers.map((item) => {
+    React.$ajax
+      .postData('/api/cmdMonitor/showAppTrochoid', {
+        lastPointTime: trochoiInfo.lastPointTime,
+        taskType: trochoiInfo ? trochoiInfo.taskType : '',
+        taskDetailId: trochoiInfo ? trochoiInfo.taskDetailId : '',
+      })
+      .then((res) => {
+        const pathsCurr = res.data.pathsCurr;
+        if (pathsCurr && pathsCurr.length > 0) {
+          trochoiInfos.map((item) => {
             if (item.taskDetailId == data.taskDetailId) {
-              clearInterval(item.timerId);
+              item.lastPointTime = res.data.lastPointTime;
             }
           });
+          this.setState({
+            trochoiInfos: trochoiInfos,
+          });
+          //任务已经结束
+          if (res.data.isEnd == 1) {
+            timers.map((item) => {
+              if (item.taskDetailId == data.taskDetailId) {
+                clearInterval(item.timerId);
+              }
+            });
+          }
+          pathsCurr.forEach((item) => {
+            this.props.drawTrace(item, 0, trochoiInfo.color);
+          });
         }
-        pathsCurr.forEach((item) => {
-          this.props.drawTrace(item, 0, trochoiInfo.color);
-        });
-      }
-    });
+      });
   };
 
   handonRowClick = (userTask) => {
@@ -236,7 +240,8 @@ class SearchForm extends React.Component {
       params = { pageSize: this.state.pageSize, currPage: this.state.currPage, taskId: this.state.taskID };
     }
     this.setState({ loading: true });
-    React.$ajax.postData(url, { ...params, ...this.state.filter })
+    React.$ajax
+      .postData(url, { ...params, ...this.state.filter })
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = parseInt(res.pageSize) * parseInt(res.totalPage);
