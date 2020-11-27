@@ -1,21 +1,24 @@
 //悬浮目录
 import React, { Component } from 'react';
 import { Icon } from 'antd';
+import { muluList } from '../localData';
 import 'style/pages/archives/components/Navigation.less';
-const muluList = [
-  { name: '绩效考核信息', value: '绩效考核', isCurrent: true },
-  { name: '工作用车信息', value: '工作用车' },
-  { name: '出勤用车信息', value: '出勤用车' },
-  // { name: '考勤管理信息', value: '考勤管理' },
-  { name: '奖励事项信息', value: '奖励事项' },
-  { name: '日报信息', value: '日报信息' },
-];
 class Navigation extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isShow: true,
+      opacity: 0,
     };
+  }
+  componentDidMount() {
+    let timer = setTimeout(() => {
+      //悬浮目录延迟出现
+      this.setState({
+        opacity: 1,
+      });
+      clearTimeout(timer);
+    }, 1000);
   }
   //从目录跳转
   jumpDirectory = (e, name) => {
@@ -31,9 +34,9 @@ class Navigation extends Component {
   };
 
   render() {
-    const { isShow } = this.state;
+    const { isShow, opacity } = this.state;
     return (
-      <div className="navigation-main">
+      <div className="navigation-main" style={{ opacity: opacity }}>
         <Icon type={isShow ? 'close' : 'menu'} onClick={this.setIsShow} />
         {isShow && (
           <ul className="nav">
