@@ -1,0 +1,47 @@
+//日报信息
+.daily-information {
+  .header {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222222;
+    line-height: 20px;
+    padding: 14px 16px;
+    background-color: #f4f4f4;
+    border: 1px solid #e7e7e7;
+  }
+  .content {
+    height: 588px;
+    border: 1px solid #e7e7e7;
+    border-top: none;
+    padding: 30px 20px;
+    box-sizing: border-box;
+    dl {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      padding-left: 22px;
+      border-left: 1px solid #d8d8d8;
+      position: relative;
+      margin-bottom: 0;
+      &::before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        background-color: #d8d8d8;
+        border-radius: 50%;
+        position: absolute;
+        left: -4px;
+        top: 7px;
+      }
+      dt {
+        color: #595959;
+        margin-bottom: 10px;
+      }
+      dd {
+        color: #7e7e7e;
+        margin-bottom: 0;
+        padding-bottom: 45px;
+      }
+    }
+  }
+}

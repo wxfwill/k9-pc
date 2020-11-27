@@ -13,8 +13,8 @@
     .get-date {
       .ant-form-item {
         margin-bottom: 0;
-        .ant-form-item-label {
-          width: 70px !important;
+        .ant-form-item-control-wrapper {
+          float: right;
         }
       }
     }
@@ -35,9 +35,9 @@
           left: 50%;
           &.page-left {
             transform-origin: left center;
-            transform: perspective(1000px) rotateY(0deg);
+            transform: perspective(8000px) rotateY(0deg);
             .pic:first-child .pic-list {
-              transform: perspective(1000px) rotateY(180deg);
+              transform: rotateY(180deg);
               .page-head {
                 left: initial;
                 right: 32px;
@@ -46,12 +46,12 @@
           }
           &.page-right {
             transform-origin: left center;
-            transform: perspective(1000px) rotateY(180deg);
+            transform: perspective(8000px) rotateY(180deg);
             .pic-list {
-              transform: perspective(1000px) rotateY(180deg);
+              transform: rotateY(180deg);
             }
             .pic:last-child .pic-list {
-              transform: perspective(1000px) rotateY(0deg);
+              transform: rotateY(0deg);
               .page-head {
                 right: initial;
                 left: 32px;
@@ -89,6 +89,17 @@
   }
 }
 
+// @media screen and (min-heigth: 900px) and (max-heigth: 1050px) {
+//   .record-box {
+//     transform: scale(0.8);
+//   }
+// }
+// @media screen and (max-heigth: 900px) {
+//   .record-box {
+//     transform: scale(0.7);
+//   }
+// }
+
 //书本内容区域
 .book-box {
   width: 600px;
@@ -102,6 +113,7 @@
     width: 525px;
     height: 682px;
     margin-left: 32px;
+    overflow: auto;
     .title {
       font-size: 24px;
       color: #222222;
@@ -126,7 +138,7 @@
     background-image: url(../../../images/archives/page-foot.png);
     position: absolute;
     left: 32px;
-    bottom: 18px;
+    bottom: 9px;
     transition: all 1s;
     .page-numb {
       width: 35px;
@@ -234,99 +246,6 @@
   }
 }
 
-//目录
-.catalogue-main {
-  .mulu {
-    height: 33px;
-    line-height: 33px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    b {
-      font-size: 24px;
-      color: #222222;
-    }
-    .line {
-      width: 223px;
-      height: 12px;
-      background-image: url(../../../images/archives/line.png);
-      &.right {
-        transform: rotateY(180deg);
-      }
-    }
-  }
-  .mulu-list {
-    margin-top: 16px;
-    li {
-      line-height: 25px;
-      padding: 30px 0;
-      border-bottom: 1px dashed #e7e7e7;
-      a {
-        color: #222222;
-        font-size: 18px;
-        b {
-          font-size: 20px;
-          margin-right: 10px;
-        }
-      }
-      &.current {
-        a {
-          color: #467ae0;
-        }
-      }
-    }
-  }
-}
-
-//绩效考核
-.performance-assessment {
-  .infor {
-    padding: 16px;
-    background: #f5f5f5;
-    border-radius: 4px;
-    line-height: 32px;
-    font-weight: 500;
-    font-size: 14px;
-    .fl {
-      .name {
-        font-weight: 600;
-        color: #222222;
-        margin-left: 12px;
-      }
-      .team {
-        color: #595959;
-        margin-left: 12px;
-      }
-      .time {
-        color: #b7b7b7;
-        margin-left: 24px;
-      }
-    }
-    .fr {
-      color: #595959;
-    }
-  }
-  .table-box {
-    th,
-    td {
-      text-align: center;
-    }
-  }
-  .h3-txt {
-    color: #222222;
-    font-weight: 600;
-  }
-  .p-txt {
-    color: #b7b7b7;
-    font-size: 12px;
-  }
-  .total {
-    color: #467ae0 !important;
-    font-size: 20px !important;
-    font-weight: 400 !important;
-  }
-}
-
 //工作用车
 .transport-main {
   .table-box {
@@ -363,54 +282,6 @@
     th,
     td {
       padding: 21px 16px;
-    }
-  }
-}
-
-//日报信息
-.daily-information {
-  .header {
-    font-size: 14px;
-    font-weight: 600;
-    color: #222222;
-    line-height: 20px;
-    padding: 14px 16px;
-    background-color: #f4f4f4;
-    border: 1px solid #e7e7e7;
-  }
-  .content {
-    height: 588px;
-    border: 1px solid #e7e7e7;
-    border-top: none;
-    padding: 30px 20px;
-    box-sizing: border-box;
-    dl {
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 20px;
-      padding-left: 22px;
-      border-left: 1px solid #d8d8d8;
-      position: relative;
-      margin-bottom: 0;
-      &::before {
-        content: '';
-        width: 7px;
-        height: 7px;
-        background-color: #d8d8d8;
-        border-radius: 50%;
-        position: absolute;
-        left: -4px;
-        top: 7px;
-      }
-      dt {
-        color: #595959;
-        margin-bottom: 10px;
-      }
-      dd {
-        color: #7e7e7e;
-        margin-bottom: 0;
-        padding-bottom: 45px;
-      }
     }
   }
 }

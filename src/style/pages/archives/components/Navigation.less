@@ -1,0 +1,38 @@
+.navigation-main {
+  position: absolute;
+  right: 1212px;
+  top: 12px;
+  z-index: 99;
+  .anticon {
+    color: #ccc;
+    font-size: 16px;
+    position: absolute;
+    right: -24px;
+    top: 14px;
+    cursor: pointer;
+    transition: all 1s;
+    &:hover {
+      transform: rotate(180deg);
+    }
+  }
+  .nav {
+    padding: 40px 8px;
+    background: #ffffff;
+    border-radius: 8px 0 0 8px;
+    li {
+      color: #595959;
+      font-size: 14px;
+      height: 32px;
+      line-height: 32px;
+      padding: 0 10px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      text-align: center;
+      white-space: nowrap;
+      cursor: pointer;
+      &:hover {
+        background: #f8f8f8;
+      }
+    }
+  }
+}

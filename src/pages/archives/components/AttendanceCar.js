@@ -29,29 +29,29 @@ class AttendanceCar extends Component {
                   <tbody className="no-wrap-th">
                     <tr>
                       <th>姓名</th>
-                      <td>张三</td>
+                      <td>{detailInfor.applyUser}</td>
                       <th>用车类型</th>
-                      <td>安检任务</td>
+                      <td>{detailInfor.taskType}</td>
                     </tr>
                     <tr>
                       <th>开始时间</th>
-                      <td>2020-11-15 09:00</td>
+                      <td>{util.formatDate(new Date(detailInfor.startTime), 'yyyy-MM-dd hh:mm:ss')}</td>
                       <th>结束时间</th>
-                      <td>2020-11-15 15:00</td>
+                      <td>{util.formatDate(new Date(detailInfor.endTime), 'yyyy-MM-dd hh:mm:ss')}</td>
                     </tr>
                     <tr>
                       <th>用车时常</th>
-                      <td>4小时</td>
+                      <td>{detailInfor.usedTime}小时</td>
                       <th>车牌号码</th>
-                      <td>粤B-347829</td>
+                      <td>{detailInfor.carNo}</td>
                     </tr>
                     <tr>
                       <th>用车目的地</th>
-                      <td colSpan="3">深圳北站</td>
+                      <td colSpan="3">{detailInfor.taskDestLocation}</td>
                     </tr>
                     <tr>
                       <th>同行人</th>
-                      <td colSpan="3">张三、李四、王五</td>
+                      <td colSpan="3">{detailInfor.peer}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -59,9 +59,34 @@ class AttendanceCar extends Component {
                   <tbody className="no-wrap-th">
                     <tr>
                       <th>对讲机</th>
-                      <td>-</td>
+                      <td>{detailInfor.interphone}</td>
                       <th>对讲机耳机</th>
-                      <td>-</td>
+                      <td>{detailInfor.earphone}</td>
+                    </tr>
+
+                    <tr>
+                      <th>电击枪</th>
+                      <td>{detailInfor.stunGun}</td>
+                      <th>警犬数量</th>
+                      <td>{detailInfor.dogNum}</td>
+                    </tr>
+                    <tr>
+                      <th>防刺服</th>
+                      <td>{detailInfor.preventStabNum}件</td>
+                      <th>防弹衣</th>
+                      <td>{detailInfor.bodyArmorNum}件</td>
+                    </tr>
+                    <tr>
+                      <th>现勘箱</th>
+                      <td>{detailInfor.investigation}</td>
+                      <th>饮用水/箱</th>
+                      <td>{detailInfor.drinkingWaterNum}</td>
+                    </tr>
+                    <tr>
+                      <th>医疗箱</th>
+                      <td>{detailInfor.medicalKit}</td>
+                      <th></th>
+                      <td></td>
                     </tr>
                   </tbody>
                 </table>

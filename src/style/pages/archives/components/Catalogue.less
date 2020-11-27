@@ -1,0 +1,43 @@
+//目录
+.catalogue-main {
+  .mulu {
+    height: 33px;
+    line-height: 33px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    b {
+      font-size: 24px;
+      color: #222222;
+    }
+    .line {
+      width: 223px;
+      height: 12px;
+      background-image: url(../../../../images/archives/line.png);
+      &.right {
+        transform: rotateY(180deg);
+      }
+    }
+  }
+  .mulu-list {
+    margin-top: 16px;
+    li {
+      line-height: 25px;
+      padding: 30px 0;
+      border-bottom: 1px dashed #e7e7e7;
+      a {
+        color: #222222;
+        font-size: 18px;
+        b {
+          font-size: 20px;
+          margin-right: 10px;
+        }
+      }
+      &:hover {
+        a {
+          color: #467ae0;
+        }
+      }
+    }
+  }
+}

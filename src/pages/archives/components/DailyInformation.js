@@ -1,6 +1,7 @@
 //日报信息
 import React, { Component } from 'react';
 import NoData from 'components/NoData';
+import 'style/pages/archives/components/DailyInformation.less';
 
 class DailyInformation extends Component {
   constructor(props) {
@@ -30,19 +31,19 @@ class DailyInformation extends Component {
                 <div className="content">
                   <dl>
                     <dt>早晨（7:00-8:00）</dt>
-                    <dd>早晨起床集合，在操场进行警犬训练</dd>
+                    <dd>{detailInfor.morn}</dd>
                   </dl>
                   <dl>
                     <dt>上午（9:00-11:30）</dt>
-                    <dd>早晨起床集合，在操场进行警犬训练</dd>
+                    <dd>{detailInfor.forenoon}</dd>
                   </dl>
                   <dl>
                     <dt>下午（3:00-6:00）</dt>
-                    <dd>早晨起床集合，在操场进行警犬训练</dd>
+                    <dd>{detailInfor.afternoon}</dd>
                   </dl>
                   <dl>
                     <dt>晚上（7:00-10:00）</dt>
-                    <dd>早晨起床集合，在操场进行警犬训练</dd>
+                    <dd>{detailInfor.night}</dd>
                   </dl>
                 </div>
               </div>

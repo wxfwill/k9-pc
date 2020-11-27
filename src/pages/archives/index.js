@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { DatePicker, Form } from 'antd';
 
 import Cover from './components/Cover'; //封面
-import BackCover from './components/BackCover'; //封面
+import BackCover from './components/BackCover'; //封底
 import Catalogue from './components/Catalogue'; //目录
 import PerformanceAssessment from './components/PerformanceAssessment'; //绩效考核
 import Transport from './components/Transport'; //工作用车
@@ -10,13 +10,14 @@ import AttendanceCar from './components/AttendanceCar'; //出勤用车
 import AttendanceManagement from './components/AttendanceManagement'; //考勤管理
 import RewardItems from './components/RewardItems'; //奖励事项
 import DailyInformation from './components/DailyInformation'; //日报信息
+import BlankPage from './components/BlankPage'; //最后一页
+import Navigation from './components/Navigation'; //悬浮目录
 
 import moment from 'moment';
 
 import 'style/pages/archives/index.less';
 
-const { MonthPicker, RangePicker } = DatePicker;
-const formItem = Form.Item;
+const { RangePicker } = DatePicker;
 
 const formItemLayout = {
   labelCol: {
@@ -29,15 +30,23 @@ const formItemLayout = {
   },
 };
 
+const nowDate = new Date();
+const cYear = nowDate.getFullYear(); //当前年份
+const cMonth = nowDate.getMonth() + 1; //月份
+const cDay = nowDate.getDate(); //日
+const cYMD = cYear + '-' + cMonth + '-' + cDay; //当前日期
+const defSatrtDate = cYear + '-01-01 00:00:00'; //默认开始时间
+const defEndDate = cYMD + ' 23:59:59'; //默认结束时间
+
 const dateFormat = 'YYYY-MM-DD';
-const dateArr = [moment('2020-01-01 00:00:00', dateFormat), moment('2020-11-25 23:59:59', dateFormat)];
+const dateArr = [moment(defSatrtDate, dateFormat), moment(defEndDate, dateFormat)];
 
 class Archivew extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startDate: '2020-01-01 00:00:00',
-      endDate: '2020-11-25 23:59:59',
+      startDate: defSatrtDate,
+      endDate: defEndDate,
       userId: 5,
       allInforList: [{ bookName: '封面' }, { bookName: '目录' }], //所有信息列表
       bookList: [], //翻页集合
@@ -57,7 +66,18 @@ class Archivew extends Component {
           endDate: e[1].format('YYYY-MM-DD') + ' ' + '23:59:59',
         },
         () => {
-          this.getAllInfor();
+          let { numbAdd } = this.state;
+          if (numbAdd > 1) {
+            this.setState(
+              {
+                numbAdd: 2,
+                atLeft: [1],
+              },
+              () => {
+                this.getAllInfor();
+              }
+            );
+          }
         }
       );
     }
@@ -131,7 +151,8 @@ class Archivew extends Component {
       DocAttendanceCar = [], //出勤用车
       RewardSyncList = [], //奖励事项
       DocDailyWork = [], //日报信息
-      BackCoverArr = [{ bookName: '封底' }];
+      BackCoverArr = [{ bookName: '封底' }],
+      BlankPageArr = [{ bookName: '最后一页' }];
     Promise.all([
       this.getSelfEvaluationList(startDate, endDate, userId), //获取绩效考核详情
       this.pageDocCarUseReportInfo(startDate, endDate, userId), //获取工作用车信息
@@ -167,22 +188,26 @@ class Archivew extends Component {
           }
         });
       }
-      console.log(SelfEvaluationList, DocCarUseReportInfo, DocAttendanceCar, RewardSyncList, DocDailyWork);
+      let allInforListArr = [
+        ...this.state.allInforList,
+        ...SelfEvaluationList,
+        ...DocCarUseReportInfo,
+        ...DocAttendanceCar,
+        ...RewardSyncList,
+        ...DocDailyWork,
+      ];
+      if (allInforListArr.length % 2 === 0) {
+        //如果数据是单数，再加一个空白页
+        allInforListArr = [...allInforListArr, ...BlankPageArr, ...BackCoverArr];
+      } else {
+        allInforListArr = [...allInforListArr, ...BackCoverArr];
+      }
       //获取所有信息列表集合
       this.setState(
         {
-          allInforList: [
-            ...this.state.allInforList,
-            ...SelfEvaluationList,
-            ...DocCarUseReportInfo,
-            ...DocAttendanceCar,
-            ...RewardSyncList,
-            ...DocDailyWork,
-            ...BackCoverArr,
-          ],
+          allInforList: allInforListArr,
         },
         () => {
-          console.log(this.state.allInforList, 'alllllllll');
           //所有信息列表拆分成书本左右两页
           const { allInforList } = this.state;
           let bookList = [];
@@ -197,6 +222,7 @@ class Archivew extends Component {
             },
             () => {
               console.log(this.state.bookList, 'bookListbookListbookListbookList');
+              this.state.bookList;
             }
           );
         }
@@ -235,10 +261,10 @@ class Archivew extends Component {
     const currentIndex = cIndex < 10 ? '0' + cIndex : cIndex;
     switch (obj.bookName) {
       case '封面':
-        cont = <Cover detailInfor={obj} currentIndex={currentIndex} />;
+        cont = <Cover detailInfor={obj} currentIndex={currentIndex} userId={this.state.userId} />;
         break;
       case '目录':
-        cont = <Catalogue detailInfor={obj} currentIndex={currentIndex} />;
+        cont = <Catalogue detailInfor={obj} currentIndex={currentIndex} jumpDirectory={this.jumpDirectory} />;
         break;
       case '绩效考核':
         cont = <PerformanceAssessment detailInfor={obj} currentIndex={currentIndex} />;
@@ -257,6 +283,9 @@ class Archivew extends Component {
         break;
       case '日报信息':
         cont = <DailyInformation detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '最后一页':
+        cont = <BlankPage currentIndex={currentIndex} />;
         break;
       case '封底':
         cont = <BackCover detailInfor={obj} currentIndex={currentIndex} />;
@@ -285,24 +314,54 @@ class Archivew extends Component {
     }
   };
   //向前翻页
-  forward = (i) => {
+  forward = (i, callBack) => {
     let newAtLelft = this.state.atLeft;
     newAtLelft.push(i);
     i++;
-    this.setState({
-      atLeft: newAtLelft,
-      numbAdd: i,
-    });
+    this.setState(
+      {
+        atLeft: newAtLelft,
+        numbAdd: i,
+      },
+      () => {
+        callBack && callBack();
+      }
+    );
   };
   //向后翻页
-  backwards = (i) => {
+  backwards = (i, callBack) => {
     let newAtLelft = this.state.atLeft;
     newAtLelft.pop(i);
     i--;
-    this.setState({
-      atLeft: newAtLelft,
-      numbAdd: i,
+    this.setState(
+      {
+        atLeft: newAtLelft,
+        numbAdd: i,
+      },
+      () => {
+        callBack && callBack();
+      }
+    );
+  };
+  //从目录跳转
+  jumpDirectory = (name) => {
+    let { bookList, numbAdd } = this.state;
+    let cindex = '',
+      papindex = '';
+    bookList.map((item, index) => {
+      item.paper.map((el, eli) => {
+        if (el.$indexes && el.bookName == name) {
+          cindex = index;
+          papindex = eli;
+        }
+      });
     });
+    if (numbAdd < cindex + 1 + papindex) {
+      this.forward(numbAdd, () => this.jumpDirectory(name));
+    }
+    if (numbAdd > cindex + 1 + papindex) {
+      this.backwards(numbAdd, () => this.jumpDirectory(name));
+    }
   };
 
   render() {
@@ -311,17 +370,13 @@ class Archivew extends Component {
       <div className="record-main">
         <div className="record-box">
           <div className="clearfix get-date">
-            <Form.Item label="查询时间：" labelAlign="left" {...formItemLayout} className="fr">
-              <RangePicker
-                //defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
-                //format={dateFormat}
-                value={dateArr}
-                format={dateFormat}
-                onChange={(e) => this.getPicker(e)}
-              />
+            <Form.Item label="查询时间：" labelAlign="right" {...formItemLayout} className="fr">
+              <RangePicker value={dateArr} format={dateFormat} onChange={(e) => this.getPicker(e)} />
             </Form.Item>
           </div>
           <div className="record-book">
+            {/* 悬浮目录 */}
+            {numbAdd > 1 && numbAdd < bookList.length + 1 ? <Navigation jumpDirectory={this.jumpDirectory} /> : null}
             <div className="page-arr">
               {bookList.map((item, index) => {
                 return (
