@@ -47,7 +47,7 @@ class Archivew extends Component {
     this.state = {
       startDate: defSatrtDate,
       endDate: defEndDate,
-      userId: 5,
+      userId: 1,
       allInforList: [{ bookName: '封面' }, { bookName: '目录' }], //所有信息列表
       bookList: [], //翻页集合
       atLeft: [],
@@ -55,7 +55,10 @@ class Archivew extends Component {
     };
   }
   componentDidMount() {
-    this.getAllInfor();
+    const userId = util.urlParse(this.props.location.search).userId;
+    this.setState({ userId: userId ? userId : 1 }, () => {
+      this.getAllInfor();
+    });
   }
   //获取时间
   getPicker = (e) => {
@@ -70,8 +73,10 @@ class Archivew extends Component {
           if (numbAdd > 1) {
             this.setState(
               {
-                numbAdd: 2,
-                atLeft: [1],
+                allInforList: [{ bookName: '封面' }, { bookName: '目录' }], //所有信息列表
+                bookList: [], //翻页集合
+                numbAdd: 1,
+                atLeft: [],
               },
               () => {
                 this.getAllInfor();
@@ -368,6 +373,10 @@ class Archivew extends Component {
     const { bookList, atLeft, numbAdd } = this.state;
     return (
       <div className="record-main">
+        <div className="return-link" onClick={() => this.props.history.push('/app/archivew/list')}>
+          <img src={require('images/archives/return.png')} />
+          返回
+        </div>
         <div className="record-box">
           <div className="clearfix get-date">
             <Form.Item label="查询时间：" labelAlign="right" {...formItemLayout} className="fr">

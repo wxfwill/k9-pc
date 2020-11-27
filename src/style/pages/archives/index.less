@@ -6,6 +6,20 @@
   background-size: 160px 160px;
   background-position: center center;
   overflow-y: auto;
+  position: relative;
+  .return-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: #595959;
+    line-height: 20px;
+    position: absolute;
+    left: 65px;
+    top: 45px;
+    cursor: pointer;
+    img {
+      margin-right: 10px;
+    }
+  }
   .record-box {
     width: 1224px;
     margin: 0 auto;
@@ -57,13 +71,6 @@
                 left: 32px;
               }
             }
-            // .back-cover {
-            //   height: 813px !important;
-            //   width: 613px !important;
-            //   .crease {
-            //     height: 813px !important;
-            //   }
-            // }
             .page-head {
               left: initial;
               right: 32px;
@@ -89,16 +96,37 @@
   }
 }
 
-// @media screen and (min-heigth: 900px) and (max-heigth: 1050px) {
-//   .record-box {
-//     transform: scale(0.8);
-//   }
-// }
-// @media screen and (max-heigth: 900px) {
-//   .record-box {
-//     transform: scale(0.7);
-//   }
-// }
+@media screen and (min-height: 700px) and (max-height: 880px) {
+  .return-link {
+    top: 16px !important;
+  }
+  // .record-box {
+  //   transform: scale(0.8);
+  //   .get-date {
+  //     margin-top: -120px;
+  //   }
+  // }
+  .record-box {
+    padding-top: 16px !important;
+    padding-bottom: 30px;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  .return-link {
+    top: 0 !important;
+  }
+  // .record-box {
+  //   transform: scale(0.68);
+  //   .get-date {
+  //     margin-top: -210px;
+  //   }
+  // }
+  .record-box {
+    padding-top: 0 !important;
+    padding-bottom: 30px;
+  }
+}
 
 //书本内容区域
 .book-box {
