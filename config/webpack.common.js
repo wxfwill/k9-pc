@@ -33,7 +33,7 @@ const commonSet = {
       {
         test: /\.(png|svg|jpg|gif)/,
         use: [
-          'file-loader?name=assets/images/[chunkhash:8].[name].[ext]',
+          'file-loader?name=assets/images/[hash:8].[name].[ext]',
           // {
           //   loader: 'file-loader',
           //   options: {
@@ -62,7 +62,7 @@ const commonSet = {
           {
             loader: 'file-loader',
             options: {
-              name: 'fonts/[name].[chunkhash:7].[ext]',
+              name: 'fonts/[name].[hash:7].[ext]',
             },
           },
         ],
