@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DatePicker, Form } from 'antd';
+import { DatePicker, Form, Icon } from 'antd';
 
 import Cover from './components/Cover'; //封面
 import BackCover from './components/BackCover'; //封底
@@ -414,6 +414,12 @@ class Archivew extends Component {
                 );
               })}
             </div>
+            {numbAdd < bookList.length + 1 && (
+              <Icon type="left-circle" className="arrows left-arrows" onClick={() => this.getPage(0)} />
+            )}
+            {numbAdd > 1 && (
+              <Icon type="right-circle" className="arrows right-arrows" onClick={() => this.getPage(1)} />
+            )}
           </div>
         </div>
       </div>

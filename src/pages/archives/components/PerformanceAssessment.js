@@ -1,5 +1,6 @@
 // 绩效考核
 import React, { Component } from 'react';
+import { Icon } from 'antd';
 import NoData from 'components/NoData';
 import 'style/pages/archives/components/PerformanceAssessment.less';
 class PerformanceAssessment extends Component {
@@ -16,6 +17,13 @@ class PerformanceAssessment extends Component {
       currentIndex: nextProps.currentIndex,
     });
   }
+  //打印
+  onPrint = (e) => {
+    const { detailInfor } = this.state;
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+    util.jQPrintPartialHtml('#print-view' + detailInfor.bookName + detailInfor.id);
+  };
   render() {
     const { detailInfor, currentIndex } = this.state;
     const JZG = detailInfor ? detailInfor.assessmentValues : null; //价值观数据
@@ -23,12 +31,18 @@ class PerformanceAssessment extends Component {
     return (
       detailInfor && (
         <div className="book-box">
-          <div className="page-head">{detailInfor.bookName}信息</div>
+          <div className="page-head">
+            {detailInfor.bookName}信息
+            {!detailInfor.noData ? <Icon type="printer" onClick={(e) => this.onPrint(e)} /> : null}
+          </div>
           <div className="performance-assessment">
             <div className="book-cont">
               {detailInfor.$indexes ? <p className="title">{detailInfor.bookName}</p> : null}
               {!detailInfor.noData ? (
-                <div>
+                <div
+                  className="print-view performance-assessment-cont"
+                  id={'print-view' + detailInfor.bookName + detailInfor.id}
+                >
                   <div className="mgt12 infor clearfix">
                     <div className="fl">
                       <img src={require('../../../images/archives/head.png')} width="32" height="32" />

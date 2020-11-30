@@ -1,5 +1,6 @@
 //日报信息
 import React, { Component } from 'react';
+import { Icon } from 'antd';
 import NoData from 'components/NoData';
 import 'style/pages/archives/components/DailyInformation.less';
 
@@ -17,16 +18,29 @@ class DailyInformation extends Component {
       currentIndex: nextProps.currentIndex,
     });
   }
+  //打印
+  onPrint = (e) => {
+    const { detailInfor } = this.state;
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+    util.jQPrintPartialHtml('#print-view' + detailInfor.bookName + detailInfor.id);
+  };
   render() {
     const { detailInfor, currentIndex } = this.state;
     return (
       <div className="book-box">
-        <div className="page-head">{detailInfor.bookName}</div>
+        <div className="page-head clearfix">
+          {detailInfor.bookName}
+          {!detailInfor.noData ? <Icon type="printer" onClick={(e) => this.onPrint(e)} /> : null}
+        </div>
         <div className="daily-information">
           <div className="book-cont">
             {detailInfor.$indexes ? <p className="title">{detailInfor.bookName}</p> : null}
             {!detailInfor.noData ? (
-              <div>
+              <div
+                className="print-view daily-information-cont"
+                id={'print-view' + detailInfor.bookName + detailInfor.id}
+              >
                 <div className="mgt12 header">2020-10-21 日报信息</div>
                 <div className="content">
                   <dl>
