@@ -45,8 +45,6 @@ class SliderCustom extends Component {
     });
   };
   openMenu = (v) => {
-    console.log('v');
-    console.log(v);
     this.setState({
       openKey: v[v.length - 1],
       firstHide: false,

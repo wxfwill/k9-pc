@@ -32,7 +32,6 @@ import 'moment/locale/zh-cn';
 
 // 样式
 import 'antd/dist/antd.less';
-import 'element-theme-default';
 require('style/App.less');
 require('normalize.css');
 

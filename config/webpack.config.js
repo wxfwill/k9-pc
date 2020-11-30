@@ -3,6 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const commonSet = require('./webpack.common.js');
 const { apiUrl } = require('./config.js');
+const isDev = process.env.NODE_ENV == 'development';
 
 const config = {
   entry: {
@@ -17,7 +18,7 @@ const config = {
     publicPath: '/',
   },
   mode: 'development',
-  devtool: 'cheap-eval-source-map',
+  devtool: 'eval-cheap-module-source-map',
   devServer: {
     //浏览器自动刷新,需下载webpack-dev-server
     // contentBase:path.join(__dirname, "../dist"),

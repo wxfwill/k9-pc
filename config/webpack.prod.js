@@ -1,10 +1,9 @@
 //生产环境配置
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const common = require('./webpack.common.js');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const optimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = merge(common, {
@@ -67,7 +66,7 @@ module.exports = merge(common, {
           },
         },
       }),
-      new optimizeCssAssetsWebpackPlugin({}),
+      new CssMinimizerPlugin(),
     ],
   },
   stats: {
@@ -79,15 +78,6 @@ module.exports = merge(common, {
   plugins: [
     // 删除
     new CleanWebpackPlugin(),
-    // new UglifyJSPlugin({
-    //   uglifyOptions: {
-    //     compress: {
-    //       drop_console: true, //console
-    //       drop_debugger: true,
-    //       pure_funcs: ['console.log'], //移除console
-    //     },
-    //   },
-    // }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"', //node提供的常量api

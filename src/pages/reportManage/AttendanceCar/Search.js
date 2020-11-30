@@ -218,7 +218,7 @@ class SearchForm extends Component {
                     )}
                   </FormItem>
                 </Col>
-                <Col xl={4} lg={4} md={8} sm={12} xs={12}>
+                {/* <Col xl={4} lg={4} md={8} sm={12} xs={12}>
                   <FormItem
                     label="是否反馈"
                     labelCol={{ xl: { span: 9 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
@@ -232,8 +232,8 @@ class SearchForm extends Component {
                       </Radio.Group>
                     )}
                   </FormItem>
-                </Col>
-                <Col xl={4} lg={4} md={8} sm={12} xs={12}>
+                </Col> */}
+                {/* <Col xl={4} lg={4} md={8} sm={12} xs={12}>
                   <FormItem
                     label="是否抓捕成功"
                     labelCol={{ xl: { span: 9 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
@@ -247,14 +247,14 @@ class SearchForm extends Component {
                       </Radio.Group>
                     )}
                   </FormItem>
-                </Col>
-                <Col xl={4} lg={4} md={8} sm={12} xs={12}>
+                </Col> */}
+                {/* <Col xl={4} lg={4} md={8} sm={12} xs={12}>
                   <FormItem label="地点" {...thirdLayout}>
                     {getFieldDecorator('taskLocation', {
                       initialValue: '',
                     })(<Input placeholder="请输入" allowClear />)}
                   </FormItem>
-                </Col>
+                </Col> */}
                 <Col xl={6} lg={6} md={8} sm={12} xs={12} style={{ textAlign: 'center' }}>
                   <Button type="primary" htmlType="submit">
                     查询
