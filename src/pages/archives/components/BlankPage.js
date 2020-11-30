@@ -1,4 +1,4 @@
-//奖励事项
+//最后一页
 import React, { Component } from 'react';
 class BlankPage extends Component {
   constructor(props) {

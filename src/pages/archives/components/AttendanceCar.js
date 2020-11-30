@@ -1,5 +1,6 @@
 //出勤用车
 import React, { Component } from 'react';
+import { Icon } from 'antd';
 import NoData from 'components/NoData';
 class AttendanceCar extends Component {
   constructor(props) {
@@ -15,16 +16,26 @@ class AttendanceCar extends Component {
       currentIndex: nextProps.currentIndex,
     });
   }
+  //打印
+  onPrint = (e) => {
+    const { detailInfor } = this.state;
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+    util.jQPrintPartialHtml('#print-view' + detailInfor.bookName + detailInfor.id);
+  };
   render() {
     const { detailInfor, currentIndex } = this.state;
     return (
       <div className="book-box">
-        <div className="page-head">{detailInfor.bookName}信息</div>
+        <div className="page-head">
+          {detailInfor.bookName}信息
+          {!detailInfor.noData ? <Icon type="printer" onClick={(e) => this.onPrint(e)} /> : null}
+        </div>
         <div className="attendance-car">
           <div className="book-cont">
             {detailInfor.$indexes ? <p className="title">{detailInfor.bookName}</p> : null}
             {!detailInfor.noData ? (
-              <div>
+              <div className="print-view" id={'print-view' + detailInfor.bookName + detailInfor.id}>
                 <table border="1" bordercolor="#E7E7E7" className="table-box mgt12">
                   <tbody className="no-wrap-th">
                     <tr>
