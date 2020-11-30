@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const srcPath = path.resolve(__dirname, '../src');
 const commonSet = {
@@ -16,7 +15,6 @@ const commonSet = {
     path: path.resolve(__dirname, '../dist'),
     publicPath: './',
   },
-  // devtool: 'eval-source-map',
   module: {
     rules: [
       {
@@ -35,7 +33,7 @@ const commonSet = {
       {
         test: /\.(png|svg|jpg|gif)/,
         use: [
-          'file-loader?name=assets/images/[hash:8].[name].[ext]',
+          'file-loader?name=assets/images/[chunkhash:8].[name].[ext]',
           // {
           //   loader: 'file-loader',
           //   options: {
@@ -64,7 +62,7 @@ const commonSet = {
           {
             loader: 'file-loader',
             options: {
-              name: 'fonts/[name].[hash:7].[ext]',
+              name: 'fonts/[name].[chunkhash:7].[ext]',
             },
           },
         ],
@@ -83,7 +81,7 @@ const commonSet = {
       config: 'config',
     }),
     new MiniCssExtractPlugin({
-      filename: 'css/[name]-[hash:8].css',
+      filename: 'css/[name]-[chunkhash:8].css',
       ignoreOrder: true, // 禁止检查顺序
     }),
   ],

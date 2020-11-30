@@ -223,7 +223,7 @@ class TeamWorkStatist extends Component {
             dataSource={this.state.dataSource}
             pagination={this.state.pagination}
             loading={this.state.loading}
-            isScroll={{ x: 1366 }}
+            isScroll={{ x: 1366, y: 640 }}
             columns={this.state.columns}
             isBordered={true}
             isRowSelects={false}

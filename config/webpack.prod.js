@@ -88,10 +88,10 @@ module.exports = merge(common, {
     //     },
     //   },
     // }),
-    // new webpack.DefinePlugin({
-    //   'process.env': {
-    //     NODE_ENV: '"production"', //node提供的常量api
-    //   },
-    // }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"', //node提供的常量api
+      },
+    }),
   ],
 });

@@ -100,8 +100,10 @@ const OrganList = asyncComponent(() => import('pages/userManage/organ/index'));
 // 新版--上报统计
 // 上报
 const FourReport = asyncComponent(() => import('pages/reportManage/FourReport/index'));
-// 信息查询
+// 工作用车信息查询
 const FourReportListSearch = asyncComponent(() => import('pages/reportManage/FourReportListSearch/index'));
+// 出勤用车
+const AttendanceCar = asyncComponent(() => import('pages/reportManage/AttendanceCar/index'));
 // 其他事物上报
 const OtherThingsReport = asyncComponent(() => import('pages/reportManage/OtherThingsReport/index'));
 // 中队统计
@@ -590,7 +592,12 @@ const routerArr = [
           {
             path: '/app/reportManage/FourReportListSearch',
             component: FourReportListSearch,
-            name: '用车信息列表',
+            name: '工作用车列表',
+          },
+          {
+            path: '/app/reportManage/AttendanceCar',
+            component: AttendanceCar,
+            name: '出勤用车列表',
           },
           {
             path: '/app/reportManage/otherThingsReport',

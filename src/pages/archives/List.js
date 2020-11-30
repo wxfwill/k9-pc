@@ -8,43 +8,55 @@ class ArchivesList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      limit: null,
       dataSource: [],
       loading: false,
+      sortFieldName: '',
+      sortType: 'desc',
+      param: {
+        duty: null,
+        groupIds: [],
+        policeName: null,
+        policeNumber: null,
+        title: null,
+      },
       pagination: {
-        houseId: '',
-        name: '',
         currPage: 1,
         pageSize: 10,
         total: 0,
       },
-      pageSize: 10,
-      currPage: 1,
       selectedRowKeys: [],
       // dutyList: [], // 职务信息
     };
   }
-  handleLimit = (limit) => {
-    console.log(limit);
-    this.setState({ limit });
+  handleLimit = (data) => {
+    console.log(data);
+    let per = data || {};
+    per.duty = per.duty ? Number(per.duty) : null;
+    per.groupIds = per.groupIds ? [Number(per.groupIds)] : [];
+    per.policeName = per.policeName ? per.policeName : null;
+    per.policeNumber = per.policeNumber ? per.policeNumber : null;
+    per.title = per.title ? Number(per.title) : null;
+    let _per = Object.assign({}, this.state.param, per);
+    let _pagination = Object.assign({}, this.state.pagination, { current: 1, currPage: 1, pageSize: 10 });
+    this.setState({ param: _per, pagination: _pagination }, () => {
+      let { sortFieldName, sortType, pagination, param } = this.state;
+      this.fetch(sortFieldName, sortType, pagination, param);
+    });
   };
   componentDidMount() {
-    this.fetch();
+    let { sortFieldName, sortType, pagination, param } = this.state;
+    this.fetch(sortFieldName, sortType, pagination, param);
   }
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
+  fetch(sortFieldName, sortType, pagination, param) {
+    let obj = { sortFieldName, sortType, ...pagination, param };
     this.setState({ loading: true });
-    React.$ajax
-      .postData('/api/user/list', { ...params })
-      .then((res) => {
-        const pagination = { ...this.state.pagination };
-        pagination.total = res.totalCount;
-        pagination.current = res.currPage;
-        pagination.pageSize = res.pageSize;
-        this.setState({ dataSource: res.list, loading: false, pagination });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    React.$ajax.postData('/api/user/pageInfo', obj).then((res) => {
+      const pagination = { ...this.state.pagination };
+      pagination.total = res.totalCount;
+      pagination.current = res.currPage;
+      pagination.pageSize = res.pageSize;
+      this.setState({ dataSource: res.list, loading: false, pagination });
+    });
   }
   // 多选
   handleSelectChange = (arrs) => {
@@ -56,7 +68,8 @@ class ArchivesList extends Component {
   handleShowSizeChange = (cur, size) => {
     let per = Object.assign({}, this.state.pagination, { currPage: cur, pageSize: size, current: cur });
     this.setState({ pagination: per }, () => {
-      this.fetch(this.state.pagination);
+      let { sortFieldName, sortType, pagination, param } = this.state;
+      this.fetch(sortFieldName, sortType, pagination, param);
     });
   };
   // 页码
@@ -64,7 +77,8 @@ class ArchivesList extends Component {
     //   let per = Object.assign({}, this.state.pagination, { currPage: pages.current, pageSize: pages.pageSize });
     let per = Object.assign({}, this.state.pagination, { currPage: page, current: page });
     this.setState({ pagination: per }, () => {
-      this.fetch(this.state.pagination);
+      let { sortFieldName, sortType, pagination, param } = this.state;
+      this.fetch(sortFieldName, sortType, pagination, param);
     });
   };
   //批量删除

@@ -3,6 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const commonSet = require('./webpack.common.js');
 const { apiUrl } = require('./config.js');
+
 const config = {
   entry: {
     main: ['babel-polyfill', './src/app.js'],
@@ -79,11 +80,11 @@ const config = {
     //new webpack.optimize.UglifyJsPlugin(),//压缩打包后文件
     // new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    // new webpack.DefinePlugin({
-    //   'process.env': {
-    //     NODE_ENV: '"development"', //node提供的常量api
-    //   },
-    // }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"development"', //node提供的常量api
+      },
+    }),
   ].concat(commonSet.plugins),
   resolve: commonSet.resolve,
 };

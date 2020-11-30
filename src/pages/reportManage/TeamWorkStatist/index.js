@@ -169,7 +169,7 @@ class TeamWorkStatist extends Component {
               return 'key-' + row.groupId;
             }}
             dataSource={this.state.dataSource}
-            isScroll={{ x: 1366 }}
+            isScroll={{ x: 1366, y: 640 }}
             loading={this.state.loading}
             columns={this.state.columns}
             isBordered={true}
