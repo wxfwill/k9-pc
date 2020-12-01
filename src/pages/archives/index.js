@@ -7,7 +7,7 @@ import Catalogue from './components/Catalogue'; //目录
 import PerformanceAssessment from './components/PerformanceAssessment'; //绩效考核
 import Transport from './components/Transport'; //工作用车
 import AttendanceCar from './components/AttendanceCar'; //出勤用车
-import AttendanceManagement from './components/AttendanceManagement'; //考勤管理
+import AttendanceManagement from './components/AttendanceManagement'; //考勤管理-请假/离深/补休
 import RewardItems from './components/RewardItems'; //奖励事项
 import DailyInformation from './components/DailyInformation'; //日报信息
 import BlankPage from './components/BlankPage'; //最后一页
@@ -146,6 +146,15 @@ class Archivew extends Component {
     };
     return React.$ajax.postData('/api/report/pageDocDailyWork', reqObj);
   };
+  //获取请假/离深/补休
+  exportLeaveAfterSyncInfo = (startDate, endDate, userId) => {
+    const reqObj = {
+      startDate: startDate, //开始时间
+      endDate: endDate, //结束时间
+      userIds: [userId], //用户ID
+    };
+    return React.$ajax.postData('/api/leaveAfterSync/getLeaveAfterSyncList', reqObj); //getLeaveAfterSyncList
+  };
   //获取所有的信息
   getAllInfor = () => {
     let { startDate, endDate, userId } = this.state;
@@ -156,6 +165,7 @@ class Archivew extends Component {
       DocAttendanceCar = [], //出勤用车
       RewardSyncList = [], //奖励事项
       DocDailyWork = [], //日报信息
+      LeaveAfterSyncInfo = [], //请假/离深/补休
       BackCoverArr = [{ bookName: '封底' }],
       BlankPageArr = [{ bookName: '最后一页' }];
     Promise.all([
@@ -164,6 +174,7 @@ class Archivew extends Component {
       this.pageDocAttendanceCar(startDate, endDate, userId), //获取出勤用车信息
       this.getRewardSyncList(startDate, endDate, userId), //获取奖励详情列表
       this.pageDocDailyWork(startDate, endDate, userId), //获取日报信息
+      this.exportLeaveAfterSyncInfo(startDate, endDate, userId), //获取请假/离深/补休
     ]).then((res) => {
       if (res && res.length > 0) {
         res.map((resObj, index) => {
@@ -189,6 +200,10 @@ class Archivew extends Component {
                 console.log(resObj, '日报信息');
                 DocDailyWork = this.getSingle(resObj.data.list, '日报信息');
                 break;
+              case 5:
+                console.log(resObj, '请假/离深/补休');
+                LeaveAfterSyncInfo = this.getSingle(resObj.data, '请假/离深/补休');
+                break;
             }
           }
         });
@@ -200,6 +215,7 @@ class Archivew extends Component {
         ...DocAttendanceCar,
         ...RewardSyncList,
         ...DocDailyWork,
+        ...LeaveAfterSyncInfo,
       ];
       if (allInforListArr.length % 2 === 0) {
         //如果数据是单数，再加一个空白页
@@ -280,14 +296,17 @@ class Archivew extends Component {
       case '出勤用车':
         cont = <AttendanceCar detailInfor={obj} currentIndex={currentIndex} />;
         break;
-      case '考勤管理':
-        cont = <AttendanceManagement detailInfor={obj} currentIndex={currentIndex} />;
-        break;
+      // case '考勤管理':
+      //   cont = <AttendanceManagement detailInfor={obj} currentIndex={currentIndex} />;
+      //break;
       case '奖励事项':
         cont = <RewardItems detailInfor={obj} currentIndex={currentIndex} />;
         break;
       case '日报信息':
         cont = <DailyInformation detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '请假/离深/补休':
+        cont = <AttendanceManagement detailInfor={obj} currentIndex={currentIndex} />;
         break;
       case '最后一页':
         cont = <BlankPage currentIndex={currentIndex} />;
@@ -414,11 +433,9 @@ class Archivew extends Component {
                 );
               })}
             </div>
+            {numbAdd > 1 && <Icon type="left-circle" className="arrows left-arrows" onClick={() => this.getPage(1)} />}
             {numbAdd < bookList.length + 1 && (
-              <Icon type="left-circle" className="arrows left-arrows" onClick={() => this.getPage(0)} />
-            )}
-            {numbAdd > 1 && (
-              <Icon type="right-circle" className="arrows right-arrows" onClick={() => this.getPage(1)} />
+              <Icon type="right-circle" className="arrows right-arrows" onClick={() => this.getPage(0)} />
             )}
           </div>
         </div>

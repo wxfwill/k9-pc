@@ -1,4 +1,4 @@
-//考勤管理
+//考勤管理-请假/离深/补休
 import React, { Component } from 'react';
 import { Icon } from 'antd';
 import NoData from 'components/NoData';
@@ -39,18 +39,18 @@ class AttendanceManagement extends Component {
                 <table border="1" bordercolor="#E7E7E7" className="table-box mgt12">
                   <tbody className="no-wrap-th">
                     <tr>
-                      <th>考勤类型</th>
-                      <td colSpan="3">年假</td>
+                      <th>请假类型</th>
+                      <td colSpan="3">{detailInfor.leaveType}</td>
                     </tr>
                     <tr>
                       <th>开始时间</th>
-                      <td>2020-11-15</td>
+                      <td>{util.formatDate(new Date(detailInfor.startDate), 'yyyy-MM-dd hh:mm:ss')}</td>
                       <th>结束时间</th>
-                      <td>2020-11-15</td>
+                      <td>{util.formatDate(new Date(detailInfor.endDate), 'yyyy-MM-dd hh:mm:ss')}</td>
                     </tr>
                     <tr>
                       <th>详细描述</th>
-                      <td colSpan="3">由于家里有事情，特申请休年假回家处理</td>
+                      <td colSpan="3">{detailInfor.reason}</td>
                     </tr>
                   </tbody>
                 </table>
