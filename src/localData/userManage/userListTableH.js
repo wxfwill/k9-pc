@@ -99,7 +99,7 @@ export const archivesHeaderLabel = (callbackViewArchive) => {
     },
     {
       title: '电话',
-      dataIndex: 'telPhone',
+      dataIndex: 'telphone',
     },
     {
       title: '操作',

@@ -25,6 +25,8 @@ class ShowModel extends Component {
       taskLocation: undefined, // 地点
       repDetail: undefined, // 上报详情
       feedbackContext: undefined, // 反馈详情
+      carPelper: undefined, // 车辆驾驶员
+      carNumber: undefined, //车牌号码
     };
   }
   componentDidMount() {
@@ -242,7 +244,7 @@ class ShowModel extends Component {
           </Row>
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
-              <Form.Item label="任务类型">
+              <Form.Item label="用车类型">
                 {getFieldDecorator('categoryIds', {
                   initialValue: this.state.categoryIds,
                 })(
@@ -379,6 +381,22 @@ class ShowModel extends Component {
                       : null}
                   </TreeSelect>
                 )}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={24}>
+            <Col xl={12} lg={12} md={12} sm={12} xs={12}>
+              <Form.Item label="车牌号码">
+                {getFieldDecorator('carNumber', {
+                  initialValue: this.state.carNumber,
+                })(<Input placeholder="请输入" allowClear />)}
+              </Form.Item>
+            </Col>
+            <Col xl={12} lg={12} md={12} sm={12} xs={12}>
+              <Form.Item label="车辆驾驶员">
+                {getFieldDecorator('carPelper', {
+                  initialValue: this.state.carPelper,
+                })(<Input placeholder="请输入" allowClear />)}
               </Form.Item>
             </Col>
           </Row>

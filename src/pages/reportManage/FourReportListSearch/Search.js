@@ -152,10 +152,11 @@ class SearchForm extends Component {
                 </Col>
                 <Col xl={6} lg={6} md={8} sm={12} xs={12}>
                   <FormItem label="开始时间" {...thirdLayout}>
-                    {getFieldDecorator('repDateStart', {
+                    {getFieldDecorator('startDate', {
                       initialValue: null,
                     })(
                       <DatePicker
+                        showTime
                         getCalendarContainer={(triggerNode) => triggerNode.parentNode}
                         placeholder="请输入"
                         onChange={this.onChangeStartTime}
@@ -165,10 +166,11 @@ class SearchForm extends Component {
                 </Col>
                 <Col xl={6} lg={6} md={8} sm={12} xs={12}>
                   <FormItem label="结束时间" {...thirdLayout}>
-                    {getFieldDecorator('repDateEnd', {
+                    {getFieldDecorator('endDate', {
                       initialValue: null,
                     })(
                       <DatePicker
+                        showTime
                         placeholder="请输入"
                         getCalendarContainer={(triggerNode) => triggerNode.parentNode}
                         onChange={this.onChangeEndTime}
@@ -179,19 +181,8 @@ class SearchForm extends Component {
               </Row>
               <Row>
                 <Col xl={6} lg={6} md={8} sm={12} xs={12}>
-                  <FormItem label="任务类型" {...thirdLayout} hasFeedback>
-                    {/* {getFieldDecorator('categoryIds')(
-                      <Select placeholder="请选择" style={{ width: '100%' }} allowClear onChange={this.selectTaskType}>
-                        {this.state.taksTypeData.map((item) => {
-                          return (
-                            <Option key={item.id} value={item.id}>
-                              {item.title}
-                            </Option>
-                          );
-                        })}
-                      </Select>
-                    )} */}
-                    {getFieldDecorator('categoryIds')(
+                  <FormItem label="用车类型" {...thirdLayout} hasFeedback>
+                    {getFieldDecorator('taskType')(
                       <TreeSelect
                         style={{ width: '100%' }}
                         filterTreeNode={() => true}
@@ -218,7 +209,7 @@ class SearchForm extends Component {
                     )}
                   </FormItem>
                 </Col>
-                <Col xl={4} lg={4} md={8} sm={12} xs={12}>
+                {/* <Col xl={4} lg={4} md={8} sm={12} xs={12}>
                   <FormItem
                     label="是否反馈"
                     labelCol={{ xl: { span: 9 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
@@ -232,8 +223,8 @@ class SearchForm extends Component {
                       </Radio.Group>
                     )}
                   </FormItem>
-                </Col>
-                <Col xl={4} lg={4} md={8} sm={12} xs={12}>
+                </Col> */}
+                {/* <Col xl={4} lg={4} md={8} sm={12} xs={12}>
                   <FormItem
                     label="是否抓捕成功"
                     labelCol={{ xl: { span: 9 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
@@ -247,10 +238,10 @@ class SearchForm extends Component {
                       </Radio.Group>
                     )}
                   </FormItem>
-                </Col>
+                </Col> */}
                 <Col xl={4} lg={4} md={8} sm={12} xs={12}>
-                  <FormItem label="地点" {...thirdLayout}>
-                    {getFieldDecorator('taskLocation', {
+                  <FormItem label="目的地" {...thirdLayout}>
+                    {getFieldDecorator('carDest', {
                       initialValue: '',
                     })(<Input placeholder="请输入" allowClear />)}
                   </FormItem>

@@ -26,6 +26,7 @@ class TeamWorkStatist extends Component {
         dateType: '',
         groupId: [],
         userId: [],
+        categoryId: util.urlParse(this.props.location.search) ? util.urlParse(this.props.location.search).id : null,
       },
       sortFieldName: '',
       sortType: 'desc',
@@ -40,7 +41,7 @@ class TeamWorkStatist extends Component {
     this.handleCommon(null, () => false);
   };
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '个人工作统计', '详情'] });
+    // React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '个人工作统计', '详情'] });
     if (JSON.stringify(util.urlParse(this.props.location.search)) == '{}') {
       let { param, sortFieldName, sortType, pagination } = this.state;
       this.getListData(param, sortFieldName, sortType, pagination);

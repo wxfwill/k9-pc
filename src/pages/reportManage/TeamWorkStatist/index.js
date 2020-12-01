@@ -43,7 +43,7 @@ class TeamWorkStatist extends Component {
     }
   };
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '中队工作统计'] });
+    // React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '中队工作统计'] });
     this.getListData();
     console.log('this.props');
     console.log(this.props);

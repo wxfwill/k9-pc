@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const commonSet = require('./webpack.common.js');
 const { apiUrl } = require('./config.js');
 const isDev = process.env.NODE_ENV == 'development';
+console.log('apiUrl====' + apiUrl);
 
 const config = {
   entry: {
