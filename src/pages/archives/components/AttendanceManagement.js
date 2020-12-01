@@ -21,7 +21,8 @@ class AttendanceManagement extends Component {
     const { detailInfor } = this.state;
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
-    util.jQPrintPartialHtml('#print-view' + detailInfor.bookName + detailInfor.id);
+    // util.jQPrintPartialHtml('#print-view' + detailInfor.bookName + detailInfor.id);
+    util.jQPrintPartialHtml('#print-view' + '请假离深补休' + detailInfor.id);
   };
   render() {
     const { detailInfor, currentIndex } = this.state;
@@ -35,7 +36,8 @@ class AttendanceManagement extends Component {
           <div className="book-cont">
             {detailInfor.$indexes ? <p className="title">{detailInfor.bookName}</p> : null}
             {!detailInfor.noData ? (
-              <div className="print-view" id={'print-view' + detailInfor.bookName + detailInfor.id}>
+              // <div className="print-view" id={'print-view' + detailInfor.bookName + detailInfor.id}>
+              <div className="print-view" id={'print-view' + '请假离深补休' + detailInfor.id}>
                 <table border="1" bordercolor="#E7E7E7" className="table-box mgt12">
                   <tbody className="no-wrap-th">
                     <tr>
