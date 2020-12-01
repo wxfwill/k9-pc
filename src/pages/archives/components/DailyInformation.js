@@ -41,7 +41,7 @@ class DailyInformation extends Component {
                 className="print-view daily-information-cont"
                 id={'print-view' + detailInfor.bookName + detailInfor.id}
               >
-                <div className="mgt12 header">2020-10-21 日报信息</div>
+                <div className="mgt12 header">{detailInfor.repDate} 日报信息</div>
                 <div className="content">
                   <dl>
                     <dt>早晨（7:00-8:00）</dt>

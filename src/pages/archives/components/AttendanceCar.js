@@ -51,8 +51,8 @@ class AttendanceCar extends Component {
                       <td>{util.formatDate(new Date(detailInfor.endTime), 'yyyy-MM-dd hh:mm:ss')}</td>
                     </tr>
                     <tr>
-                      <th>用车时常</th>
-                      <td>{detailInfor.usedTime}小时</td>
+                      <th>用车时长</th>
+                      <td>{detailInfor.usedTimeDescription}</td>
                       <th>车牌号码</th>
                       <td>{detailInfor.carNo}</td>
                     </tr>
