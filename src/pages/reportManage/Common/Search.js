@@ -18,6 +18,7 @@ class SearchForm extends Component {
       teamVal: util.urlParse(this.props.location.search)
         ? util.urlParse(this.props.location.search).groupId
         : undefined,
+      userId: util.urlParse(this.props.location.search) ? util.urlParse(this.props.location.search).userId : undefined,
       isopen: false,
       nameVal: undefined,
       checkYear: false,
@@ -64,7 +65,7 @@ class SearchForm extends Component {
     this.props.form.resetFields();
     this.setState({ checkYear: false });
     this.props.form.setFieldsValue({ year: null });
-    this.setState({ teamVal: undefined });
+    this.setState({ teamVal: undefined, userId: undefined });
     this.props.handleReset && this.props.handleReset();
   };
   handleChange(name, value) {
@@ -210,7 +211,9 @@ class SearchForm extends Component {
           {isShowName ? (
             <Col xl={6} lg={6} md={8} sm={12} xs={12}>
               <FormItem label="姓名:" {...thirdLayout}>
-                {getFieldDecorator('userId')(
+                {getFieldDecorator('userId', {
+                  initialValue: this.state.userId,
+                })(
                   <TreeSelect
                     showSearch
                     style={{ width: '100%' }}

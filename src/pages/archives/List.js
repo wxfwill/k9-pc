@@ -150,7 +150,7 @@ class ArchivesList extends Component {
                 loading={this.state.loading}
                 columns={archivesHeaderLabel(this.viewDetail)}
                 isBordered={true}
-                isRowSelects={true}
+                isRowSelects={false}
                 rowSelectKeys={this.state.selectedRowKeys}
                 handleChangeSize={this.handleChangeSize}
                 handleShowSizeChange={this.handleShowSizeChange}

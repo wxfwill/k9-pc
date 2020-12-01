@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, message } from 'antd';
 import Search from './Search';
-import { tableHeaderLabel } from 'localData/reportManage/tableHeader';
+import { tableHeaderLabel1 } from 'localData/reportManage/tableHeader';
 import ExportFileHoc from 'components/exportFile/exportFileHoc';
 import CustomTable from 'components/table/CustomTable';
 require('style/fourReport/reportList.less');
@@ -15,14 +15,14 @@ class FourReportListSearch extends Component {
       dataSource: [],
       loading: false,
       param: {
-        arrest: null,
-        categoryIds: [],
-        groupId: [],
-        isFeedback: null,
-        repDateEnd: null,
-        repDateStart: null,
-        taskLocation: null,
-        userId: [],
+        // arrest: null,
+        taskType: null,
+        groupId: null,
+        // isFeedback: null,
+        endDate: null,
+        startDate: null,
+        // carDest: null,
+        userId: null,
       },
       personnelTree: [],
       personnelTree1: [],
@@ -45,7 +45,7 @@ class FourReportListSearch extends Component {
     // 查询用户
     this.queryGroupUser('', 'all');
     // 任务类型
-    this.queryTaskType('gzyc');
+    this.queryTaskType('cqyc');
   }
   exportExcel = (data) => {
     this.handleSearchData(data, this.handleExport);
@@ -59,7 +59,7 @@ class FourReportListSearch extends Component {
   };
   handleExport = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
-    this.props.exportExcel('/api/report/exportCarUseReportInfo', newObj);
+    this.props.exportExcel('/api/report/exportReportAttendanceCar', newObj);
     return true;
   };
   handleEditInfo = (row) => {
@@ -86,12 +86,12 @@ class FourReportListSearch extends Component {
     let { pagination } = this.state;
     let per = data || {};
     let _pagination;
-    per.categoryIds = per.categoryIds ? [Number(per.categoryIds)] : [];
-    per.groupId = per.groupId ? [Number(per.groupId)] : [];
-    per.userId = per.userId ? [Number(per.userId)] : [];
-    per.repDateEnd = per.repDateEnd ? moment(per.repDateEnd).format('YYYY-MM-DD') : null;
-    per.repDateStart = per.repDateStart ? moment(per.repDateStart).format('YYYY-MM-DD') : null;
-    per.taskLocation = per.taskLocation ? per.taskLocation : null;
+    per.taskType = per.taskType ? per.taskType : null;
+    per.groupId = per.groupId ? Number(per.groupId) : null;
+    per.userId = per.userId ? Number(per.userId) : null;
+    per.endDate = per.endDate ? moment(per.endDate).format('x') : null;
+    per.startDate = per.startDate ? moment(per.startDate).format('x') : null;
+    // per.carDest = per.carDest ? per.carDest : null;
 
     let newObj = Object.assign({}, this.state.param, per);
     _pagination = Object.assign({}, pagination, { current: 1, currPage: 1, pageSize: 10 });
@@ -114,13 +114,14 @@ class FourReportListSearch extends Component {
   getListData = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
     this.setState({ loading: true });
-    React.$ajax.fourManage.page4wReportInfo(newObj).then((res) => {
+    React.$ajax.postData('/api/report/pageReportAttendanceCar', newObj).then((res) => {
       if (res && res.code === 0) {
         let resData = res.data;
+        let newList = resData.list ? resData.list : [];
         const pagination = { ...this.state.pagination };
         pagination.total = resData.totalCount;
         pagination.current = resData.currPage;
-        this.setState({ dataSource: resData.list, loading: false, pagination });
+        this.setState({ dataSource: newList, loading: false, pagination });
       }
     });
   };
@@ -177,12 +178,12 @@ class FourReportListSearch extends Component {
         <Card bordered={false}>
           <CustomTable
             setTableKey={(row) => {
-              return 'key-' + row.userId + row.repTime;
+              return 'key-' + row.id + row.applyUser;
             }}
             dataSource={this.state.dataSource}
             pagination={this.state.pagination}
             loading={this.state.loading}
-            columns={tableHeaderLabel(this.handleEditInfo)}
+            columns={tableHeaderLabel1(this.handleEditInfo)}
             isBordered={true}
             isRowSelects={false}
             handleChangeSize={this.handleChangeSize}

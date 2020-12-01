@@ -1,20 +1,14 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import { Link, withRouter } from 'react-router-dom';
-import { Layout, Menu, Icon, Row, Col, Badge, Button, message } from 'antd';
-
+import { Layout, Menu, Dropdown, Modal, Icon, Row, Col, Badge, Button, message } from 'antd';
 // import * as systomStatus from 'actions/systomStatus';
 import { showNavCollapsed } from 'store/actions/common';
 import { saveToken } from 'store/actions/loginAction';
 
-import httpAjax from 'libs/httpAjax';
 import { constant } from 'libs/util/index';
 import { changeRoute } from 'store/actions/common';
 const { Header } = Layout;
-const SubMenu = Menu.SubMenu;
 
 const newMsgObj = {
   ///app/monitoring/leaveCheck
@@ -116,28 +110,73 @@ class HeaderComponent extends Component {
     }
   };
 
+  handleLoginOut = () => {
+    Modal.confirm({
+      title: '提示',
+      content: '确认退出吗？',
+      onOk: () => {
+        let hide = message.loading('正在退出系统...', 0);
+        React.$ajax.postData('/api/userCenter/logout').then((res) => {
+          if (res.code == 0) {
+            hide();
+            this.props.changeRouteAction('/app/index');
+            this.props.tokenAction(null);
+            this.props.history.push('/login');
+          }
+        });
+      },
+      onCancel: () => {},
+    });
+  };
+
   downloadApp = (obj, type) => {
-    React.$ajax
-      .postData('/api/downLoad/getFileLocation?dlType=1')
-      .then((res) => {
-        if (res.code == 0) {
-          window.location.href = '' + res.data;
-        }
-      })
-      .catch(function (err) {});
+    React.$ajax.postData('/api/downLoad/getFileLocation?dlType=1').then((res) => {
+      if (res.code == 0) {
+        window.location.href = '' + res.data;
+      }
+    });
   };
   downloadIM = (obj, type) => {
-    React.$ajax
-      .postData('/api/downLoad/getFileLocation?dlType=2')
-      .then((res) => {
-        if (res.code == 0) {
-          window.location.href = '' + res.data;
-        }
-      })
-      .catch(function (err) {});
+    React.$ajax.postData('/api/downLoad/getFileLocation?dlType=2').then((res) => {
+      if (res.code == 0) {
+        window.location.href = '' + res.data;
+      }
+    });
   };
   handleCollapsed = () => {
     this.props.isCollapsedAction();
+  };
+  handleDrop = ({ key }) => {
+    console.log(key);
+    if (key == 'app') {
+      this.downloadApp();
+    } else if (key == 'IM') {
+      this.downloadIM();
+    } else if (key == 'loginOut') {
+      this.handleLoginOut();
+    }
+  };
+  dropMenu = () => {
+    return (
+      <Menu onClick={this.handleDrop}>
+        <Menu.Item key="app">
+          <span style={{ cursor: 'pointer' }}>
+            <Icon type="download" /> app端
+          </span>
+        </Menu.Item>
+        <Menu.Item key="IM">
+          <span style={{ cursor: 'pointer' }}>
+            <Icon type="download" /> IM
+          </span>
+        </Menu.Item>
+        <Menu.Item key="loginOut">
+          <span style={{ cursor: 'pointer' }}>
+            <Icon type="poweroff" />
+            注销
+          </span>
+        </Menu.Item>
+      </Menu>
+    );
   };
   render() {
     const { name } = this.props.userinfo;
@@ -151,45 +190,22 @@ class HeaderComponent extends Component {
                 <Icon type={this.props.isCollapsed ? 'menu-unfold' : 'menu-fold'} />
               </Button>
             </Col>
+            <Col offset={2} xs={2} sm={2} md={2} lg={1} className="center">
+              <Badge count={this.totalMsgNum == 0 ? '' : this.totalMsgNum}>
+                <Icon type="notification" />
+              </Badge>
+            </Col>
             <Col xs={8} sm={8} md={6} lg={3}>
-              <Menu mode="horizontal" className={classNames('usermsg')} onClick={this.menuClick.bind(this)}>
-                <SubMenu
-                  title={
-                    <Badge count={this.totalMsgNum == 0 ? '' : this.totalMsgNum}>
-                      <Icon type="notification" />
-                    </Badge>
-                  }
+              <Dropdown overlay={this.dropMenu()}>
+                <a
+                  className="ant-dropdown-link"
+                  style={{ color: 'rgba(0, 0, 0, 0.65)' }}
+                  onClick={(e) => e.preventDefault()}
                 >
-                  {this.msgList}
-                </SubMenu>
-                <SubMenu
-                  title={
-                    <span>
-                      {' '}
-                      <Icon type="user" />
-                      {name}
-                    </span>
-                  }
-                >
-                  {/* <Menu.Item key="profile">
-	                  <Link to="/profile">资料</Link>
-	                </Menu.Item> */}
-                  <Menu.Item key="logout" onClick={this.menuClick.bind(this)}>
-                    <Icon type="poweroff" />
-                    注销
-                  </Menu.Item>
-                </SubMenu>
-              </Menu>
-            </Col>
-            <Col xs={4} sm={3} md={3} lg={2} className="center">
-              <span style={{ cursor: 'pointer' }} onClick={this.downloadApp.bind(this)}>
-                <Icon type="download" /> app端7
-              </span>
-            </Col>
-            <Col xs={4} sm={3} md={3} lg={1}>
-              <span style={{ cursor: 'pointer' }} onClick={this.downloadIM.bind(this)}>
-                <Icon type="download" /> IM
-              </span>
+                  {name}
+                  <Icon type="down" />
+                </a>
+              </Dropdown>
             </Col>
           </Row>
         </div>
