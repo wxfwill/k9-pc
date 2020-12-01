@@ -173,10 +173,31 @@ class TeamWorkStatist extends Component {
     return newArr;
   };
   handleRowClick = (txt, record, index) => {
-    this.props.history.push({
-      pathname: '/app/reportManage/OwnWorkStatiseDetal',
-      search: `?groupId=${record.id}&id=${txt.id}`,
-    });
+    console.log(txt);
+    console.log(record);
+    // 姓名
+    if (txt.userId) {
+      React.$ajax.postData('/api/user/info', { id: txt.userId }).then((res) => {
+        if (res && res.code == 0) {
+          let resData = res.data;
+          this.props.history.push({
+            pathname: '/app/reportManage/OwnWorkStatiseDetal',
+            search: `?groupId=${resData.groupId}&userId=${txt.userId}`,
+          });
+        }
+      });
+    } else {
+      // 具体类型
+      React.$ajax.postData('/api/user/info', { id: record.userId }).then((res) => {
+        if (res && res.code == 0) {
+          let resData = res.data;
+          this.props.history.push({
+            pathname: '/app/reportManage/OwnWorkStatiseDetal',
+            search: `?groupId=${resData.groupId}&id=${txt.id}&userId=${record.userId}`,
+          });
+        }
+      });
+    }
   };
   getListData = (param, sortFieldName, sortType, pagination) => {
     let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
@@ -218,7 +239,7 @@ class TeamWorkStatist extends Component {
         <Card bordered={false}>
           <CustomTable
             setTableKey={(row) => {
-              return 'key-' + (row.id ? row.id : 0);
+              return 'key-' + (row.userId ? row.userId : 0) + Math.random();
             }}
             dataSource={this.state.dataSource}
             pagination={this.state.pagination}

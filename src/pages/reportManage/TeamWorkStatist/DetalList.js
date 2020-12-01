@@ -26,6 +26,7 @@ class TeamWorkStatist extends Component {
         dateType: '',
         groupId: [],
         userId: [],
+        categoryId: util.urlParse(this.props.location.search) ? util.urlParse(this.props.location.search).id : null,
       },
       sortFieldName: '',
       sortType: 'desc',

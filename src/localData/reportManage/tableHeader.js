@@ -5,50 +5,42 @@ export const tableHeaderLabel = (editCallback) => {
   let data = [
     {
       title: '人员名称',
-      dataIndex: 'userName',
+      dataIndex: 'applyUser',
       width: 100,
     },
     {
-      title: '任务时间',
-      dataIndex: 'repTime',
+      title: '任务开始时间',
+      dataIndex: 'startTime',
       render: (txt, record) => {
-        return util.formatDate(new Date(txt), 'yyyy-MM-dd');
+        return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
       },
     },
     {
-      title: '来源',
-      dataIndex: 'sourceNote',
+      title: '任务结束时间',
+      dataIndex: 'endTime',
+      render: (txt, record) => {
+        return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
+      },
+    },
+    {
+      title: '车牌号码',
+      dataIndex: 'carNo',
     },
     {
       title: '任务类型',
-      dataIndex: 'category',
+      dataIndex: 'carUseType',
     },
     {
       title: '地点',
-      dataIndex: 'taskLocation',
+      dataIndex: 'carUseDest',
     },
     {
-      title: '详细情况',
-      dataIndex: 'repDetail',
-    },
-    {
-      title: '抓捕人数',
-      dataIndex: 'arrestNum',
-    },
-    {
-      title: '是否反馈',
-      dataIndex: 'isFeedback',
-      render: (txt, record) => {
-        return txt == 1 ? '是' : '否';
-      },
-    },
-    {
-      title: '反馈详情',
-      dataIndex: 'feedbackContext',
+      title: '用车事由',
+      dataIndex: 'carUseReason',
     },
     {
       title: '备注',
-      dataIndex: 'remark',
+      dataIndex: 'note',
     },
     {
       title: '操作',
@@ -65,6 +57,73 @@ export const tableHeaderLabel = (editCallback) => {
   return data;
 };
 
+export const tableHeaderLabel1 = (editCallback) => {
+  let data = [
+    {
+      title: '人员名称',
+      dataIndex: 'applyUser',
+      width: 100,
+    },
+    {
+      title: '任务开始时间',
+      dataIndex: 'startTime',
+      render: (txt, record) => {
+        return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
+      },
+    },
+    {
+      title: '任务结束时间',
+      dataIndex: 'endTime',
+      render: (txt, record) => {
+        return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
+      },
+    },
+    {
+      title: '任务类型',
+      dataIndex: 'taskType',
+      width: 100,
+    },
+    {
+      title: '地点',
+      dataIndex: 'taskDestLocation',
+      width: 120,
+    },
+    {
+      title: '带队民警',
+      dataIndex: 'policeLeader',
+      width: 100,
+    },
+    {
+      title: '车牌号码',
+      dataIndex: 'carNo',
+    },
+    {
+      title: '用车时长',
+      dataIndex: 'usedTimeNote',
+      width: 120,
+    },
+    {
+      title: '出勤装备',
+      dataIndex: 'allEquipment',
+    },
+    {
+      title: '备注',
+      dataIndex: 'note',
+    },
+    // {
+    //   title: '操作',
+    //   dataIndex: 'inoption',
+    //   render: (txt, record, index) => {
+    //     return record.repStatus == 'error' ? (
+    //       <Button size="small" type="primary" onClick={() => editCallback && editCallback(record)}>
+    //         编辑
+    //       </Button>
+    //     ) : null;
+    //   },
+    // },
+  ];
+  return data;
+};
 export const ownTableHeaderDetal = [
   {
     title: '任务类型',
