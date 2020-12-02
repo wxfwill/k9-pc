@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, Tooltip, Icon, Radio, Button, Form, Carousel, Table, message } from 'antd';
+import { Card, Button, Carousel, Table } from 'antd';
 import Moment from 'moment';
-import echart from 'echarts';
+// import echart from 'echarts';
+let echart = require('echarts/lib/echarts');
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -75,29 +76,6 @@ const mockJb = [
     num: '0',
     unit: '条',
     percent: '--%',
-  },
-];
-
-const mockDf = [
-  {
-    name: '小明',
-    score: '100',
-    ranking: '1',
-  },
-  {
-    name: '小网',
-    score: '99',
-    ranking: '2',
-  },
-  {
-    name: '小网',
-    score: '98',
-    ranking: '2',
-  },
-  {
-    name: '小网',
-    score: '97',
-    ranking: '2',
   },
 ];
 

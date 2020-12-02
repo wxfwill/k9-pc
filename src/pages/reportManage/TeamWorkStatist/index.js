@@ -100,7 +100,7 @@ class TeamWorkStatist extends Component {
         return (
           <span
             className={record[item.columnName] != '总计' && this.state.lastIndex != index ? 'tabEleRow' : ''}
-            key={'key-' + item.id}
+            key={'key-' + item.id + Math.random()}
             onClick={this.state.lastIndex != index ? this.handleRowClick.bind(this, txt, record, index) : null}
           >
             {record[item.id] ? record[item.id].value : record[item.columnName]}
@@ -166,10 +166,10 @@ class TeamWorkStatist extends Component {
         <Card bordered={false}>
           <CustomTable
             setTableKey={(row) => {
-              return 'key-' + row.groupId;
+              return 'key-' + row.groupId + Math.random();
             }}
             dataSource={this.state.dataSource}
-            isScroll={{ x: 1366, y: 640 }}
+            isScroll={{ x: 1366, y: 400 }}
             loading={this.state.loading}
             columns={this.state.columns}
             isBordered={true}

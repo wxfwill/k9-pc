@@ -47,10 +47,13 @@ class TeamWorkStatist extends Component {
       this.getListData(param, sortFieldName, sortType, pagination);
     }
   }
-  handleChangeSize = (page) => {
-    this.tableChange({ currPage: page, current: page, pageSize: 10 });
+  handleChangeSize = (page, size) => {
+    console.log(size);
+    this.tableChange({ currPage: page, current: page, pageSize: size });
   };
   handleShowSizeChange = (cur, size) => {
+    console.log(cur);
+    console.log(size);
     this.tableChange({ currPage: cur, pageSize: size, current: cur });
   };
   getMontDateRange = (year, month) => {

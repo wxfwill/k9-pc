@@ -61,6 +61,9 @@ class ImportFile extends Component {
       isImport: false,
     });
   };
+  handleFileChange = (file) => {
+    console.log(file);
+  };
   //导入
   onSubmit = () => {
     const { file, fileType } = this.state;
@@ -77,7 +80,11 @@ class ImportFile extends Component {
     React.$ajax.postData($url, formData).then((res) => {
       console.log(res);
       if (res && res.code === 0) {
-        message.success('导入成功！');
+        if (Number(res.data) > 0) {
+          message.success(`成功导入${res.data}条数据！`);
+        } else {
+          message.success(`导入模板异常`);
+        }
         this.onCancel();
       }
     });
@@ -105,7 +112,14 @@ class ImportFile extends Component {
                   : null}
               </Select>
               <Input style={{ width: '40%' }} value={fileName} placeholder="请选择文件" />
-              <Upload multiple showUploadList={false} beforeUpload={this.beforeUpload} accept={accept}>
+              <Upload
+                // multiple
+                name="file"
+                showUploadList={false}
+                beforeUpload={this.beforeUpload}
+                onChange={this.handleFileChange}
+                accept={accept}
+              >
                 <Button type="primary">选择文件</Button>
               </Upload>
             </InputGroup>
