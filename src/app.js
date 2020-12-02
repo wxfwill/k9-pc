@@ -28,7 +28,7 @@ React.store = store;
 //汉化包
 import { ConfigProvider } from 'antd';
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
-import 'moment/locale/zh-cn';
+// import 'moment/locale/zh-cn';
 
 // 样式
 import 'antd/dist/antd.less';

@@ -151,7 +151,7 @@ class FourReportListSearch extends Component {
         }
       });
     },
-    300,
+    200,
     false
   );
   render() {

@@ -390,6 +390,8 @@ class Archivew extends Component {
 
   render() {
     const { bookList, atLeft, numbAdd } = this.state;
+    console.log(atLeft);
+    console.log(atLeft.indexOf(1));
     return (
       <div className="record-main">
         <div className="return-link" onClick={() => this.props.history.push('/app/archivew/list')}>

@@ -4,7 +4,7 @@ import { Button } from 'antd';
 export const tableHeaderLabel = (editCallback) => {
   let data = [
     {
-      title: '人员名称',
+      title: '姓名',
       dataIndex: 'applyUser',
       width: 100,
     },
@@ -27,11 +27,12 @@ export const tableHeaderLabel = (editCallback) => {
       dataIndex: 'carNo',
     },
     {
-      title: '任务类型',
+      title: '用车类型',
       dataIndex: 'carUseType',
+      width: 100,
     },
     {
-      title: '地点',
+      title: '目的地',
       dataIndex: 'carUseDest',
     },
     {
@@ -42,17 +43,17 @@ export const tableHeaderLabel = (editCallback) => {
       title: '备注',
       dataIndex: 'note',
     },
-    {
-      title: '操作',
-      dataIndex: 'inoption',
-      render: (txt, record, index) => {
-        return record.repStatus == 'error' ? (
-          <Button size="small" type="primary" onClick={() => editCallback && editCallback(record)}>
-            编辑
-          </Button>
-        ) : null;
-      },
-    },
+    // {
+    //   title: '操作',
+    //   dataIndex: 'inoption',
+    //   render: (txt, record, index) => {
+    //     return record.repStatus == 'error' ? (
+    //       <Button size="small" type="primary" onClick={() => editCallback && editCallback(record)}>
+    //         编辑
+    //       </Button>
+    //     ) : null;
+    //   },
+    // },
   ];
   return data;
 };
@@ -60,26 +61,26 @@ export const tableHeaderLabel = (editCallback) => {
 export const tableHeaderLabel1 = (editCallback) => {
   let data = [
     {
-      title: '人员名称',
+      title: '姓名',
       dataIndex: 'applyUser',
       width: 100,
     },
     {
-      title: '任务开始时间',
+      title: '开始时间',
       dataIndex: 'startTime',
       render: (txt, record) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
       },
     },
     {
-      title: '任务结束时间',
+      title: '结束时间',
       dataIndex: 'endTime',
       render: (txt, record) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
       },
     },
     {
-      title: '任务类型',
+      title: '用车类型',
       dataIndex: 'taskType',
       width: 100,
     },
@@ -105,6 +106,7 @@ export const tableHeaderLabel1 = (editCallback) => {
     {
       title: '出勤装备',
       dataIndex: 'allEquipment',
+      width: 120,
     },
     {
       title: '备注',
@@ -149,13 +151,14 @@ export const ownTableHeaderDetal = [
     title: '来源',
     dataIndex: 'sourceNote',
   },
-  {
-    title: '抓捕人数',
-    dataIndex: 'arrestNum',
-  },
+  // {
+  //   title: '抓捕人数',
+  //   dataIndex: 'arrestNum',
+  // },
   {
     title: '详细情况',
     dataIndex: 'repDetail',
+    width: 210,
   },
 ];
 
@@ -246,16 +249,17 @@ export const dailyInformationDetal = [
 
 export const leaveInformationDetal = (editCallback) => {
   let data = [
+    // {
+    //   title: '序号',
+    //   dataIndex: 'id',
+    //   render: (txt, row, index) => {
+    //     return index + 1;
+    //   },
+    // },
     {
-      title: '序号',
-      dataIndex: 'id',
-      render: (txt, row, index) => {
-        return index + 1;
-      },
-    },
-    {
-      title: '人员名称',
+      title: '姓名',
       dataIndex: 'userName',
+      width: 100,
     },
     {
       title: '开始时间',
@@ -272,20 +276,25 @@ export const leaveInformationDetal = (editCallback) => {
       },
     },
     {
-      title: '类型',
+      title: '请假类型',
       dataIndex: 'leaveType',
+      width: 120,
     },
     {
-      title: '请休假目的地',
+      title: '目的地',
       dataIndex: 'destination',
     },
     {
       title: '请休假事由',
       dataIndex: 'reason',
+      width: 220,
     },
     {
       title: '审批状态',
       dataIndex: 'approvalState',
+      render: (txt, recode, index) => {
+        return txt && txt.split('-')[1];
+      },
     },
     {
       title: '审批人',

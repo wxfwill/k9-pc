@@ -10,20 +10,6 @@ import { changeRoute } from 'store/actions/common';
 import 'style/pages/login.less';
 const FormItem = Form.Item;
 
-const addMenu = [
-  {
-    icon: 'area-chart',
-    id: 200,
-    pathname: '/app/reportManage',
-    sub: [
-      { id: 201, title: '4w报备上报', pathname: '/app/reportManage/fourReport', icon: '' },
-      { id: 202, title: '4w报备信息', pathname: '/app/reportManage/FourReportListSearch', icon: '' },
-      { id: 203, title: '4w任务统计', pathname: '/app/reportManage/StatisticsList', icon: '' },
-    ],
-    title: '4w报备',
-  },
-];
-
 class Login extends Component {
   constructor(props) {
     super(props);

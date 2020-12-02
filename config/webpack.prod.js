@@ -5,6 +5,8 @@ const common = require('./webpack.common.js');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+// 分析打包大小
+const BundleAnalyzerPplugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = merge(common, {
   mode: 'production',
@@ -17,7 +19,7 @@ module.exports = merge(common, {
       minSize: 30000, // 30kib 引入的库大于 30000  才会做代码分割
       minChunks: 1, // 当某个模块至少被引用1次时，才做代码分割
       maxAsyncRequests: 5, // 同时加载模块的个数
-      maxInitialRequests: 3, //首页入口文件 最多同时加载3个
+      maxInitialRequests: 5, //首页入口文件 最多同时加载3个
       automaticNameDelimiter: '~', // 连接符
       name: 'common',
       cacheGroups: {
@@ -67,6 +69,7 @@ module.exports = merge(common, {
         },
       }),
       new CssMinimizerPlugin(),
+      new BundleAnalyzerPplugin(),
     ],
   },
   stats: {
@@ -78,6 +81,8 @@ module.exports = merge(common, {
   plugins: [
     // 删除
     new CleanWebpackPlugin(),
+    // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"', //node提供的常量api

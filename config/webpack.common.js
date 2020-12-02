@@ -6,9 +6,9 @@ const srcPath = path.resolve(__dirname, '../src');
 const commonSet = {
   entry: {
     main: ['babel-polyfill', './src/app.js'],
-    vendor1: ['react', 'react-router-dom', 'react-redux'],
-    vendor2: ['antd', 'axios'],
-    vendor3: ['classnames'],
+    // vendor1: ['react', 'react-router-dom', 'react-redux'],
+    // vendor2: ['antd', 'axios'],
+    // vendor3: ['classnames'],
   },
   output: {
     filename: 'assets/js/[name].js',
@@ -23,8 +23,9 @@ const commonSet = {
       },
       {
         test: /\.jsx?$/,
+        exclude: /node_modules/,
         use: 'babel-loader',
-        exclude: path.resolve(__dirname, '../node_modules'),
+        // exclude: path.resolve(__dirname, '../node_modules'),
       },
       {
         test: /\.(less|css)$/,

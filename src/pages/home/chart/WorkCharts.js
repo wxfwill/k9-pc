@@ -2,7 +2,8 @@ import React,{Component} from 'react';
 
 
 import { WorkBar } from './chartConfig';
-const echarts = require('echarts')
+// const echarts = require('echarts')
+let echarts = require('echarts/lib/echarts');
 
 class WorkCharts extends Component{
 	constructor(props){

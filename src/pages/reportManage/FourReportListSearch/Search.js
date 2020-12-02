@@ -14,6 +14,7 @@ class SearchForm extends Component {
       taskTypeList: [],
       feedbalVal: null,
       successVal: null,
+      userId: undefined,
     };
   }
   componentDidMount() {
@@ -25,6 +26,9 @@ class SearchForm extends Component {
   handleTreeName = (val) => {
     console.log(val);
     console.log('valvalvalvalvalvalvalval');
+  };
+  handleFocus = () => {
+    this.props.queryGroupUser && this.props.queryGroupUser('', 'all');
   };
   handleTaskName = (val) => {
     console.log('任务类型');
@@ -119,7 +123,9 @@ class SearchForm extends Component {
                 </Col>
                 <Col xl={6} lg={6} md={8} sm={12} xs={12}>
                   <FormItem label="姓名:" {...thirdLayout}>
-                    {getFieldDecorator('userId')(
+                    {getFieldDecorator('userId', {
+                      initialValue: this.state.userId,
+                    })(
                       <TreeSelect
                         showSearch
                         style={{ width: '100%' }}
@@ -131,6 +137,7 @@ class SearchForm extends Component {
                         onSearch={(value) => {
                           this.props.queryGroupUser && this.props.queryGroupUser(value);
                         }}
+                        onFocus={this.handleFocus}
                         onChange={this.handleTreeName}
                       >
                         {this.props.personnelTree && this.props.personnelTree.length > 0
@@ -189,6 +196,8 @@ class SearchForm extends Component {
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
                         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                         placeholder="请选择"
+                        // treeCheckStrictly={true}
+                        // treeExpandedKeys
                         allowClear
                         onChange={this.handleTaskName}
                       >

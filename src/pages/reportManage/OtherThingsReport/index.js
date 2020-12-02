@@ -379,7 +379,8 @@ class OtherThingsReport extends Component {
       const dataObj = {
         reports: arr,
       };
-      React.httpAjax('post', config.apiUrl + '/api/report/createOtherReport', dataObj)
+      React.$ajax
+        .postData('/api/report/createOtherReport', dataObj)
         .then((res) => {
           if (res.code == 0) {
             message.success('上报成功！');

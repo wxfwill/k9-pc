@@ -82,6 +82,7 @@ const config = {
     //new webpack.optimize.UglifyJsPlugin(),//压缩打包后文件
     // new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"development"', //node提供的常量api
