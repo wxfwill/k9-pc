@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DatePicker, Form, Icon } from 'antd';
+import { Icon } from 'antd';
 import { getSingle } from './util';
 
 import Cover from './components/Cover'; //封面
@@ -17,22 +17,7 @@ import BlankPage from './components/BlankPage'; //最后一页
 import Navigation from './components/Navigation'; //悬浮目录
 import SearchDate from './components/SearchDate'; //搜索日期
 
-import moment from 'moment';
-
 import 'style/pages/archives/index.less';
-
-const { RangePicker } = DatePicker;
-
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 8 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 16 },
-  },
-};
 
 const nowDate = new Date();
 const cYear = nowDate.getFullYear(); //当前年份
@@ -41,9 +26,6 @@ const cDay = nowDate.getDate(); //日
 const cYMD = cYear + '-' + cMonth + '-' + cDay; //当前日期
 const defSatrtDate = cYear + '-01-01 00:00:00'; //默认开始时间
 const defEndDate = cYMD + ' 23:59:59'; //默认结束时间
-
-const dateFormat = 'YYYY-MM-DD';
-const dateArr = [moment(defSatrtDate, dateFormat), moment(defEndDate, dateFormat)];
 
 class Archivew extends Component {
   constructor(props) {
@@ -64,32 +46,29 @@ class Archivew extends Component {
       this.getAllInfor();
     });
   }
-  //获取时间
-  getPicker = (e) => {
-    if (e && e.length > 0) {
-      this.setState(
-        {
-          startDate: e[0].format('YYYY-MM-DD') + ' ' + '00:00:00',
-          endDate: e[1].format('YYYY-MM-DD') + ' ' + '23:59:59',
-        },
-        () => {
-          let { numbAdd } = this.state;
-          if (numbAdd > 1) {
-            this.setState(
-              {
-                allInforList: [{ bookName: '封面' }, { bookName: '目录' }], //所有信息列表
-                bookList: [], //翻页集合
-                numbAdd: 1,
-                atLeft: [],
-              },
-              () => {
-                this.getAllInfor();
-              }
-            );
-          }
+  getPicker = (startDate, endDate) => {
+    this.setState(
+      {
+        startDate: startDate,
+        endDate: endDate,
+      },
+      () => {
+        let { numbAdd } = this.state;
+        if (numbAdd > 1) {
+          this.setState(
+            {
+              allInforList: [{ bookName: '封面' }, { bookName: '目录' }], //所有信息列表
+              bookList: [], //翻页集合
+              numbAdd: 1,
+              atLeft: [],
+            },
+            () => {
+              this.getAllInfor();
+            }
+          );
         }
-      );
-    }
+      }
+    );
   };
   //日期转换成时间戳
   getTime = (time) => {
@@ -395,9 +374,7 @@ class Archivew extends Component {
   };
 
   render() {
-    const { bookList, atLeft, numbAdd } = this.state;
-    console.log(atLeft);
-    console.log(atLeft.indexOf(1));
+    const { bookList, atLeft, numbAdd, startDate, endDate } = this.state;
     return (
       <div className="record-main">
         <div className="return-link" onClick={() => this.props.history.push('/app/archivew/list')}>
@@ -414,7 +391,9 @@ class Archivew extends Component {
             {/* 悬浮目录 */}
             {numbAdd > 1 && numbAdd < bookList.length + 1 ? <Navigation jumpDirectory={this.jumpDirectory} /> : null}
             {/* 搜索日期 */}
-            {/* {numbAdd > 1 && numbAdd < bookList.length + 1 ? <SearchDate /> : null} */}
+            {numbAdd > 1 && numbAdd < bookList.length + 1 ? (
+              <SearchDate startDate={startDate} endDate={endDate} getPicker={this.getPicker} />
+            ) : null}
             <div className="page-arr">
               {bookList.map((item, index) => {
                 return (
