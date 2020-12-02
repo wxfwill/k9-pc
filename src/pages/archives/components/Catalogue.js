@@ -35,18 +35,20 @@ class Catalogue extends Component {
               <b>目录</b>
               <i className="line right"></i>
             </div>
-            <ul className="mulu-list">
-              {muluList.map((item, index) => {
-                return (
-                  <li key={index} className={item.isCurrent ? 'current' : ''}>
-                    <a onClick={(e) => this.jumpDirectory(e, item.value)}>
-                      <b>{index + 1 < 10 ? '0' + (index + 1) : index + 1}</b>
-                      {item.name}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
+            <div className="mulu-box">
+              <ul className="mulu-list">
+                {muluList.map((item, index) => {
+                  return (
+                    <li key={index} className={item.isCurrent ? 'current' : ''}>
+                      <a onClick={(e) => this.jumpDirectory(e, item.value)}>
+                        <b>{index + 1 < 10 ? '0' + (index + 1) : index + 1}</b>
+                        {item.name}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         </div>
         <div className="page-foot">

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { DatePicker, Form, Icon } from 'antd';
+import { getSingle } from './util';
 
 import Cover from './components/Cover'; //封面
 import BackCover from './components/BackCover'; //封底
@@ -10,8 +11,11 @@ import AttendanceCar from './components/AttendanceCar'; //出勤用车
 import AttendanceManagement from './components/AttendanceManagement'; //考勤管理-请假/离深/补休
 import RewardItems from './components/RewardItems'; //奖励事项
 import DailyInformation from './components/DailyInformation'; //日报信息
+import DogFoodApply from './components/DogFoodApply'; //犬粮申请
+import AidRecipients from './components/AidRecipients'; //通用物资领用
 import BlankPage from './components/BlankPage'; //最后一页
 import Navigation from './components/Navigation'; //悬浮目录
+import SearchDate from './components/SearchDate'; //搜索日期
 
 import moment from 'moment';
 
@@ -155,6 +159,7 @@ class Archivew extends Component {
     };
     return React.$ajax.postData('/api/leaveAfterSync/getLeaveAfterSyncList', reqObj); //getLeaveAfterSyncList
   };
+
   //获取所有的信息
   getAllInfor = () => {
     let { startDate, endDate, userId } = this.state;
@@ -166,6 +171,20 @@ class Archivew extends Component {
       RewardSyncList = [], //奖励事项
       DocDailyWork = [], //日报信息
       LeaveAfterSyncInfo = [], //请假/离深/补休
+      DogFoodInfo = [
+        {
+          bookName: '犬粮申请',
+          noData: true,
+          $indexes: true,
+        },
+      ], //犬粮申请
+      AidRecipientsInfo = [
+        {
+          bookName: '通用物资领用',
+          noData: true,
+          $indexes: true,
+        },
+      ], //通用物资领用
       BackCoverArr = [{ bookName: '封底' }],
       BlankPageArr = [{ bookName: '最后一页' }];
     Promise.all([
@@ -182,27 +201,27 @@ class Archivew extends Component {
             switch (index) {
               case 0:
                 console.log(resObj, '绩效考核');
-                SelfEvaluationList = this.getSingle(resObj.data, '绩效考核');
+                SelfEvaluationList = getSingle(resObj.data, '绩效考核');
                 break;
               case 1:
                 console.log(resObj, '工作用车');
-                DocCarUseReportInfo = this.getSingle(resObj.data.list, '工作用车');
+                DocCarUseReportInfo = getSingle(resObj.data.list, '工作用车');
                 break;
               case 2:
                 console.log(resObj, '出勤用车');
-                DocAttendanceCar = this.getSingle(resObj.data.list, '出勤用车');
+                DocAttendanceCar = getSingle(resObj.data.list, '出勤用车');
                 break;
               case 3:
                 console.log(resObj, '奖励事项');
-                RewardSyncList = this.getSingle(resObj.data, '奖励事项');
+                RewardSyncList = getSingle(resObj.data, '奖励事项');
                 break;
               case 4:
                 console.log(resObj, '日报信息');
-                DocDailyWork = this.getSingle(resObj.data.list, '日报信息');
+                DocDailyWork = getSingle(resObj.data.list, '日报信息');
                 break;
               case 5:
                 console.log(resObj, '请假/离深/补休');
-                LeaveAfterSyncInfo = this.getSingle(resObj.data, '请假/离深/补休');
+                LeaveAfterSyncInfo = getSingle(resObj.data, '请假/离深/补休');
                 break;
             }
           }
@@ -216,6 +235,8 @@ class Archivew extends Component {
         ...RewardSyncList,
         ...DocDailyWork,
         ...LeaveAfterSyncInfo,
+        ...DogFoodInfo,
+        ...AidRecipientsInfo,
       ];
       if (allInforListArr.length % 2 === 0) {
         //如果数据是单数，再加一个空白页
@@ -249,28 +270,6 @@ class Archivew extends Component {
         }
       );
     });
-  };
-  //获取单个详情列表
-  getSingle = (arr, name) => {
-    let newArr = [];
-    if (arr && arr.length > 0) {
-      arr.map((item, index) => {
-        item.bookName = name;
-        if (index == 0) {
-          item.$indexes = true;
-        }
-        newArr.push(item);
-      });
-    } else {
-      newArr = [
-        {
-          bookName: name,
-          noData: true,
-          $indexes: true,
-        },
-      ];
-    }
-    return newArr;
   };
 
   //判断页面显示的内容
@@ -308,6 +307,12 @@ class Archivew extends Component {
       case '请假/离深/补休':
         cont = <AttendanceManagement detailInfor={obj} currentIndex={currentIndex} />;
         break;
+      case '犬粮申请':
+        cont = <DogFoodApply detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '通用物资领用':
+        cont = <AidRecipients detailInfor={obj} currentIndex={currentIndex} />;
+        break;
       case '最后一页':
         cont = <BlankPage currentIndex={currentIndex} />;
         break;
@@ -317,6 +322,7 @@ class Archivew extends Component {
     }
     return cont;
   };
+
   //翻页
   getPage = (curI) => {
     const { bookList, numbAdd } = this.state;
@@ -397,14 +403,16 @@ class Archivew extends Component {
           返回
         </div>
         <div className="record-box">
-          <div className="clearfix get-date">
+          {/* <div className="clearfix get-date">
             <Form.Item label="查询时间：" labelAlign="right" {...formItemLayout} className="fr">
               <RangePicker value={dateArr} format={dateFormat} onChange={(e) => this.getPicker(e)} />
             </Form.Item>
-          </div>
+          </div> */}
           <div className="record-book">
             {/* 悬浮目录 */}
             {numbAdd > 1 && numbAdd < bookList.length + 1 ? <Navigation jumpDirectory={this.jumpDirectory} /> : null}
+            {/* 搜索日期 */}
+            {/* {numbAdd > 1 && numbAdd < bookList.length + 1 ? <SearchDate /> : null} */}
             <div className="page-arr">
               {bookList.map((item, index) => {
                 return (

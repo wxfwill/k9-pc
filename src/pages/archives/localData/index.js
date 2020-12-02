@@ -6,4 +6,6 @@ export const muluList = [
   { name: '奖励事项信息', value: '奖励事项' },
   { name: '日报信息', value: '日报信息' },
   { name: '请假/离深/补休信息', value: '请假/离深/补休' },
+  { name: '犬粮申请信息', value: '犬粮申请' },
+  { name: '通用物资领用信息', value: '通用物资领用' },
 ];
