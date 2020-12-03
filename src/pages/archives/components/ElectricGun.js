@@ -1,9 +1,9 @@
-//通用物资领用
+//电击枪领用
 import React, { Component } from 'react';
 import { Icon } from 'antd';
 import NoData from 'components/NoData';
 
-class AidRecipients extends Component {
+class ElectricGun extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,38 +47,25 @@ class AidRecipients extends Component {
                     </tr>
                     <tr>
                       <th>申请时间</th>
-                      <td colSpan="3">
+                      <td>
                         {detailInfor.applyTime &&
                           util.formatDate(new Date(detailInfor.applyTime), 'yyyy-MM-dd hh:mm:ss')}
                       </td>
+                      <th>领用数量</th>
+                      <td>{detailInfor.gunNum}</td>
                     </tr>
                     <tr>
-                      <th>总物品数量</th>
-                      <td colSpan="3">{detailInfor.applySum}</td>
+                      <th>用途</th>
+                      <td>{detailInfor.useWay}</td>
+                      <th>子弹数量</th>
+                      <td>{detailInfor.bulletNum}</td>
+                    </tr>
+                    <tr>
+                      <th>电击枪编号</th>
+                      <td colSpan="3">{detailInfor.gunNo && detailInfor.gunNo.split(',').join(' / ')}</td>
                     </tr>
                   </tbody>
                 </table>
-                {detailInfor.materialDetails && detailInfor.materialDetails.length > 0
-                  ? detailInfor.materialDetails.map((item, index) => {
-                      return (
-                        <table border="1" bordercolor="#E7E7E7" className="table-box" key={index}>
-                          <thead>
-                            <tr>
-                              <th colSpan="4">{`明细${index + 1}`}</th>
-                            </tr>
-                          </thead>
-                          <tbody className="no-wrap-th">
-                            <tr>
-                              <th>物品名称</th>
-                              <td>{item.name}</td>
-                              <th>物品数量</th>
-                              <td>{item.number}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      );
-                    })
-                  : null}
               </div>
             ) : (
               <NoData />
@@ -92,4 +79,4 @@ class AidRecipients extends Component {
     );
   }
 }
-export default AidRecipients;
+export default ElectricGun;

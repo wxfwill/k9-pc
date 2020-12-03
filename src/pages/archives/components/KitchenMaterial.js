@@ -1,9 +1,9 @@
-//通用物资领用
+//厨房物资领用
 import React, { Component } from 'react';
 import { Icon } from 'antd';
 import NoData from 'components/NoData';
 
-class AidRecipients extends Component {
+class KitchenMaterial extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -53,6 +53,10 @@ class AidRecipients extends Component {
                       </td>
                     </tr>
                     <tr>
+                      <th>申请理由</th>
+                      <td colSpan="3">{detailInfor.applyReason}</td>
+                    </tr>
+                    <tr>
                       <th>总物品数量</th>
                       <td colSpan="3">{detailInfor.applySum}</td>
                     </tr>
@@ -92,4 +96,4 @@ class AidRecipients extends Component {
     );
   }
 }
-export default AidRecipients;
+export default KitchenMaterial;

@@ -9,9 +9,9 @@ console.log('apiUrl====' + apiUrl);
 const config = {
   entry: {
     main: ['babel-polyfill', './src/app.js'],
-    vendor1: ['react', 'react-router-dom', 'react-redux'],
-    vendor2: ['antd', 'axios'],
-    vendor3: ['classnames'],
+    // vendor1: ['react', 'react-router-dom', 'react-redux'],
+    // vendor2: ['antd', 'axios'],
+    // vendor3: ['classnames'],
   },
   output: {
     filename: 'assets/js/[name].js',

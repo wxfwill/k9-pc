@@ -71,14 +71,20 @@
       //margin-top: 18px;
       box-sizing: border-box;
       position: relative;
+      // transform: rotateX(30deg) rotateY(45deg);
       .page-arr {
         width: 100%;
         height: 100%;
         transform-style: preserve-3d;
+        position: relative;
         .page-list {
           position: absolute;
-          transition: all 1s;
+          // width: 100%;
+          // left: 0;
+          // top: 0;
+          transition: all 1s linear;
           transform-style: preserve-3d;
+
           left: 50%;
           &.page-left {
             transform-origin: left center;
@@ -304,6 +310,7 @@
     tbody td {
       font-weight: 500;
       color: #595959;
+      text-align: center;
     }
     .no-wrap-td td,
     .no-wrap-th th {

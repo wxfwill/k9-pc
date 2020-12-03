@@ -13,6 +13,13 @@ import RewardItems from './components/RewardItems'; //奖励事项
 import DailyInformation from './components/DailyInformation'; //日报信息
 import DogFoodApply from './components/DogFoodApply'; //犬粮申请
 import AidRecipients from './components/AidRecipients'; //通用物资领用
+import GetMask from './components/GetMask'; // 口罩领取
+import ClinicMaterial from './components/ClinicMaterial'; // 诊疗点物资领取
+import WalkieTalkieMaterial from './components/WalkieTalkieMaterial'; // 对讲机领取
+import ElectricGun from './components/ElectricGun'; // 电击枪领取
+import KitchenMaterial from './components/KitchenMaterial'; // 厨房物资领取
+import DogTransferInfo from './components/DogTransferInfo'; // 犬只调动审批
+import MonitoringViewInfo from './components/MonitoringViewInfo'; // 监控查看申请
 import BlankPage from './components/BlankPage'; //最后一页
 import Navigation from './components/Navigation'; //悬浮目录
 import SearchDate from './components/SearchDate'; //搜索日期
@@ -42,7 +49,8 @@ class Archivew extends Component {
   }
   componentDidMount() {
     const userId = util.urlParse(this.props.location.search).userId;
-    this.setState({ userId: userId ? userId : 1 }, () => {
+    // const userId = null;
+    this.setState({ userId: userId ? userId : null }, () => {
       this.getAllInfor();
     });
   }
@@ -138,6 +146,66 @@ class Archivew extends Component {
     };
     return React.$ajax.postData('/api/leaveAfterSync/getLeaveAfterSyncList', reqObj); //getLeaveAfterSyncList
   };
+  // 通用物资领取
+  AidRecipientsList = (startDate, endDate, userId) => {
+    const reqObj = {
+      ignorePageRequest: true, //是否忽略分页请求
+      param: {
+        startDate: startDate, //开始时间
+        endDate: endDate, //结束时间
+        userId: userId, //用户ID
+      },
+    };
+    return React.$ajax.postData('/api/work-wx-sp/pageDocGoodsCommon', reqObj);
+  };
+  // 厨房物资领取
+  KitchenMaterialList = (startDate, endDate, userId) => {
+    const reqObj = {
+      ignorePageRequest: true, //是否忽略分页请求
+      param: {
+        startDate: startDate, //开始时间
+        endDate: endDate, //结束时间
+        userId: userId, //用户ID
+      },
+    };
+    return React.$ajax.postData('/api/work-wx-sp/pageDocGoodsKitchen', reqObj);
+  };
+  //诊疗点物资申领
+  ClinicMaterialList = (startDate, endDate, userId) => {
+    const reqObj = {
+      ignorePageRequest: true, //是否忽略分页请求
+      param: {
+        startDate: startDate, //开始时间
+        endDate: endDate, //结束时间
+        userId: userId, //用户ID
+      },
+    };
+    return React.$ajax.postData('/api/work-wx-sp/pageDocGoodsTherapy', reqObj);
+  };
+  // 电击枪领用
+  ElectricGunList = (startDate, endDate, userId) => {
+    const reqObj = {
+      ignorePageRequest: true, //是否忽略分页请求
+      param: {
+        startDate: startDate, //开始时间
+        endDate: endDate, //结束时间
+        userId: userId, //用户ID
+      },
+    };
+    return React.$ajax.postData('/api/work-wx-sp/pageDocElectricGun', reqObj);
+  };
+  // 对讲机领用
+  WalkieTalkieMaterialList = (startDate, endDate, userId) => {
+    const reqObj = {
+      ignorePageRequest: true, //是否忽略分页请求
+      param: {
+        startDate: startDate, //开始时间
+        endDate: endDate, //结束时间
+        userId: userId, //用户ID
+      },
+    };
+    return React.$ajax.postData('/api/work-wx-sp/pageDocInterPhone', reqObj);
+  };
 
   //获取所有的信息
   getAllInfor = () => {
@@ -157,13 +225,14 @@ class Archivew extends Component {
           $indexes: true,
         },
       ], //犬粮申请
-      AidRecipientsInfo = [
-        {
-          bookName: '通用物资领用',
-          noData: true,
-          $indexes: true,
-        },
-      ], //通用物资领用
+      AidRecipientsInfo = [], //通用物资领用
+      GetMaskInfo = [{ bookName: '口罩领用', noData: true, $indexes: true }], // 口罩领用
+      ClinicMaterialArr = [], // 诊疗点物资领取
+      WalkieTalkieMaterialArr = [], // 对讲机领取
+      ElectricGunArr = [], // 电击枪领取
+      KitchenMaterialArr = [], // 厨房物资领取
+      DogTransferInfoArr = [{ bookName: '犬只调动审批', noData: true, $indexes: true }], // 犬只调动审批
+      MonitoringViewInfoArr = [{ bookName: '监控查看申请', noData: true, $indexes: true }], // 监控查看申请
       BackCoverArr = [{ bookName: '封底' }],
       BlankPageArr = [{ bookName: '最后一页' }];
     Promise.all([
@@ -173,8 +242,14 @@ class Archivew extends Component {
       this.getRewardSyncList(startDate, endDate, userId), //获取奖励详情列表
       this.pageDocDailyWork(startDate, endDate, userId), //获取日报信息
       this.exportLeaveAfterSyncInfo(startDate, endDate, userId), //获取请假/离深/补休
+      this.AidRecipientsList(startDate, endDate, userId), // 通用物资领取
+      this.KitchenMaterialList(startDate, endDate, userId), // 厨房物资领取
+      this.ClinicMaterialList(startDate, endDate, userId), //诊疗点物资领取
+      this.ElectricGunList(startDate, endDate, userId), //电击枪领用
+      this.WalkieTalkieMaterialList(startDate, endDate, userId), //对讲机领用
     ]).then((res) => {
       if (res && res.length > 0) {
+        console.log(res);
         res.map((resObj, index) => {
           if (resObj && resObj.code == 0) {
             switch (index) {
@@ -202,6 +277,26 @@ class Archivew extends Component {
                 console.log(resObj, '请假/离深/补休');
                 LeaveAfterSyncInfo = getSingle(resObj.data, '请假/离深/补休');
                 break;
+              case 6:
+                console.log(resObj, '通用物资');
+                AidRecipientsInfo = getSingle(resObj.data.list, '通用物资领用');
+                break;
+              case 7:
+                console.log(resObj, '厨房物资领用');
+                KitchenMaterialArr = getSingle(resObj.data.list, '厨房物资领用');
+                break;
+              case 8:
+                console.log(resObj, '诊疗点物资领用');
+                ClinicMaterialArr = getSingle(resObj.data.list, '诊疗点物资领用');
+                break;
+              case 9:
+                console.log(resObj, '电击枪领用');
+                ElectricGunArr = getSingle(resObj.data.list, '电击枪领用');
+                break;
+              case 10:
+                console.log(resObj, '对讲机领用');
+                WalkieTalkieMaterialArr = getSingle(resObj.data.list, '对讲机领用');
+                break;
             }
           }
         });
@@ -216,13 +311,22 @@ class Archivew extends Component {
         ...LeaveAfterSyncInfo,
         ...DogFoodInfo,
         ...AidRecipientsInfo,
+        ...GetMaskInfo,
+        ...ClinicMaterialArr,
+        ...WalkieTalkieMaterialArr,
+        ...ElectricGunArr,
+        ...KitchenMaterialArr,
+        ...DogTransferInfoArr,
+        ...MonitoringViewInfoArr,
       ];
+
       if (allInforListArr.length % 2 === 0) {
         //如果数据是单数，再加一个空白页
         allInforListArr = [...allInforListArr, ...BlankPageArr, ...BackCoverArr];
       } else {
         allInforListArr = [...allInforListArr, ...BackCoverArr];
       }
+
       //获取所有信息列表集合
       this.setState(
         {
@@ -231,12 +335,14 @@ class Archivew extends Component {
         () => {
           //所有信息列表拆分成书本左右两页
           const { allInforList } = this.state;
+          console.log(allInforList);
           let bookList = [];
           allInforList.map((item, index) => {
             if (index % 2 == 0) {
               bookList.push({ paper: [allInforList[index], allInforList[index + 1]] });
             }
           });
+          console.log(bookList);
           this.setState(
             {
               bookList: bookList,
@@ -291,6 +397,27 @@ class Archivew extends Component {
         break;
       case '通用物资领用':
         cont = <AidRecipients detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '口罩领用':
+        cont = <GetMask detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '诊疗点物资领用':
+        cont = <ClinicMaterial detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '对讲机领用':
+        cont = <WalkieTalkieMaterial detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '电击枪领用':
+        cont = <ElectricGun detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '厨房物资领用':
+        cont = <KitchenMaterial detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '犬只调动审批':
+        cont = <DogTransferInfo detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '监控查看申请':
+        cont = <MonitoringViewInfo detailInfor={obj} currentIndex={currentIndex} />;
         break;
       case '最后一页':
         cont = <BlankPage currentIndex={currentIndex} />;
@@ -396,6 +523,7 @@ class Archivew extends Component {
             ) : null}
             <div className="page-arr">
               {bookList.map((item, index) => {
+                console.log(bookList);
                 return (
                   <div
                     key={index}

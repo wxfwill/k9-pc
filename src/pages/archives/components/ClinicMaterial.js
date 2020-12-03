@@ -1,9 +1,9 @@
-//通用物资领用
+//诊疗点物资领取
 import React, { Component } from 'react';
 import { Icon } from 'antd';
 import NoData from 'components/NoData';
 
-class AidRecipients extends Component {
+class ClinicMaterial extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -53,13 +53,17 @@ class AidRecipients extends Component {
                       </td>
                     </tr>
                     <tr>
+                      <th>申请理由</th>
+                      <td colSpan="3">{detailInfor.applyReason}</td>
+                    </tr>
+                    <tr>
                       <th>总物品数量</th>
                       <td colSpan="3">{detailInfor.applySum}</td>
                     </tr>
                   </tbody>
                 </table>
                 {detailInfor.materialDetails && detailInfor.materialDetails.length > 0
-                  ? detailInfor.materialDetails.map((item, index) => {
+                  ? detailInfor.materialDetails.map((el, index) => {
                       return (
                         <table border="1" bordercolor="#E7E7E7" className="table-box" key={index}>
                           <thead>
@@ -70,9 +74,9 @@ class AidRecipients extends Component {
                           <tbody className="no-wrap-th">
                             <tr>
                               <th>物品名称</th>
-                              <td>{item.name}</td>
+                              <td>{el.name}</td>
                               <th>物品数量</th>
-                              <td>{item.number}</td>
+                              <td>{el.number}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -92,4 +96,4 @@ class AidRecipients extends Component {
     );
   }
 }
-export default AidRecipients;
+export default ClinicMaterial;
