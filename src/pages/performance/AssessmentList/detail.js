@@ -159,7 +159,7 @@ class AssessmentDetail extends Component {
     if (!value) {
       throw new Error('请输入修改意见');
     }
-    if (!value.match(/^\d+$/g)) {
+    if (!value.match(/^\d+(\.\d+)?$/g)) {
       callback('请输入纯数字(⊙o⊙)…');
     }
     callback();

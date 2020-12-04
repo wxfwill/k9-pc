@@ -56,8 +56,11 @@ export const PerHeaderLabel = (callbackDetal, callbackApproval) => {
     },
     {
       title: '加减分原因',
-      dataIndex: 'performanceOtherReasonsDO',
+      dataIndex: 'performanceOtherReasonsDOS',
       width: 120,
+      // render: (txt, row, index) => {
+      //   return txt && txt
+      // }
     },
     {
       title: '最终总分',
