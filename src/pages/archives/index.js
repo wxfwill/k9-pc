@@ -290,12 +290,12 @@ class Archivew extends Component {
                 ClinicMaterialArr = getSingle(resObj.data.list, '诊疗点物资领用');
                 break;
               case 9:
-                console.log(resObj, '电击枪领用');
-                ElectricGunArr = getSingle(resObj.data.list, '电击枪领用');
+                console.log(resObj, '值班室电击枪领用');
+                ElectricGunArr = getSingle(resObj.data.list, '值班室电击枪领用');
                 break;
               case 10:
-                console.log(resObj, '对讲机领用');
-                WalkieTalkieMaterialArr = getSingle(resObj.data.list, '对讲机领用');
+                console.log(resObj, '值班室对讲机领用');
+                WalkieTalkieMaterialArr = getSingle(resObj.data.list, '值班室对讲机领用');
                 break;
             }
           }
@@ -404,10 +404,10 @@ class Archivew extends Component {
       case '诊疗点物资领用':
         cont = <ClinicMaterial detailInfor={obj} currentIndex={currentIndex} />;
         break;
-      case '对讲机领用':
+      case '值班室对讲机领用':
         cont = <WalkieTalkieMaterial detailInfor={obj} currentIndex={currentIndex} />;
         break;
-      case '电击枪领用':
+      case '值班室电击枪领用':
         cont = <ElectricGun detailInfor={obj} currentIndex={currentIndex} />;
         break;
       case '厨房物资领用':
