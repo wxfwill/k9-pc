@@ -87,9 +87,12 @@ class Archivew extends Component {
   //获取绩效考核详情列表
   getSelfEvaluationList = (startDate, endDate, userId) => {
     const reqObj = {
-      repDateStart: startDate, //上报时间始
-      repDateEnd: endDate, //上报时间止
-      userId: [userId], //用户ID(list)
+      ignorePageRequest: true, //是否忽略分页请求
+      param: {
+        repDateStart: startDate, //上报时间始
+        repDateEnd: endDate, //上报时间止
+        userId: [userId], //用户ID(list)
+      },
     };
     return React.$ajax.postData('/api/performanceAssessment/getSelfEvaluationList', reqObj);
   };
@@ -120,11 +123,14 @@ class Archivew extends Component {
   //获取奖励详情列表
   getRewardSyncList = (startDate, endDate, userId) => {
     const reqObj = {
-      startDate: startDate, //开始时间
-      endDate: endDate, //结束时间
-      userIds: [userId], //用户Id（list）
+      ignorePageRequest: true, //是否忽略分页请求
+      param: {
+        startDate: startDate, //开始时间
+        endDate: endDate, //结束时间
+        userIds: [userId], //用户Id（list）
+      },
     };
-    return React.$ajax.postData('/api/reward/getRewardSyncList', reqObj);
+    return React.$ajax.postData('/api/reward/getPageRewardSync', reqObj);
   };
   //获取日报信息
   pageDocDailyWork = (startDate, endDate, userId) => {
@@ -141,11 +147,14 @@ class Archivew extends Component {
   //获取请假/离深/补休
   exportLeaveAfterSyncInfo = (startDate, endDate, userId) => {
     const reqObj = {
-      startDate: startDate, //开始时间
-      endDate: endDate, //结束时间
-      userIds: [userId], //用户ID
+      ignorePageRequest: true, //是否忽略分页请求
+      param: {
+        startDate: startDate, //开始时间
+        endDate: endDate, //结束时间
+        userIds: [userId], //用户ID
+      },
     };
-    return React.$ajax.postData('/api/leaveAfterSync/getLeaveAfterSyncList', reqObj); //getLeaveAfterSyncList
+    return React.$ajax.postData('/api/leaveAfterSync/getPageLeaveAfterSync', reqObj); //getLeaveAfterSyncList
   };
   // 通用物资领取
   AidRecipientsList = (startDate, endDate, userId) => {
@@ -301,7 +310,7 @@ class Archivew extends Component {
           if (resObj && resObj.code == 0) {
             switch (index) {
               case 0:
-                SelfEvaluationList = getSingle(resObj.data, '绩效考核');
+                SelfEvaluationList = getSingle(resObj.data.list, '绩效考核');
                 break;
               case 1:
                 DocCarUseReportInfo = getSingle(resObj.data.list, '工作用车');
@@ -310,13 +319,13 @@ class Archivew extends Component {
                 DocAttendanceCar = getSingle(resObj.data.list, '出勤用车');
                 break;
               case 3:
-                RewardSyncList = getSingle(resObj.data, '奖励事项');
+                RewardSyncList = getSingle(resObj.data.list, '奖励事项');
                 break;
               case 4:
                 DocDailyWork = getSingle(resObj.data.list, '日报信息');
                 break;
               case 5:
-                LeaveAfterSyncInfo = getSingle(resObj.data, '请假/离深/补休');
+                LeaveAfterSyncInfo = getSingle(resObj.data.list, '请假/离深/补休');
                 break;
               case 6:
                 AidRecipientsInfo = getSingle(resObj.data.list, '通用物资领用');

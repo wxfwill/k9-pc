@@ -58,7 +58,7 @@ class PerformanceAssessment extends Component {
                     <div className="fr">
                       总分：
                       <b className="total">
-                        {detailInfor.selfEvaluationSumMark ? JZG.selfEvaluationSumMark : '待审核'}
+                        {detailInfor.selfEvaluationSumMark ? detailInfor.selfEvaluationSumMark + '分' : '待审核'}
                       </b>
                     </div>
                   </div>
@@ -79,27 +79,27 @@ class PerformanceAssessment extends Component {
                         </tr>
                         <tr>
                           <td>表现/忠诚</td>
-                          <td>{JZG.itemOneSelfMark}</td>
+                          <td>{JZG.itemOneSelfMark}分</td>
                           <td>{JZG.itemOneExplain}</td>
-                          <td>{JZG.itemOneSquadronMark ? JZG.itemOneSquadronMark : '待审核'}</td>
+                          <td>{JZG.itemOneSquadronMark ? JZG.itemOneSquadronMark + '分' : '待审核'}</td>
                         </tr>
                         <tr>
                           <td>激情/干净</td>
-                          <td>{JZG.itemTwoSelfMark}</td>
+                          <td>{JZG.itemTwoSelfMark}分</td>
                           <td>{JZG.itemTwoExplain}</td>
-                          <td>{JZG.itemTwoSquadronMark ? JZG.itemTwoSquadronMark : '待审核'}</td>
+                          <td>{JZG.itemTwoSquadronMark ? JZG.itemTwoSquadronMark + '分' : '待审核'}</td>
                         </tr>
                         <tr>
                           <td>团结/担当</td>
-                          <td>{JZG.itemThreeSelfMark}</td>
+                          <td>{JZG.itemThreeSelfMark}分</td>
                           <td>{JZG.itemThreeExplain}</td>
-                          <td>{JZG.itemThreeSquadronMark ? JZG.itemThreeSquadronMark : '待审核'}</td>
+                          <td>{JZG.itemThreeSquadronMark ? JZG.itemThreeSquadronMark + '分' : '待审核'}</td>
                         </tr>
                         <tr>
                           <td>奉献</td>
-                          <td>{JZG.itemFourSelfMark}</td>
+                          <td>{JZG.itemFourSelfMark}分</td>
                           <td>{JZG.itemFourExplain}</td>
-                          <td>{JZG.itemFourSquadronMark ? JZG.itemFourSquadronMark : '待审核'}</td>
+                          <td>{JZG.itemFourSquadronMark ? JZG.itemFourSquadronMark + '分' : '待审核'}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -137,7 +137,7 @@ class PerformanceAssessment extends Component {
                           <p className="p-txt">（价值观总分+50%警犬技能考核得分+业务与内务考核得分）</p>
                         </td>
                         <td className="total">
-                          {detailInfor.selfEvaluationSumMark ? JZG.selfEvaluationSumMark : '待审核'}
+                          {detailInfor.selfEvaluationSumMark ? detailInfor.selfEvaluationSumMark + '分' : '待审核'}
                         </td>
                       </tr>
                     </tbody>
