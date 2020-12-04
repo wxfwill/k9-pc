@@ -202,8 +202,6 @@ class Archivew extends Component {
                 console.log(resObj, '请假/离深/补休');
                 LeaveAfterSyncInfo = getSingle(resObj.data, '请假/离深/补休');
                 break;
-<<<<<<< HEAD
-=======
               case 6:
                 console.log(resObj, '通用物资');
                 AidRecipientsInfo = getSingle(resObj.data.list, '通用物资领用');
@@ -224,7 +222,6 @@ class Archivew extends Component {
                 console.log(resObj, '值班室对讲机领用');
                 WalkieTalkieMaterialArr = getSingle(resObj.data.list, '值班室对讲机领用');
                 break;
->>>>>>> plh
             }
           }
         });
@@ -315,8 +312,6 @@ class Archivew extends Component {
       case '通用物资领用':
         cont = <AidRecipients detailInfor={obj} currentIndex={currentIndex} />;
         break;
-<<<<<<< HEAD
-=======
       case '口罩领用':
         cont = <GetMask detailInfor={obj} currentIndex={currentIndex} />;
         break;
@@ -338,7 +333,6 @@ class Archivew extends Component {
       case '监控查看申请':
         cont = <MonitoringViewInfo detailInfor={obj} currentIndex={currentIndex} />;
         break;
->>>>>>> plh
       case '最后一页':
         cont = <BlankPage currentIndex={currentIndex} />;
         break;
