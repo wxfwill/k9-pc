@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, Button, Input, Select, message, Typography, Upload } from 'antd';
+import { Row, Col, Card, Button, Input, Select, message, Typography, Upload, Spin } from 'antd';
 import 'style/pages/reportManage/ImportFile/index.less';
 
 const { Title } = Typography;
@@ -28,6 +28,7 @@ class ImportFile extends Component {
       file: null,
       fileName: '',
       isImport: false,
+      isSpinning: false, //文件是否上传中
     };
   }
   componentDidMount() {
@@ -77,8 +78,13 @@ class ImportFile extends Component {
     }
     let formData = new FormData();
     formData.append('file', file);
+    this.setState({
+      isSpinning: true,
+    });
     React.$ajax.postData($url, formData).then((res) => {
-      console.log(res);
+      this.setState({
+        isSpinning: false,
+      });
       if (res && res.code === 0) {
         if (Number(res.data) > 0) {
           message.success(`成功导入${res.data}条数据！`);
@@ -91,46 +97,48 @@ class ImportFile extends Component {
   };
 
   render() {
-    const { fileType, fileName, isImport } = this.state;
+    const { fileType, fileName, isImport, isSpinning } = this.state;
     return (
       <Row className="import-file">
         <Col xl={24} lg={24} md={24} sm={24} xs={24}>
           <Card bordered={false}>
-            <Title level={4} className="txt-c">
-              企业微信文件导入
-            </Title>
-            <InputGroup compact className="txt-c">
-              <Select value={fileType} onChange={this.handleChange} style={{ width: 108 }}>
-                {fileTypeList && fileTypeList.length > 0
-                  ? fileTypeList.map((item) => {
-                      return (
-                        <Option value={item.value} key={item.value}>
-                          {item.label}
-                        </Option>
-                      );
-                    })
-                  : null}
-              </Select>
-              <Input style={{ width: '40%' }} value={fileName} placeholder="请选择文件" />
-              <Upload
-                // multiple
-                name="file"
-                showUploadList={false}
-                beforeUpload={this.beforeUpload}
-                onChange={this.handleFileChange}
-                accept={accept}
-              >
-                <Button type="primary">选择文件</Button>
-              </Upload>
-            </InputGroup>
-            <div className="txt-c">
-              <Button type="primary" disabled={!isImport} onClick={this.onSubmit}>
-                导入
-              </Button>
-              <Button style={{ marginLeft: 16 }} onClick={this.onCancel}>
-                取消
-              </Button>
-            </div>
+            <Spin tip="文件上传中..." spinning={isSpinning}>
+              <Title level={4} className="txt-c">
+                企业微信文件导入
+              </Title>
+              <InputGroup compact className="txt-c">
+                <Select value={fileType} onChange={this.handleChange} style={{ width: 108 }}>
+                  {fileTypeList && fileTypeList.length > 0
+                    ? fileTypeList.map((item) => {
+                        return (
+                          <Option value={item.value} key={item.value}>
+                            {item.label}
+                          </Option>
+                        );
+                      })
+                    : null}
+                </Select>
+                <Input style={{ width: '40%' }} value={fileName} placeholder="请选择文件" />
+                <Upload
+                  // multiple
+                  name="file"
+                  showUploadList={false}
+                  beforeUpload={this.beforeUpload}
+                  onChange={this.handleFileChange}
+                  accept={accept}
+                >
+                  <Button type="primary">选择文件</Button>
+                </Upload>
+              </InputGroup>
+              <div className="txt-c">
+                <Button type="primary" disabled={!isImport} onClick={this.onSubmit}>
+                  导入
+                </Button>
+                <Button style={{ marginLeft: 16 }} onClick={this.onCancel}>
+                  取消
+                </Button>
+              </div>
+            </Spin>
           </Card>
         </Col>
       </Row>

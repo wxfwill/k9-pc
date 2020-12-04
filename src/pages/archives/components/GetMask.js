@@ -35,48 +35,54 @@ class GetMask extends Component {
         <div className="transport-main">
           <div className="book-cont">
             {detailInfor.$indexes ? <p className="title">{detailInfor.bookName}</p> : null}
-            {detailInfor.noData ? (
+            {!detailInfor.noData ? (
               <div className="print-view" id={'print-view' + detailInfor.bookName + detailInfor.id}>
                 <table border="1" bordercolor="#E7E7E7" className="table-box mgt12">
                   <tbody className="no-wrap-th">
                     <tr>
                       <th>申请人</th>
-                      <td></td>
+                      <td>{detailInfor.userName}</td>
                       <th>申请部门</th>
-                      <td></td>
+                      <td>{detailInfor.groupName}</td>
                     </tr>
                     <tr>
                       <th>申请时间</th>
                       <td colSpan="3">
-                        {detailInfor.startTime &&
-                          util.formatDate(new Date(detailInfor.startTime), 'yyyy-MM-dd hh:mm:ss')}
+                        {detailInfor.applyDate &&
+                          util.formatDate(new Date(detailInfor.applyDate), 'yyyy-MM-dd hh:mm:ss')}
                       </td>
                     </tr>
                     <tr>
                       <th>申请理由</th>
-                      <td colSpan="3">2</td>
+                      <td colSpan="3">{detailInfor.reason}</td>
                     </tr>
                     <tr>
                       <th>总物品数量</th>
-                      <td colSpan="3">2</td>
+                      <td colSpan="3">{detailInfor.sumNumber}</td>
                     </tr>
                   </tbody>
                 </table>
-                <table border="1" bordercolor="#E7E7E7" className="table-box">
-                  <thead>
-                    <tr>
-                      <th colSpan="4">明细一</th>
-                    </tr>
-                  </thead>
-                  <tbody className="no-wrap-th">
-                    <tr>
-                      <th>物品名称</th>
-                      <td></td>
-                      <th>物品数量</th>
-                      <td></td>
-                    </tr>
-                  </tbody>
-                </table>
+                {detailInfor.workwxMaterialDetails && detailInfor.workwxMaterialDetails.length > 0
+                  ? detailInfor.workwxMaterialDetails.map((item, index) => {
+                      return (
+                        <table border="1" bordercolor="#E7E7E7" className="table-box">
+                          <thead>
+                            <tr>
+                              <th colSpan="4">明细{index + 1}</th>
+                            </tr>
+                          </thead>
+                          <tbody className="no-wrap-th">
+                            <tr>
+                              <th>物品名称</th>
+                              <td>{item.name}</td>
+                              <th>物品数量</th>
+                              <td>{item.number}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      );
+                    })
+                  : null}
               </div>
             ) : (
               <NoData />

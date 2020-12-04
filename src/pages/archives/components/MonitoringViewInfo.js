@@ -36,42 +36,47 @@ class MonitoringViewInfo extends Component {
         <div className="transport-main">
           <div className="book-cont">
             {detailInfor.$indexes ? <p className="title">{detailInfor.bookName}</p> : null}
-            {detailInfor.noData ? (
+            {!detailInfor.noData ? (
               <div className="print-view" id={'print-view' + detailInfor.bookName + detailInfor.id}>
                 <table border="1" bordercolor="#E7E7E7" className="table-box mgt12">
                   <tbody className="no-wrap-th">
                     <tr>
                       <th>申请人</th>
-                      <td></td>
+                      <td>{detailInfor.userName}</td>
                       <th>申请部门</th>
-                      <td></td>
+                      <td>{detailInfor.groupName}</td>
                     </tr>
                     <tr>
                       <th>申请时间</th>
                       <td>
-                        {detailInfor.startTime &&
-                          util.formatDate(new Date(detailInfor.startTime), 'yyyy-MM-dd hh:mm:ss')}
+                        {detailInfor.applyDate &&
+                          util.formatDate(new Date(detailInfor.applyDate), 'yyyy-MM-dd hh:mm:ss')}
                       </td>
                       <th>监控范围类型</th>
-                      <td>犬舍监控</td>
+                      <td>{detailInfor.monitorType}</td>
                     </tr>
                     <tr>
                       <th>开始时间</th>
-                      <td></td>
+                      <td>
+                        {detailInfor.startDate &&
+                          util.formatDate(new Date(detailInfor.startDate), 'yyyy-MM-dd hh:mm:ss')}
+                      </td>
                       <th>结束时间</th>
-                      <td>2</td>
+                      <td>
+                        {detailInfor.endDate && util.formatDate(new Date(detailInfor.endDate), 'yyyy-MM-dd hh:mm:ss')}
+                      </td>
                     </tr>
                     <tr>
                       <th>时长</th>
-                      <td colSpan="3">2</td>
+                      <td colSpan="3">{detailInfor.monitorHours}</td>
                     </tr>
                     <tr>
                       <th>查看事由</th>
-                      <td colSpan="3">xxx</td>
+                      <td colSpan="3">{detailInfor.reason}</td>
                     </tr>
                     <tr>
                       <th>监控查看具体范围</th>
-                      <td colSpan="3">x</td>
+                      <td colSpan="3">{detailInfor.monitorType}</td>
                     </tr>
                   </tbody>
                 </table>

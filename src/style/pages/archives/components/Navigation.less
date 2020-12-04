@@ -1,4 +1,5 @@
 .navigation-main {
+  height: calc(~'100vh - 56px');
   position: absolute;
   right: 1212px;
   top: 12px;
@@ -17,9 +18,12 @@
     }
   }
   .nav {
+    max-height: 100%;
     padding: 26px 8px;
     background: #ffffff;
     border-radius: 8px 0 0 8px;
+    overflow: auto;
+    box-sizing: border-box;
     li {
       color: #595959;
       font-size: 14px;

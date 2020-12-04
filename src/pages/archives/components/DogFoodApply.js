@@ -41,25 +41,30 @@ class DogFoodApply extends Component {
                   <tbody className="no-wrap-th">
                     <tr>
                       <th>申请人</th>
-                      <td></td>
+                      <td>{detailInfor.userName}</td>
                       <th>申请部门</th>
-                      <td></td>
+                      <td>{detailInfor.groupName}</td>
                     </tr>
                     <tr>
                       <th>申请时间</th>
-                      <td>{util.formatDate(new Date(detailInfor.startTime), 'yyyy-MM-dd hh:mm:ss')}</td>
+                      <td>
+                        {detailInfor.applyDate &&
+                          util.formatDate(new Date(detailInfor.applyDate), 'yyyy-MM-dd hh:mm:ss')}
+                      </td>
                       <th>领用时间</th>
-                      <td>{util.formatDate(new Date(detailInfor.endTime), 'yyyy-MM-dd hh:mm:ss')}</td>
+                      <td>
+                        {detailInfor.recDate && util.formatDate(new Date(detailInfor.recDate), 'yyyy-MM-dd hh:mm:ss')}
+                      </td>
                     </tr>
                     <tr>
                       <th>制作方式</th>
-                      <td></td>
+                      <td>{detailInfor.makeMode}</td>
                       <th>制作类型</th>
-                      <td></td>
+                      <td>{detailInfor.makeType}</td>
                     </tr>
                     <tr>
                       <th>领用数量</th>
-                      <td colSpan="3"></td>
+                      <td colSpan="3">{detailInfor.recNumber}</td>
                     </tr>
                   </tbody>
                 </table>

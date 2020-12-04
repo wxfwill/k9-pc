@@ -1,4 +1,4 @@
-//悬浮目录
+//查询时间
 import React, { Component } from 'react';
 import { Icon, DatePicker, Form, Popover } from 'antd';
 import moment from 'moment';
@@ -68,7 +68,7 @@ class SearchDate extends Component {
     const { opacity, dateArr } = this.state;
     const content = (
       <div>
-        <Form.Item {...formItemLayout}>
+        <Form.Item {...formItemLayout} className="search-date-form">
           <RangePicker value={dateArr} format={dateFormat} onChange={(e) => this.getPicker(e)} />
         </Form.Item>
       </div>

@@ -1,5 +1,6 @@
 //封面
 import React, { Component } from 'react';
+
 class Cover extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +35,7 @@ class Cover extends Component {
           <ul className="infor">
             <li>员工姓名：{userInfor.name ? userInfor.name : '--'}</li>
             <li>制作单位：深圳CID警犬基地</li>
-            <li>制作日期：2020-10-21</li>
+            <li>制作日期：{this.props.currentDate}</li>
           </ul>
         </div>
         <i className="crease"></i>

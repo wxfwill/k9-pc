@@ -28,8 +28,8 @@ import 'style/pages/archives/index.less';
 
 const nowDate = new Date();
 const cYear = nowDate.getFullYear(); //当前年份
-const cMonth = nowDate.getMonth() + 1; //月份
-const cDay = nowDate.getDate(); //日
+const cMonth = nowDate.getMonth() + 1 > 10 ? nowDate.getMonth() + 1 : '0' + (nowDate.getMonth() + 1); //月份
+const cDay = nowDate.getDate() > 10 ? nowDate.getDate() : '0' + nowDate.getDate(); //日
 const cYMD = cYear + '-' + cMonth + '-' + cDay; //当前日期
 const defSatrtDate = cYear + '-01-01 00:00:00'; //默认开始时间
 const defEndDate = cYMD + ' 23:59:59'; //默认结束时间
@@ -54,6 +54,7 @@ class Archivew extends Component {
       this.getAllInfor();
     });
   }
+  // 选择时间
   getPicker = (startDate, endDate) => {
     this.setState(
       {
@@ -206,6 +207,54 @@ class Archivew extends Component {
     };
     return React.$ajax.postData('/api/work-wx-sp/pageDocInterPhone', reqObj);
   };
+  //犬粮申请
+  pageDocMakeDogFood = (startDate, endDate, userId) => {
+    const reqObj = {
+      ignorePageRequest: true, //是否忽略分页请求
+      param: {
+        startDate: startDate, //开始时间
+        endDate: endDate, //结束时间
+        userId: userId, //用户ID
+      },
+    };
+    return React.$ajax.postData('/api/work-wx-sp/pageDocMakeDogFood', reqObj);
+  };
+  //口罩领用
+  pageDocMask = (startDate, endDate, userId) => {
+    const reqObj = {
+      ignorePageRequest: true, //是否忽略分页请求
+      param: {
+        startDate: startDate, //开始时间
+        endDate: endDate, //结束时间
+        userId: userId, //用户ID
+      },
+    };
+    return React.$ajax.postData('/api/work-wx-sp/pageDocMask', reqObj);
+  };
+  //犬只调动审批
+  pageDocDogTransfer = (startDate, endDate, userId) => {
+    const reqObj = {
+      ignorePageRequest: true, //是否忽略分页请求
+      param: {
+        startDate: startDate, //开始时间
+        endDate: endDate, //结束时间
+        userId: userId, //用户ID
+      },
+    };
+    return React.$ajax.postData('/api/work-wx-sp/pageDocDogTransfer', reqObj);
+  };
+  //监控查看
+  pageDocWatchMonitor = (startDate, endDate, userId) => {
+    const reqObj = {
+      ignorePageRequest: true, //是否忽略分页请求
+      param: {
+        startDate: startDate, //开始时间
+        endDate: endDate, //结束时间
+        userId: userId, //用户ID
+      },
+    };
+    return React.$ajax.postData('/api/work-wx-sp/pageDocWatchMonitor', reqObj);
+  };
 
   //获取所有的信息
   getAllInfor = () => {
@@ -218,21 +267,15 @@ class Archivew extends Component {
       RewardSyncList = [], //奖励事项
       DocDailyWork = [], //日报信息
       LeaveAfterSyncInfo = [], //请假/离深/补休
-      DogFoodInfo = [
-        {
-          bookName: '犬粮申请',
-          noData: true,
-          $indexes: true,
-        },
-      ], //犬粮申请
+      DogFoodInfo = [], //犬粮申请
       AidRecipientsInfo = [], //通用物资领用
-      GetMaskInfo = [{ bookName: '口罩领用', noData: true, $indexes: true }], // 口罩领用
+      GetMaskInfo = [], // 口罩领用
       ClinicMaterialArr = [], // 诊疗点物资领取
       WalkieTalkieMaterialArr = [], // 对讲机领取
       ElectricGunArr = [], // 电击枪领取
       KitchenMaterialArr = [], // 厨房物资领取
-      DogTransferInfoArr = [{ bookName: '犬只调动审批', noData: true, $indexes: true }], // 犬只调动审批
-      MonitoringViewInfoArr = [{ bookName: '监控查看申请', noData: true, $indexes: true }], // 监控查看申请
+      DogTransferInfoArr = [], // 犬只调动审批
+      MonitoringViewInfoArr = [], // 监控查看申请
       BackCoverArr = [{ bookName: '封底' }],
       BlankPageArr = [{ bookName: '最后一页' }];
     Promise.all([
@@ -247,6 +290,10 @@ class Archivew extends Component {
       this.ClinicMaterialList(startDate, endDate, userId), //诊疗点物资领取
       this.ElectricGunList(startDate, endDate, userId), //电击枪领用
       this.WalkieTalkieMaterialList(startDate, endDate, userId), //对讲机领用
+      this.pageDocMakeDogFood(startDate, endDate, userId), //犬粮申请
+      this.pageDocMask(startDate, endDate, userId), //口罩领用
+      this.pageDocDogTransfer(startDate, endDate, userId), //犬只调动审批
+      this.pageDocWatchMonitor(startDate, endDate, userId), //查看监控
     ]).then((res) => {
       if (res && res.length > 0) {
         console.log(res);
@@ -254,48 +301,49 @@ class Archivew extends Component {
           if (resObj && resObj.code == 0) {
             switch (index) {
               case 0:
-                console.log(resObj, '绩效考核');
                 SelfEvaluationList = getSingle(resObj.data, '绩效考核');
                 break;
               case 1:
-                console.log(resObj, '工作用车');
                 DocCarUseReportInfo = getSingle(resObj.data.list, '工作用车');
                 break;
               case 2:
-                console.log(resObj, '出勤用车');
                 DocAttendanceCar = getSingle(resObj.data.list, '出勤用车');
                 break;
               case 3:
-                console.log(resObj, '奖励事项');
                 RewardSyncList = getSingle(resObj.data, '奖励事项');
                 break;
               case 4:
-                console.log(resObj, '日报信息');
                 DocDailyWork = getSingle(resObj.data.list, '日报信息');
                 break;
               case 5:
-                console.log(resObj, '请假/离深/补休');
                 LeaveAfterSyncInfo = getSingle(resObj.data, '请假/离深/补休');
                 break;
               case 6:
-                console.log(resObj, '通用物资');
                 AidRecipientsInfo = getSingle(resObj.data.list, '通用物资领用');
                 break;
               case 7:
-                console.log(resObj, '厨房物资领用');
                 KitchenMaterialArr = getSingle(resObj.data.list, '厨房物资领用');
                 break;
               case 8:
-                console.log(resObj, '诊疗点物资领用');
                 ClinicMaterialArr = getSingle(resObj.data.list, '诊疗点物资领用');
                 break;
               case 9:
-                console.log(resObj, '值班室电击枪领用');
                 ElectricGunArr = getSingle(resObj.data.list, '值班室电击枪领用');
                 break;
               case 10:
-                console.log(resObj, '值班室对讲机领用');
                 WalkieTalkieMaterialArr = getSingle(resObj.data.list, '值班室对讲机领用');
+                break;
+              case 11:
+                DogFoodInfo = getSingle(resObj.data.list, '犬粮申请');
+                break;
+              case 12:
+                GetMaskInfo = getSingle(resObj.data.list, '口罩领用');
+                break;
+              case 13:
+                DogTransferInfoArr = getSingle(resObj.data.list, '犬只调动审批');
+                break;
+              case 14:
+                MonitoringViewInfoArr = getSingle(resObj.data.list, '监控查看申请');
                 break;
             }
           }
@@ -333,7 +381,7 @@ class Archivew extends Component {
           allInforList: allInforListArr,
         },
         () => {
-          //所有信息列表拆分成书本左右两页
+          //所有信息列表拆分成书本正反两页
           const { allInforList } = this.state;
           console.log(allInforList);
           let bookList = [];
@@ -348,7 +396,6 @@ class Archivew extends Component {
             },
             () => {
               console.log(this.state.bookList, 'bookListbookListbookListbookList');
-              this.state.bookList;
             }
           );
         }
@@ -365,7 +412,7 @@ class Archivew extends Component {
     const currentIndex = cIndex < 10 ? '0' + cIndex : cIndex;
     switch (obj.bookName) {
       case '封面':
-        cont = <Cover detailInfor={obj} currentIndex={currentIndex} userId={this.state.userId} />;
+        cont = <Cover detailInfor={obj} currentIndex={currentIndex} userId={this.state.userId} currentDate={cYMD} />;
         break;
       case '目录':
         cont = <Catalogue detailInfor={obj} currentIndex={currentIndex} jumpDirectory={this.jumpDirectory} />;
@@ -508,11 +555,6 @@ class Archivew extends Component {
           返回
         </div>
         <div className="record-box">
-          {/* <div className="clearfix get-date">
-            <Form.Item label="查询时间：" labelAlign="right" {...formItemLayout} className="fr">
-              <RangePicker value={dateArr} format={dateFormat} onChange={(e) => this.getPicker(e)} />
-            </Form.Item>
-          </div> */}
           <div className="record-book">
             {/* 悬浮目录 */}
             {numbAdd > 1 && numbAdd < bookList.length + 1 ? <Navigation jumpDirectory={this.jumpDirectory} /> : null}
