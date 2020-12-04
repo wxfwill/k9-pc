@@ -202,6 +202,29 @@ class Archivew extends Component {
                 console.log(resObj, '请假/离深/补休');
                 LeaveAfterSyncInfo = getSingle(resObj.data, '请假/离深/补休');
                 break;
+<<<<<<< HEAD
+=======
+              case 6:
+                console.log(resObj, '通用物资');
+                AidRecipientsInfo = getSingle(resObj.data.list, '通用物资领用');
+                break;
+              case 7:
+                console.log(resObj, '厨房物资领用');
+                KitchenMaterialArr = getSingle(resObj.data.list, '厨房物资领用');
+                break;
+              case 8:
+                console.log(resObj, '诊疗点物资领用');
+                ClinicMaterialArr = getSingle(resObj.data.list, '诊疗点物资领用');
+                break;
+              case 9:
+                console.log(resObj, '值班室电击枪领用');
+                ElectricGunArr = getSingle(resObj.data.list, '值班室电击枪领用');
+                break;
+              case 10:
+                console.log(resObj, '值班室对讲机领用');
+                WalkieTalkieMaterialArr = getSingle(resObj.data.list, '值班室对讲机领用');
+                break;
+>>>>>>> plh
             }
           }
         });
@@ -292,6 +315,30 @@ class Archivew extends Component {
       case '通用物资领用':
         cont = <AidRecipients detailInfor={obj} currentIndex={currentIndex} />;
         break;
+<<<<<<< HEAD
+=======
+      case '口罩领用':
+        cont = <GetMask detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '诊疗点物资领用':
+        cont = <ClinicMaterial detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '值班室对讲机领用':
+        cont = <WalkieTalkieMaterial detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '值班室电击枪领用':
+        cont = <ElectricGun detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '厨房物资领用':
+        cont = <KitchenMaterial detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '犬只调动审批':
+        cont = <DogTransferInfo detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+      case '监控查看申请':
+        cont = <MonitoringViewInfo detailInfor={obj} currentIndex={currentIndex} />;
+        break;
+>>>>>>> plh
       case '最后一页':
         cont = <BlankPage currentIndex={currentIndex} />;
         break;
