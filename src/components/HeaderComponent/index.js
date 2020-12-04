@@ -195,7 +195,7 @@ class HeaderComponent extends Component {
                 <Icon type="notification" />
               </Badge>
             </Col>
-            <Col xs={8} sm={8} md={6} lg={3}>
+            <Col xs={6} sm={6} md={6} lg={3}>
               <Dropdown overlay={this.dropMenu()}>
                 <a
                   className="ant-dropdown-link"

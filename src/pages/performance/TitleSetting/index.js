@@ -13,7 +13,7 @@ class TitleSetting extends Component {
     };
   }
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['绩效考核', '头衔设置'] });
+    // React.store.dispatch({ type: 'NAV_DATA', nav: ['绩效考核', '头衔设置'] });
     this.getAll();
   }
   //获取所有头衔
@@ -130,8 +130,8 @@ class TitleSetting extends Component {
     dataSource[len - 1].start = dataSource[len - 2].end + 1; //最后一项的最小值等于倒数第二项的最大值加1
     React.$ajax.postData('/api/integral-title/create', { titles: dataSource }).then((res) => {
       if (res && res.code == 0) {
-        message.success('提交成功！');
-        this.getAll();
+        message.success('保存成功！', 2);
+        // this.getAll();
       }
     });
   };

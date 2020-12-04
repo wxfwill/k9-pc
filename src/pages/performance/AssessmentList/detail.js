@@ -159,7 +159,7 @@ class AssessmentDetail extends Component {
     if (!value) {
       throw new Error('请输入修改意见');
     }
-    if (!value.match(/^\d+$/g)) {
+    if (!value.match(/^\d+(\.\d+)?$/g)) {
       callback('请输入纯数字(⊙o⊙)…');
     }
     callback();
@@ -186,12 +186,17 @@ class AssessmentDetail extends Component {
                 </div>
                 <Form onSubmit={this.handleSubmit}>
                   <table border="1" className="table-form">
-                    <thead>
+                    {/* <thead>
                       <tr>
                         <th colSpan="4">价值观考核得分</th>
                       </tr>
-                    </thead>
+                    </thead> */}
                     <tbody>
+                      <tr>
+                        <th colSpan="4" className="center">
+                          价值观考核得分
+                        </th>
+                      </tr>
                       <tr>
                         <th>类型</th>
                         <th>分数</th>
@@ -266,12 +271,17 @@ class AssessmentDetail extends Component {
                         </td>
                       </tr>
                     </tbody>
-                    <thead>
+                    {/* <thead>
                       <tr>
                         <th colSpan="4">业务和内务考核得分</th>
                       </tr>
-                    </thead>
+                    </thead> */}
                     <tbody>
+                      <tr>
+                        <th colSpan="4" className="center">
+                          业务和内务考核得分
+                        </th>
+                      </tr>
                       <tr>
                         <th colSpan="2">加减分原因</th>
                         <th>加减分变化</th>
@@ -284,7 +294,7 @@ class AssessmentDetail extends Component {
                             // <React.Fragment>
                             <tr key={index}>
                               <td colSpan="2">{item.reason}</td>
-                              <td>{item.selfMark}66</td>
+                              <td>{item.selfMark}</td>
                               <td>
                                 <Form.Item>
                                   {getFieldDecorator(`4wMark-${item.id}`, {
@@ -319,7 +329,7 @@ class AssessmentDetail extends Component {
                           return (
                             <tr key={item.reason}>
                               <td colSpan="2">{item.reason}</td>
-                              <td>{item.selfMark + '其他'}</td>
+                              <td>{item.selfMark}</td>
                               <td>
                                 <Form.Item>
                                   {getFieldDecorator(`otherMark-${item.id}`, {
@@ -343,8 +353,6 @@ class AssessmentDetail extends Component {
                           </Form.Item>
                         </td>
                       </tr>
-                    </tbody>
-                    <tfoot>
                       <tr>
                         <th colSpan="3" style={{ textAlign: 'center' }}>
                           <p>最终总得分</p>
@@ -358,7 +366,22 @@ class AssessmentDetail extends Component {
                           </Form.Item>
                         </td>
                       </tr>
-                    </tfoot>
+                    </tbody>
+                    {/* <tfoot>
+                      <tr>
+                        <th colSpan="3" style={{ textAlign: 'center' }}>
+                          <p>最终总得分</p>
+                          <p>（价值观总分+50%警犬技能考核得分+业务和内务考核得分）</p>
+                        </th>
+                        <td>
+                          <Form.Item>
+                            {getFieldDecorator('selfEvaluationSumMark', {
+                              rules: [{ validator: this.handleCustomRules }],
+                            })(<TextArea rows={1} disabled={this.state.isable} />)}
+                          </Form.Item>
+                        </td>
+                      </tr>
+                    </tfoot> */}
                   </table>
                   <Divider />
                   <div style={{ textAlign: 'center' }} className="no-print">

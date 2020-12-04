@@ -590,7 +590,6 @@ class Archivew extends Component {
                                 transform: `translateX(${(2 * index + i) / 50}px) translateZ(${
                                   (2 * index + i) / 50
                                 }px)`,
-                                // transformOrigin: `${-(2 * index + i) - 10}px center`,
                               }}
                               onClick={() => {
                                 this.getPage(i);
