@@ -96,7 +96,7 @@ let ruleList = [];
   //   .catch((error) => {
   //     console.log(error);
   //   });
-  React.$ajax.getData('/api/integral-rule/queryRulesByRootCode', { rootCode: 'gzyc' }).then((res) => {
+  React.$ajax.getData('/api/integral-rule/queryRulesByRootCode', { rootCode: '4wbb' }).then((res) => {
     if (res.code == 0) {
       ruleList = res.data;
     }

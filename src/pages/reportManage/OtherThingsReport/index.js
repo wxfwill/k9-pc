@@ -88,7 +88,7 @@ let ruleList = [];
       if (res.code == 0) {
         res.data && res.data.length > 0
           ? res.data.map((item) => {
-              if (item.ruleName !== '4W报备') {
+              if (item.ruleCode !== '4wbb') {
                 ruleList.push(item);
               }
             })
