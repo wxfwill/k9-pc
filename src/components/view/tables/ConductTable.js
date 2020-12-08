@@ -68,7 +68,8 @@ class ConductTable extends React.Component {
   };
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage, isFinish: this.state.taskStatus }) {
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/dailyPatrols/listDailyPatrols', { ...params, ...this.state.filter })
+    React.$ajax
+      .postData('/api/dailyPatrols/listDailyPatrols', { ...params, ...this.state.filter })
       .then((obj) => {
         const pagination = { ...this.state.pagination };
         let res = obj.data;

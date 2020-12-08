@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal } from 'antd';
 import { firstLayout, secondLayout } from 'util/Layout';
-import moment from 'moment';
 require('style/app/dogInfo/addDogForm.less');
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -37,7 +36,8 @@ class VideoInfo extends React.Component {
         if (VideoId) {
           parms.id = VideoId;
         }
-        React.$ajax.postData('/api/braceletInfo/saveInfo', parms)
+        React.$ajax
+          .postData('/api/braceletInfo/saveInfo', parms)
           .then((res) => {
             if (res.code == 0) {
               this.props.history.push('/app/equipment/bracelet');
@@ -70,7 +70,8 @@ class VideoInfo extends React.Component {
     const VideoId = this.props.location.query && this.props.location.query.VideoId;
     const pathname = this.props.location.pathname;
     if (VideoId) {
-      React.$ajax.postData('/api/braceletInfo/info', { id: VideoId })
+      React.$ajax
+        .postData('/api/braceletInfo/info', { id: VideoId })
         .then((res) => {
           if (res.code == 0) {
             this.setState({ videoData: res.data, ...res.data });

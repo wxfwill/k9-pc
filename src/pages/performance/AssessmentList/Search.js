@@ -23,7 +23,7 @@ class SearchForm extends Component {
     // 查询用户
     this.queryGroupUser('');
     // 任务类型
-    this.queryTaskType('gzyc');
+    this.queryTaskType('4wbb');
   }
   handleTreeName = (val) => {
     console.log(val);

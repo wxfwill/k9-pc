@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Tag, Badge, Icon, Avatar, List, Row, Col, Card ,message,Popconfirm} from 'antd';
+import { Table, Button, Tag, Badge, Icon, Avatar, List, Row, Col, Card, message, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
@@ -15,7 +15,7 @@ class DeployTable extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1
+        defaultCurrent: 1,
       },
       pageSize: 8,
       currPage: 1,
@@ -25,16 +25,16 @@ class DeployTable extends React.Component {
       listByLoad: {
         loadingMore: false,
         showLoadingMore: false,
-        data: []
-      }
-    }
+        data: [],
+      },
+    };
   }
   componentWillMount() {
     this.fetch();
   }
   componentWillReceiveProps(nextProps) {
-    if(Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
-      return
+    if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
+      return;
     }
     const filter = nextProps.filter;
     this.fetch({
@@ -45,75 +45,80 @@ class DeployTable extends React.Component {
     this.state.listByLoad = {
       loadingMore: false,
       showLoadingMore: false,
-      data: []
+      data: [],
     };
     this.state.currPage = 1;
   }
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/cmdMonitor/listEmergencyDeploymentPlan', { ...params }).then((res) => {
-      const pagination = { ...this.state.pagination };
-      pagination.total = res.data.totalCount;
-      pagination.current = res.data.currPage;
-      pagination.pageSize = res.data.pageSize;
-      let _total = res.data.totalCount,
-        _currPage = res.data.currPage,
-        _temp = pagination.current + 1,
-        _size = this.state.pageSize,
-        _show = (_currPage == parseInt(_total / _size) + ((_total % _size) > 0 ? 1 : 0)) || !_total ? false : true,
-        _listByLoad = {
-          loadingMore: false,
-          showLoadingMore: _show,
-          data: this.state.listByLoad.data.concat(res.data.list)
-        }
 
-      this.setState({
-        data: res.data.list,
-        loading: false,
-        pagination,
-        currPage: _temp,
-        listByLoad: _listByLoad
+    React.$ajax
+      .postData('/api/cmdMonitor/listEmergencyDeploymentPlan', { ...params })
+      .then((res) => {
+        const pagination = { ...this.state.pagination };
+        pagination.total = res.data.totalCount;
+        pagination.current = res.data.currPage;
+        pagination.pageSize = res.data.pageSize;
+        let _total = res.data.totalCount,
+          _currPage = res.data.currPage,
+          _temp = pagination.current + 1,
+          _size = this.state.pageSize,
+          _show = _currPage == parseInt(_total / _size) + (_total % _size > 0 ? 1 : 0) || !_total ? false : true,
+          _listByLoad = {
+            loadingMore: false,
+            showLoadingMore: _show,
+            data: this.state.listByLoad.data.concat(res.data.list),
+          };
+
+        this.setState({
+          data: res.data.list,
+          loading: false,
+          pagination,
+          currPage: _temp,
+          listByLoad: _listByLoad,
+        });
       })
-    }).catch(function (error) {
-      console.log(error);
-    })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
   // 加载更多
   onLoadMore = () => {
     this.setState({ loading: true });
     const pager = { ...this.state.pagination };
-    var nextpage = pager.current = this.state.currPage;
-    let {filter} = this.props;
+    var nextpage = (pager.current = this.state.currPage);
+    let { filter } = this.props;
     this.setState({
       pagination: pager,
-      currPage: nextpage++
+      currPage: nextpage++,
     });
     this.fetch({
       currPage: this.state.currPage,
       pageSize: this.state.pageSize,
       ...filter,
     });
-  }
-  deleteTask = (id, index) => { 
-
-    httpAjax('post', config.apiUrl + '/api/cmdMonitor/delEmergencyDeploymentPlanById', { id: id }).then(res => {
+  };
+  deleteTask = (id, index) => {
+    httpAjax('post', config.apiUrl + '/api/cmdMonitor/delEmergencyDeploymentPlanById', { id: id }).then((res) => {
       if (res.code == 0) {
-        message.success("删除成功");
-        this.setState({
-          currPage: 1,
-          listByLoad: {
-            data: [],
-          }
-        }, this.fetch({
-          pageSize: this.state.pageSize,
-          currPage:1
-        }))
-        
+        message.success('删除成功');
+        this.setState(
+          {
+            currPage: 1,
+            listByLoad: {
+              data: [],
+            },
+          },
+          this.fetch({
+            pageSize: this.state.pageSize,
+            currPage: 1,
+          })
+        );
       } else {
-        message.serror("删除失败")
+        message.serror('删除失败');
       }
-    })
-  }
+    });
+  };
 
   render() {
     const { match } = this.props;
@@ -121,14 +126,20 @@ class DeployTable extends React.Component {
     const loadMore = showLoadingMore ? (
       <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
         {loadingMore && <Spin />}
-        {!loadingMore && <Button loading={this.state.loading} onClick={this.onLoadMore}>加载更多</Button>}
+        {!loadingMore && (
+          <Button loading={this.state.loading} onClick={this.onLoadMore}>
+            加载更多
+          </Button>
+        )}
       </div>
     ) : null;
     return (
       <div>
         <div className="table-operations">
           <Button type="primary">
-            <Link to='/app/monitoring/deployAdd'><Icon type="plus-circle-o" /> 新建任务</Link>
+            <Link to="/app/monitoring/deployAdd">
+              <Icon type="plus-circle-o" /> 新建任务
+            </Link>
           </Button>
         </div>
         <List
@@ -138,26 +149,138 @@ class DeployTable extends React.Component {
           loadMore={loadMore}
           renderItem={(item, index) => (
             <List.Item>
-              <Card className="deployCards"
+              <Card
+                className="deployCards"
                 hoverable={true}
-                actions={item.saveStatus === 0 ? [<Link to={{ pathname: "/app/monitoring/deployAdd", query: { id: item.id } }} > <Icon type="edit" /> 编辑草稿</Link>, <Popconfirm title='确认删除此任务信息?' onConfirm={() => this.deleteTask(item.id)}>
-          <Icon type='delete' /> 删除</Popconfirm>] : [ <Link to={{ pathname: "/app/monitoring/RoundsTrack/" + item.id, query:{type:'deploy'} }} ><Icon type="eye" /> 查看轨迹</Link> ]}
-           //     actions={[<span>{item.saveStatus === 0 ? <Link to={{ pathname: "/app/monitoring/deployAdd", query: { id: item.id } }} > <Icon type="edit" /> 编辑</Link> : <Link to={{ pathname: "/app/monitoring/RoundsTrack/" + item.id }} ><Icon type="eye" /> 查看轨迹</Link>} </span>]}
-           >
+                actions={
+                  item.saveStatus === 0
+                    ? [
+                        <Link to={{ pathname: '/app/monitoring/deployAdd', query: { id: item.id } }}>
+                          {' '}
+                          <Icon type="edit" /> 编辑草稿
+                        </Link>,
+                        <Popconfirm title="确认删除此任务信息?" onConfirm={() => this.deleteTask(item.id)}>
+                          <Icon type="delete" /> 删除
+                        </Popconfirm>,
+                      ]
+                    : [
+                        <Link to={{ pathname: '/app/monitoring/RoundsTrack/' + item.id, query: { type: 'deploy' } }}>
+                          <Icon type="eye" /> 查看轨迹
+                        </Link>,
+                      ]
+                }
+                //     actions={[<span>{item.saveStatus === 0 ? <Link to={{ pathname: "/app/monitoring/deployAdd", query: { id: item.id } }} > <Icon type="edit" /> 编辑</Link> : <Link to={{ pathname: "/app/monitoring/RoundsTrack/" + item.id }} ><Icon type="eye" /> 查看轨迹</Link>} </span>]}
+              >
                 <Row>
-                  <Col md={4}>  <Avatar shape="square" size="large" icon="setting" /></Col>
-                  <Col md={20}><div className="cardsList-div"><table style={{ fontSize: 12, color: '#666' }}>
-                    <tbody>
-                      <tr><td style={{ fontSize: 14, fontWeight: 800, paddingBottom: '8px' }}><span style={{ width: 155, height: 17,whiteSpace:'nowrap', overflow: 'hidden',textOverflow:'ellipsis'}}>{item.taskName}</span></td></tr>
-                      <tr><td>时间：{item.startDateStr ? moment(item.startDateStr).format('YYYY-MM-DD') : '--'}</td></tr>
-                      <tr><td>人员：<span style={{ width: 155, height: 17,whiteSpace:'nowrap', overflow: 'hidden',textOverflow:'ellipsis'}}>{item.userNames || '- '}</span></td></tr>
-                      <tr><td>上报人员：<span style={{ width: 155, height: 17,whiteSpace:'nowrap', overflow: 'hidden',textOverflow:'ellipsis'}}>{item.reportUserName || '- '}</span></td></tr>
-                      <tr><td>任务状态：{item.saveStatus === 0 ? <Badge status="warning" text="未发布" /> : <Badge status="processing" text="已发布" />} </td></tr>
-                      <tr><td>区域参数：<span style={{ width: 155, height: 17,whiteSpace:'nowrap', overflow: 'hidden',textOverflow:'ellipsis'}}>{item.location ? item.location : '-'}</span></td></tr>
-                      <tr><td>发布时间：{item.publishDate ? moment(item.publishDate).format('YYYY-MM-DD HH:mm:ss') : '--'}</td></tr>
-                      <tr><td>发布人员：<span style={{ width: 155, height: 17,whiteSpace:'nowrap', overflow: 'hidden',textOverflow:'ellipsis'}}>{item.operator || '--'}</span></td></tr>
-                    </tbody>
-                  </table></div>
+                  <Col md={4}>
+                    {' '}
+                    <Avatar shape="square" size="large" icon="setting" />
+                  </Col>
+                  <Col md={20}>
+                    <div className="cardsList-div">
+                      <table style={{ fontSize: 12, color: '#666' }}>
+                        <tbody>
+                          <tr>
+                            <td style={{ fontSize: 14, fontWeight: 800, paddingBottom: '8px' }}>
+                              <span
+                                style={{
+                                  width: 155,
+                                  height: 17,
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                }}
+                              >
+                                {item.taskName}
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>时间：{item.startDateStr ? moment(item.startDateStr).format('YYYY-MM-DD') : '--'}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              人员：
+                              <span
+                                style={{
+                                  width: 155,
+                                  height: 17,
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                }}
+                              >
+                                {item.userNames || '- '}
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              上报人员：
+                              <span
+                                style={{
+                                  width: 155,
+                                  height: 17,
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                }}
+                              >
+                                {item.reportUserName || '- '}
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              任务状态：
+                              {item.saveStatus === 0 ? (
+                                <Badge status="warning" text="未发布" />
+                              ) : (
+                                <Badge status="processing" text="已发布" />
+                              )}{' '}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              区域参数：
+                              <span
+                                style={{
+                                  width: 155,
+                                  height: 17,
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                }}
+                              >
+                                {item.location ? item.location : '-'}
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              发布时间：
+                              {item.publishDate ? moment(item.publishDate).format('YYYY-MM-DD HH:mm:ss') : '--'}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              发布人员：
+                              <span
+                                style={{
+                                  width: 155,
+                                  height: 17,
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                }}
+                              >
+                                {item.operator || '--'}
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </Col>
                 </Row>
               </Card>
@@ -169,9 +292,6 @@ class DeployTable extends React.Component {
   }
 }
 export default DeployTable;
-
-
-
 
 // WEBPACK FOOTER //
 // ./src/components/view/tables/DeployTable.js

@@ -87,6 +87,10 @@ const commonSet = {
     }),
   ],
   resolve: {
+    fallback: {
+      crypto: require.resolve('crypto-browserify'),
+      stream: require.resolve('stream-browserify'),
+    },
     extensions: ['.js', '.json', '.jsx'],
     alias: {
       //配置路径常量

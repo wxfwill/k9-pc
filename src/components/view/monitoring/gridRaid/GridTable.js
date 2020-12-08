@@ -128,7 +128,8 @@ class GridTable extends React.Component {
   };
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/dailyPatrols/listDailyPatrols', { ...params, ...this.state.filter })
+    React.$ajax
+      .postData('/api/dailyPatrols/listDailyPatrols', { ...params, ...this.state.filter })
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = parseInt(res.pageSize) * parseInt(res.totalPage);

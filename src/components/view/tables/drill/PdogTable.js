@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Immutable from 'immutable';
 import VideoModal from 'pages/drill/VideoModal';
 import LocateModal from 'pages/drill/LocateModal';
-import httpAjax from 'libs/httpAjax';
 
 const localSVG = require('images/banglocation.svg');
 require('style/view/common/deployTable.less');
@@ -61,7 +60,8 @@ class DeployTable extends React.Component {
   };
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/dailyTrainRecord/list', { ...params })
+    React.$ajax
+      .postData('/api/dailyTrainRecord/list', { ...params })
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = res.totalCount;

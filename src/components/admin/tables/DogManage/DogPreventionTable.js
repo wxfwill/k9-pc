@@ -39,7 +39,8 @@ class DogTable extends Component {
   }
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
-    React.$ajax.postData('/api/vaccineRecord/listVaccinePlan', { ...params })
+    React.$ajax
+      .postData('/api/vaccineRecord/listVaccinePlan', { ...params })
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = res.totalCount;

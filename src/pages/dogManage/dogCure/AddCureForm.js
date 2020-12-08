@@ -15,9 +15,6 @@ import {
   Form,
   Input,
 } from 'antd';
-import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
-
 import { firstLayout, secondLayout } from 'util/Layout';
 import MedicalRecordTable from './tables/MedicalRecordTable';
 import CureRecordTable from './tables/CureRecordTable';
@@ -70,7 +67,7 @@ class DogTable extends Component {
     }
     //获取疾病类型   //获取药品类型
     const promises = ['/api/basicData/diseaseType', '/api/basicData/drugInfo', '/api/dog/listAll'].map(function (item) {
-      return httpAjax('post', config.apiUrl + item, {});
+      return React.$ajax.postData(item, {});
     });
     let _this = this;
     Promise.all(promises).then((values) => {
@@ -87,7 +84,7 @@ class DogTable extends Component {
   }
 
   getInfo = (id) => {
-    httpAjax('post', config.apiUrl + '/api/treatmentRecord/info', { id }).then((res) => {
+    React.$ajax.postData('/api/treatmentRecord/info', { id }).then((res) => {
       let { code, data } = res;
       if (0 == code) {
         this.setState(
@@ -183,10 +180,14 @@ class DogTable extends Component {
   //选择犬只 获取信息
   selectDog = (key) => {
     this.setState({ detailLoading: true });
-    httpAjax('post', config.apiUrl + '/api/treatmentRecord/getRecordsByDogId', { dogId: key }).then((res) => {
+    React.$ajax.postData('/api/treatmentRecord/getRecordsByDogId', { dogId: key }).then((res) => {
       const data = res.data;
       if (res.code == 0) {
-        this.setState({ detailLoading: false, treatmentRecordHis: data.treatmentRecordHisList, dogInfo: data.dogInfo });
+        this.setState({
+          detailLoading: false,
+          treatmentRecordHis: data.treatmentRecordHisList,
+          dogInfo: data.dogInfo,
+        });
       }
     });
   };
@@ -336,7 +337,7 @@ class DogTable extends Component {
         if (this.state.recordId) {
           params.dogId = this.state.recordId;
         }
-        httpAjax('post', config.apiUrl + '/api/treatmentRecord/updateOrSaveInfo', params).then((res) => {
+        React.$ajax.postData('/api/treatmentRecord/updateOrSaveInfo', params).then((res) => {
           if (res.code == 0) {
             message.success(this.state.isInitialValue == true ? '修改成功' : '添加成功');
             window.location.href = config.apiUrl + '#/app/dog/cure';

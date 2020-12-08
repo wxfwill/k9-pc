@@ -373,7 +373,7 @@ class AddForm extends Component {
                             { max: 1000, message: '巡逻内容长度不超过1000' },
                           ],
                           initialValue: taskContent || '',
-                        })(<TextArea placeholder="巡逻内容" autosize={{ minRows: 3, maxRows: 6 }} />)}
+                        })(<TextArea placeholder="巡逻内容" autoSize={{ minRows: 3, maxRows: 6 }} />)}
                       </FormItem>
                     </Col>
                   </Row>

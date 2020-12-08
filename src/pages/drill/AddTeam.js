@@ -60,7 +60,7 @@ class AddPlan extends Component {
         if (id) {
           params.id = id;
         }
-        httpAjax('post', config.apiUrl + '/api/train/saveTeam', params).then((res) => {
+        React.$ajax.postData('/api/train/saveTeam', params).then((res) => {
           if (res.code == 0) {
             this.props.history.push('/app/drill/team');
             message.info('保存成功！');
@@ -72,7 +72,7 @@ class AddPlan extends Component {
     });
   };
   searchPeople = (name = '') => {
-    httpAjax('post', config.apiUrl + '/api/userCenter/getTrainer', { name }).then((res) => {
+    React.$ajax.postData('/api/userCenter/getTrainer', { name }).then((res) => {
       if (res.code == 0) {
         this.setState({ peoples: res.data });
       }

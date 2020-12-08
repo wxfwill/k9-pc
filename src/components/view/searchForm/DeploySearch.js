@@ -42,7 +42,7 @@ class SearchForm extends React.Component {
         <Row gutter={24}>
           <Col xl={8} lg={12} md={12} sm={24} xs={24}>
             <FormItem label={'所属区域'} {...thirdLayout}>
-              {getFieldDecorator('location')(<Input />)}
+              {getFieldDecorator('location')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
         </Row>

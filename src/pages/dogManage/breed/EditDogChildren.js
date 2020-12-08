@@ -41,7 +41,7 @@ class EditDogChildren extends Component {
   }
   getDogChildren = () => {
     const id = this.props.match.params.id;
-    httpAjax('post', config.apiUrl + '/api/breed/reproduceDetail', { id }).then((res) => {
+    React.$ajax.postData('/api/breed/reproduceDetail', { id }).then((res) => {
       if (res.code == 0) {
         const { pupInfos, details, diffs } = res.data;
         const pupInfosIds = pupInfos.map((t) => t.id);

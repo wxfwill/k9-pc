@@ -762,7 +762,11 @@ class _GridRaid extends Component {
           }}
         >
           {teamList.map((item, index) => {
-            return <Option value={item.id}>{item.name}</Option>;
+            return (
+              <Option value={item.id} key={index}>
+                {item.name}
+              </Option>
+            );
           })}
         </Select>
       </div>,
@@ -844,7 +848,7 @@ class _GridRaid extends Component {
               <FormItem label="执行时间：" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
                 {getFieldDecorator('taskDate', {
                   rules: [{ required: true, message: '请选择时间' }],
-                  initialValue: '',
+                  initialValue: null,
                 })(<DatePicker format="YYYY-MM-DD " />)}
               </FormItem>
               <FormItem label="上报人员：" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
@@ -880,8 +884,8 @@ class _GridRaid extends Component {
               </FormItem>
             </Form>
             <Row>
-              <Col span="11"></Col>
-              <Col span="3">
+              <Col span={11}></Col>
+              <Col span={3}>
                 <Button type="primary" size="small" onClick={this.subGridSearchTask}>
                   发布
                 </Button>
@@ -900,8 +904,8 @@ class _GridRaid extends Component {
               </TabPane>
             </Tabs>
             <Row>
-              <Col span="14"></Col>
-              <Col span="4">
+              <Col span={14}></Col>
+              <Col span={4}>
                 {showDeleteBtn ? (
                   <Button type="primary" size="small" onClick={this.deleteSelectPeo}>
                     删除
@@ -910,7 +914,7 @@ class _GridRaid extends Component {
                   ''
                 )}
               </Col>
-              <Col span="4">
+              <Col span={4}>
                 <Button size="small" onClick={this.clearAllSelect}>
                   清空
                 </Button>
@@ -934,7 +938,7 @@ class _GridRaid extends Component {
         </Row>
         <Row gutter={24} id="peo_container">
           <div
-            class="showAllPeoCard"
+            className="showAllPeoCard"
             style={{
               display: showAllPeo ? 'block' : 'none',
               width: 335,

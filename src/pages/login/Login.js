@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { hashHistory } from 'react-router-dom';
 import { Button, Row, Input, Form, Checkbox, Icon, message } from 'antd';
 
 import { saveUserInfo, saveMenuList, saveToken } from 'store/actions/loginAction';
 import { changeRoute } from 'store/actions/common';
+
+import { encodeAesString, encryptRAS } from 'util/CryptoJS';
 
 import 'style/pages/login.less';
 const FormItem = Form.Item;
@@ -26,7 +26,12 @@ class Login extends Component {
       remPwd: typeof localPwd == 'object' ? false : true,
     };
   }
-  componentDidMount() {}
+  componentDidMount() {
+    let { password } = this.state;
+    if (password) {
+      this.props.form.validateFields(['password']);
+    }
+  }
   handleChange(name, event) {
     this.setState({
       [name]: event.target.value,
@@ -45,64 +50,36 @@ class Login extends Component {
           loginLoading: true,
         });
         let hide = message.loading('正在验证...', 0);
-        React.$ajax.login
-          .postLogin({ account: values.userName.trim(), password: values.password.trim() })
-          .then((res) => {
-            if (res && res.code == 0) {
-              hide();
-              this.setState({ loading: false }, () => {
-                let { user, menuList, token } = res.data;
-                let userJson = JSON.stringify(user);
-                let munuJson = JSON.stringify(menuList);
-                this.props.tokenAction(token);
-                this.props.menuAction(menuList);
-                this.props.userinfoAction(user);
-                this.props.changeRouteAction('/app/home/index');
-                sessionStorage.setItem('user', userJson);
-                sessionStorage.setItem('menus', munuJson);
-                message.success('登录成功！', 1, function () {
-                  history.push({ pathname: '/app/index', menus: menuList });
-                });
-                //登录成功后记住账号、密码 / 清除记住的账号、密码
-                remUser
-                  ? localStorage.setItem('username', JSON.stringify(username))
-                  : localStorage.removeItem('username');
-                remPwd
-                  ? localStorage.setItem('password', JSON.stringify(password))
-                  : localStorage.removeItem('password');
+        let users = {
+          account: values.userName.trim(),
+          password: values.password.trim(),
+        };
+        let desEncrypt = encodeAesString(JSON.stringify(users));
+        let encrypt = encryptRAS();
+        React.$ajax.login.postLogin({ k: encrypt, d: desEncrypt }).then((res) => {
+          if (res && res.code == 0) {
+            hide();
+            this.setState({ loading: false }, () => {
+              let { user, menuList, token } = res.data;
+              let userJson = JSON.stringify(user);
+              let munuJson = JSON.stringify(menuList);
+              this.props.tokenAction(token);
+              this.props.menuAction(menuList);
+              this.props.userinfoAction(user);
+              this.props.changeRouteAction('/app/index');
+              sessionStorage.setItem('user', userJson);
+              sessionStorage.setItem('menus', munuJson);
+              message.success('登录成功！', 1, function () {
+                history.push({ pathname: '/app/index', menus: menuList });
               });
-            }
-          });
-        // React.httpAjax('post', config.apiUrl + '/api/userCenter/login', {
-
-        // }).then((res) => {
-        //   if (res && res.code == 0) {
-        //     hide();
-        //     this.setState({ loading: false }, () => {
-        //       let { user, menuList, token } = res.data;
-
-        //       let userJson = JSON.stringify(user);
-        //       let munuJson = JSON.stringify(menuList);
-
-        //       this.props.tokenAction(token);
-        //       this.props.menuAction(menuList);
-        //       this.props.userinfoAction(user);
-        //       this.props.changeRouteAction('/app/home/index');
-
-        //       sessionStorage.setItem('user', userJson);
-        //       sessionStorage.setItem('menus', munuJson);
-        //       message.success('登录成功！', 1, function () {
-        //         history.push({ pathname: '/app/home/index', menus: menuList });
-        //       });
-
-        //       //登录成功后记住账号、密码 / 清除记住的账号、密码
-        //       remUser
-        //         ? localStorage.setItem('username', JSON.stringify(username))
-        //         : localStorage.removeItem('username');
-        //       remPwd ? localStorage.setItem('password', JSON.stringify(password)) : localStorage.removeItem('password');
-        //     });
-        //   }
-        // });
+              //登录成功后记住账号、密码 / 清除记住的账号、密码
+              remUser
+                ? localStorage.setItem('username', JSON.stringify(username))
+                : localStorage.removeItem('username');
+              remPwd ? localStorage.setItem('password', JSON.stringify(password)) : localStorage.removeItem('password');
+            });
+          }
+        });
       }
     });
   };
@@ -175,7 +152,13 @@ class Login extends Component {
             </FormItem>
             <FormItem hasFeedback={this.state.validate}>
               {getFieldDecorator('password', {
-                rules: [{ required: true, message: '请输入密码!' }],
+                rules: [
+                  { required: true, message: '请输入密码!' },
+                  {
+                    pattern: util.passeordReg,
+                    message: '密码是由数字和大小写字母6-18位组成',
+                  },
+                ],
                 initialValue: this.state.password,
               })(
                 <Input
