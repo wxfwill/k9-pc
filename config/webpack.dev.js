@@ -3,15 +3,11 @@ const path = require('path');
 const webpack = require('webpack');
 const commonSet = require('./webpack.common.js');
 const { apiUrl } = require('./config.js');
-const isDev = process.env.NODE_ENV == 'development';
 console.log('apiUrl====' + apiUrl);
 
 const config = {
   entry: {
     main: ['babel-polyfill', './src/app.js'],
-    // vendor1: ['react', 'react-router-dom', 'react-redux'],
-    // vendor2: ['antd', 'axios'],
-    // vendor3: ['classnames'],
   },
   output: {
     filename: 'assets/js/[name].js',
@@ -79,15 +75,8 @@ const config = {
   },
   module: commonSet.module,
   plugins: [
-    //new webpack.optimize.UglifyJsPlugin(),//压缩打包后文件
-    // new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"development"', //node提供的常量api
-      },
-    }),
   ].concat(commonSet.plugins),
   resolve: commonSet.resolve,
 };

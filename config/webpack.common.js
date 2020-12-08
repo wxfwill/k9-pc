@@ -10,11 +10,6 @@ const commonSet = {
     // vendor2: ['antd', 'axios'],
     // vendor3: ['classnames'],
   },
-  output: {
-    filename: 'assets/js/[name].js',
-    path: path.resolve(__dirname, '../dist'),
-    publicPath: './',
-  },
   module: {
     rules: [
       {
@@ -29,7 +24,16 @@ const commonSet = {
       },
       {
         test: /\.(less|css)$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '../',
+            },
+          },
+          'css-loader',
+          'less-loader',
+        ],
       },
       {
         test: /\.(png|svg|jpg|gif)/,

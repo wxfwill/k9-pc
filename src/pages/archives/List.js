@@ -60,8 +60,6 @@ class ArchivesList extends Component {
   }
   // 多选
   handleSelectChange = (arrs) => {
-    console.log(arrs);
-    console.log('多选==');
     this.setState({ selectedRowKeys: arrs });
   };
   // 每页条数

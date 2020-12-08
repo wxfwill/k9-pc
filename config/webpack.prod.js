@@ -1,4 +1,5 @@
 //生产环境配置
+const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
@@ -7,13 +8,16 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // 分析打包大小
 const BundleAnalyzerPplugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const isAnaly = process.env.NODE_ENV == 'analy';
 
 module.exports = merge(common, {
   mode: 'production',
+  output: {
+    filename: 'assets/js/[name].js',
+    path: path.resolve(__dirname, '../dist'),
+    publicPath: './',
+  },
   optimization: {
-    // runtimeChunk: {
-    //   name: 'manifest',
-    // },
     splitChunks: {
       chunks: 'all', // 同步 异步 都采用代码分割
       minSize: 30000, // 30kib 引入的库大于 30000  才会做代码分割
@@ -21,7 +25,7 @@ module.exports = merge(common, {
       maxAsyncRequests: 5, // 同时加载模块的个数
       maxInitialRequests: 5, //首页入口文件 最多同时加载3个
       automaticNameDelimiter: '~', // 连接符
-      name: 'common',
+      name: 'splitCommon',
       cacheGroups: {
         styles: {
           name: 'styles',
@@ -69,7 +73,9 @@ module.exports = merge(common, {
         },
       }),
       new CssMinimizerPlugin(),
-      new BundleAnalyzerPplugin(),
+      (compiler) => {
+        isAnaly && new BundleAnalyzerPplugin().apply(compiler);
+      },
     ],
   },
   stats: {
@@ -83,10 +89,5 @@ module.exports = merge(common, {
     new CleanWebpackPlugin(),
     // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"', //node提供的常量api
-      },
-    }),
   ],
 });

@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "set NODE_ENV=development&& webpack-dev-server --inline --progress --open --config config/webpack.config.js",
-    "build": "set NODE_ENV=production&& webpack --progress --config config/webpack.prod.js"
+    "start": "set NODE_ENV=development&& webpack-dev-server --inline --progress --open --config config/webpack.dev.js",
+    "build": "set NODE_ENV=production&& webpack --progress --config config/webpack.prod.js",
+    "analy": "set NODE_ENV=analy&& webpack --progress --config config/webpack.prod.js"
   },
   "keywords": [],
   "author": "will",
