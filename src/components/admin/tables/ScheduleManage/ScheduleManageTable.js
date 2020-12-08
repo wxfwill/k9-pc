@@ -1,7 +1,6 @@
 import React ,{ Component } from 'react';
 import { Table, Button , Tag , Badge , Icon,Input, Popconfirm,message,Spin } from 'antd';
 import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import EditableCell from './EditableCell.js';
 import 'style/app/editCell.less';
 //import SmartSchedule from './SmartSchedule.js';
@@ -91,7 +90,6 @@ class ScheduleManageTable extends React.Component {
   }
   onCellChange = (key, getTimer,dataIndex,childrenIndex) => {
     const {dataSourceTitle}=this.state;
-    let reqUrl=config.apiUrl+'/api/onDuty/updateDuty';
     let groupId= (dataIndex==4 ? childrenIndex&&childrenIndex.groupId : dataIndex+1 );
     let options={
         userId:key&&key.split("&")[0],
@@ -109,7 +107,7 @@ class ScheduleManageTable extends React.Component {
     this.setState({editLoading:true});
     const editDutyUser=sessionStorage.getItem("editDutyUser");
     if(dataIndex==8 || (key!='')&&editDutyUser!=(key&&key.split("&")[1])){
-        httpAjax('post',reqUrl,options).then((res)=>{
+        React.$ajax.postData('/api/onDuty/updateDuty', options).then((res) => {
           if(res.code==0 ){          
             message.success("更改成功");
             if(localStorage.getItem("getScheduleOption")){

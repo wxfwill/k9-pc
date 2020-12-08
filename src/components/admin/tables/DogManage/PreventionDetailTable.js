@@ -1,7 +1,6 @@
 import React,{ Component } from 'react';
 import { Table,Button,Icon,Popconfirm,message,Tag,Card,Collapse,Row,Col,Select,DatePicker,Form } from 'antd';
 import {Link} from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 const Panel = Collapse.Panel;
 const Option = Select.Option;
@@ -29,7 +28,7 @@ class DogTable extends Component{
       // console.log(id)
       const formStatus=sessionStorage.getItem("formStatus");
       this.setState({loading:true})
-      httpAjax('post',config.apiUrl+'/api/vaccineRecord/planInfo',{id}).then(res=>{
+      React.$ajax.postData('/api/vaccineRecord/planInfo',{id}).then(res=>{
         if(res.code==0){
           this.setState({
               detailData: res.data,
@@ -199,7 +198,7 @@ class DogTable extends Component{
             param.append("vaccineType",values.vaccineType);
             param.append("userId",id);                
             param.append("ids",key);          
-            httpAjax('post',config.apiUrl+'/api/vaccineRecord/saveInfo',param,configs).then((res)=>{
+            React.$ajax.postData('/api/vaccineRecord/saveInfo',param,configs).then((res)=>{
               if(res.code==0){
                 message.success('修改成功')
               }else{

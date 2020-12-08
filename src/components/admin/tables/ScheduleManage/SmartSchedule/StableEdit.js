@@ -49,7 +49,7 @@ class StableEdit extends React.Component {
   	let _this = this;
   	let { rowNumber } = this.props;
     this.setState({ editable: true },function(){
-    	httpAjax('post',config.apiUrl+'/api/onDuty/dutyUser',{dutyType:rowNumber}).then((res)=>{
+      React.$ajax.postData('/api/onDuty/dutyUser',{dutyType:rowNumber}).then((res)=>{
       	let { data } = res;
       	_this.setState({optionArr:data})
     	}).catch(function(error){

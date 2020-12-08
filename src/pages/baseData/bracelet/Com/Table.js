@@ -1,7 +1,6 @@
 import React,{ Component } from 'react';
 import { Table,Button,Icon,Popconfirm,message} from 'antd';
 import {Link} from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import Immutable from 'immutable';
 class DogTable extends Component{
   constructor(props){
@@ -40,7 +39,7 @@ class DogTable extends Component{
   }
   fetch(params = {pageSize:this.state.pageSize,currPage:this.state.currPage}){
     this.setState({ loading: true });
-    httpAjax('post',config.apiUrl+'/api/braceletInfo/listData',{...params}).then((res)=>{
+    React.$ajax.postData('/api/braceletInfo/listData',{...params}).then((res)=>{
       const pagination = { ...this.state.pagination };
       pagination.total =res.totalCount;
       pagination.current = res.currPage;
@@ -70,7 +69,7 @@ class DogTable extends Component{
   //删除
   deleteDogs=(record,index)=>{
     let {pagination}=this.state;
-    httpAjax('post',config.apiUrl+'/api/braceletInfo/deleteByIds',{ids:[record.id]}).then(res=>{
+    React.$ajax.postData('/api/braceletInfo/deleteByIds',{ids:[record.id]}).then(res=>{
       if(res.code==0){       
         message.success("删除成功");
           this.fetch({
@@ -88,7 +87,7 @@ class DogTable extends Component{
     if(selectedRowKeys.length<1){
       message.warn("请选择要删除的颈环")
     }else{
-      httpAjax('post',config.apiUrl+'/api/braceletInfo/deleteByIds',{ids:selectedRowKeys}).then(res=>{
+      React.$ajax.postData('/api/braceletInfo/deleteByIds',{ids:selectedRowKeys}).then(res=>{
         if(res.code==0){
           message.success("删除成功");
           this.fetch({

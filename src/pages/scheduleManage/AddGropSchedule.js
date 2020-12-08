@@ -68,7 +68,7 @@ class AddGropSchedule extends Component {
         if (id) {
           params.groupId = id;
         }
-        httpAjax('post', config.apiUrl + '/api/onDuty/saveGroupUser', params).then((res) => {
+        React.$ajax.postData('/api/onDuty/saveGroupUser', params).then((res) => {
           if (res.code == 0) {
             this.props.history.push('/app/duty/groupInfo');
             message.info('保存成功！');
@@ -80,7 +80,7 @@ class AddGropSchedule extends Component {
     });
   };
   searchPeople = (name = '') => {
-    httpAjax('post', config.apiUrl + '/api/basicData/dutyGroup', { name }).then((res) => {
+    React.$ajax.postData('/api/basicData/dutyGroup', { name }).then((res) => {
       if (res.code == 0) {
         this.setState({ groups: res.data });
       }

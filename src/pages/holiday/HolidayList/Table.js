@@ -2,7 +2,6 @@ import React,{ Component } from 'react';
 import { Table,Button,Icon,Popconfirm,message} from 'antd';
 import {Link,withRouter} from 'react-router-dom';
 import Immutable from 'immutable';
-import httpAjax from 'libs/httpAjax';
 class HolidayTable extends Component{
   constructor(props){
     super(props);
@@ -38,7 +37,7 @@ class HolidayTable extends Component{
   }
   fetch(params = {pageSize:this.state.pageSize,currPage:this.state.currPage}){
     this.setState({ loading: true });
-    httpAjax('post',config.apiUrl+'/api/leaveRecord/getLeaveUser',{...params}).then((res)=>{
+    React.$ajax.postData('/api/leaveRecord/getLeaveUser',{...params}).then((res)=>{
       const pagination = { ...this.state.pagination };
       pagination.total =res.totalCount;
       pagination.current = res.currPage;

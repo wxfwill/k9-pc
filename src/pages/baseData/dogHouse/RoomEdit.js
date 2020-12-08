@@ -41,7 +41,7 @@ class VideoInfo extends React.Component {
     if (Id) {
       parms.id = Id;
     }
-    httpAjax('post', config.apiUrl + '/api/dogRoom/saveDogRoom', parms)
+    React.$ajax.postData('/api/dogRoom/saveDogRoom', parms)
       .then((res) => {
         if (res.code == 0) {
           this.props.history.push('/app/room/info');
@@ -57,7 +57,7 @@ class VideoInfo extends React.Component {
 
   getAllHouse = () => {
     // this.setState({roomIdvisible: true});
-    httpAjax('post', config.apiUrl + '/api/dogRoom/allHouse').then((res) => {
+    React.$ajax.postData('/api/dogRoom/allHouse').then((res) => {
       if (res.code == '0') {
         let allHouseData = res.data.unshift({ id: '', name: '请选择楼号' });
         this.setState({ allHouseData: res.data });
@@ -65,7 +65,7 @@ class VideoInfo extends React.Component {
     });
   };
   getVideos = () => {
-    httpAjax('post', config.apiUrl + '/api/video/listAll').then((res) => {
+    React.$ajax.postData('/api/video/listAll').then((res) => {
       if (res.code == '0') {
         this.setState({ videoData: res.data, videoId: res.data[0].id });
       }
@@ -82,7 +82,7 @@ class VideoInfo extends React.Component {
     const Id = this.props.location.query && this.props.location.query.Id;
     const pathname = this.props.location.pathname;
     if (Id) {
-      httpAjax('post', config.apiUrl + '/api/dogRoom/info', { id: Id })
+      React.$ajax.postData('/api/dogRoom/info', { id: Id })
         .then((res) => {
           if (res.code == 0) {
             this.setState({ roomData: res.data, ...res.data });

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Button, Icon, Popconfirm, message } from 'antd';
 import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import VideoCameraDlg from './VideoCameraDlg';
 import Immutable from 'immutable';
 class DogTable extends Component {
@@ -40,7 +39,7 @@ class DogTable extends Component {
   }
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/dogRoom/listRoomData', { ...params })
+    React.$ajax.postData('/api/dogRoom/listRoomData', { ...params })
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = res.totalCount;
@@ -72,7 +71,7 @@ class DogTable extends Component {
     let { pagination } = this.state;
     console.log('删除成功的额信息');
     console.log(pagination);
-    httpAjax('post', config.apiUrl + '/api/dogRoom/deleteByIds', { ids: [record.id] }).then((res) => {
+    React.$ajax.postData('/api/dogRoom/deleteByIds', { ids: [record.id] }).then((res) => {
       if (res.code == 0) {
         message.success('删除成功');
         this.fetch({
@@ -90,7 +89,7 @@ class DogTable extends Component {
     if (selectedRowKeys.length < 1) {
       message.warn('请选择要删除的视频');
     } else {
-      httpAjax('post', config.apiUrl + '/api/dogRoom/deleteByIds', { ids: selectedRowKeys }).then((res) => {
+      React.$ajax.postData('/api/dogRoom/deleteByIds', { ids: selectedRowKeys }).then((res) => {
         if (res.code == 0) {
           message.success('删除成功');
           this.fetch({

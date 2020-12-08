@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Button, Tag, Badge, Icon } from 'antd';
 import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import Immutable from 'immutable';
 import AttendDetail from './AttendDetail';
 const localSVG = require('images/banglocation.svg');
@@ -60,7 +59,7 @@ class AttendTable extends React.Component {
   };
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/leaveRecord/attendanceStatisticsList', { ...params })
+    React.$ajax.postData('/api/leaveRecord/attendanceStatisticsList', { ...params })
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = res.totalCount;

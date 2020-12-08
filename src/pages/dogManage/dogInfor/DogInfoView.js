@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Tabs, Table,Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal, AutoComplete, Divider, Tag,Collapse } from 'antd';
-import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 import _ from 'underscore';
 
@@ -30,7 +29,7 @@ class DogInfoView extends React.Component {
         this.getVaccineList();
     }
     getDogInfo = () => {
-        httpAjax('post', config.apiUrl+'/api/dog/info', {id: this.dogId}).then((res) => {
+        React.$ajax.postData('/api/dog/info', {id: this.dogId}).then((res) => {
             this.setState({dogInfo: res.data});
             if(res.data.sex == 1) {
                 this.setState({isBreed: true}, this.getReproduce());
@@ -42,25 +41,25 @@ class DogInfoView extends React.Component {
     }
     ///api/breed/闪电stReproduceByDogId // 繁殖记录
     getReproduce = () => {
-        httpAjax('post', config.apiUrl+'/api/breed/listReproduceByDogId', {dogId: this.dogId}).then((res) => {
+        React.$ajax.postData('/api/breed/listReproduceByDogId', {dogId: this.dogId}).then((res) => {
             this.setState({reproduceList: res.data})
         })
     }
     // listBreedRecordByDogId 
     getBreed = () => {
-        httpAjax('post', config.apiUrl+'/api/breed/listBreedRecordByDogId', {dogId: this.dogId}).then((res) => {
+        React.$ajax.postData('/api/breed/listBreedRecordByDogId', {dogId: this.dogId}).then((res) => {
             this.setState({breedList: res.data})
         })
     }
     // /api/dog/getLineageByDogId
     getFamilyTree = () => {
-        httpAjax('post', config.apiUrl+'/api/dog/getLineageByDogId', {id: this.dogId}).then((res) => {
+        React.$ajax.postData('/api/dog/getLineageByDogId', {id: this.dogId}).then((res) => {
             this.setState({treeList: res.data})
         });
     }
     // /api/vaccineRecord/listVaccineRecordByDogId
     getVaccineList = () => {
-        httpAjax('post', config.apiUrl+'/api/vaccineRecord/listVaccineRecordByDogId', {dogId: this.dogId}).then((res) => {
+        React.$ajax.postData('/api/vaccineRecord/listVaccineRecordByDogId', {dogId: this.dogId}).then((res) => {
             this.setState({vaccineList: res.data})
         });
     }

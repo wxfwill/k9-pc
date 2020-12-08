@@ -3,7 +3,6 @@ import { Table, Button, Icon, Popconfirm, message, Modal, Form, Row, Col, Input 
 import { Link } from 'react-router-dom';
 import Immutable from 'immutable';
 import { firstLayout, secondLayout } from 'util/Layout';
-import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 const FormItem = Form.Item;
 class HolidayTable extends Component {
@@ -44,7 +43,7 @@ class HolidayTable extends Component {
         let _this = this;
         let { dataSource } = this.state;
         let newData = [];
-        httpAjax('post', config.apiUrl + '/api/leaveRecord/verifyLeaveApply', data).then((res) => {
+        React.$ajax.postData('/api/leaveRecord/verifyLeaveApply', data).then((res) => {
           console.log(res);
           let { history } = _this.props;
           if (res.code == 0) {
@@ -92,7 +91,7 @@ class HolidayTable extends Component {
   }
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/leaveRecord/leaveListPage', { ...params })
+    React.$ajax.postData('/api/leaveRecord/leaveListPage', { ...params })
       .then((obj) => {
         let res = obj.data;
         const pagination = { ...this.state.pagination };

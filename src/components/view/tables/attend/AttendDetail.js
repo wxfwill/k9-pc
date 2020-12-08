@@ -1,7 +1,6 @@
 import React ,{ Component } from 'react';
 import { Collapse ,Icon ,Tag , Row, Col, Table, Card, Button} from 'antd';
 import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import classnames from 'classnames';
 import moment from 'moment';
 const Panel = Collapse.Panel;
@@ -47,7 +46,7 @@ class AttendDetail extends React.Component {
   }
   fetch(params = {pageSize:this.state.pageSize,currPage:this.state.currPage}){
     this.setState({ loading: true });
-    httpAjax('post',config.apiUrl+'/api/leaveRecord/attendanceStatisticsInfo',{...params}).then((res)=>{
+    React.$ajax.postData('/api/leaveRecord/attendanceStatisticsInfo',{...params}).then((res)=>{
       const pagination = { ...this.state.pagination };
       pagination.total =res.totalCount;
       pagination.current = res.currPage;

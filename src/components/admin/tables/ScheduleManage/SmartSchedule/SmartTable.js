@@ -1,7 +1,6 @@
 import React from 'react';
 import { Table ,Tag ,Button ,Progress ,message} from 'antd';
 import StableEdit from './StableEdit';
-import httpAjax from 'libs/httpAjax';
 import Immutable from 'immutable';
 require('style/app/scheduleManage/smartTable.less');
 class SmartTable extends React.Component{
@@ -68,9 +67,10 @@ class SmartTable extends React.Component{
   }
   fetch(params,isFirst){
     let _this = this;
-    let reqUrl = isFirst?config.apiUrl+'/api/onDuty/genDuty':config.apiUrl+'/api/onDuty/getDutyByPage';
+    // let reqUrl = isFirst?config.apiUrl+'/api/onDuty/genDuty':config.apiUrl+'/api/onDuty/getDutyByPage';
+    let reqUrl = isFirst?'/api/onDuty/genDuty':'/api/onDuty/getDutyByPage';
     this.setState({ loading: true });
-    httpAjax('post',reqUrl,{...params}).then((res)=>{
+    React.$ajax.postData(reqUrl, {...params}).then((res)=>{
       let { data } = res;
       const pagination = { ...this.state.pagination };
       pagination.total = data.totalCount*9;
@@ -148,7 +148,7 @@ class SmartTable extends React.Component{
     }
   }
   handleDataChange(options,hide){
-    httpAjax('post',config.apiUrl+'/api/onDuty/updateDuty',{...options}).then((res)=>{
+    React.$ajax.postData('/api/onDuty/updateDuty', {...options}).then((res)=>{
       if(res.code==0){
         hide();
         message.success('更改成功！',1);

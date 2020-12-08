@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Modal, Button, Carousel } from 'antd';
 //import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import Immutable from 'immutable';
 import moment from 'moment';
 //import CallDetail from './CallDetail';
@@ -63,7 +62,7 @@ class CallTable extends React.Component {
   };
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/attendance/listPage', { ...params })
+    React.$ajax.postData('/api/attendance/listPage', { ...params })
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = res.data.totalCount;

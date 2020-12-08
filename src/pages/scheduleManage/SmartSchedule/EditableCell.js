@@ -53,10 +53,9 @@ class EditableCell extends React.Component {
     sessionStorage.setItem("editDutyUser",value);
     const {index}=this.props;
     this.setState({ editable: true });
-    let reqUrl=config.apiUrl+'/api/onDuty/dutyUser';
     let optionsArr=[];
     let groupId =  (index==4?this.props.value&&this.props.value.groupId : index+1)
-    httpAjax('post',reqUrl,{groupId:groupId,dutyType:index+1}).then((res)=>{
+    React.$ajax.postData('/api/onDuty/dutyUser', {groupId:groupId,dutyType:index+1}).then((res) => {
       optionsArr=res.data;
       this.setState({optionsArr:res.data})
     });

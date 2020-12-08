@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal } from 'antd';
 import { firstLayout, secondLayout } from 'util/Layout';
-import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 require('style/app/dogInfo/addDogForm.less');
 const FormItem = Form.Item;
@@ -38,7 +37,7 @@ class VideoInfo extends React.Component {
         if (VideoId) {
           parms.id = VideoId;
         }
-        httpAjax('post', config.apiUrl + '/api/braceletInfo/saveInfo', parms)
+        React.$ajax.postData('/api/braceletInfo/saveInfo', parms)
           .then((res) => {
             if (res.code == 0) {
               this.props.history.push('/app/equipment/bracelet');
@@ -55,7 +54,7 @@ class VideoInfo extends React.Component {
   };
 
   searchDog = (name = '') => {
-    httpAjax('post', config.apiUrl + '/api/dog/listAll', { name }).then((res) => {
+    React.$ajax.postData('/api/dog/listAll', { name }).then((res) => {
       if (res.code == 0) {
         this.setState({ dogList: res.data });
       }
@@ -71,7 +70,7 @@ class VideoInfo extends React.Component {
     const VideoId = this.props.location.query && this.props.location.query.VideoId;
     const pathname = this.props.location.pathname;
     if (VideoId) {
-      httpAjax('post', config.apiUrl + '/api/braceletInfo/info', { id: VideoId })
+      React.$ajax.postData('/api/braceletInfo/info', { id: VideoId })
         .then((res) => {
           if (res.code == 0) {
             this.setState({ videoData: res.data, ...res.data });

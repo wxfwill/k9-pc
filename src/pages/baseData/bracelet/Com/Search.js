@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
 import { thirdLayout } from 'util/Layout';
-import httpAjax from 'libs/httpAjax';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -17,7 +16,7 @@ class SearchForm extends React.Component {
   }
   componentWillMount() {
     // //获取职务信息
-    // httpAjax("post",config.apiUrl+'/api/basicData/dutyList',{}).then(res=>{
+    // React.$ajax.postData('/api/basicData/dutyList',{}).then(res=>{
     //   if(res.code==0){
     //     this.setState({dutyList:res.data});
     //      sessionStorage.setItem("dutyList",JSON.stringify(res.data));

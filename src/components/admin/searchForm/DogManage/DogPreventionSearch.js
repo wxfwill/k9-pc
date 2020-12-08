@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
 import { thirdLayout } from 'util/Layout';
-import httpAjax from 'libs/httpAjax';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -16,7 +15,7 @@ class SearchForm extends React.Component {
   }
   componentWillMount() {
     //获取疫苗名称下拉项
-    // httpAjax("post",config.apiUrl+'/api/basicData/vaccineType',{}).then(res=>{
+    // React.$ajax.postData('/api/basicData/vaccineType',{}).then(res=>{
     //   if(res.code==0){
     //     this.setState({vaccineType:res.data});
     //     sessionStorage.setItem("vaccineType",JSON.stringify(res.data));

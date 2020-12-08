@@ -1,7 +1,6 @@
 import React,{ Component } from 'react';
 import { Table,Button,Icon,Popconfirm,message,Tag,Badge, Card, Spin  } from 'antd';
 import {Link} from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 import Immutable from 'immutable';
 
@@ -42,7 +41,7 @@ class DogTable extends Component{
   }
   fetch(params = {pageSize:this.state.pageSize,currPage:this.state.currPage}){
     this.setState({ loading: true });
-    httpAjax('post',config.apiUrl+'/api/treatmentRecord/list',{...params}).then((res)=>{
+    React.$ajax.postData('/api/treatmentRecord/list',{...params}).then((res)=>{
       const pagination = { ...this.state.pagination };
       pagination.total =res.data.totalCount;
       pagination.current = res.data.currPage;
@@ -88,7 +87,7 @@ class DogTable extends Component{
   //删除犬只
   deleteDogs=(record,index)=>{
     let {pagination,currPage,pageSize,filter}=this.state;
-    httpAjax('post',config.apiUrl+'/api/treatmentRecord/deleteByIds',{ids:[record.id]}).then(res=>{
+    React.$ajax.postData('/api/treatmentRecord/deleteByIds',{ids:[record.id]}).then(res=>{
       if(res.code==0){       
         message.success("删除成功");
         this.setState({currPage: 1, dataSource:[]});
@@ -107,7 +106,7 @@ class DogTable extends Component{
     if(selectedRowKeys.length<1){
       message.warn("请选择要删除的治疗记录")
     }else{
-      httpAjax('post',config.apiUrl+'/api/treatmentRecord/deleteByIds',{ids:selectedRowKeys}).then(res=>{
+      React.$ajax.postData('/api/treatmentRecord/deleteByIds',{ids:selectedRowKeys}).then(res=>{
         if(res.code==0){
           message.success("删除成功");
           this.setState({selectedRowKeys:[]})

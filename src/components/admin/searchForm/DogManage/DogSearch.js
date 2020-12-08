@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
 import { thirdLayout } from 'util/Layout';
-import httpAjax from 'libs/httpAjax';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -18,14 +17,14 @@ class SearchForm extends React.Component {
   }
   componentWillMount() {
     //获取犬只品种下拉项
-    httpAjax('post', config.apiUrl + '/api/basicData/dogBreed', {}).then((res) => {
+    React.$ajax.postData('/api/basicData/dogBreed', {}).then((res) => {
       if (res.code == 0) {
         this.setState({ dogBreed: res.data });
         sessionStorage.setItem('dogBreeds', JSON.stringify(res.data));
       }
     });
     //获取服役单位下拉项
-    httpAjax('post', config.apiUrl + '/api/basicData/workUnitList', {}).then((res) => {
+    React.$ajax.postData('/api/basicData/workUnitList', {}).then((res) => {
       if (res.code == 0) {
         this.setState({ workUnitList: res.data });
         sessionStorage.setItem('workUnitList', JSON.stringify(res.data));

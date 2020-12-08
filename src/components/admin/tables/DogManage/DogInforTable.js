@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Icon, Popconfirm, message, Card, Row, Col, List, Spin } from 'antd';
 import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import 'style/app/dogInfo/cardDogList.less'
 
 
@@ -83,7 +82,7 @@ class DogTable extends Component {
     
   }
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    httpAjax('post', config.apiUrl + '/api/dog/listData', { ...params }).then((res) => {
+    React.$ajax.postData('/api/dog/listData', { ...params }).then((res) => {
       const pagination = { ...this.state.pagination };
       pagination.total = res.totalCount;
       pagination.current = res.currPage;
@@ -140,7 +139,7 @@ class DogTable extends Component {
   //删除犬只
   deleteDogs = (id, index) => { 
 
-    httpAjax('post', config.apiUrl + '/api/dog/deleteByIds', { ids: [id] }).then(res => {
+    React.$ajax.postData('/api/dog/deleteByIds', { ids: [id] }).then(res => {
       if (res.code == 0) {
         message.success("删除成功");
         this.setState({
@@ -164,7 +163,7 @@ class DogTable extends Component {
     if (selectedRowKeys.length < 1) {
       message.warn("请选择要删除的犬只")
     } else {
-      httpAjax('post', config.apiUrl + '/api/dog/deleteByIds', { ids: selectedRowKeys }).then(res => {
+      React.$ajax.postData('/api/dog/deleteByIds', { ids: selectedRowKeys }).then(res => {
         if (res.code == 0) {
           message.success("删除成功");
           this.fetch({

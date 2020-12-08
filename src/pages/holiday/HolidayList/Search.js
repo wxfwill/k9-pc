@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
 import { thirdLayout } from 'util/Layout';
-import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
@@ -23,14 +22,14 @@ class SearchForm extends React.Component {
   componentWillMount() {
     this.searchPeople();
     //获取职务信息
-    httpAjax('post', config.apiUrl + '/api/basicData/dutyList', {}).then((res) => {
+    React.$ajax.postData('/api/basicData/dutyList', {}).then((res) => {
       if (res.code == 0) {
         this.setState({ dutyList: res.data });
         sessionStorage.setItem('dutyList', JSON.stringify(res.data));
       }
     });
     //获取假期类型
-    httpAjax('post', config.apiUrl + '/api/leaveRecord/getLeaveTypeList', {}).then((res) => {
+    React.$ajax.postData('/api/leaveRecord/getLeaveTypeList', {}).then((res) => {
       if (res.code == 0) {
         let currentYear = Number(moment(new Date()).format('YYYY'));
         let { years } = this.state;
@@ -58,7 +57,7 @@ class SearchForm extends React.Component {
   };
 
   searchPeople = (name = '') => {
-    httpAjax('post', config.apiUrl + '/api/userCenter/getTrainer', { name }).then((res) => {
+    React.$ajax.postData('/api/userCenter/getTrainer', { name }).then((res) => {
       if (res.code == 0) {
         this.setState({ peoples: res.data });
       }

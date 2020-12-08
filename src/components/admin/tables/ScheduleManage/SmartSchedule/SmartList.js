@@ -1,6 +1,5 @@
 import React from 'react';
 import { List, Card, Icon, Avatar ,Table ,Tag ,Button ,Spin} from 'antd';
-import httpAjax from 'libs/httpAjax';
 import Immutable from 'immutable';
 require('style/app/scheduleManage/smartList.less');
 let initState = {
@@ -33,9 +32,10 @@ class SmartTable extends React.Component{
   }
   fetch(params,isFirst){
     let _this = this;
-    let reqUrl = isFirst?config.apiUrl+'/api/onDuty/genDutyData':config.apiUrl+'/api/onDuty/getDutyDataByPage';
+    // let reqUrl = isFirst?config.apiUrl+'/api/onDuty/genDutyData':config.apiUrl+'/api/onDuty/getDutyDataByPage';
+    let reqUrl = isFirst?'/api/onDuty/genDutyData':'/api/onDuty/getDutyDataByPage';
     this.setState({ loading: true });
-    httpAjax('post',reqUrl,{...params}).then((res)=>{
+    React.$ajax.postData(reqUrl, {...params}).then((res)=>{
       if(res.code==0){
         _this.handleData(res.data);
       }

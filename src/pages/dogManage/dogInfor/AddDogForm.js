@@ -19,7 +19,6 @@ import {
   Tag,
 } from 'antd';
 import { firstLayout, secondLayout } from 'util/Layout';
-import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -74,7 +73,7 @@ class FormCompomnent extends React.Component {
     //获取犬只毛色数据
     this.getTrainer();
     this.getAllBraceletInfo();
-    httpAjax('post', config.apiUrl + '/api/basicData/furColor', {}).then((res) => {
+    React.$ajax.postData('/api/basicData/furColor', {}).then((res) => {
       if (res.code == 0) {
         this.setState({ dogColor: res.data });
       }
@@ -93,7 +92,7 @@ class FormCompomnent extends React.Component {
     }
     //根据id获取单个犬只数据
     if (dogId) {
-      httpAjax('post', config.apiUrl + '/api/dog/info', { id: dogId }).then((res) => {
+      React.$ajax.postData('/api/dog/info', { id: dogId }).then((res) => {
         if (res.code == 0) {
           this.setState({ dogInfor: res.data, ...res.data });
           this.selectHouseId(res.data.houseId || 1);
@@ -130,14 +129,14 @@ class FormCompomnent extends React.Component {
     }
 
     // 获取父犬list
-    httpAjax('post', config.apiUrl + '/api/dog/getAncestorInfo', { sexId: 1 }).then((res) => {
+    React.$ajax.postData('/api/dog/getAncestorInfo', { sexId: 1 }).then((res) => {
       if (res.code == 0) {
         sessionStorage.setItem('fatherSource', JSON.stringify(res.data));
         this.setState({ fatherSource: res.data });
       }
     });
     // 获取母犬list
-    httpAjax('post', config.apiUrl + '/api/dog/getAncestorInfo', { sexId: 0 }).then((res) => {
+    React.$ajax.postData('/api/dog/getAncestorInfo', { sexId: 0 }).then((res) => {
       if (res.code == 0) {
         sessionStorage.setItem('motherSource', JSON.stringify(res.data));
         this.setState({ motherSource: res.data });
@@ -274,7 +273,8 @@ class FormCompomnent extends React.Component {
     let param = new FormData(),
       configs = { headers: { 'Content-Type': 'multipart/form-data' } };
     param.append(key, value);
-    httpAjax('post', config.apiUrl + '/api/dog/isNotExistence', param, configs).then(callback);
+    //httpAjax('post', config.apiUrl + '/api/dog/isNotExistence', param, configs).then(callback);
+    React.$ajax.postData('/api/dog/isNotExistence', param).then(callback);
   };
   handleSubmit = (e) => {
     e.preventDefault();
@@ -358,7 +358,8 @@ class FormCompomnent extends React.Component {
         param.jobUsage = values.jobUsage.join(',');
         param.birthdayStr = values.birthdayStr ? `${moment(values.birthdayStr).format('YYYY-MM')}` : '';
         param.houseId = values.houseId;
-        httpAjax('post', config.apiUrl + '/api/dog/saveInfo', param, configs)
+        //httpAjax('post', config.apiUrl + '/api/dog/saveInfo', param, configs)
+        React.$ajax.postData('/api/dog/saveInfo', param, configs)
           .then((res) => {
             if (res.code == 0) {
               message.success(successMess);
@@ -375,7 +376,7 @@ class FormCompomnent extends React.Component {
   };
   getAllHouse = () => {
     this.setState({ roomIdvisible: true });
-    httpAjax('post', config.apiUrl + '/api/dogRoom/allHouse').then((res) => {
+    React.$ajax.postData('/api/dogRoom/allHouse').then((res) => {
       if (res.code == '0') {
         this.setState({ allHouseData: res.data });
         // this.selectHouseId(res.data[0].id);
@@ -385,7 +386,7 @@ class FormCompomnent extends React.Component {
   // 直系亲属模态窗
   getParentIds = () => {
     this.setState({ parentIdVisible: true });
-    httpAjax('post', config.apiUrl + '/api/dogRoom/allHouse').then((res) => {
+    React.$ajax.postData('/api/dogRoom/allHouse').then((res) => {
       if (res.code == '0') {
         this.setState({ allHouseData: res.data });
         // this.selectHouseId(res.data[0].id);
@@ -398,7 +399,7 @@ class FormCompomnent extends React.Component {
   };
 
   getAllBraceletInfo = () => {
-    httpAjax('post', config.apiUrl + '/api/braceletInfo/listAll').then((res) => {
+    React.$ajax.postData('/api/braceletInfo/listAll').then((res) => {
       if (res.code == '0') {
         this.setState({
           allBracelet: res.data,
@@ -410,7 +411,7 @@ class FormCompomnent extends React.Component {
   // /api/basicData/jobUsage
 
   getJobUsage = () => {
-    httpAjax('post', config.apiUrl + '/api/basicData/jobUsage').then((res) => {
+    React.$ajax.postData('/api/basicData/jobUsage').then((res) => {
       this.setState({
         jobUsageList: res.data,
       });
@@ -418,7 +419,7 @@ class FormCompomnent extends React.Component {
   };
   // /api/userCenter/getTrainer
   getTrainer = () => {
-    httpAjax('post', config.apiUrl + '/api/userCenter/getTrainer', { name: '' }).then((res) => {
+    React.$ajax.postData('/api/userCenter/getTrainer', { name: '' }).then((res) => {
       this.setState({
         trainerList: res.data,
       });
@@ -426,7 +427,7 @@ class FormCompomnent extends React.Component {
   };
 
   selectHouseId = (value) => {
-    httpAjax('post', config.apiUrl + '/api/dogRoom/listRoomByHouse', { houseId: value }).then((res) => {
+    React.$ajax.postData('/api/dogRoom/listRoomByHouse', { houseId: value }).then((res) => {
       // if(res.code == '0') {
       this.setState({ dogList: res.data, roomIndex: 'qwe' });
       //	}
