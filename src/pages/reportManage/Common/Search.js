@@ -147,6 +147,9 @@ class SearchForm extends Component {
     console.log(val);
     console.log('valvalvalvalvalvalvalval');
   };
+  handleFocus = () => {
+    this.queryGroupUser('');
+  };
   render() {
     const { getFieldDecorator, setFieldsValue } = this.props.form;
     const { isopen, time } = this.state;
@@ -178,36 +181,6 @@ class SearchForm extends Component {
               </FormItem>
             </Col>
           ) : null}
-
-          {/* {isShowName ? (
-            <Col xl={6} lg={6} md={8} sm={12} xs={12}>
-              <FormItem label="姓名:" {...thirdLayout}>
-                {getFieldDecorator('userId', {
-                  initialValue: this.state.nameVal,
-                })(
-                  <Select
-                    placeholder="请选择"
-                    showSearch
-                    getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                    defaultActiveFirstOption={false}
-                    showArrow={false}
-                    filterOption={false}
-                    onChange={this.handleChangeName}
-                    onSearch={this.handleSearchName}
-                    notFoundContent={null}
-                  >
-                    {this.state.queryName.map((item) => {
-                      return (
-                        <Option key={item.id} value={item.id}>
-                          {item.name}
-                        </Option>
-                      );
-                    })}
-                  </Select>
-                )}
-              </FormItem>
-            </Col>
-          ) : null} */}
           {isShowName ? (
             <Col xl={6} lg={6} md={8} sm={12} xs={12}>
               <FormItem label="姓名:" {...thirdLayout}>
@@ -216,20 +189,29 @@ class SearchForm extends Component {
                 })(
                   <TreeSelect
                     showSearch
+                    dropdownClassName="cutomTreeSelect"
                     style={{ width: '100%' }}
                     filterTreeNode={() => true}
                     dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                     placeholder="请选择"
                     allowClear
                     onSearch={(value) => {
+                      this.props.form.setFieldsValue({ userId: undefined });
                       this.queryGroupUser(value);
                     }}
+                    onFocus={this.handleFocus}
                     onChange={this.handleTreeName}
                   >
                     {this.state.personnelTree && this.state.personnelTree.length > 0
                       ? this.state.personnelTree.map((item) => {
                           return (
-                            <TreeNode value={item.name} title={item.name} key={item.name} selectable={false}>
+                            <TreeNode
+                              className="innerTreeNode"
+                              value={item.name}
+                              title={item.name}
+                              key={item.name}
+                              selectable={false}
+                            >
                               {item.children && item.children.length > 0
                                 ? item.children.map((el) => {
                                     return <TreeNode value={el.id} title={el.name} key={el.id} />;

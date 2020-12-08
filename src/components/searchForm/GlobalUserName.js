@@ -44,6 +44,13 @@ class GlobalName extends Component {
     300,
     false
   );
+  handleTreeName = (val) => {
+    console.log(val);
+    console.log('valvalvalvalvalvalvalval');
+  };
+  handleFocus = () => {
+    this.queryGroupUser('');
+  };
   queryAllTeam = () => {
     React.$ajax.common.queryAllGroups().then((res) => {
       if (res.code == 0) {
@@ -66,6 +73,7 @@ class GlobalName extends Component {
         })(
           <TreeSelect
             showSearch
+            dropdownClassName="cutomTreeSelect"
             style={{ width: '100%' }}
             filterTreeNode={() => true}
             getPopupContainer={(triggerNode) => triggerNode.parentNode}
@@ -76,12 +84,19 @@ class GlobalName extends Component {
               setFieldsValue({ [this.props.userLabel]: undefined });
               this.queryGroupUser(value);
             }}
+            onFocus={this.handleFocus}
             onChange={this.handleTreeName}
           >
             {this.state.userArr && this.state.userArr.length > 0
               ? this.state.userArr.map((item) => {
                   return (
-                    <TreeNode value={item.name} title={item.name} key={item.name} selectable={false}>
+                    <TreeNode
+                      className="innerTreeNode"
+                      value={item.name}
+                      title={item.name}
+                      key={item.name}
+                      selectable={false}
+                    >
                       {item.children && item.children.length > 0
                         ? item.children.map((el) => {
                             return <TreeNode value={el.id} title={el.name} key={el.name} />;

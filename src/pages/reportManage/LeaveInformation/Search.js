@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Input, Button, TreeSelect, Icon, Select, DatePicker } from 'antd';
 import { thirdLayout } from 'util/Layout';
-import moment from 'moment';
+import GlobalName from 'components/searchForm/GlobalUserName';
 const { TreeNode } = TreeSelect;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -101,41 +101,7 @@ class SearchForm extends Component {
             </FormItem>
           </Col>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
-            <FormItem label="姓名:" {...thirdLayout}>
-              {getFieldDecorator('userIds', {
-                initialValue: undefined,
-              })(
-                <TreeSelect
-                  showSearch
-                  style={{ width: '100%' }}
-                  filterTreeNode={() => true}
-                  getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                  dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                  placeholder="请选择"
-                  allowClear
-                  onSearch={(value) => {
-                    const { setFieldsValue, getFieldValue } = this.props.form;
-                    setFieldsValue({ userIds: undefined });
-                    this.props.queryGroupUser && this.props.queryGroupUser(value);
-                  }}
-                  onChange={this.handleTreeName}
-                >
-                  {this.props.userArr && this.props.userArr.length > 0
-                    ? this.props.userArr.map((item) => {
-                        return (
-                          <TreeNode value={item.name} title={item.name} key={item.name} selectable={false}>
-                            {item.children && item.children.length > 0
-                              ? item.children.map((el) => {
-                                  return <TreeNode value={el.id} title={el.name} key={el.name} />;
-                                })
-                              : null}
-                          </TreeNode>
-                        );
-                      })
-                    : null}
-                </TreeSelect>
-              )}
-            </FormItem>
+            <GlobalName form={this.props.form} userLabel="userIds"></GlobalName>
           </Col>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="开始时间" {...thirdLayout}>

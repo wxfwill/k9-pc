@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Row, Col, Input, Button, Radio, TreeSelect, Select, DatePicker } from 'antd';
 import { thirdLayout } from 'util/Layout';
 import RequestTeamProps from '../../reportManage/Common/RequestTeamProps';
+import GlobalName from 'components/searchForm/GlobalUserName';
 import moment from 'moment';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -121,10 +122,12 @@ class SearchForm extends Component {
                   </FormItem>
                 </Col>
                 <Col xl={6} lg={6} md={8} sm={12} xs={12}>
-                  <FormItem label="姓名:" {...thirdLayout}>
+                  <GlobalName form={this.props.form} userLabel="userId"></GlobalName>
+                  {/* <FormItem label="姓名:" {...thirdLayout}>
                     {getFieldDecorator('userId')(
                       <TreeSelect
                         showSearch
+                        dropdownClassName="cutomTreeSelect"
                         style={{ width: '100%' }}
                         filterTreeNode={() => true}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
@@ -139,7 +142,13 @@ class SearchForm extends Component {
                         {this.state.personnelTree && this.state.personnelTree.length > 0
                           ? this.state.personnelTree.map((item) => {
                               return (
-                                <TreeNode value={item.name} title={item.name} key={item.name} selectable={false}>
+                                <TreeNode
+                                  className="innerTreeNode"
+                                  value={item.name}
+                                  title={item.name}
+                                  key={item.name}
+                                  selectable={false}
+                                >
                                   {item.children && item.children.length > 0
                                     ? item.children.map((el) => {
                                         return <TreeNode value={el.id} title={el.name} key={el.id} />;
@@ -151,7 +160,7 @@ class SearchForm extends Component {
                           : null}
                       </TreeSelect>
                     )}
-                  </FormItem>
+                  </FormItem> */}
                 </Col>
                 <Col xl={6} lg={6} md={8} sm={12} xs={12}>
                   {/* <FormItem label="考核时间" {...thirdLayout}>

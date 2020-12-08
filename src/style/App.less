@@ -54,3 +54,23 @@
         // text-align: center;
     }
 }
+
+// 自定义treeSelect样式
+.cutomTreeSelect {
+    .innerTreeNode {
+        position: relative;
+        > .ant-select-tree-switcher {
+            position: absolute;
+            width: 100%;
+            text-align: left;
+            left: 0;
+            top: 0;
+        }
+        > .ant-select-tree-node-content-wrapper {
+            padding-left: 18px;
+        }
+        > .ant-select-tree-child-tree-open {
+            padding: 0;
+        }
+    }
+}

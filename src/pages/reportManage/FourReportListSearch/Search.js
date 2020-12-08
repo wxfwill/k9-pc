@@ -128,6 +128,7 @@ class SearchForm extends Component {
                     })(
                       <TreeSelect
                         showSearch
+                        dropdownClassName="cutomTreeSelect"
                         style={{ width: '100%' }}
                         filterTreeNode={() => true}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
@@ -143,7 +144,13 @@ class SearchForm extends Component {
                         {this.props.personnelTree && this.props.personnelTree.length > 0
                           ? this.props.personnelTree.map((item) => {
                               return (
-                                <TreeNode value={item.name} title={item.name} key={item.name} selectable={false}>
+                                <TreeNode
+                                  className="innerTreeNode"
+                                  value={item.name}
+                                  title={item.name}
+                                  key={item.name}
+                                  selectable={false}
+                                >
                                   {item.children && item.children.length > 0
                                     ? item.children.map((el) => {
                                         return <TreeNode value={el.id} title={el.name} key={el.id} />;
@@ -191,6 +198,7 @@ class SearchForm extends Component {
                   <FormItem label="用车类型" {...thirdLayout} hasFeedback>
                     {getFieldDecorator('taskType')(
                       <TreeSelect
+                        dropdownClassName="cutomTreeSelect"
                         style={{ width: '100%' }}
                         filterTreeNode={() => true}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
@@ -204,7 +212,13 @@ class SearchForm extends Component {
                         {this.props.taskTypeList && this.props.taskTypeList.length > 0
                           ? this.props.taskTypeList.map((item) => {
                               return (
-                                <TreeNode value={item.id} title={item.ruleName} key={item.ruleName} selectable={false}>
+                                <TreeNode
+                                  className="innerTreeNode"
+                                  value={item.id}
+                                  title={item.ruleName}
+                                  key={item.ruleName}
+                                  selectable={false}
+                                >
                                   {item.children && item.children.length > 0
                                     ? item.children.map((el) => {
                                         return <TreeNode value={el.id} title={el.ruleName} key={el.id} />;
