@@ -9,61 +9,49 @@ class UserInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      limit: null,
       dataSource: [],
       loading: false,
+      sortFieldName: '',
+      sortType: 'desc',
+      param: {
+        duty: null,
+        groupIds: [],
+        policeName: null,
+        policeNumber: null,
+        title: null,
+      },
       pagination: {
-        houseId: '',
-        name: '',
         currPage: 1,
         pageSize: 10,
         total: 0,
       },
-      pageSize: 10,
-      currPage: 1,
       selectedRowKeys: [],
       // dutyList: [], // 职务信息
     };
   }
-  handleLimit = (limit) => {
-    this.setState({ limit });
+  handleLimit = (data) => {
+    let per = data || {};
+    per.duty = per.duty ? Number(per.duty) : null;
+    per.policeName = per.policeName ? per.policeName : null;
+    per.policeNumber = per.policeNumber ? per.policeNumber : null;
+    per.title = per.title ? Number(per.title) : null;
+    let _per = Object.assign({}, this.state.param, per);
+    let _pagination = Object.assign({}, this.state.pagination, { current: 1, currPage: 1, pageSize: 10 });
+    this.setState({ param: _per, pagination: _pagination }, () => {
+      let { sortFieldName, sortType, pagination, param } = this.state;
+      this.fetch(sortFieldName, sortType, pagination, param);
+    });
   };
   componentDidMount() {
-    this.fetch();
-    // React.store.dispatch({ type: 'NAV_DATA', nav: ['用户管理', '用户列表'] });
-    // React.$ajax.postData('/api/basicData/dutyList').then((res) => {
-    //   if (res.code == 0) {
-    //     this.setState({ dutyList: res.data });
-    //     sessionStorage.setItem('dutyList', JSON.stringify(res.data));
-    //   }
-    // });
+    let { sortFieldName, sortType, pagination, param } = this.state;
+    this.fetch(sortFieldName, sortType, pagination, param);
   }
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
-    React.$ajax
-      .postData('/api/user/list', { ...params })
-      .then((res) => {
-        const pagination = { ...this.state.pagination };
-        pagination.total = res.totalCount;
-        pagination.current = res.currPage;
-        pagination.pageSize = res.pageSize;
-        this.setState({ dataSource: res.list, loading: false, pagination });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-  // 多选
-  handleSelectChange = (arrs) => {
-    console.log(arrs);
-    console.log('多选==');
-    this.setState({ selectedRowKeys: arrs });
-  };
   // 每页条数
   handleShowSizeChange = (cur, size) => {
     let per = Object.assign({}, this.state.pagination, { currPage: cur, pageSize: size, current: cur });
     this.setState({ pagination: per }, () => {
-      this.fetch(this.state.pagination);
+      let { sortFieldName, sortType, pagination, param } = this.state;
+      this.fetch(sortFieldName, sortType, pagination, param);
     });
   };
   // 页码
@@ -71,8 +59,26 @@ class UserInfo extends Component {
     //   let per = Object.assign({}, this.state.pagination, { currPage: pages.current, pageSize: pages.pageSize });
     let per = Object.assign({}, this.state.pagination, { currPage: page, current: page });
     this.setState({ pagination: per }, () => {
-      this.fetch(this.state.pagination);
+      let { sortFieldName, sortType, pagination, param } = this.state;
+      this.fetch(sortFieldName, sortType, pagination, param);
     });
+  };
+  fetch(sortFieldName, sortType, pagination, param) {
+    let obj = { sortFieldName, sortType, ...pagination, param };
+    this.setState({ loading: true });
+    React.$ajax.postData('/api/user/pageInfo', obj).then((res) => {
+      const pagination = { ...this.state.pagination };
+      pagination.total = res.totalCount;
+      pagination.current = res.currPage;
+      pagination.pageSize = res.pageSize;
+      this.setState({ dataSource: res.list, loading: false, pagination });
+    });
+  }
+  // 多选
+  handleSelectChange = (arrs) => {
+    console.log(arrs);
+    console.log('多选==');
+    this.setState({ selectedRowKeys: arrs });
   };
   //批量删除
   deleteMore = () => {

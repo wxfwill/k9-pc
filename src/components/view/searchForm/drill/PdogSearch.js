@@ -15,7 +15,7 @@ class SearchForm extends React.Component {
   };
   componentWillMount() {
     let _this = this;
-    let typeOption = httpAjax('post', config.apiUrl + '/api/trainingSubject/getAllTrainSubjectName');
+    let typeOption = React.$ajax.postData('/api/trainingSubject/getAllTrainSubjectName');
     Promise.all([typeOption]).then((resArr) => {
       _this.setState({
         typeOption: resArr[0].data,

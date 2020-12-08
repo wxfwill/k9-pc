@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Button, Tag, Badge, fileList, Icon, Popconfirm, message } from 'antd';
 import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import SubDetailTabe from './SubDetailTabe';
 import Immutable from 'immutable';
 
@@ -60,7 +59,8 @@ class SubTable extends React.Component {
   };
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/trainingSubject/getAllTrainingSubject', { ...params })
+    React.$ajax
+      .postData('/api/trainingSubject/getAllTrainingSubject', { ...params })
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = res.totalCount;
@@ -97,7 +97,7 @@ class SubTable extends React.Component {
   queryEdit = (data) => {};
   delData = (data) => {
     message.success('删除成功');
-    httpAjax('post', config.apiUrl + '/api/trainingSubject/deleteByIds', { id: data }).then((res) => {
+    React.$ajax.postData('/api/trainingSubject/deleteByIds', { id: data }).then((res) => {
       if (res.code == 0) {
         this.fetch();
       }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import httpAjax from 'libs/httpAjax';
 import { Collapse, Icon, Tag, Row, Col, Table, Card } from 'antd';
 import moment from 'moment';
 import 'style/view/common/detailTable.less';
@@ -26,7 +25,8 @@ class CureDetailTabl extends Component {
     this.props.handleShow();
   }
   fetch(params) {
-    httpAjax('post', config.apiUrl + '/api/trainingSubject/getTrainingSubjectById', { id: params })
+    React.$ajax
+      .postData('/api/trainingSubject/getTrainingSubjectById', { id: params })
       .then((res) => {
         this.setState({
           loading: false,

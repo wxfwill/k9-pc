@@ -5,6 +5,7 @@ import 'style/pages/performance/AssessmentSetting/detail.less';
 const { Title, Text } = Typography;
 const { TextArea } = Input;
 const defaltxt = '（系统自动带出信息）';
+
 class AssessmentDetail extends Component {
   constructor(props) {
     super(props);
@@ -12,6 +13,7 @@ class AssessmentDetail extends Component {
       detalObj: null,
       isable: false,
       valueSquadronSumMark: null, // 价值观中队长修改后
+      goundNum: 0,
       selfEvaluationSumMark: null, // 最终总分
       businessSquadronSumMark: null, // 业务考核总分
       id: null, // 考核id
@@ -25,6 +27,7 @@ class AssessmentDetail extends Component {
       attendanceStatisticsDTOS: [], // 考请
       fourWReportStatisticsDTOS: [], // 4w报备
       otherReasonsDTOS: [], // 其他
+      dogSkill: null, //警犬技能
     };
   }
   componentDidMount() {
@@ -41,13 +44,28 @@ class AssessmentDetail extends Component {
       this.setState({ isable: false });
     }
   }
+  handleFormChange = (props, val, all) => {
+    console.log(val);
+    console.log(all);
+  };
   getDetalData = (assessmentId) => {
     React.$ajax.postData('/api/performanceAssessment/getSelfEvaluation', { assessmentId }).then((res) => {
       if (res.code == 0) {
         let rsData = res.data;
+        // let {
+        //   itemOneSquadronMark,
+        //   itemTwoSquadronMark,
+        //   itemThreeSquadronMark,
+        //   itemFourSquadronMark,
+        // } = rsData.assessmentValues;
         let _id = Object.assign({}, this.state.assessmentValues, {
           id: rsData.assessmentValues.id,
+          // itemOneSquadronMark,
+          // itemTwoSquadronMark,
+          // itemThreeSquadronMark,
+          // itemFourSquadronMark,
         });
+
         this.setState({
           detalObj: rsData,
           fourWReportStatisticsDTOS: rsData.fourWReportStatisticsDTOS,
@@ -57,6 +75,7 @@ class AssessmentDetail extends Component {
           selfEvaluationSumMark: rsData.selfEvaluationSumMark,
           businessSquadronSumMark: rsData.businessSquadronSumMark,
         });
+        // this.setState({ assessmentValues: rsData.assessmentValues });
       }
     });
   };
@@ -66,6 +85,61 @@ class AssessmentDetail extends Component {
   };
   handlePrint = () => {
     util.jQPrintPartialHtml('.AssessmentDetail');
+  };
+  getAllGrade = () => {
+    let { setFieldsValue, getFieldValue } = this.props.form;
+    console.log(getFieldValue('valueSquadronSumMark'));
+    console.log(getFieldValue('businessSquadronSumMark'));
+    let value = Number(getFieldValue('valueSquadronSumMark'));
+    let bussobj = Number(getFieldValue('businessSquadronSumMark'));
+    let dogGrade = Number(getFieldValue('dogSquadronSumMark1'));
+    let all = value + bussobj + dogGrade;
+    setFieldsValue({ selfEvaluationSumMark: all.toFixed(2) });
+  };
+  handleItemOne = (e, item) => {
+    e.persist();
+    let val = e.target.value;
+    let { setFieldsValue, getFieldsValue } = this.props.form;
+    let obj = getFieldsValue();
+    console.log(obj);
+    let num = 0;
+    for (let key in obj) {
+      if (key.includes('item') && key != item) {
+        console.log(Number(obj[key]));
+        num += Number(obj[key]);
+      }
+    }
+    let allNum = (Number(val) + num).toFixed(2);
+    setFieldsValue({ valueSquadronSumMark: allNum });
+    this.getAllGrade();
+  };
+  handle4wMark = (e, item) => {
+    e.persist();
+    let val = e.target.value;
+    let { setFieldsValue, getFieldsValue } = this.props.form;
+    let obj = getFieldsValue();
+    let num = 0;
+    for (let key in obj) {
+      if (key.includes('4wMark') && key != item) {
+        num += Number(obj[key]);
+      }
+      if (key.includes('kqnMark') && key != item) {
+        num += Number(obj[key]);
+      }
+      if (key.includes('otherMark') && key != item) {
+        num += Number(obj[key]);
+      }
+    }
+    let allNum = (Number(val) + num).toFixed(2);
+    setFieldsValue({ businessSquadronSumMark: allNum });
+    this.getAllGrade();
+  };
+  handleDogSkill = (e) => {
+    e.persist();
+    let val = e.target.value;
+    let { setFieldsValue, getFieldsValue } = this.props.form;
+    setFieldsValue({ dogSquadronSumMark1: (Number(val) / 2).toFixed(2) });
+    this.getAllGrade();
   };
   handleSubmit = (e) => {
     e.preventDefault();
@@ -103,6 +177,7 @@ class AssessmentDetail extends Component {
         selfEvaluationSumMark,
         businessSquadronSumMark,
         valueSquadronSumMark,
+        dogSquadronSumMark,
       } = values;
 
       let _assessmentValues = Object.assign({}, this.state.assessmentValues, {
@@ -121,6 +196,7 @@ class AssessmentDetail extends Component {
           selfEvaluationSumMark,
           businessSquadronSumMark,
           valueSquadronSumMark,
+          dogSquadronSumMark,
         },
         () => {
           let {
@@ -129,6 +205,7 @@ class AssessmentDetail extends Component {
             businessSquadronSumMark,
             id,
             assessmentValues,
+            dogSquadronSumMark,
             attendanceStatisticsDTOS,
             fourWReportStatisticsDTOS,
             otherReasonsDTOS,
@@ -141,6 +218,7 @@ class AssessmentDetail extends Component {
               businessSquadronSumMark: Number(businessSquadronSumMark),
               id,
               assessmentValues,
+              dogSquadronSumMark: Number(dogSquadronSumMark),
               attendanceStatisticsDTOS,
               fourWReportStatisticsDTOS,
               otherReasonsDTOS,
@@ -159,15 +237,15 @@ class AssessmentDetail extends Component {
     if (!value) {
       throw new Error('请输入修改意见');
     }
-    if (!value.match(/^\d+(\.\d+)?$/g)) {
-      callback('请输入纯数字(⊙o⊙)…');
+    if (!value.match(/^(0?|[\d|\-])+(\.\d{0,2})?$/g)) {
+      callback('请输入小数位不超过2位的数字');
     }
     callback();
   };
   render() {
     const { form } = this.props;
     const { getFieldDecorator } = form;
-    let { detalObj } = this.state;
+    let { detalObj, assessmentValues } = this.state;
     return (
       <div className="AssessmentDetail">
         {detalObj ? (
@@ -206,48 +284,104 @@ class AssessmentDetail extends Component {
                       <tr>
                         <th>表现/忠诚</th>
                         <td>{detalObj.assessmentValues ? detalObj.assessmentValues.itemOneSelfMark : defaltxt}</td>
-                        <td>{detalObj.assessmentValues ? detalObj.assessmentValues.itemOneExplain : defaltxt}</td>
+                        <td>
+                          {detalObj.assessmentValues.itemOneExplain
+                            ? detalObj.assessmentValues.itemOneExplain
+                            : defaltxt}
+                        </td>
                         <td>
                           <Form.Item>
                             {getFieldDecorator('itemOneSquadronMark', {
+                              initialValue: detalObj.assessmentValues
+                                ? detalObj.assessmentValues.itemOneSquadronMark
+                                : null,
                               rules: [{ validator: this.handleCustomRules }],
-                            })(<TextArea rows={1} disabled={this.state.isable} />)}
+                            })(
+                              <TextArea
+                                rows={1}
+                                onChange={(e) => this.handleItemOne(e, 'itemOneSquadronMark')}
+                                disabled={this.state.isable}
+                              />
+                            )}
                           </Form.Item>
                         </td>
                       </tr>
                       <tr>
                         <th>激情/干净</th>
                         <td>{detalObj.assessmentValues ? detalObj.assessmentValues.itemTwoSelfMark : defaltxt}</td>
-                        <td>{detalObj.assessmentValues ? detalObj.assessmentValues.itemTwoExplain : defaltxt}</td>
+                        <td>
+                          {detalObj.assessmentValues.itemTwoExplain
+                            ? detalObj.assessmentValues.itemTwoExplain
+                            : defaltxt}
+                        </td>
                         <td>
                           <Form.Item>
                             {getFieldDecorator('itemTwoSquadronMark', {
-                              rules: [{ validator: this.handleCustomRules }],
-                            })(<TextArea rows={1} disabled={this.state.isable} />)}
+                              initialValue: detalObj.assessmentValues
+                                ? detalObj.assessmentValues.itemTwoSquadronMark
+                                : null,
+                              rules: [
+                                {
+                                  validator: this.handleCustomRules,
+                                },
+                              ],
+                            })(
+                              <TextArea
+                                rows={1}
+                                onChange={(e) => this.handleItemOne(e, 'itemTwoSquadronMark')}
+                                disabled={this.state.isable}
+                              />
+                            )}
                           </Form.Item>
                         </td>
                       </tr>
                       <tr>
                         <th>团结/担当</th>
                         <td>{detalObj.assessmentValues ? detalObj.assessmentValues.itemThreeSelfMark : defaltxt}</td>
-                        <td>{detalObj.assessmentValues ? detalObj.assessmentValues.itemThreeExplain : defaltxt}</td>
+                        <td>
+                          {detalObj.assessmentValues.itemThreeExplain
+                            ? detalObj.assessmentValues.itemThreeExplain
+                            : defaltxt}
+                        </td>
                         <td>
                           <Form.Item>
                             {getFieldDecorator('itemThreeSquadronMark', {
+                              initialValue: detalObj.assessmentValues
+                                ? detalObj.assessmentValues.itemThreeSquadronMark
+                                : null,
                               rules: [{ validator: this.handleCustomRules }],
-                            })(<TextArea rows={1} disabled={this.state.isable} />)}
+                            })(
+                              <TextArea
+                                rows={1}
+                                onChange={(e) => this.handleItemOne(e, 'itemThreeSquadronMark')}
+                                disabled={this.state.isable}
+                              />
+                            )}
                           </Form.Item>
                         </td>
                       </tr>
                       <tr>
                         <th>奉献</th>
                         <td>{detalObj.assessmentValues ? detalObj.assessmentValues.itemFourSelfMark : defaltxt}</td>
-                        <td>{detalObj.assessmentValues ? detalObj.assessmentValues.itemFourExplain : defaltxt}</td>
+                        <td>
+                          {detalObj.assessmentValues.itemFourExplain
+                            ? detalObj.assessmentValues.itemFourExplain
+                            : defaltxt}
+                        </td>
                         <td>
                           <Form.Item>
                             {getFieldDecorator('itemFourSquadronMark', {
+                              initialValue: detalObj.assessmentValues
+                                ? detalObj.assessmentValues.itemFourSquadronMark
+                                : null,
                               rules: [{ validator: this.handleCustomRules }],
-                            })(<TextArea rows={1} disabled={this.state.isable} />)}
+                            })(
+                              <TextArea
+                                rows={1}
+                                onChange={(e) => this.handleItemOne(e, 'itemFourSquadronMark')}
+                                disabled={this.state.isable}
+                              />
+                            )}
                           </Form.Item>
                         </td>
                       </tr>
@@ -261,12 +395,53 @@ class AssessmentDetail extends Component {
                         <th>中队修改后</th>
                       </tr>
                       <tr>
-                        <td>{detalObj.valueSelfSumMark ? detalObj.valueSelfSumMark : defaltxt}</td>
+                        <td>{detalObj.valueSelfSumMark && detalObj.valueSelfSumMark}</td>
                         <td>
                           <Form.Item>
                             {getFieldDecorator('valueSquadronSumMark', {
+                              initialValue: detalObj.valueSquadronSumMark,
                               rules: [{ validator: this.handleCustomRules }],
                             })(<TextArea rows={1} disabled={this.state.isable} />)}
+                          </Form.Item>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tbody>
+                      <tr>
+                        <th colSpan="4" className="center">
+                          警犬技能考核
+                        </th>
+                      </tr>
+                      <tr>
+                        <th rowSpan="2" colSpan="2" style={{ textAlign: 'center' }}>
+                          警犬技能考核
+                        </th>
+                        <th>分数</th>
+                        <th>50%换算</th>
+                      </tr>
+                      <tr>
+                        <td>
+                          <Form.Item>
+                            {getFieldDecorator('dogSquadronSumMark', {
+                              initialValue: detalObj.dogSquadronSumMark ? detalObj.dogSquadronSumMark : undefined,
+                              rules: [{ validator: this.handleCustomRules }],
+                            })(
+                              <TextArea
+                                rows={1}
+                                disabled={this.state.isable}
+                                onChange={(e) => this.handleDogSkill(e)}
+                              />
+                            )}
+                          </Form.Item>
+                        </td>
+                        <td>
+                          <Form.Item>
+                            {getFieldDecorator('dogSquadronSumMark1', {
+                              initialValue: detalObj.dogSquadronSumMark
+                                ? (Number(detalObj.dogSquadronSumMark) / 2).toFixed(2)
+                                : null,
+                              // rules: [{ validator: this.handleCustomRules }],
+                            })(<TextArea rows={1} disabled={true} />)}
                           </Form.Item>
                         </td>
                       </tr>
@@ -298,8 +473,19 @@ class AssessmentDetail extends Component {
                               <td>
                                 <Form.Item>
                                   {getFieldDecorator(`4wMark-${item.id}`, {
-                                    rules: [{ required: true, message: '请填写修改意见' }],
-                                  })(<TextArea rows={1} disabled={this.state.isable} />)}
+                                    initialValue: item.squadronMark ? item.squadronMark : null,
+                                    rules: [{ validator: this.handleCustomRules }],
+                                    // getValueFromEvent: (val) => {
+                                    //   console.log(val);
+                                    //   return val;
+                                    // },
+                                  })(
+                                    <TextArea
+                                      rows={1}
+                                      disabled={this.state.isable}
+                                      onChange={(e) => this.handle4wMark(e, `4wMark-${item.id}`)}
+                                    />
+                                  )}
                                 </Form.Item>
                               </td>
                             </tr>
@@ -316,8 +502,15 @@ class AssessmentDetail extends Component {
                               <td>
                                 <Form.Item>
                                   {getFieldDecorator(`kqnMark-${item.id}`, {
-                                    rules: [{ required: true, message: '请填写修改意见' }],
-                                  })(<TextArea rows={1} disabled={this.state.isable} />)}
+                                    initialValue: item.squadronMark ? item.squadronMark : null,
+                                    rules: [{ validator: this.handleCustomRules }],
+                                  })(
+                                    <TextArea
+                                      rows={1}
+                                      onChange={(e) => this.handle4wMark(e, `kqnMark-${item.id}`)}
+                                      disabled={this.state.isable}
+                                    />
+                                  )}
                                 </Form.Item>
                               </td>
                             </tr>
@@ -333,8 +526,15 @@ class AssessmentDetail extends Component {
                               <td>
                                 <Form.Item>
                                   {getFieldDecorator(`otherMark-${item.id}`, {
-                                    rules: [{ required: true, message: '请填写修改意见' }],
-                                  })(<TextArea rows={1} disabled={this.state.isable} />)}
+                                    initialValue: item.squadronMark ? item.squadronMark : null,
+                                    rules: [{ validator: this.handleCustomRules }],
+                                  })(
+                                    <TextArea
+                                      rows={1}
+                                      onChange={(e) => this.handle4wMark(e, `otherMark-${item.id}`)}
+                                      disabled={this.state.isable}
+                                    />
+                                  )}
                                 </Form.Item>
                               </td>
                             </tr>
@@ -344,12 +544,13 @@ class AssessmentDetail extends Component {
                         <th colSpan="2" style={{ textAlign: 'center' }}>
                           合计
                         </th>
-                        <td>（系统自动带出信息，另外也可以手动填写）</td>
+                        <td>{detalObj.businessSelfSumMark ? detalObj.businessSelfSumMark : defaltxt}</td>
                         <td>
                           <Form.Item>
                             {getFieldDecorator('businessSquadronSumMark', {
+                              initialValue: detalObj.businessSquadronSumMark ? detalObj.businessSquadronSumMark : null,
                               rules: [{ validator: this.handleCustomRules }],
-                            })(<TextArea rows={1} />)}
+                            })(<TextArea rows={1} disabled={this.state.isable} />)}
                           </Form.Item>
                         </td>
                       </tr>
@@ -361,30 +562,22 @@ class AssessmentDetail extends Component {
                         <td>
                           <Form.Item>
                             {getFieldDecorator('selfEvaluationSumMark', {
+                              initialValue: detalObj.selfEvaluationSumMark ? detalObj.selfEvaluationSumMark : undefined,
                               rules: [{ validator: this.handleCustomRules }],
                             })(<TextArea rows={1} disabled={this.state.isable} />)}
                           </Form.Item>
                         </td>
                       </tr>
                     </tbody>
-                    {/* <tfoot>
-                      <tr>
-                        <th colSpan="3" style={{ textAlign: 'center' }}>
-                          <p>最终总得分</p>
-                          <p>（价值观总分+50%警犬技能考核得分+业务和内务考核得分）</p>
-                        </th>
-                        <td>
-                          <Form.Item>
-                            {getFieldDecorator('selfEvaluationSumMark', {
-                              rules: [{ validator: this.handleCustomRules }],
-                            })(<TextArea rows={1} disabled={this.state.isable} />)}
-                          </Form.Item>
-                        </td>
-                      </tr>
-                    </tfoot> */}
                   </table>
                   <Divider />
-                  <div style={{ textAlign: 'center' }} className="no-print">
+                  <div className="neck">
+                    <Text>签名：</Text>
+                    <Text>
+                      <span style={{ paddingRight: '200px' }}>日期：</span>
+                    </Text>
+                  </div>
+                  <div style={{ textAlign: 'center', marginTop: '20px' }} className="no-print">
                     {util.urlParse(this.props.location.search).type == 'approval' ? (
                       <Button type="primary" htmlType="submit">
                         保存

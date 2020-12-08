@@ -45,7 +45,7 @@ class FourReportListSearch extends Component {
     // 查询用户
     this.queryGroupUser('', 'all');
     // 任务类型
-    this.queryTaskType('gzyc');
+    this.queryTaskType('4wbb');
   }
   exportExcel = (data) => {
     this.handleSearchData(data, this.handleExport);

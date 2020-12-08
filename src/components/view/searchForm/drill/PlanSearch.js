@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
 import { thirdLayout } from 'util/Layout';
-import httpAjax from 'libs/httpAjax';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -16,8 +15,8 @@ class SearchForm extends React.Component {
   };
   componentWillMount() {
     let _this = this;
-    let typeOption = httpAjax('post', config.apiUrl + '/api/trainingSubject/getAllTrainSubjectName');
-    let LevelOption = httpAjax('post', config.apiUrl + '/api/trainingSubject/getAllTrainLevel');
+    let typeOption = React.$ajax.postData('/api/trainingSubject/getAllTrainSubjectName');
+    let LevelOption = React.$ajax.postData('/api/trainingSubject/getAllTrainLevel');
     Promise.all([typeOption, LevelOption]).then((resArr) => {
       _this.setState({
         typeOption: resArr[0].data,

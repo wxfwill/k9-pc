@@ -266,4 +266,7 @@ export const getStartEndHours = (start, end) => {
   return e.diff(s, 'hours', true);
 };
 
+// 密码的正则表达式（有数字、大写、小写字母组成）
+export const passeordReg = /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?![0-9a-z]+$)(?![0-9A-Z]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/g;
+
 export { constant, Msg, method, cookieUtil };

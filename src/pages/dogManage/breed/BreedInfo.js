@@ -19,7 +19,6 @@ import {
 } from 'antd';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import httpAjax from 'libs/httpAjax';
 
 import 'style/app/dogManage/breedinfo.less';
 class Breedinfo extends Component {
@@ -40,7 +39,7 @@ class Breedinfo extends Component {
   getBreedList = (params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) => {
     const breed = this.props.location.pathname.indexOf('breed') > 0;
     const url = breed ? '/api/breed/listPage' : '/api/breed/listReproducePage';
-    httpAjax('post', config.apiUrl + url, params).then((res) => {
+    React.$ajax.postData(url, params).then((res) => {
       this.setState({ breedList: [...this.state.breedList, ...res.list], totalPage: res.totalPage });
     });
   };
@@ -48,22 +47,24 @@ class Breedinfo extends Component {
     // deleteReproduceByIds
     const breed = this.props.location.pathname.indexOf('breed') > 0;
 
-    httpAjax('post', config.apiUrl + `/api/breed/${breed ? 'deleteBreedByIds' : 'deleteReproduceByIds'}`, {
-      ids: [item.id],
-    }).then((res) => {
-      if (res.code == 0) {
-        message.info('删除成功！');
-        this.setState(
-          {
-            breedList: [],
-            currPage: 1,
-          },
-          this.getBreedList({ pageSize: this.state.pageSize, currPage: 1 })
-        );
-      } else {
-        message.error('删除失败！');
-      }
-    });
+    React.$ajax
+      .postData(`/api/breed/${breed ? 'deleteBreedByIds' : 'deleteReproduceByIds'}`, {
+        ids: [item.id],
+      })
+      .then((res) => {
+        if (res.code == 0) {
+          message.info('删除成功！');
+          this.setState(
+            {
+              breedList: [],
+              currPage: 1,
+            },
+            this.getBreedList({ pageSize: this.state.pageSize, currPage: 1 })
+          );
+        } else {
+          message.error('删除失败！');
+        }
+      });
   };
   loadMore = () => {
     const { currPage, pageSize } = this.state;
@@ -186,14 +187,14 @@ class Breedinfo extends Component {
             extra={this.renderExtra(item)}
             bodyStyle={{ padding: 0 }}
           >
-            <div className="card_body" key={index}>
+            <div className="card_body">
               <div className="card_left">
                 {breed
                   ? this.renderDogList('maleDog', item.maleDog)
                   : this.renderDogList('femaleDog', item.femaleDog ? item.femaleDog : { id: item.femaleDogId })}
               </div>
 
-              {this.renderMid(item, index)}
+              {this.renderMid(item, `${index}-${Math.random()}`)}
 
               <div
                 className="card_left"

@@ -16,8 +16,6 @@ import {
   Input,
   Tooltip,
 } from 'antd';
-import { Link } from 'react-router-dom';
-import httpAjax from 'libs/httpAjax';
 import { firstLayout, secondLayout } from 'util/Layout';
 import moment from 'moment';
 import 'style/view/common/detailTable.less';
@@ -34,8 +32,8 @@ class AddPlan extends Component {
     };
   }
   componentDidMount() {
-    const sexId0 = httpAjax('post', config.apiUrl + '/api/dog/getAncestorInfo', { sexId: 0 }); // 母
-    const sexId1 = httpAjax('post', config.apiUrl + '/api/dog/getAncestorInfo', { sexId: 1 });
+    const sexId0 = React.$ajax.postData('/api/dog/getAncestorInfo', { sexId: 0 }); // 母
+    const sexId1 = React.$ajax.postData('/api/dog/getAncestorInfo', { sexId: 1 });
     Promise.all([sexId0, sexId1]).then((res) => {
       this.setState({
         maleDogs: res[0].data,
@@ -91,16 +89,14 @@ class AddPlan extends Component {
           params.id = id;
         }
         console.log(params);
-        httpAjax('post', config.apiUrl + `/api/breed/${breed ? 'saveBreedRecord' : 'saveReproduce'}`, params).then(
-          (res) => {
-            if (res.code == 0) {
-              this.props.history.push(`/app/dog/${breed ? 'breed' : 'reproduce'}`);
-              message.info('保存成功！');
-            } else {
-              message.error('保存失败！');
-            }
+        React.$ajax.postData(`/api/breed/${breed ? 'saveBreedRecord' : 'saveReproduce'}`, params).then((res) => {
+          if (res.code == 0) {
+            this.props.history.push(`/app/dog/${breed ? 'breed' : 'reproduce'}`);
+            message.info('保存成功！');
+          } else {
+            message.error('保存失败！');
           }
-        );
+        });
       }
     });
   };
@@ -179,7 +175,7 @@ class AddPlan extends Component {
                       <FormItem label="配种时间" {...secondLayout}>
                         {getFieldDecorator('breedTime', {
                           rules: [{ required: true, message: '请选择配种时间' }],
-                          initialValue: editItem ? moment(editItem.breedTime) : '',
+                          initialValue: editItem ? moment(editItem.breedTime) : null,
                         })(<DatePicker />)}
                       </FormItem>
                     </Col>
@@ -187,7 +183,7 @@ class AddPlan extends Component {
                       <FormItem label="发情时间" {...secondLayout}>
                         {getFieldDecorator('estrusTime', {
                           rules: [{ required: true, message: '请选择发情时间' }],
-                          initialValue: editItem ? moment(editItem.estrusTime) : '',
+                          initialValue: editItem ? moment(editItem.estrusTime) : null,
                         })(<DatePicker />)}
                       </FormItem>
                     </Col>
@@ -198,7 +194,7 @@ class AddPlan extends Component {
                       <FormItem label="出生日期：" {...secondLayout}>
                         {getFieldDecorator('birthday', {
                           rules: [{ required: true, message: '请选择出生日期' }],
-                          initialValue: editItem ? moment(editItem.birthday) : '',
+                          initialValue: editItem ? moment(editItem.birthday) : null,
                         })(<DatePicker />)}
                       </FormItem>
                     </Col>
@@ -206,7 +202,7 @@ class AddPlan extends Component {
                       <FormItem label="繁衍期：" {...secondLayout}>
                         {getFieldDecorator('period', {
                           rules: [{ required: true, message: '请填写繁衍期' }],
-                          initialValue: editItem ? editItem.period : '',
+                          initialValue: editItem ? editItem.period : null,
                         })(<Input placeholder="请填写繁衍期" />)}
                       </FormItem>
                     </Col>

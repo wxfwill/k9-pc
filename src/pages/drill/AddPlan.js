@@ -56,7 +56,7 @@ class AddPlan extends Component {
   }
   componentDidMount() {
     sessionStorage.removeItem('tempPolygonCoords');
-    const typeOption = httpAjax('post', config.apiUrl + '/api/trainingSubject/getAllTrainSubjectName');
+    const typeOption = React.$ajax.postData('/api/trainingSubject/getAllTrainSubjectName');
     //const trainPlace = httpAjax('post', config.apiUrl+'/api/basicData/trainPlace');
     // /api/userCenter/getTrainer
     const Trainers = httpAjax('post', config.apiUrl + '/api/userCenter/getTrainer', { name: '' });
