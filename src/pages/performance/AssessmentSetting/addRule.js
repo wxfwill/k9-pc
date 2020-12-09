@@ -31,6 +31,7 @@ class AddRule extends Component {
         //编辑小类或大类
         const ruleName = values.ruleName;
         const ruleCode = values.ruleCode;
+        const sn = values.sn;
 
         const ruleCycle = values.ruleCycle;
         const integralLimit = values.integralLimit;
@@ -38,8 +39,8 @@ class AddRule extends Component {
         const baseScore = values.baseScore;
         dataObj =
           this.props.title === '大类'
-            ? { ...redactData, ruleName, ruleCode }
-            : { ...redactData, ruleName, ruleCode, ruleCycle, integralLimit, operation, baseScore };
+            ? { ...redactData, ruleName, ruleCode, sn }
+            : { ...redactData, ruleName, ruleCode, sn, ruleCycle, integralLimit, operation, baseScore };
       } else {
         const scoreType = 'base'; //区分单个分数 和 区间分数，目前写死为单个分数
         //新增小类或大类
@@ -101,6 +102,12 @@ class AddRule extends Component {
                 initialValue: redactData ? redactData.ruleCode : '',
               })(<Input />)}
             </Form.Item>
+            <Form.Item label="排序">
+              {getFieldDecorator('sn', {
+                rules: [{ required: true, message: '请填写排序!' }],
+                initialValue: redactData ? redactData.sn : 0,
+              })(<InputNumber min={0} style={{ width: '100%' }} />)}
+            </Form.Item>
           </Form>
         ) : (
           <Form>
@@ -121,6 +128,12 @@ class AddRule extends Component {
                 ],
                 initialValue: redactData ? redactData.ruleCode : '',
               })(<Input />)}
+            </Form.Item>
+            <Form.Item label="排序">
+              {getFieldDecorator('sn', {
+                rules: [{ required: true, message: '请填写排序!' }],
+                initialValue: redactData ? redactData.sn : 0,
+              })(<InputNumber min={0} style={{ width: '100%' }} />)}
             </Form.Item>
             <Form.Item label="周期">
               {getFieldDecorator('ruleCycle', {

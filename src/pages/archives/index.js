@@ -8,7 +8,8 @@ import Catalogue from './components/Catalogue'; //目录
 import PerformanceAssessment from './components/PerformanceAssessment'; //绩效考核
 import Transport from './components/Transport'; //工作用车
 import AttendanceCar from './components/AttendanceCar'; //出勤用车
-import AttendanceManagement from './components/AttendanceManagement'; //考勤管理-请假/离深/补休
+import AttendanceManagement from './components/AttendanceManagement'; //考勤管理
+import LeaveManagement from './components/LeaveManagement'; //请假/离深/补休
 import RewardItems from './components/RewardItems'; //奖励事项
 import DailyInformation from './components/DailyInformation'; //日报信息
 import DogFoodApply from './components/DogFoodApply'; //犬粮申请
@@ -275,6 +276,13 @@ class Archivew extends Component {
       DocAttendanceCar = [], //出勤用车
       RewardSyncList = [], //奖励事项
       DocDailyWork = [], //日报信息
+      AttendanceInfo = [
+        {
+          bookName: '考勤管理',
+          noData: true,
+          $indexes: true,
+        },
+      ], //考勤管理
       LeaveAfterSyncInfo = [], //请假/离深/补休
       DogFoodInfo = [], //犬粮申请
       AidRecipientsInfo = [], //通用物资领用
@@ -365,6 +373,7 @@ class Archivew extends Component {
         ...DocAttendanceCar,
         ...RewardSyncList,
         ...DocDailyWork,
+        ...AttendanceInfo,
         ...LeaveAfterSyncInfo,
         ...DogFoodInfo,
         ...AidRecipientsInfo,
@@ -435,9 +444,9 @@ class Archivew extends Component {
       case '出勤用车':
         cont = <AttendanceCar detailInfor={obj} currentIndex={currentIndex} />;
         break;
-      // case '考勤管理':
-      //   cont = <AttendanceManagement detailInfor={obj} currentIndex={currentIndex} />;
-      //break;
+      case '考勤管理':
+        cont = <AttendanceManagement detailInfor={obj} currentIndex={currentIndex} />;
+        break;
       case '奖励事项':
         cont = <RewardItems detailInfor={obj} currentIndex={currentIndex} />;
         break;
@@ -445,7 +454,7 @@ class Archivew extends Component {
         cont = <DailyInformation detailInfor={obj} currentIndex={currentIndex} />;
         break;
       case '请假/离深/补休':
-        cont = <AttendanceManagement detailInfor={obj} currentIndex={currentIndex} />;
+        cont = <LeaveManagement detailInfor={obj} currentIndex={currentIndex} />;
         break;
       case '犬粮申请':
         cont = <DogFoodApply detailInfor={obj} currentIndex={currentIndex} />;
