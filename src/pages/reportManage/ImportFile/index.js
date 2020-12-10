@@ -81,7 +81,7 @@ class ImportFile extends Component {
     this.setState({
       isSpinning: true,
     });
-    React.$ajax.postData($url, formData).then((res) => {
+    React.$ajax.postData($url, formData, { timeout: 30000 }).then((res) => {
       this.setState({
         isSpinning: false,
       });

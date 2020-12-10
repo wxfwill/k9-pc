@@ -7,13 +7,15 @@ import * as performance from './moudules/performance';
 
 //通用相关接口 优先
 import axios from './axios';
+import configs from './config';
 
 //post
-const postData = (url, data) => {
+const postData = (url, data, config) => {
   return axios({
     url: url,
     method: 'post',
     data,
+    timeout: config && config.timeout ? config.timeout : configs.timeout,
   });
 };
 const formDataPost = (url, data, config) => {
