@@ -3,6 +3,8 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const srcPath = path.resolve(__dirname, '../src');
+const devMode = process.env.NODE_ENV == 'development';
+console.log('当前打包环境===' + process.env.NODE_ENV);
 const commonSet = {
   entry: {
     main: ['babel-polyfill', './src/app.js'],
@@ -86,7 +88,7 @@ const commonSet = {
       config: 'config',
     }),
     new MiniCssExtractPlugin({
-      filename: 'css/[name]-[chunkhash:8].css',
+      filename: devMode ? 'css/[name].css' : 'css/[name]-[chunkhash:8].css', // hmr不支持hash命名
       ignoreOrder: true, // 禁止检查顺序
     }),
   ],
@@ -108,6 +110,7 @@ const commonSet = {
       libs: `${srcPath}/libs`,
       util: `${srcPath}/libs/util`,
       config: path.resolve(__dirname, './config'),
+      // 'react-dom': '@hot-loader/react-dom',
     },
   },
 };

@@ -27,6 +27,7 @@ class Login extends Component {
     };
   }
   componentDidMount() {
+    console.log('加载了');
     let { password } = this.state;
     if (password) {
       this.props.form.validateFields(['password']);

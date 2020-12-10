@@ -1,11 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 // import Routes from './router/router';
 
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import routerArr from './router/allRouter';
 // import { renderRoutes } from 'react-router-config';
 import renderRoutes from './router/renderRoutes';
+
+//react-hot-loader
+// import { AppContainer } from 'react-hot-loader';
 
 const authed = false; // 如果登陆之后可以利用redux修改该值(关于redux不在我们这篇文章的讨论范围之内）
 const authPath = '/login'; // 默认未登录的时候返回的页面，可以自行设置
@@ -38,22 +41,49 @@ require('normalize.css');
 // 打印
 require('libs/util/print');
 
-class App extends React.Component {
-  render() {
-    return (
+// 模块热替换
+const App = {
+  run: function (renderRoute) {
+    render(
+      // <AppContainer>
       <PersistGate loading={null} persistor={persistor}>
         <Provider store={store}>
           <ConfigProvider locale={zh_CN}>
-            {/* <Routes /> */}
-            <HashRouter>
-              {renderRoutes(routerArr, authed, authPath)}
-              {/* <Switch>{renderRoutes(routerArr, authed, authPath)}</Switch> */}
-            </HashRouter>
+            <HashRouter>{renderRoute(routerArr, authed, authPath)}</HashRouter>
           </ConfigProvider>
         </Provider>
-      </PersistGate>
+      </PersistGate>,
+      // </AppContainer>,
+      document.getElementById('root')
     );
-  }
+  },
+};
+
+App.run(renderRoutes);
+
+if (module.hot) {
+  // module.hot.accept();
+  module.hot.accept('./router/allRouter', () => {
+    App.run(renderRoutes);
+  });
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// class App extends React.Component {
+//   render() {
+//     return (
+//       <PersistGate loading={null} persistor={persistor}>
+//         <Provider store={store}>
+//           <ConfigProvider locale={zh_CN}>
+//             {/* <Routes /> */}
+//             <HashRouter>
+//               {renderRoutes(routerArr, authed, authPath)}
+//               {/* <Switch>{renderRoutes(routerArr, authed, authPath)}</Switch> */}
+//             </HashRouter>
+//           </ConfigProvider>
+//         </Provider>
+//       </PersistGate>
+//     );
+//   }
+// }
+
+// ReactDOM.render(<App />, document.getElementById('root'));

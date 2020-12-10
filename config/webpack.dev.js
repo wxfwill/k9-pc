@@ -15,15 +15,16 @@ const config = {
     publicPath: '/',
   },
   mode: 'development',
-  devtool: 'eval-cheap-module-source-map',
+  devtool: 'eval-cheap-module-source-map', // 注意新旧名字的区别
   devServer: {
-    //浏览器自动刷新,需下载webpack-dev-server
-    // contentBase:path.join(__dirname, "../dist"),
-    overlay: true,
+    // contentBase:path.join(__dirname, "../dist"), //配置静态资源访问
+    overlay: true, // 展示错误
     port: 8001,
-    open: false,
+    open: false, // 打开默认浏览器
+    // inline: true, // 实时刷新
     // host:'0.0.0.0',
-    hot: true, //开启热更新
+    hot: true, //开启HMR
+    // hotOnly: true,
     // stats: "errors-only",
     // historyApiFallback: true,
     proxy: {
