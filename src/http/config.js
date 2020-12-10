@@ -1,7 +1,8 @@
+console.log(process.env.BASE_URL);
 export default {
   method: 'post',
   // 基础url前缀
-  baseUrl: config.localUrl,
+  baseUrl: process.env.BASE_URL,
   // 请求头信息
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',

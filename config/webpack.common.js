@@ -3,8 +3,10 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const srcPath = path.resolve(__dirname, '../src');
+require('./env-config');
 const devMode = process.env.NODE_ENV == 'development';
-console.log('当前打包环境===' + process.env.NODE_ENV);
+console.log('当前构建模式===' + process.env.NODE_ENV);
+console.log('当前打包环境===' + process.env.BASE_ENV);
 const commonSet = {
   entry: {
     main: ['babel-polyfill', './src/app.js'],
@@ -81,7 +83,7 @@ const commonSet = {
       title: 'k9 pc',
       template: './template/index.html',
       inject: true,
-      favicon: './template/one.jpg',
+      favicon: './src/images/logo.png',
     }), //自动生成html
     new webpack.ProvidePlugin({
       util: 'util',

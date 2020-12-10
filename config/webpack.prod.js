@@ -8,7 +8,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // 分析打包大小
 const BundleAnalyzerPplugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const isAnaly = process.env.NODE_ENV == 'analy';
+const isAnaly = process.env.BASE_ENV == 'analy';
 
 module.exports = merge(common, {
   mode: 'production',
@@ -17,7 +17,6 @@ module.exports = merge(common, {
     path: path.resolve(__dirname, '../dist'),
     publicPath: './',
   },
-  devtool: 'none',
   optimization: {
     splitChunks: {
       chunks: 'all', // 同步 异步 都采用代码分割
@@ -88,6 +87,10 @@ module.exports = merge(common, {
   plugins: [
     // 删除
     new CleanWebpackPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.BASE_URL': '"' + process.env.BASE_URL + '"',
+      'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV),
+    }),
     // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/),
   ],
