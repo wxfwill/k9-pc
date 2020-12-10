@@ -2,8 +2,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const commonSet = require('./webpack.common.js');
-const { apiUrl } = require('./config.js');
-console.log('apiUrl====' + apiUrl);
+// const { apiUrl } = require('./config.js');
 
 const config = {
   entry: {
@@ -29,7 +28,7 @@ const config = {
     // historyApiFallback: true,
     proxy: {
       '/api/*': {
-        target: apiUrl + '/',
+        target: 'http://172.16.121.137:8030/', // 开发环境
         changeOrigin: true,
         secure: true,
       },
@@ -76,7 +75,14 @@ const config = {
   },
   module: commonSet.module,
   plugins: [
+    // 热跟新
     new webpack.HotModuleReplacementPlugin(),
+    // 挂载全局变量
+    new webpack.DefinePlugin({
+      // 'process.env.BASE_URL': '"' + process.env.BASE_URL + '"',
+      'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
+      'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV),
+    }),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/),
   ].concat(commonSet.plugins),
   resolve: commonSet.resolve,

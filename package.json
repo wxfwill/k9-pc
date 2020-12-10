@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "set NODE_ENV=development&& webpack-dev-server --progress --open --config config/webpack.dev.js",
-    "test": "set NODE_ENV=test&& webpack --progress --config config/webpack.prod.js",
     "build": "set NODE_ENV=production&& webpack --progress --config config/webpack.prod.js",
-    "analy": "set NODE_ENV=analy&& webpack --progress --config config/webpack.prod.js"
+    "dev": "npm run start --[dev]",
+    "build:test": "npm run build --[test]",
+    "build:pro": "npm run build --[pro]",
+    "build:analy": "npm run build --[analy]"
   },
   "keywords": [],
   "author": "will",
