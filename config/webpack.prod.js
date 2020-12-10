@@ -17,6 +17,7 @@ module.exports = merge(common, {
     path: path.resolve(__dirname, '../dist'),
     publicPath: './',
   },
+  devtool: 'none',
   optimization: {
     splitChunks: {
       chunks: 'all', // 同步 异步 都采用代码分割
