@@ -27,7 +27,6 @@ class Login extends Component {
     };
   }
   componentDidMount() {
-    console.log('加载了');
     let { password } = this.state;
     if (password) {
       this.props.form.validateFields(['password']);
@@ -60,7 +59,7 @@ class Login extends Component {
         React.$ajax.login.postLogin({ k: encrypt, d: desEncrypt }).then((res) => {
           if (res && res.code == 0) {
             hide();
-            this.setState({ loading: false }, () => {
+            this.setState({ loginLoading: false }, () => {
               let { user, menuList, token } = res.data;
               let userJson = JSON.stringify(user);
               let munuJson = JSON.stringify(menuList);
@@ -79,6 +78,8 @@ class Login extends Component {
                 : localStorage.removeItem('username');
               remPwd ? localStorage.setItem('password', JSON.stringify(password)) : localStorage.removeItem('password');
             });
+          } else {
+            this.setState({ loginLoading: false });
           }
         });
       }

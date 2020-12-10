@@ -8,7 +8,6 @@ import FooterCard from './FooterCard';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
-const pandectPic = require('images/index.jpg');
 
 require('style/view/page/index.less');
 class IndexComponent extends Component {

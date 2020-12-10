@@ -1,175 +1,279 @@
-import React from 'react';
-import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
-import LoginComponent from 'pages/login/Login';
-//main
-import Main from 'pages/main/Main';
-
 import asyncComponent from './asyncComponent';
+
+// import LoginComponent from 'pages/login/Login';
+const LoginComponent = asyncComponent(() => import(/*webpackChunkName: 'LoginComponent'*/ 'pages/login/Login'));
+
+//main
+// import Main from 'pages/main/Main';
+const Main = asyncComponent(() => import(/*webpackChunkName: 'IndexComponent'*/ 'pages/main/Main'));
+
 // 首页
-import IndexComponent from 'pages/home/NewIndex';
+// import IndexComponent from 'pages/home/NewIndex';
+const IndexComponent = asyncComponent(() => import(/*webpackChunkName: 'IndexComponent'*/ 'pages/home/NewIndex'));
+
 // 承载路由
-import BearerRoute from 'pages/BearerRoute';
+// import BearerRoute from 'pages/BearerRoute';
+const BearerRoute = asyncComponent(() => import(/*webpackChunkName: 'IndexComponent'*/ 'pages/BearerRoute'));
 
 // 网格化搜捕
-const DutyComponent = asyncComponent(() => import('pages/monitoring/DutyComponent'));
-const Deploy = asyncComponent(() => import('pages/monitoring/Deploy'));
-const AddTask = asyncComponent(() => import('pages/monitoring/Deploy/add/AddTask'));
-const AddPatrols = asyncComponent(() => import('pages/monitoring/AddPatrols/AddTask'));
-const GridRaid = asyncComponent(() => import('pages/monitoring/GridRaid/GridRaid'));
-const GridRaidTaskList = asyncComponent(() => import('pages/monitoring/GridRaid/GridRaidTaskList'));
+const DutyComponent = asyncComponent(() => import(/*webpackChunkName: 'monitoring'*/ 'pages/monitoring/DutyComponent'));
+const Deploy = asyncComponent(() => import(/*webpackChunkName: 'monitoring'*/ 'pages/monitoring/Deploy'));
+const AddTask = asyncComponent(() => import(/*webpackChunkName: 'monitoring'*/ 'pages/monitoring/Deploy/add/AddTask'));
+const AddPatrols = asyncComponent(() =>
+  import(/*webpackChunkName: 'monitoring'*/ 'pages/monitoring/AddPatrols/AddTask')
+);
+const GridRaid = asyncComponent(() => import(/*webpackChunkName: 'monitoring'*/ 'pages/monitoring/GridRaid/GridRaid'));
+const GridRaidTaskList = asyncComponent(() =>
+  import(/*webpackChunkName: 'monitoring'*/ 'pages/monitoring/GridRaid/GridRaidTaskList')
+);
 
-const ViewGridRaidTask = asyncComponent(() => import('pages/monitoring/GridRaid/ViewGridRaidTask'));
-const ViewGridRaidRealTime = asyncComponent(() => import('pages/monitoring/GridRaid/ViewGridRaidRealTime'));
-const RoundsTrack = asyncComponent(() => import('pages/monitoring/RoundsTrack/RoundsTrack'));
+const ViewGridRaidTask = asyncComponent(() =>
+  import(/*webpackChunkName: 'monitoring'*/ 'pages/monitoring/GridRaid/ViewGridRaidTask')
+);
+const ViewGridRaidRealTime = asyncComponent(() =>
+  import(/*webpackChunkName: 'monitoring'*/ 'pages/monitoring/GridRaid/ViewGridRaidRealTime')
+);
+const RoundsTrack = asyncComponent(() =>
+  import(/*webpackChunkName: 'monitoring'*/ 'pages/monitoring/RoundsTrack/RoundsTrack')
+);
 
 // 科学训练
-const Pdogdrill = asyncComponent(() => import('pages/drill/Pdogdrill'));
-const Drillsub = asyncComponent(() => import('pages/drill/Drillsub'));
-const DrillPlan = asyncComponent(() => import('pages/drill/DrillPlan'));
-const AddPlan = asyncComponent(() => import('pages/drill/AddPlan'));
-const AddDrillsub = asyncComponent(() => import('pages/drill/AddDrillsub'));
-const Team = asyncComponent(() => import('pages/drill/Team'));
-const AddTeam = asyncComponent(() => import('pages/drill/AddTeam'));
+const Pdogdrill = asyncComponent(() => import(/*webpackChunkName: 'drill'*/ 'pages/drill/Pdogdrill'));
+const Drillsub = asyncComponent(() => import(/*webpackChunkName: 'drill'*/ 'pages/drill/Drillsub'));
+const DrillPlan = asyncComponent(() => import(/*webpackChunkName: 'drill'*/ 'pages/drill/DrillPlan'));
+const AddPlan = asyncComponent(() => import(/*webpackChunkName: 'drill'*/ 'pages/drill/AddPlan'));
+const AddDrillsub = asyncComponent(() => import(/*webpackChunkName: 'drill'*/ 'pages/drill/AddDrillsub'));
+const Team = asyncComponent(() => import(/*webpackChunkName: 'drill'*/ 'pages/drill/Team'));
+const AddTeam = asyncComponent(() => import(/*webpackChunkName: 'drill'*/ 'pages/drill/AddTeam'));
 
 // 日常养护
 //犬只管理
-const DogInfo = asyncComponent(() => import('pages/dogManage/dogInfor/DogInfo'));
+const DogInfo = asyncComponent(() => import(/*webpackChunkName: 'dogManage'*/ 'pages/dogManage/dogInfor/DogInfo'));
 //新增犬只
-const AddDog = asyncComponent(() => import('pages/dogManage/dogInfor/AddDogForm'));
-const DogInfoView = asyncComponent(() => import('pages/dogManage/dogInfor/DogInfoView'));
+const AddDog = asyncComponent(() => import(/*webpackChunkName: 'dogManage'*/ 'pages/dogManage/dogInfor/AddDogForm'));
+const DogInfoView = asyncComponent(() =>
+  import(/*webpackChunkName: 'dogManage'*/ 'pages/dogManage/dogInfor/DogInfoView')
+);
 //犬病防治数据展示
-const DogPrevention = asyncComponent(() => import('pages/dogManage/dogPrevention/DogPrevention'));
+const DogPrevention = asyncComponent(() =>
+  import(/*webpackChunkName: 'dogManage'*/ 'pages/dogManage/dogPrevention/DogPrevention')
+);
 //新增犬病防治
-const AddPrevention = asyncComponent(() => import('pages/dogManage/dogPrevention/AddPreventionForm'));
-const ExecutePlan = asyncComponent(() => import('pages/dogManage/dogPrevention/ExecutePlan'));
+const AddPrevention = asyncComponent(() =>
+  import(/*webpackChunkName: 'dogManage'*/ 'pages/dogManage/dogPrevention/AddPreventionForm')
+);
+const ExecutePlan = asyncComponent(() =>
+  import(/*webpackChunkName: 'dogManage'*/ 'pages/dogManage/dogPrevention/ExecutePlan')
+);
 //犬病治疗数据展示
-const DogCure = asyncComponent(() => import('pages/dogManage/dogCure/DogCure'));
+const DogCure = asyncComponent(() => import(/*webpackChunkName: 'dogManage'*/ 'pages/dogManage/dogCure/DogCure'));
 //新增犬病治疗
-const AddCure = asyncComponent(() => import('pages/dogManage/dogCure/AddCureForm'));
-const BreedInfo = asyncComponent(() => import('pages/dogManage/breed/BreedInfo'));
-const BreedAdd = asyncComponent(() => import('pages/dogManage/breed/BreedAdd'));
-const EditDogChildren = asyncComponent(() => import('pages/dogManage/breed/EditDogChildren'));
+const AddCure = asyncComponent(() => import(/*webpackChunkName: 'dogManage'*/ 'pages/dogManage/dogCure/AddCureForm'));
+const BreedInfo = asyncComponent(() => import(/*webpackChunkName: 'dogManage'*/ 'pages/dogManage/breed/BreedInfo'));
+const BreedAdd = asyncComponent(() => import(/*webpackChunkName: 'dogManage'*/ 'pages/dogManage/breed/BreedAdd'));
+const EditDogChildren = asyncComponent(() =>
+  import(/*webpackChunkName: 'dogManage'*/ 'pages/dogManage/breed/EditDogChildren')
+);
 
 //绩效考核
-const PerformanceInfo = asyncComponent(() => import('pages/performance/Info/index'));
-const PerformanceRule = asyncComponent(() => import('pages/performance/Rule/index'));
-const PerformanceRegister = asyncComponent(() => import('pages/performance/Register/index'));
+const PerformanceInfo = asyncComponent(() =>
+  import(/*webpackChunkName: 'performance'*/ 'pages/performance/Info/index')
+);
+const PerformanceRule = asyncComponent(() =>
+  import(/*webpackChunkName: 'performance'*/ 'pages/performance/Rule/index')
+);
+const PerformanceRegister = asyncComponent(() =>
+  import(/*webpackChunkName: 'performance'*/ 'pages/performance/Register/index')
+);
 
-const PerformanceDetail = asyncComponent(() => import('pages/performance/Register/RegisterDetail'));
-const PerformanceEdit = asyncComponent(() => import('pages/performance/Register/RegisterEdit'));
-const PerformanceAssessmentSetting = asyncComponent(() => import('pages/performance/AssessmentSetting/index'));
-// const PerformanceAssessmentDetail = asyncComponent(() => import('pages/performance/AssessmentSetting/detail'));
-const PerformanceAssessmentList = asyncComponent(() => import('pages/performance/AssessmentList/index'));
-const PerformanceAssessmentDetail = asyncComponent(() => import('pages/performance/AssessmentList/detail'));
-const PerformanceTitleSetting = asyncComponent(() => import('pages/performance/TitleSetting/index'));
+const PerformanceDetail = asyncComponent(() =>
+  import(/*webpackChunkName: 'performance'*/ 'pages/performance/Register/RegisterDetail')
+);
+const PerformanceEdit = asyncComponent(() =>
+  import(/*webpackChunkName: 'performance'*/ 'pages/performance/Register/RegisterEdit')
+);
+const PerformanceAssessmentSetting = asyncComponent(() =>
+  import(/*webpackChunkName: 'performance'*/ 'pages/performance/AssessmentSetting/index')
+);
+const PerformanceAssessmentList = asyncComponent(() =>
+  import(/*webpackChunkName: 'performance'*/ 'pages/performance/AssessmentList/index')
+);
+const PerformanceAssessmentDetail = asyncComponent(() =>
+  import(/*webpackChunkName: 'performance'*/ 'pages/performance/AssessmentList/detail')
+);
+const PerformanceTitleSetting = asyncComponent(() =>
+  import(/*webpackChunkName: 'performance'*/ 'pages/performance/TitleSetting/index')
+);
 
 // 智能排版
-const ScheduleManage = asyncComponent(() => import('pages/scheduleManage/ScheduleManage'));
-const SmartSchedule = asyncComponent(() => import('pages/scheduleManage/SmartSchedule'));
+const ScheduleManage = asyncComponent(() =>
+  import(/*webpackChunkName: 'scheduleManage'*/ 'pages/scheduleManage/ScheduleManage')
+);
+const SmartSchedule = asyncComponent(() =>
+  import(/*webpackChunkName: 'scheduleManage'*/ 'pages/scheduleManage/SmartSchedule')
+);
 //排班人员管理
-const GroupSchedule = asyncComponent(() => import('pages/scheduleManage/GroupSchedule'));
-const AddGropSchedule = asyncComponent(() => import('pages/scheduleManage/AddGropSchedule'));
+const GroupSchedule = asyncComponent(() =>
+  import(/*webpackChunkName: 'scheduleManage'*/ 'pages/scheduleManage/GroupSchedule')
+);
+const AddGropSchedule = asyncComponent(() =>
+  import(/*webpackChunkName: 'scheduleManage'*/ 'pages/scheduleManage/AddGropSchedule')
+);
 
 //考勤管理
-const HolidayList = asyncComponent(() => import('pages/holiday/HolidayList/index'));
-const AddHolidayList = asyncComponent(() => import('pages/holiday/HolidayList/AddHolidayList'));
-const Approval = asyncComponent(() => import('pages/holiday/Approval/index'));
-const ApprovalDetail = asyncComponent(() => import('pages/holiday/Approval/ApprovalDetail'));
+const HolidayList = asyncComponent(() => import(/*webpackChunkName: 'holiday'*/ 'pages/holiday/HolidayList/index'));
+const AddHolidayList = asyncComponent(() =>
+  import(/*webpackChunkName: 'holiday'*/ 'pages/holiday/HolidayList/AddHolidayList')
+);
+const Approval = asyncComponent(() => import(/*webpackChunkName: 'holiday'*/ 'pages/holiday/Approval/index'));
+const ApprovalDetail = asyncComponent(() =>
+  import(/*webpackChunkName: 'holiday'*/ 'pages/holiday/Approval/ApprovalDetail')
+);
 //点名
-const Call = asyncComponent(() => import('pages/holiday/Call/index'));
+const Call = asyncComponent(() => import(/*webpackChunkName: 'holiday'*/ 'pages/holiday/Call/index'));
 
 //基础数据 犬舍管理
-const RoomInfo = asyncComponent(() => import('pages/baseData/dogHouse/Room'));
-const RoomEdit = asyncComponent(() => import('pages/baseData/dogHouse/RoomEdit'));
+const RoomInfo = asyncComponent(() => import(/*webpackChunkName: 'baseData'*/ 'pages/baseData/dogHouse/Room'));
+const RoomEdit = asyncComponent(() => import(/*webpackChunkName: 'baseData'*/ 'pages/baseData/dogHouse/RoomEdit'));
 //基础数据 智能颈环
-const Bracelet = asyncComponent(() => import('pages/baseData/bracelet/Bracelet'));
-const BraceletEdit = asyncComponent(() => import('pages/baseData/bracelet/BraceletEdit'));
+const Bracelet = asyncComponent(() => import(/*webpackChunkName: 'baseData'*/ 'pages/baseData/bracelet/Bracelet'));
+const BraceletEdit = asyncComponent(() =>
+  import(/*webpackChunkName: 'baseData'*/ 'pages/baseData/bracelet/BraceletEdit')
+);
 
 //新版本--用户管理
 
 // 用户列表
-const UserInfo = asyncComponent(() => import('pages/userManage/user/UserInfo'));
-const AddUser = asyncComponent(() => import('pages/userManage/user/addUserForm'));
+const UserInfo = asyncComponent(() => import(/*webpackChunkName: 'user'*/ 'pages/userManage/user/UserInfo'));
+const AddUser = asyncComponent(() => import(/*webpackChunkName: 'user'*/ 'pages/userManage/user/addUserForm'));
 // 角色列表
-const RoleInfo = asyncComponent(() => import('pages/userManage/role/List'));
+const RoleInfo = asyncComponent(() => import(/*webpackChunkName: 'user'*/ 'pages/userManage/role/List'));
 // 菜单维护
-const MenuInfo = asyncComponent(() => import('pages/userManage/menu/index'));
+const MenuInfo = asyncComponent(() => import(/*webpackChunkName: 'user'*/ 'pages/userManage/menu/index'));
 // 机构列表
-const OrganList = asyncComponent(() => import('pages/userManage/organ/index'));
+const OrganList = asyncComponent(() => import(/*webpackChunkName: 'user'*/ 'pages/userManage/organ/index'));
 
 // 新版--上报统计
 // 上报
-const FourReport = asyncComponent(() => import('pages/reportManage/FourReport/index'));
+const FourReport = asyncComponent(() =>
+  import(/*webpackChunkName: 'reportManage'*/ 'pages/reportManage/FourReport/index')
+);
 // 工作用车信息查询
-const FourReportListSearch = asyncComponent(() => import('pages/reportManage/FourReportListSearch/index'));
+const FourReportListSearch = asyncComponent(() =>
+  import(/*webpackChunkName: 'reportManage'*/ 'pages/reportManage/FourReportListSearch/index')
+);
 // 出勤用车
-const AttendanceCar = asyncComponent(() => import('pages/reportManage/AttendanceCar/index'));
+const AttendanceCar = asyncComponent(() =>
+  import(/*webpackChunkName: 'reportManage'*/ 'pages/reportManage/AttendanceCar/index')
+);
 // 其他事物上报
-const OtherThingsReport = asyncComponent(() => import('pages/reportManage/OtherThingsReport/index'));
+const OtherThingsReport = asyncComponent(() =>
+  import(/*webpackChunkName: 'reportManage'*/ 'pages/reportManage/OtherThingsReport/index')
+);
 // 中队统计
-const TeamWorkStatist = asyncComponent(() => import('pages/reportManage/TeamWorkStatist'));
-const TeamWorkStatistDetal = asyncComponent(() => import('pages/reportManage/TeamWorkStatist/DetalList'));
+const TeamWorkStatist = asyncComponent(() =>
+  import(/*webpackChunkName: 'reportManage'*/ 'pages/reportManage/TeamWorkStatist')
+);
+const TeamWorkStatistDetal = asyncComponent(() =>
+  import(/*webpackChunkName: 'reportManage'*/ 'pages/reportManage/TeamWorkStatist/DetalList')
+);
 // 个人统计
-const OwnWorkStatise = asyncComponent(() => import('pages/reportManage/OwnWorkStatise'));
-const OwnWorkStatiseDetal = asyncComponent(() => import('pages/reportManage/OwnWorkStatise/TaskDetalList'));
+const OwnWorkStatise = asyncComponent(() =>
+  import(/*webpackChunkName: 'reportManage'*/ 'pages/reportManage/OwnWorkStatise')
+);
+const OwnWorkStatiseDetal = asyncComponent(() =>
+  import(/*webpackChunkName: 'reportManage'*/ 'pages/reportManage/OwnWorkStatise/TaskDetalList')
+);
 
 //导入4W报备
-const ImportFile = asyncComponent(() => import('pages/reportManage/ImportFile'));
+const ImportFile = asyncComponent(() => import(/*webpackChunkName: 'reportManage'*/ 'pages/reportManage/ImportFile'));
 //日报信息查询
-const DailyInformation = asyncComponent(() => import('pages/reportManage/DailyInformation'));
+const DailyInformation = asyncComponent(() =>
+  import(/*webpackChunkName: 'reportManage'*/ 'pages/reportManage/DailyInformation')
+);
 //请假/离深/补休信息查询
-const LeaveInformation = asyncComponent(() => import('pages/reportManage/LeaveInformation'));
+const LeaveInformation = asyncComponent(() =>
+  import(/*webpackChunkName: 'reportManage'*/ 'pages/reportManage/LeaveInformation')
+);
 //加班/夜班信息查询
-const OvertimeInformation = asyncComponent(() => import('pages/reportManage/OvertimeInformation'));
+const OvertimeInformation = asyncComponent(() =>
+  import(/*webpackChunkName: 'reportManage'*/ 'pages/reportManage/OvertimeInformation')
+);
 //奖励信息查询
-const AwardInformation = asyncComponent(() => import('pages/reportManage/AwardInformation'));
+const AwardInformation = asyncComponent(() =>
+  import(/*webpackChunkName: 'reportManage'*/ 'pages/reportManage/AwardInformation')
+);
 
-const Officer = asyncComponent(() => import('components/view/assess/Officer'));
-const DogFeed = asyncComponent(() => import('components/view/dog/DogFeed'));
-const DeviceInforList = asyncComponent(() => import('components/view/deviceManage/DeviceInforList'));
-const TestMap = asyncComponent(() => import('components/view/test/TestMap'));
-const Attend = asyncComponent(() => import('components/view/attend/Attend'));
+const Officer = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/view/assess/Officer'));
+const DogFeed = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/view/dog/DogFeed'));
+const DeviceInforList = asyncComponent(() =>
+  import(/*webpackChunkName: 'components'*/ 'components/view/deviceManage/DeviceInforList')
+);
+const TestMap = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/view/test/TestMap'));
+const Attend = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/view/attend/Attend'));
 
-const PerformanceAppraisal = asyncComponent(() => import('components/admin/performanceAppraisal/Performance'));
+const PerformanceAppraisal = asyncComponent(() =>
+  import(/*webpackChunkName: 'components'*/ 'components/admin/performanceAppraisal/Performance')
+);
 const PerformanceDetailTable = asyncComponent(() =>
-  import('components/admin/tables/performanceAppraisal/PerformanceDetailTable')
+  import(/*webpackChunkName: 'components'*/ 'components/admin/tables/performanceAppraisal/PerformanceDetailTable')
 );
 
 // 犬舍监控信息卡片列表
-const MonitorDogInfoList = asyncComponent(() => import('components/admin/monitordog/MonitorDogInfoList/index'));
+const MonitorDogInfoList = asyncComponent(() =>
+  import(/*webpackChunkName: 'components'*/ 'components/admin/monitordog/MonitorDogInfoList/index')
+);
 
 //查看/编辑犬病防治
-const ViewPrevention = asyncComponent(() => import('components/admin/tables/DogManage/PreventionDetailTable'));
+const ViewPrevention = asyncComponent(() =>
+  import(/*webpackChunkName: 'components'*/ 'components/admin/tables/DogManage/PreventionDetailTable')
+);
 
 // 视频管理
-const Video = asyncComponent(() => import('components/admin/video/Video'));
-const VideoInfo = asyncComponent(() => import('components/admin/video/VideoInfo'));
-const AddVideo = asyncComponent(() => import('components/admin/video/addVideo'));
+const Video = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/admin/video/Video'));
+const VideoInfo = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/admin/video/VideoInfo'));
+const AddVideo = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/admin/video/addVideo'));
 
 // 场地管理
-const TrainPlace = asyncComponent(() => import('components/admin/trainPlace/TrainPlace'));
-const TrainPlaceEdit = asyncComponent(() => import('components/admin/trainPlace/TrainPlaceEdit'));
+const TrainPlace = asyncComponent(() =>
+  import(/*webpackChunkName: 'components'*/ 'components/admin/trainPlace/TrainPlace')
+);
+const TrainPlaceEdit = asyncComponent(() =>
+  import(/*webpackChunkName: 'components'*/ 'components/admin/trainPlace/TrainPlaceEdit')
+);
 
 // UWB
-const Uwb = asyncComponent(() => import('components/admin/uwb/Uwb'));
-const UwbEdit = asyncComponent(() => import('components/admin/uwb/UwbEdit'));
+const Uwb = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/admin/uwb/Uwb'));
+const UwbEdit = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/admin/uwb/UwbEdit'));
 // 犬只健康
-const Doghealth = asyncComponent(() => import('components/view/dog/DogHealth'));
-const CarList = asyncComponent(() => import('components/admin/cardInfo/CarInfo'));
-const EnterInfoList = asyncComponent(() => import('components/admin/cardInfo/EnterInfoList'));
-const OutList = asyncComponent(() => import('components/admin/cardInfo/OutList'));
-const AddCar = asyncComponent(() => import('components/admin/cardInfo/AddCar'));
-const Goods = asyncComponent(() => import('components/admin/goods/Goods'));
-const AddGoods = asyncComponent(() => import('components/admin/goods/AddGoods'));
-const EsayTask = asyncComponent(() => import('components/admin/monitordog/EsayTask/index'));
-const LeaveCheck = asyncComponent(() => import('components/admin/monitordog/LeaveCheck/index'));
-const EsayTaskAdd = asyncComponent(() => import('components/admin/monitordog/EsayTask/EsayTaskAdd'));
-const Assemble = asyncComponent(() => import('components/admin/monitordog/assemble/index'));
-const AssembleAdd = asyncComponent(() => import('components/admin/monitordog/assemble/AssembleAdd'));
+const Doghealth = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/view/dog/DogHealth'));
+const CarList = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/admin/cardInfo/CarInfo'));
+const EnterInfoList = asyncComponent(() =>
+  import(/*webpackChunkName: 'components'*/ 'components/admin/cardInfo/EnterInfoList')
+);
+const OutList = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/admin/cardInfo/OutList'));
+const AddCar = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/admin/cardInfo/AddCar'));
+const Goods = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/admin/goods/Goods'));
+const AddGoods = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/admin/goods/AddGoods'));
+const EsayTask = asyncComponent(() =>
+  import(/*webpackChunkName: 'components'*/ 'components/admin/monitordog/EsayTask/index')
+);
+const LeaveCheck = asyncComponent(() =>
+  import(/*webpackChunkName: 'components'*/ 'components/admin/monitordog/LeaveCheck/index')
+);
+const EsayTaskAdd = asyncComponent(() =>
+  import(/*webpackChunkName: 'components'*/ 'components/admin/monitordog/EsayTask/EsayTaskAdd')
+);
+const Assemble = asyncComponent(() =>
+  import(/*webpackChunkName: 'components'*/ 'components/admin/monitordog/assemble/index')
+);
+const AssembleAdd = asyncComponent(() =>
+  import(/*webpackChunkName: 'components'*/ 'components/admin/monitordog/assemble/AssembleAdd')
+);
 
 // 档案管理
-const Archivew = asyncComponent(() => import('pages/archives/index'));
-const ArchivewList = asyncComponent(() => import('pages/archives/List'));
+const Archivew = asyncComponent(() => import(/*webpackChunkName: 'archives'*/ 'pages/archives/index'));
+const ArchivewList = asyncComponent(() => import(/*webpackChunkName: 'archives'*/ 'pages/archives/List'));
 
 const routerArr = [
   {
