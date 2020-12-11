@@ -145,6 +145,18 @@ class Archivew extends Component {
     };
     return React.$ajax.postData('/api/report/pageDocDailyWork', reqObj);
   };
+  //考勤管理
+  pageDocClock = (startDate, endDate, userId) => {
+    const reqObj = {
+      ignorePageRequest: true, //是否忽略分页请求
+      param: {
+        startDate: startDate, //开始时间
+        endDate: endDate, //结束时间
+        userIds: [userId], //用户ID
+      },
+    };
+    return React.$ajax.postData('/api/work-wx-sp/pageDocClock', reqObj);
+  };
   //获取请假/离深/补休
   exportLeaveAfterSyncInfo = (startDate, endDate, userId) => {
     const reqObj = {
@@ -276,13 +288,7 @@ class Archivew extends Component {
       DocAttendanceCar = [], //出勤用车
       RewardSyncList = [], //奖励事项
       DocDailyWork = [], //日报信息
-      AttendanceInfo = [
-        {
-          bookName: '考勤管理',
-          noData: true,
-          $indexes: true,
-        },
-      ], //考勤管理
+      AttendanceInfo = [], //考勤管理
       LeaveAfterSyncInfo = [], //请假/离深/补休
       DogFoodInfo = [], //犬粮申请
       AidRecipientsInfo = [], //通用物资领用
@@ -301,6 +307,7 @@ class Archivew extends Component {
       this.pageDocAttendanceCar(startDate, endDate, userId), //获取出勤用车信息
       this.getRewardSyncList(startDate, endDate, userId), //获取奖励详情列表
       this.pageDocDailyWork(startDate, endDate, userId), //获取日报信息
+      this.pageDocClock(startDate, endDate, userId), //考勤管理
       this.exportLeaveAfterSyncInfo(startDate, endDate, userId), //获取请假/离深/补休
       this.AidRecipientsList(startDate, endDate, userId), // 通用物资领取
       this.KitchenMaterialList(startDate, endDate, userId), // 厨房物资领取
@@ -333,33 +340,36 @@ class Archivew extends Component {
                 DocDailyWork = getSingle(resObj.data.list, '日报信息');
                 break;
               case 5:
-                LeaveAfterSyncInfo = getSingle(resObj.data.list, '请假/离深/补休');
+                AttendanceInfo = getSingle(resObj.data.list, '考勤管理');
                 break;
               case 6:
-                AidRecipientsInfo = getSingle(resObj.data.list, '通用物资领用');
+                LeaveAfterSyncInfo = getSingle(resObj.data.list, '请假/离深/补休');
                 break;
               case 7:
-                KitchenMaterialArr = getSingle(resObj.data.list, '厨房物资领用');
+                AidRecipientsInfo = getSingle(resObj.data.list, '通用物资领用');
                 break;
               case 8:
-                ClinicMaterialArr = getSingle(resObj.data.list, '诊疗点物资领用');
+                KitchenMaterialArr = getSingle(resObj.data.list, '厨房物资领用');
                 break;
               case 9:
-                ElectricGunArr = getSingle(resObj.data.list, '值班室电击枪领用');
+                ClinicMaterialArr = getSingle(resObj.data.list, '诊疗点物资领用');
                 break;
               case 10:
-                WalkieTalkieMaterialArr = getSingle(resObj.data.list, '值班室对讲机领用');
+                ElectricGunArr = getSingle(resObj.data.list, '值班室电击枪领用');
                 break;
               case 11:
-                DogFoodInfo = getSingle(resObj.data.list, '犬粮申请');
+                WalkieTalkieMaterialArr = getSingle(resObj.data.list, '值班室对讲机领用');
                 break;
               case 12:
-                GetMaskInfo = getSingle(resObj.data.list, '口罩领用');
+                DogFoodInfo = getSingle(resObj.data.list, '犬粮申请');
                 break;
               case 13:
-                DogTransferInfoArr = getSingle(resObj.data.list, '犬只调动审批');
+                GetMaskInfo = getSingle(resObj.data.list, '口罩领用');
                 break;
               case 14:
+                DogTransferInfoArr = getSingle(resObj.data.list, '犬只调动审批');
+                break;
+              case 15:
                 MonitoringViewInfoArr = getSingle(resObj.data.list, '监控查看申请');
                 break;
             }
@@ -595,10 +605,13 @@ class Archivew extends Component {
                             <div
                               key={i}
                               className="pic"
+                              // style={{
+                              //   transform: `translateX(${(2 * index + i) / 50}px) translateZ(${
+                              //     (2 * index + i) / 50
+                              //   }px)`,
+                              // }}
                               style={{
-                                transform: `translateX(${(2 * index + i) / 50}px) translateZ(${
-                                  (2 * index + i) / 50
-                                }px)`,
+                                transform: `translateZ(${(2 * index + i) / 50}px)`,
                               }}
                               onClick={() => {
                                 this.getPage(i);

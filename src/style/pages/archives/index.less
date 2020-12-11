@@ -74,8 +74,9 @@
           transition: all 1s linear;
           transform-style: preserve-3d;
           left: 50%;
+          transform-origin: left center 1px;
           &.page-left {
-            transform-origin: left center;
+            //transform-origin: left center;
             transform: perspective(8000px) rotateY(0deg);
             .pic:first-child .pic-list {
               transform: rotateY(180deg);
@@ -91,7 +92,7 @@
             }
           }
           &.page-right {
-            transform-origin: left center;
+            //transform-origin: left center;
             transform: perspective(8000px) rotateY(180deg);
             .pic-list {
               transform: rotateY(180deg);

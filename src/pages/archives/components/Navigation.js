@@ -7,7 +7,7 @@ class Navigation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isShow: true,
+      isShow: false,
       opacity: 0,
     };
   }
