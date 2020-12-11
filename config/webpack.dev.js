@@ -2,12 +2,12 @@
 const path = require('path');
 const webpack = require('webpack');
 const commonSet = require('./webpack.common.js');
-// const { apiUrl } = require('./config.js');
 
 const config = {
   entry: {
     main: ['babel-polyfill', './src/app.js'],
   },
+  // target: ['web', 'es5'],
   output: {
     filename: 'assets/js/[name].js',
     path: path.resolve(__dirname, '../dist'),
@@ -44,8 +44,8 @@ const config = {
     splitChunks: {
       chunks: 'all', // 同步 异步 都采用代码分割
       minSize: 30000, // 30kib 引入的库大于 30000  才会做代码分割
-      minChunks: 1, // 当某个模块至少被引用1次时，才做代码分割
-      maxAsyncRequests: 5, // 同时加载模块的个数
+      minChunks: 3, // 当某个模块至少被引用1次时，才做代码分割
+      maxAsyncRequests: 15, // 按需加载模块最大并行请求数
       maxInitialRequests: 5, //首页入口文件 最多同时加载3个
       automaticNameDelimiter: '~', // 连接符
       name: 'common',
@@ -63,12 +63,12 @@ const config = {
         vendors: {
           test: /[\\/]node_modules[\\/]/, // 同步 引入的库是否在 node_modules中
           priority: -10, // 值越大，优先级就越高
-          // filename: 'vendors.js' // 放开报错，原因未知
+          name: 'vendors',
         },
         default: {
           priority: -20,
           reuseExistingChunk: true, // 当一个模块之前引用过，再次使用时可以直接复用
-          // filename: 'common.js'
+          name: 'default',
         },
       },
     },
@@ -79,7 +79,6 @@ const config = {
     new webpack.HotModuleReplacementPlugin(),
     // 挂载全局变量
     new webpack.DefinePlugin({
-      // 'process.env.BASE_URL': '"' + process.env.BASE_URL + '"',
       'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
       'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV),
     }),

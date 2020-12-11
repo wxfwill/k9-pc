@@ -3,13 +3,17 @@ import { Form, Row, Col, Input, Button, Select } from 'antd';
 import { thirdLayout } from 'util/Layout';
 import { connect } from 'react-redux';
 import * as formData from 'pages/userManage/user/userData';
+import { saveDutyList } from 'store/actions/userAction';
 // import GlobalTeam from 'components/searchForm/GlobalTeam';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 require('style/view/common/conduct.less');
 
-@connect((state) => ({ navData: state.commonReducer.navData }))
+@connect(
+  (state) => ({ navData: state.commonReducer.navData }),
+  (dispatch) => ({ getDutyList: (list) => dispatch(saveDutyList(list)) })
+)
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +27,7 @@ class SearchForm extends Component {
     React.$ajax.postData('/api/basicData/dutyList').then((res) => {
       if (res.code == 0) {
         this.setState({ dutyList: res.data });
+        this.props.getDutyList(res.data);
       }
     });
   }

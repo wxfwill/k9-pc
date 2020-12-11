@@ -4,6 +4,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const srcPath = path.resolve(__dirname, '../src');
 require('./env-config');
+function resolve(dir) {
+  return path.join(__dirname, '..', dir);
+}
 const devMode = process.env.NODE_ENV == 'development';
 console.log('当前构建模式===' + process.env.NODE_ENV);
 console.log('当前打包环境===' + process.env.BASE_ENV);
@@ -23,7 +26,14 @@ const commonSet = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: 'babel-loader',
+        use: {
+          loader: 'babel-loader',
+        },
+        // include: [
+        //   resolve('src'),
+        //   resolve('node_modules/webpack'),
+        //   resolve('node_modules/babel-plugin-transform-runtime'),
+        // ],
         // exclude: path.resolve(__dirname, '../node_modules'),
       },
       {
@@ -36,6 +46,14 @@ const commonSet = {
             },
           },
           'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: ['autoprefixer'],
+              },
+            },
+          },
           'less-loader',
         ],
       },
