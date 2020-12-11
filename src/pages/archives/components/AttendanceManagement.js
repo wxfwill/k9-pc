@@ -87,7 +87,11 @@ class AttendanceManagement extends Component {
                           ? punchIn.exceptionType
                           : punchIn.checkinDate &&
                             util.formatDate(new Date(punchIn.checkinDate), 'yyyy-MM-dd  hh:mm:ss')}
-                        <span style={{ marginLeft: 6, whiteSpace: 'nowrap' }}>{punchIn.clockType}</span>
+                        {punchIn.clockType && punchIn.clockType === '旷工' ? (
+                          ''
+                        ) : (
+                          <span style={{ marginLeft: 6, whiteSpace: 'nowrap' }}>{punchIn.clockType}</span>
+                        )}
                       </td>
                       <th>下班（{util.formatDate(new Date(detailInfor.offWorkDate), 'hh:mm')}）</th>
                       <td style={clockOut.clockType != '正常' ? { color: 'red' } : {}}>
@@ -95,7 +99,11 @@ class AttendanceManagement extends Component {
                           ? clockOut.exceptionType
                           : clockOut.checkinDate &&
                             util.formatDate(new Date(clockOut.checkinDate), 'yyyy-MM-dd  hh:mm:ss')}
-                        <span style={{ marginLeft: 6, whiteSpace: 'nowrap' }}>{clockOut.clockType}</span>
+                        {clockOut.clockType && clockOut.clockType === '旷工' ? (
+                          ''
+                        ) : (
+                          <span style={{ marginLeft: 6, whiteSpace: 'nowrap' }}>{clockOut.clockType}</span>
+                        )}
                       </td>
                     </tr>
                   </tbody>

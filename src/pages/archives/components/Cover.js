@@ -10,7 +10,7 @@ class Cover extends Component {
   }
   componentDidMount() {
     this.props.userId &&
-      React.$ajax.postData('/api/user/info', { id: this.props.userId }).then((res) => {
+      React.$ajax.getData('/api/user/queryUserInfoByUserId', { userId: this.props.userId }).then((res) => {
         if (res.code == 0) {
           this.setState({
             userInfor: res.data,

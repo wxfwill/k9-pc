@@ -152,7 +152,7 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userIds: [userId], //用户ID
+        userId: userId, //用户ID
       },
     };
     return React.$ajax.postData('/api/work-wx-sp/pageDocClock', reqObj);
