@@ -395,7 +395,8 @@ class NewIndex extends Component {
 
   getTeamData = () => {
     React.$ajax.home.listTrainerRank().then((res) => {
-      this.setState({ rankData: res.data });
+      let resData = res.data ? res.data : [];
+      this.setState({ rankData: resData });
     });
   };
   // /api/train/getTrainSituation

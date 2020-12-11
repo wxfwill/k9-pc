@@ -23,36 +23,37 @@ class FormCompomnent extends React.Component {
       imageUrl: '',
       userId: '',
       disabled: false,
-      userInfor: '',
       previewVisible: false,
       previewImage: '',
       showImgUrl: '',
-      name: undefined, // 姓名
-      identityNo: undefined, // 身份证
-      sex: null, // 性别
-      birthday: null, // 出生日期
-      nation: undefined, // 名族
-      birthplace: undefined, // 籍贯
-      politicsStatus: undefined, // 政治面貌
-      university: undefined, // 毕业院校
-      dutyType: undefined, // 身份类别
-      degree: undefined, // 学历
-      incumbent: null, // 是否在职
-      major: undefined, // 专业
-      duty: undefined, // 职务
-      credentials: undefined, // 资格证书
-      title: undefined, // 职称
-      certificateNo: undefined, // 证书编号
-      unitId: undefined, // 工作单位
-      telphone: undefined, // 电话
-      number: undefined, // 警员编号
-      groupId: undefined, // 所属中队
-      role: undefined, // 角色
-      remark: undefined, // 个人履历
+      formDataEle: {
+        name: undefined, // 姓名
+        identityNo: undefined, // 身份证
+        sex: null, // 性别
+        birthday: null, // 出生日期
+        nation: undefined, // 名族
+        birthplace: undefined, // 籍贯
+        politicsStatus: undefined, // 政治面貌
+        university: undefined, // 毕业院校
+        dutyType: undefined, // 身份类别
+        degree: undefined, // 学历
+        incumbent: null, // 是否在职
+        major: undefined, // 专业
+        duty: undefined, // 职务
+        credentials: undefined, // 资格证书
+        title: undefined, // 职称
+        certificateNo: undefined, // 证书编号
+        unitId: undefined, // 工作单位
+        telphone: undefined, // 电话
+        number: undefined, // 警员编号
+        groupId: undefined, // 所属中队
+        role: undefined, // 角色
+        remark: undefined, // 个人履历
+        workWxUserId: null, // 企业微信号
+      },
     };
   }
   componentWillMount() {
-    // console.log(this.props.dutyList);
     //工作单位
     React.$ajax.postData('/api/basicData/workUnitList').then((res) => {
       if (res.code == 0) {
@@ -87,16 +88,24 @@ class FormCompomnent extends React.Component {
       this.setState({ disabled: false });
     }
   }
+  handleReset = () => {
+    this.props.history.goBack();
+  };
   handleCancel = () => this.setState({ previewVisible: false });
   getDetal = (userId) => {
-    React.$ajax.postData('/api/user/info', { id: userId }).then((res) => {
+    React.$ajax.getData('/api/user/queryUserInfoByUserId', { userId }).then((res) => {
       if (res.code == 0) {
         let resData = res.data;
-        // this.setState({ userInfor: res.data });
         console.log('res.data');
         console.log(res.data);
-        let { name, duty, groupId, incumbent, number, remark, role, telphone, unitId } = resData;
-        this.setState({ name, duty, groupId, incumbent, number, remark, role, telphone, unitId });
+        resData.birthday = resData.birthday ? moment(resData.birthday) : null;
+        for (let key in resData) {
+          if (key != 'birthday' && !resData[key]) {
+            resData[key] = undefined;
+          }
+        }
+        let obj = Object.assign({}, this.state.formDataEle, resData);
+        this.setState({ formDataEle: obj });
       }
     });
   };
@@ -136,35 +145,21 @@ class FormCompomnent extends React.Component {
   };
   //检查警员编号是否重复
   checkNumber = (rule, value, callback) => {
-    const numberValue = this.props.form.getFieldValue('number');
-    const { userInfor, isInitialValue } = this.state;
-    let param = new FormData();
-    const userNumber = userInfor && userInfor.number;
-    let configs = {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    };
-    param.append('number', value);
     const re = /^[A-Za-z\d]{1,20}$/;
-    if (re.test(value)) {
-      React.$ajax.formDataPost('/api/user/isNotExistence', param, 'multipart/form-data').then((res) => {
-        if (!res.data && userNumber != value) {
+    if (value && re.test(value)) {
+      React.$ajax.getData('/api/user/isNotExistence', { number: value }).then((res) => {
+        if (!res.data && this.props.userInfo.account == value) {
           callback('警员编号重复');
         } else {
           callback();
         }
       });
     } else {
-      if (value == '') {
-        callback();
-      } else {
-        callback('警员编号不能为空且长度不超过20的数字或字母');
-      }
+      value ? callback('警员编号不能为空且长度不超过20的数字或字母') : callback();
     }
   };
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(this.props.userInfo);
-    console.log('this.props.userInfo');
     let { userId } = this.state;
     let userInfo = this.props.userInfo;
     const successMess = userId ? '修改成功' : '添加成功';
@@ -172,7 +167,7 @@ class FormCompomnent extends React.Component {
       if (!err) {
         values.birthday = values.birthday ? moment(values.birthday).format('x') : null;
         let obj = Object.assign({}, values, { id: userId, userId: userInfo.id.toString() });
-        React.$ajax.postData('/api/user/saveInfo', obj).then((res) => {
+        React.$ajax.postData('/api/user/createUser', obj).then((res) => {
           if (res && res.code == 0) {
             this.props.history.push('/app/user/info/list');
             message.success(successMess);
@@ -227,12 +222,12 @@ class FormCompomnent extends React.Component {
   // };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const {
+    let {
       showImgUrl,
       previewVisible,
       previewImage,
       fileList,
-      imageUrl,
+      formDataEle,
       disabled,
       workUnitList,
       roleList,
@@ -259,7 +254,7 @@ class FormCompomnent extends React.Component {
                             { required: true, message: '请输入姓名' },
                             { max: 10, message: '姓名长度不超过10' },
                           ],
-                          initialValue: this.state.name,
+                          initialValue: formDataEle.name,
                         })(<Input placeholder="警员姓名" autoComplete="off" disabled={disabled} allowClear />)}
                       </FormItem>
                     </Col>
@@ -283,7 +278,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="性别" {...secondLayout}>
                         {getFieldDecorator('sex', {
                           //rules: [{ required: true, message: '请选择性别' }],
-                          initialValue: this.state.sex,
+                          initialValue: formDataEle.sex,
                         })(
                           <RadioGroup disabled={disabled}>
                             <Radio value={1}>男</Radio>
@@ -296,7 +291,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="出生日期" {...secondLayout}>
                         {getFieldDecorator('birthday', {
                           //rules:[{required:true,message:'请选择出生日期'}],
-                          initialValue: this.state.birthday,
+                          initialValue: formDataEle.birthday,
                         })(<DatePicker disabled={disabled} style={{ width: '100%' }} />)}
                       </FormItem>
                     </Col>
@@ -307,7 +302,7 @@ class FormCompomnent extends React.Component {
                         {getFieldDecorator('nation', {
                           //rules: [{ required: true, message: '请输入民族' }],
                           rules: [{ max: 10, message: '民族长度不超过10' }],
-                          initialValue: this.state.birthday,
+                          initialValue: formDataEle.nation,
                         })(<Input placeholder="民族" autoComplete="off" disabled={disabled} allowClear />)}
                       </FormItem>
                     </Col>
@@ -326,7 +321,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="政治面貌" {...secondLayout}>
                         {getFieldDecorator('politicsStatus', {
                           //rules: [{ required: true, message: '请选择政治面貌' }],
-                          initialValue: this.state.politicsStatus,
+                          initialValue: formDataEle.politicsStatus,
                         })(
                           <Select
                             disabled={disabled}
@@ -334,13 +329,14 @@ class FormCompomnent extends React.Component {
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
                             allowClear
                           >
-                            {formData.politicsStatusArr.map((item, index) => {
-                              return (
-                                <Option value={item.id} key={index}>
-                                  {item.name}
-                                </Option>
-                              );
-                            })}
+                            {formData &&
+                              formData.politicsStatusArr.map((item, index) => {
+                                return (
+                                  <Option value={item.id} key={index}>
+                                    {item.name}
+                                  </Option>
+                                );
+                              })}
                           </Select>
                         )}
                       </FormItem>
@@ -350,7 +346,7 @@ class FormCompomnent extends React.Component {
                         {getFieldDecorator('university', {
                           //rules:[{required:true,message:'请输入毕业院校'}],
                           rules: [{ max: 25, message: '籍贯长度不超过25' }],
-                          initialValue: this.state.university,
+                          initialValue: formDataEle.university,
                         })(<Input placeholder="毕业院校" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -360,7 +356,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="身份类别" {...secondLayout}>
                         {getFieldDecorator('dutyType', {
                           //rules: [{ required: true, message: '请选择身份类别' }],
-                          initialValue: this.state.dutyType,
+                          initialValue: formDataEle.dutyType,
                         })(
                           <Select
                             disabled={disabled}
@@ -383,7 +379,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="学历" {...secondLayout}>
                         {getFieldDecorator('degree', {
                           //rules:[{required:true,message:'请选择学历'}],
-                          initialValue: this.state.degree,
+                          initialValue: formDataEle.degree,
                         })(
                           <Select
                             disabled={disabled}
@@ -408,7 +404,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="是否在职" {...secondLayout}>
                         {getFieldDecorator('incumbent', {
                           //rules: [{ required: true, message: '是否在职' }],
-                          initialValue: this.state.incumbent,
+                          initialValue: formDataEle.incumbent,
                         })(
                           <RadioGroup disabled={disabled}>
                             <Radio value={0}>离职</Radio>
@@ -421,7 +417,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="专业" {...secondLayout}>
                         {getFieldDecorator('major', {
                           //rules:[{required:true,message:'请选择专业'}],
-                          initialValue: this.state.major,
+                          initialValue: formDataEle.major,
                         })(
                           <Select
                             disabled={disabled}
@@ -446,7 +442,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="职务" {...secondLayout}>
                         {getFieldDecorator('duty', {
                           //rules: [{ required: true, message: '请选择职务' }],
-                          initialValue: this.state.duty,
+                          initialValue: formDataEle.duty,
                         })(
                           <Select
                             disabled={disabled}
@@ -470,7 +466,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="资格证书" {...secondLayout}>
                         {getFieldDecorator('credentials', {
                           //rules: [{ required: true, message: '请选择资格证书' }],
-                          initialValue: this.state.credentials,
+                          initialValue: formDataEle.credentials,
                         })(
                           <Select
                             disabled={disabled}
@@ -495,7 +491,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="职称" {...secondLayout}>
                         {getFieldDecorator('title', {
                           //rules: [{ required: true, message: '请选择职称' }],
-                          initialValue: this.state.title,
+                          initialValue: formDataEle.title,
                         })(
                           <Select
                             disabled={disabled}
@@ -519,7 +515,7 @@ class FormCompomnent extends React.Component {
                         {getFieldDecorator('certificateNo', {
                           //rules: [{ required: true, message: '请填写证书编号' }],
                           rules: [{ pattern: '^[A-Za-z0-9]{1,20}$', message: '证书编号长度不超过20的数字或字母' }],
-                          initialValue: this.state.certificateNo,
+                          initialValue: formDataEle.certificateNo,
                         })(<Input placeholder="证书编号" disabled={disabled} allowClear />)}
                       </FormItem>
                     </Col>
@@ -529,7 +525,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="工作单位" {...secondLayout}>
                         {getFieldDecorator('unitId', {
                           //rules: [{ required: true, message: '请选择工作单位' }],
-                          initialValue: this.state.unitId,
+                          initialValue: formDataEle.unitId,
                         })(
                           <Select
                             disabled={disabled}
@@ -559,7 +555,7 @@ class FormCompomnent extends React.Component {
                               message: '请输入正确的手机号码格式',
                             },
                           ],
-                          initialValue: this.state.telphone,
+                          initialValue: formDataEle.telphone,
                         })(<Input placeholder="电话号码" autoComplete="off" disabled={disabled} allowClear />)}
                       </FormItem>
                     </Col>
@@ -572,7 +568,7 @@ class FormCompomnent extends React.Component {
                             { required: true, whitespace: true, message: '请填写警员编号' },
                             { validator: this.checkNumber },
                           ],
-                          initialValue: this.state.number,
+                          initialValue: formDataEle.number,
                         })(<Input placeholder="警员编号" disabled={disabled} allowClear />)}
                       </FormItem>
                     </Col>
@@ -580,7 +576,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="所属中队" {...secondLayout}>
                         {getFieldDecorator('groupId', {
                           //rules: [{ required: true, message: '请选择所属中队' }],
-                          initialValue: this.state.groupId,
+                          initialValue: formDataEle.groupId,
                         })(
                           <Select
                             disabled={disabled}
@@ -606,7 +602,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="角色" {...secondLayout}>
                         {getFieldDecorator('role', {
                           rules: [{ required: true, message: '请选择角色' }],
-                          initialValue: this.state.role,
+                          initialValue: formDataEle.role,
                         })(
                           <Select
                             disabled={disabled}
@@ -626,12 +622,19 @@ class FormCompomnent extends React.Component {
                         )}
                       </FormItem>
                     </Col>
+                    <Col xl={12} lg={12} md={24} sm={24} xs={24}>
+                      <FormItem label="企业微信号" {...secondLayout}>
+                        {getFieldDecorator('workWxUserId', {
+                          rules: [{ required: true, message: '请输入' }],
+                          initialValue: formDataEle.workWxUserId,
+                        })(<Input placeholder="请输入" disabled={disabled} allowClear />)}
+                      </FormItem>
+                    </Col>
                   </Row>
                   <FormItem label="个人履历" {...firstLayout}>
                     {getFieldDecorator('remark', {
-                      //rules: [{ required: true, message: '请输入个人履历' }],
                       rules: [{ max: 500, message: '个人履历长度不超过500' }],
-                      initialValue: this.state.remark,
+                      initialValue: formDataEle.remark,
                     })(
                       <TextArea
                         placeholder="个人履历"
@@ -641,8 +644,8 @@ class FormCompomnent extends React.Component {
                       />
                     )}
                   </FormItem>
-                  <FormItem label="警员图片" {...firstLayout}>
-                    {/* <Upload
+                  {/* <FormItem label="警员图片" {...firstLayout}>
+                    <Upload
                       className="imageContent"
                       name="photoFile"
                       action={config.apiUrl + '/api/user/saveInfo'}
@@ -679,8 +682,8 @@ class FormCompomnent extends React.Component {
                     ) : null}
                     <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                       <img alt="example" style={{ width: '100%' }} src={previewImage} />
-                    </Modal> */}
-                  </FormItem>
+                    </Modal>
+                  </FormItem> */}
 
                   {!disabled ? (
                     <Row>
@@ -689,7 +692,7 @@ class FormCompomnent extends React.Component {
                           提交
                         </Button>
                         <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
-                          清空
+                          返回
                         </Button>
                       </Col>
                     </Row>
@@ -707,7 +710,4 @@ class FormCompomnent extends React.Component {
 }
 const AddUserForm = Form.create()(FormCompomnent);
 
-const mapStateToProps = (state) => ({
-  loginState: state.login,
-});
-export default connect(mapStateToProps)(AddUserForm);
+export default AddUserForm;

@@ -116,18 +116,15 @@ class MainComponent extends React.Component {
       return prev.concat(Array.isArray(item.routes) ? this.flattenRoutes(item.routes) : item);
     }, []);
   render() {
-    const { location, history, route } = this.props;
+    const { route } = this.props;
     return (
       <Layout className={classNames('indexComponent')} style={{ height: '100%' }}>
         <HeaderComponent />
-        <Layout>
-          <div>
-            <SliderCustom menus={this.menus} onRef={this.onRef} isCollapsed={this.props.isCollapsed} />
-          </div>
-
+        <Layout style={{ height: 'calc(100% - 64px)' }}>
+          <SliderCustom menus={this.menus} onRef={this.onRef} isCollapsed={this.props.isCollapsed} />
           <Layout id="mainWrapper">
             <CustomBreadcrumb />
-            <div className="midder-content" id="mainWrapper1" ref={this.mainWrapper1}>
+            <div className="midder-content" id="mainWrapper1" style={{ height: '100%' }} ref={this.mainWrapper1}>
               {/* <CustomBreadcrumb arr={this.props.navData} /> */}
               <Content style={{ background: '#f0f2f5', margin: 0, padding: '0 24px 0px' }}>
                 {/* {this.props.children} */}

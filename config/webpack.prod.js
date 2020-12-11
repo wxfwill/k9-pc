@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+// css 压缩
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // 分析打包大小
@@ -58,7 +59,7 @@ module.exports = merge(common, {
         },
       },
     },
-    minimize: true,
+    minimize: true, // 开启输出压缩
     minimizer: [
       new TerserPlugin({
         parallel: 4,
@@ -78,6 +79,7 @@ module.exports = merge(common, {
       },
     ],
   },
+  target: ['web', 'es5'],
   stats: {
     children: false,
   },
