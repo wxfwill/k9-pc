@@ -87,8 +87,14 @@ module.exports = merge(common, {
     hints: false,
   },
   plugins: [
-    // 删除
     new CleanWebpackPlugin(),
+    // //删除
+    // new CleanWebpackPlugin({
+    //   dry: true,
+    //   'cleanStaleWe​​bpackAssets': false,
+    //   cleanOnceBeforeBuildPatterns: ['dist'],
+    //   dangerouslyAllowCleanPatternsOutsideProject: true,
+    // }),
     new webpack.DefinePlugin({
       'process.env.BASE_URL': '"' + process.env.BASE_URL + '"',
       'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV),

@@ -177,7 +177,7 @@ class TeamWorkStatist extends Component {
     console.log(record);
     // 姓名
     if (txt.userId) {
-      React.$ajax.postData('/api/user/info', { id: txt.userId }).then((res) => {
+      React.$ajax.getData('/api/user/queryUserInfoByUserId', { userId: txt.userId }).then((res) => {
         if (res && res.code == 0) {
           let resData = res.data;
           this.props.history.push({
@@ -188,7 +188,7 @@ class TeamWorkStatist extends Component {
       });
     } else {
       // 具体类型
-      React.$ajax.postData('/api/user/info', { id: record.userId }).then((res) => {
+      React.$ajax.getData('/api/user/queryUserInfoByUserId', { userId: record.userId }).then((res) => {
         if (res && res.code == 0) {
           let resData = res.data;
           this.props.history.push({
