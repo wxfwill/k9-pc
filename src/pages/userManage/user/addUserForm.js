@@ -625,7 +625,7 @@ class FormCompomnent extends React.Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="企业微信号" {...secondLayout}>
                         {getFieldDecorator('workWxUserId', {
-                          rules: [{ required: true, message: '请输入' }],
+                          rules: [{ required: false, message: '请输入' }],
                           initialValue: formDataEle.workWxUserId,
                         })(<Input placeholder="请输入" disabled={disabled} allowClear />)}
                       </FormItem>

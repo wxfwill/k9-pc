@@ -2,20 +2,20 @@ import React from 'react';
 import { formatDate } from 'util/index.js';
 import { Button, Popconfirm } from 'antd';
 
-export const RoleHeaderLabel = (callbackView, callbackEdit, callbackDel) => {
+export const RoleHeaderLabel = (callbackEdit, callbackResources, callbackUser, callbackDel) => {
   let data = [
     {
       title: '角色名称',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'roleName',
+      key: 'roleName',
     },
     {
       title: '角色编码',
-      dataIndex: 'sexStr',
+      dataIndex: 'roleCode',
     },
     {
       title: '角色描述',
-      dataIndex: 'number',
+      dataIndex: 'description',
     },
     {
       title: '备注',
@@ -38,13 +38,15 @@ export const RoleHeaderLabel = (callbackView, callbackEdit, callbackDel) => {
               编辑
             </Button>
             <Button
-              style={{ marginRight: '10px', backgroundColor: '#67c23a' }}
+              size="small"
+              style={{ marginRight: '10px', backgroundColor: '#67c23a', color: '#fff' }}
               onClick={() => callbackResources && callbackResources(record)}
             >
               菜单分配
             </Button>
             <Button
-              style={{ marginRight: '10px', backgroundColor: '#e6a23c' }}
+              size="small"
+              style={{ marginRight: '10px', backgroundColor: '#e6a23c', color: '#fff' }}
               onClick={() => callbackUser && callbackUser(record)}
             >
               分配用户

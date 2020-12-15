@@ -4,9 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const srcPath = path.resolve(__dirname, '../src');
 require('./env-config');
-function resolve(dir) {
-  return path.join(__dirname, '..', dir);
-}
 const devMode = process.env.NODE_ENV == 'development';
 console.log('当前构建模式===' + process.env.NODE_ENV);
 console.log('当前打包环境===' + process.env.BASE_ENV);

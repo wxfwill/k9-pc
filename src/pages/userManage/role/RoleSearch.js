@@ -58,15 +58,15 @@ class SearchForm extends React.Component {
         <Row gutter={24}>
           <Col xl={8} lg={12} md={12} sm={24} xs={24}>
             <FormItem label="角色名称" {...thirdLayout}>
-              {getFieldDecorator('policeName')(<Input placeholder="角色名称" />)}
+              {getFieldDecorator('roleName')(<Input placeholder="角色名称" />)}
             </FormItem>
           </Col>
           <Col xl={8} lg={12} md={12} sm={24} xs={24}>
             <FormItem label="角色编码" {...thirdLayout}>
-              {getFieldDecorator('policeNumber')(<Input placeholder="角色编码" />)}
+              {getFieldDecorator('roleCode')(<Input placeholder="角色编码" />)}
             </FormItem>
           </Col>
-          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ textAlign: 'center' }}>
+          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ textAlign: 'left' }}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>

@@ -77,7 +77,7 @@ class CustomTable extends Component {
         }}
         loading={newloading}
         scroll={setScroll}
-        indentSize={5}
+        indentSize={20}
         expandRowByClick={true}
         defaultExpandAllRows={isAllRows ? true : false}
         rowSelection={newisRowSelects}

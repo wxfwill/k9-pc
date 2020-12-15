@@ -3,95 +3,71 @@ import { Modal, Button, Cascader, Select, Row, Col, Form, Input } from 'antd';
 import { editModel } from 'util/Layout';
 const { TextArea } = Input;
 const Option = Select.Option;
-const options = [
-  {
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    children: [
-      {
-        value: 'hangzhou',
-        label: 'Hangzhou',
-        children: [
-          {
-            value: 'xihu',
-            label: 'West Lake',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: 'jiangsu',
-    label: 'Jiangsu',
-    children: [
-      {
-        value: 'nanjing',
-        label: 'Nanjing',
-        children: [
-          {
-            value: 'zhonghuamen',
-            label: 'Zhong Hua Men',
-          },
-        ],
-      },
-    ],
-  },
-];
-
 class ShowModel extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
-      startValue: null,
-      endValue: null,
-      endOpen: false,
-      taksTypeData: [
-        {
-          id: 1,
-          title: '测试',
-        },
-        {
-          id: 2,
-          title: 'hah',
-        },
-      ],
+      roleCode: null,
+      roleName: null,
+      roleType: ['role', 'role_default'],
+      description: undefined,
+      id: 0,
+      cascaderData: [],
+      fieldName: {
+        label: 'name',
+        value: 'code',
+        children: 'children',
+      },
     };
   }
   componentDidMount() {
     this.props.onRef(this);
+    this.queryRoleType();
   }
+  // 角色分类
+  queryRoleType = () => {
+    let per = {
+      code: 'role',
+      type: 'slfAndChild',
+    };
+    React.$ajax.postData('/api/sys/sys-tree/queryTree', per).then((res) => {
+      if (res && res.code == 0) {
+        console.log(res);
+        let resData = res.data;
+        console.log(resData);
+        this.setState({ cascaderData: resData });
+      }
+    });
+  };
   onChange = (field, value) => {
     this.setState({
       [field]: value,
     });
   };
-
-  onStartChange = (value) => {
-    this.onChange('startValue', value);
-  };
-
-  onEndChange = (value) => {
-    this.onChange('endValue', value);
-  };
-  handleStartOpenChange = (open) => {
-    if (!open) {
-      this.setState({ endOpen: true });
+  openModel = (item) => {
+    this.setState({ visible: true });
+    if (item) {
+      let { roleCode, roleName, roleType, description } = item;
+      console.log(roleType);
+      let _roleType = roleType.split('_')[0];
+      roleType = [_roleType, roleType];
+      console.log(roleType);
+      this.setState({ roleCode, roleName, roleType, description });
+    } else {
+      this.setState({
+        roleName: undefined,
+        roleCode: undefined,
+        roleType: ['role', 'role_default'],
+        description: undefined,
+      });
     }
   };
-
-  handleEndOpenChange = (open) => {
-    this.setState({ endOpen: open });
-  };
-
-  openModel = () => {
-    this.setState({ visible: true });
-  };
   handleOk = () => {
-    console.log('ok');
     this.props.form.validateFields((err, val) => {
-      console.log(val);
-      this.props.editFormData && this.props.editFormData(val);
+      if (!err) {
+        this.props.handleFromData && this.props.handleFromData(val);
+      }
     });
   };
   handleCancel = () => {
@@ -100,15 +76,15 @@ class ShowModel extends Component {
   };
   selectTaskType = () => {};
   handleSubmit = () => {};
-  onChangeTextArea = () => {};
-  handleRoleChange = () => {};
+  handleRoleChange = (val) => {
+    console.log(val);
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { startValue, endValue, endOpen } = this.state;
     return (
       <Modal
         wrapClassName="customModel"
-        title="新增角色"
+        title={this.props.title}
         visible={this.state.visible}
         width={'560px'}
         centered={false}
@@ -122,26 +98,41 @@ class ShowModel extends Component {
           <Row type="flex" justify="center">
             <Col xl={16} lg={16} md={16} sm={16} xs={16}>
               <Form.Item label="角色分类">
-                {getFieldDecorator('name', {
-                  initialValue: undefined,
-                })(<Cascader options={options} onChange={this.handleRoleChange} placeholder="请选择" />)}
+                {getFieldDecorator('roleType', {
+                  initialValue: this.state.roleType,
+                  rules: [{ required: true, message: '请选择角色分类' }],
+                })(
+                  <Cascader
+                    fieldNames={this.state.fieldName}
+                    changeOnSelect={false}
+                    displayRender={(label, option) => {
+                      let len = label.length;
+                      return label[len - 1];
+                    }}
+                    options={this.state.cascaderData}
+                    onChange={this.handleRoleChange}
+                    placeholder="请选择"
+                  />
+                )}
               </Form.Item>
             </Col>
           </Row>
           <Row type="flex" justify="center">
             <Col xl={16} lg={16} md={16} sm={16} xs={16}>
-              <Form.Item label="名称">
-                {getFieldDecorator('satrtTime', {
-                  initialValue: startValue,
+              <Form.Item label="角色名称">
+                {getFieldDecorator('roleName', {
+                  initialValue: this.state.roleName,
+                  rules: [{ required: true, message: '请选择角色名称' }],
                 })(<Input placeholder="请输入" />)}
               </Form.Item>
             </Col>
           </Row>
           <Row type="flex" justify="center">
             <Col xl={16} lg={16} md={16} sm={16} xs={16}>
-              <Form.Item label="编码">
-                {getFieldDecorator('satrtTime', {
-                  initialValue: startValue,
+              <Form.Item label="角色编码">
+                {getFieldDecorator('roleCode', {
+                  initialValue: this.state.roleCode,
+                  rules: [{ required: true, message: '请选择角色编码' }],
                 })(<Input placeholder="请输入" />)}
               </Form.Item>
             </Col>
@@ -149,15 +140,14 @@ class ShowModel extends Component {
           <Row type="flex" justify="center">
             <Col xl={16} lg={16} md={16} sm={16} xs={16}>
               <Form.Item label="描述">
-                {getFieldDecorator('mark', {
-                  initialValue: undefined,
+                {getFieldDecorator('description', {
+                  initialValue: this.state.description,
                 })(
                   <TextArea
                     placeholder="请输入"
                     allowClear
                     style={{ width: '100%' }}
                     autoSize={{ minRows: 2, maxRows: 6 }}
-                    onChange={this.onChangeTextArea}
                   />
                 )}
               </Form.Item>
