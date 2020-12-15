@@ -134,7 +134,7 @@ class ShowModel extends Component {
         <Form onSubmit={this.handleSubmit} {...editModel}>
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
-              <Form.Item label="姓名">
+              <Form.Item label="请假人">
                 {getFieldDecorator('userName', {
                   initialValue: this.state.userName,
                 })(<Input placeholder="请输入" />)}

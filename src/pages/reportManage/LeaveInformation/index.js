@@ -170,8 +170,8 @@ class LeaveInformation extends Component {
   render() {
     const { dataSource, pagination, loading } = this.state;
     return (
-      <div className="four-wrap">
-        <Card title="按条件搜索" bordered={false}>
+      <div className="four-wrap custom-card">
+        <Card title="按条件搜索" bordered={false} className="ant-card-search">
           <Search
             userArr={this.state.personnelTree}
             queryGroupUser={this.queryGroupUser}
@@ -185,7 +185,7 @@ class LeaveInformation extends Component {
           editFormData={this.editFormData}
           leaveType={this.state.leaveType}
         ></EditModel>
-        <Card bordered={false}>
+        <Card bordered={false} className="ant-card-table">
           <CustomTable
             setTableKey={(row) => {
               return 'key-' + row.id + row.userName;

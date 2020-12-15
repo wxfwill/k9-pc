@@ -6,6 +6,7 @@ import { PerHeaderLabel } from 'localData/performance/AssessmentSetting';
 import CustomTable from 'components/table/CustomTable';
 require('style/fourReport/reportList.less');
 import moment from 'moment';
+import NoData from 'components/NoData';
 
 class AssessmentList extends Component {
   constructor(props) {
@@ -126,26 +127,31 @@ class AssessmentList extends Component {
     });
   };
   render() {
+    const { dataSource } = this.state;
     return (
       <div className="four-wrap">
         <Card title="按条件搜索" bordered={false}>
           <Search handleSearchData={this.handleSearchData} exportExcel={this.exportExcel} />
         </Card>
         <Card bordered={false}>
-          <CustomTable
-            setTableKey={(row) => {
-              return 'key-' + row.id + row.reportingDate;
-            }}
-            dataSource={this.state.dataSource}
-            pagination={this.state.pagination}
-            loading={this.state.loading}
-            columns={PerHeaderLabel(this.handleDetal, this.handleApproval)}
-            isBordered={true}
-            isRowSelects={false}
-            isScroll={{ x: 1366 }}
-            handleChangeSize={this.handleChangeSize}
-            handleShowSizeChange={this.handleShowSizeChange}
-          ></CustomTable>
+          {dataSource && dataSource.length > 0 ? (
+            <CustomTable
+              setTableKey={(row) => {
+                return 'key-' + row.id + row.reportingDate;
+              }}
+              dataSource={this.state.dataSource}
+              pagination={this.state.pagination}
+              loading={this.state.loading}
+              columns={PerHeaderLabel(this.handleDetal, this.handleApproval)}
+              isBordered={true}
+              isRowSelects={false}
+              isScroll={{ x: 1366 }}
+              handleChangeSize={this.handleChangeSize}
+              handleShowSizeChange={this.handleShowSizeChange}
+            ></CustomTable>
+          ) : (
+            <NoData TableHeder={PerHeaderLabel(this.handleDetal, this.handleApproval)} isScroll={{ x: 1366 }} />
+          )}
         </Card>
       </div>
     );

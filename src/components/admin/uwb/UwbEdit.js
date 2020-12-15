@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal } from 'antd';
 import { firstLayout, secondLayout } from 'util/Layout';
-import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 require('style/app/dogInfo/addDogForm.less');
 const FormItem = Form.Item;
@@ -36,7 +35,7 @@ class VideoInfo extends React.Component {
 
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        httpAjax('post', config.apiUrl + '/api/equipmentInfo/saveUwbInfo', parms)
+        React.$ajax.postData('/api/equipmentInfo/saveUwbInfo', parms)
           .then((res) => {
             if (res.code == 0) {
               message.success(successMess);
@@ -56,7 +55,7 @@ class VideoInfo extends React.Component {
     const VideoId = this.props.location.query && this.props.location.query.VideoId;
     const pathname = this.props.location.pathname;
     if (VideoId) {
-      httpAjax('post', config.apiUrl + '/api/equipmentInfo/uwbInfo', { id: VideoId })
+      React.$ajax.postData('/api/equipmentInfo/uwbInfo', { id: VideoId })
         .then((res) => {
           if (res.code == 0) {
             this.setState({ videoData: res.data, ...res.data });

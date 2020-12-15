@@ -66,7 +66,7 @@ class HealthTable extends React.Component {
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     this.setState({ loading: true });
     React.$ajax
-      .postData('/api/braceletInfo/sportDataPage', { ...params })
+      .postData('/api/braceletInfo/sportDataPage', { ...params },{timeout:20000})
       .then((res) => {
         const pagination = { ...this.state.pagination };
         pagination.total = res.totalCount;

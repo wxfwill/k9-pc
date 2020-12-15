@@ -1,77 +1,91 @@
 @import 'iconfont/iconfont.css';
-#root{
-	width: 100%;
-    height:100%;
-    min-width: 1026px;
+#root {
+  width: 100%;
+  height: 100%;
+  min-width: 1026px;
 }
-.app{
-	height:100%;
+.app {
+  height: 100%;
 }
-/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
-// ::-webkit-scrollbar  
-// {  
-//     width:6px;  
-//     height:6px;  
-//     background-color: #F5F5F5;  
-// }  
-  
-// /*定义滚动条轨道 内阴影+圆角*/  
-// ::-webkit-scrollbar-track  
-// {  
-//     box-shadow: inset 0 0 6px rgba(0,0,0,0.3);  
-//     border-radius: 10px;  
-//     background-color: #F5F5F5;  
-// }  
-  
-// /*定义滑块 内阴影+圆角*/  
-// ::-webkit-scrollbar-thumb  
-// {  
-//     border-radius: 10px;  
-//     box-shadow: inset 0 0 6px rgba(0,0,0,.3);  
-//     background-color: rgba(153,153,153, 0.5);  
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+// ::-webkit-scrollbar
+// {
+//     width:6px;
+//     height:6px;
+//     background-color: #F5F5F5;
+// }
+
+// /*定义滚动条轨道 内阴影+圆角*/
+// ::-webkit-scrollbar-track
+// {
+//     box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+//     border-radius: 10px;
+//     background-color: #F5F5F5;
+// }
+
+// /*定义滑块 内阴影+圆角*/
+// ::-webkit-scrollbar-thumb
+// {
+//     border-radius: 10px;
+//     box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+//     background-color: rgba(153,153,153, 0.5);
 // }
 
 .center {
-    text-align: center;
+  text-align: center;
 }
 
 .tabEleRow {
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
 }
 
 // 全局弹窗样式
 .customModel {
-    .ant-modal-title {
-        text-align: center;
-    }
-    .ant-modal-body {
-        height: inherit;
-        max-height: 700px;
-        overflow-y: auto;
-    }
-    .ant-modal-footer {
-        // text-align: center;
-    }
+  .ant-modal-title {
+    text-align: center;
+  }
+  .ant-modal-body {
+    height: inherit;
+    max-height: 700px;
+    overflow-y: auto;
+  }
+  .ant-modal-footer {
+    // text-align: center;
+  }
 }
 
 // 自定义treeSelect样式
 .cutomTreeSelect {
-    .innerTreeNode {
-        position: relative;
-        > .ant-select-tree-switcher {
-            position: absolute;
-            width: 100%;
-            text-align: left;
-            left: 0;
-            top: 0;
-        }
-        > .ant-select-tree-node-content-wrapper {
-            padding-left: 18px;
-        }
-        > .ant-select-tree-child-tree-open {
-            padding: 0;
-        }
+  .innerTreeNode {
+    position: relative;
+    > .ant-select-tree-switcher {
+      position: absolute;
+      width: 100%;
+      text-align: left;
+      left: 0;
+      top: 0;
     }
+    > .ant-select-tree-node-content-wrapper {
+      padding-left: 18px;
+    }
+    > .ant-select-tree-child-tree-open {
+      padding: 0;
+    }
+  }
+}
+
+//card自定义样式
+.custom-card {
+  .ant-card-search {
+    .ant-card-body {
+      padding-bottom: 0 !important;
+    }
+  }
+  .ant-card-table {
+    .ant-card-body {
+      padding-top: 0 !important;
+    }
+  }
 }

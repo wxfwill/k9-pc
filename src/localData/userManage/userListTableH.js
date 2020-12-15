@@ -77,10 +77,10 @@ export const archivesHeaderLabel = (callbackViewArchive) => {
       dataIndex: 'name',
       key: 'name',
     },
-    {
-      title: '性别',
-      dataIndex: 'sexStr',
-    },
+    // {
+    //   title: '性别',
+    //   dataIndex: 'sexStr',
+    // },
     {
       title: '警员编号',
       dataIndex: 'number',

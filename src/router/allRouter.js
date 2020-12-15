@@ -141,6 +141,13 @@ const BraceletEdit = asyncComponent(() =>
   import(/*webpackChunkName: 'baseData'*/ 'pages/baseData/bracelet/BraceletEdit')
 );
 
+//新版--考勤管理
+
+//考勤信息查询
+const AttendanceInfor = asyncComponent(() =>
+  import(/*webpackChunkName: 'holiday'*/ 'pages/holiday/AttendanceInfor/index')
+);
+
 //新版本--用户管理
 
 // 用户列表
@@ -682,6 +689,18 @@ const routerArr = [
       {
         path: '/app/holiday/approvalDetail',
         component: ApprovalDetail,
+      },
+      {
+        path: '/app/attendanceManage',
+        component: BearerRoute,
+        name: '考勤管理',
+        items: [
+          {
+            path: '/app/attendanceManage/attendanceInfor',
+            component: AttendanceInfor,
+            name: '考勤信息查询',
+          },
+        ],
       },
       {
         path: '/app/reportManage',

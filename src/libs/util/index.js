@@ -270,3 +270,27 @@ export const getStartEndHours = (start, end) => {
 export const passeordReg = /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?![0-9a-z]+$)(?![0-9A-Z]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/g;
 
 export { constant, Msg, method, cookieUtil };
+
+//深拷贝
+export const DeepClone = (data) => {
+  var type = Object.prototype.toString.call(data);
+  var obj;
+  if (type === '[object Array]') {
+    obj = [];
+  } else if (type === '[object Object]') {
+    obj = {};
+  } else {
+    //不再具有下一层次
+    return data;
+  }
+  if (type === '[object Array]') {
+    for (var i = 0, len = data.length; i < len; i++) {
+      obj.push(DeepClone(data[i]));
+    }
+  } else if (type === '[object Object]') {
+    for (var key in data) {
+      obj[key] = DeepClone(data[key]);
+    }
+  }
+  return obj;
+};

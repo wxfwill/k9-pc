@@ -257,19 +257,26 @@ export const leaveInformationDetal = (editCallback) => {
     //   },
     // },
     {
-      title: '姓名',
+      title: '申请时间',
+      dataIndex: 'leaveDate',
+      render: (txt, row, index) => {
+        return txt ? util.formatDate(new Date(txt), 'yyyy-MM-dd') : '--';
+      },
+    },
+    {
+      title: '请假人',
       dataIndex: 'userName',
       width: 100,
     },
     {
-      title: '开始时间',
+      title: '请假开始时间',
       dataIndex: 'startDate',
       render: (txt, row, index) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
       },
     },
     {
-      title: '结束时间',
+      title: '请假结束时间',
       dataIndex: 'endDate',
       render: (txt, row, index) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');

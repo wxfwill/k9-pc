@@ -67,7 +67,7 @@ class GlobalName extends Component {
   render() {
     const { getFieldDecorator, setFieldsValue } = this.props.form;
     return (
-      <FormItem label="姓名:" {...thirdLayout}>
+      <FormItem label={this.props.labelName ? this.props.labelName + ':' : '姓名:'} {...thirdLayout}>
         {getFieldDecorator(this.props.userLabel, {
           initialValue: undefined,
         })(
