@@ -51,27 +51,28 @@ class SliderCustom extends Component {
     });
   };
   createMenu = (menu = []) => {
+    console.log(menu);
     return menu.map((item) => {
-      if (item.sub && item.sub.length > 0) {
+      if (item.children && item.children.length > 0) {
         return (
           <Menu.SubMenu
-            key={item.pathname.split('/').slice(0, 3).join('/')}
+            key={item.url.split('/').slice(0, 3).join('/')}
             title={
               <span>
                 {item.icon && <Icon type={item.icon} />}
-                <span className="nav-text">{item.title}</span>
+                <span className="nav-text">{item.name}</span>
               </span>
             }
           >
-            {this.createMenu(item.sub)}
+            {this.createMenu(item.children)}
           </Menu.SubMenu>
         );
       } else {
         return (
-          <Menu.Item key={item.pathname.split('/').slice(0, 4).join('/')}>
-            <Link to={item.pathname}>
+          <Menu.Item key={item.url.split('/').slice(0, 4).join('/')}>
+            <Link to={item.url}>
               {item.icon && <Icon type={item.icon} />}
-              <span className="nav-text">{item.title}</span>
+              <span className="nav-text">{item.name}</span>
             </Link>
           </Menu.Item>
         );

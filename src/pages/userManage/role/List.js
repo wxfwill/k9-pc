@@ -14,15 +14,21 @@ class RoleList extends Component {
       limit: null,
       dataSource: [],
       loading: false,
+      title: '新增角色',
+      id: null,
+      param: {
+        roleCode: '',
+        roleName: '',
+        roleType: '',
+      },
       pagination: {
-        houseId: '',
-        name: '',
-        currPage: 1,
         pageSize: 10,
+        currPage: 1,
         total: 0,
       },
-      pageSize: 10,
-      currPage: 1,
+      ignorePageRequest: false, // 是否忽略分页
+      sortFieldName: '',
+      sortType: 'desc',
       selectedRowKeys: [],
     };
   }
@@ -30,19 +36,23 @@ class RoleList extends Component {
     this.setState({ limit });
   };
   componentDidMount() {
-    // this.fetch();
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['用户管理', '角色列表'] });
+    let { param, pagination, sortFieldName, sortType } = this.state;
+    this.fetch(param, pagination, sortFieldName, sortType);
   }
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
+  fetch(param, pagination, sortFieldName, sortType) {
+    console.log(param);
     this.setState({ loading: true });
+    let obj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
     React.$ajax
-      .postData('/api/user/list', { ...params })
+      .postData('/api/sys/sys-role/page', obj)
       .then((res) => {
+        let resData = res.data;
         const pagination = { ...this.state.pagination };
-        pagination.total = res.totalCount;
-        pagination.current = res.currPage;
-        pagination.pageSize = res.pageSize;
-        this.setState({ dataSource: res.list, loading: false, pagination });
+        pagination.total = resData.totalCount;
+        pagination.current = resData.currPage;
+        pagination.pageSize = resData.pageSize;
+        let tableArr = resData.list ? resData.list : [];
+        this.setState({ dataSource: tableArr, loading: false, pagination });
       })
       .catch(function (error) {
         console.log(error);
@@ -92,11 +102,40 @@ class RoleList extends Component {
   };
   // 新增
   addInfo = () => {
-    this.child.openModel();
+    this.setState({ title: '新增角色' }, () => {
+      this.child.openModel();
+    });
   };
   // 编辑
   viewEdit = (record) => {
-    this.props.history.push({ pathname: '/app/user/infoEditUser', search: `?userId=${record.id}&formStatus=edit` });
+    console.log('编辑角色');
+    console.log(record);
+    this.setState({ title: '编辑角色', id: record.id }, () => {
+      this.child.openModel(record);
+    });
+    // this.props.history.push({ pathname: '/app/user/infoEditUser', search: `?userId=${record.id}&formStatus=edit` });
+  };
+  handleFromData = (data) => {
+    data.roleType = data.roleType ? data.roleType[1] : null;
+    if (this.state.title == '新增角色') {
+      let per = Object.assign({}, data, { id: null });
+      this.addAndEitdData(per, '新增角色成功');
+    } else {
+      let per = Object.assign({}, data, { id: this.state.id });
+      this.addAndEitdData(per, '编辑角色成功');
+    }
+  };
+  // 新增编辑菜单
+  addAndEitdData = (per, txt) => {
+    React.$ajax.postData('/api/sys/sys-role/create', per).then((res) => {
+      if (res && res.code == 0) {
+        message.info(txt, 0.5, () => {
+          this.child.handleCancel();
+          let { param, pagination, sortFieldName, sortType } = this.state;
+          this.fetch(param, pagination, sortFieldName, sortType);
+        });
+      }
+    });
   };
   // 分配菜单
   handleResours = (record) => {
@@ -134,7 +173,11 @@ class RoleList extends Component {
             </Card>
           </Col>
         </Row>
-        <AddEditModel onRef={(ref) => (this.child = ref)}></AddEditModel>
+        <AddEditModel
+          onRef={(ref) => (this.child = ref)}
+          title={this.state.title}
+          handleFromData={this.handleFromData}
+        ></AddEditModel>
         <ResourceModel onRef={(ref) => (this.resource = ref)}></ResourceModel>
         <AllotUserModel onRef={(ref) => (this.allotUser = ref)}></AllotUserModel>
         <Row gutter={24}>
@@ -162,7 +205,7 @@ class RoleList extends Component {
                 loading={this.state.loading}
                 columns={RoleHeaderLabel(this.viewEdit, this.handleResours, this.handleUser, this.deleteRole)}
                 isBordered={true}
-                isRowSelects={true}
+                isRowSelects={false}
                 rowSelectKeys={this.state.selectedRowKeys}
                 handleChangeSize={this.handleChangeSize}
                 handleShowSizeChange={this.handleShowSizeChange}

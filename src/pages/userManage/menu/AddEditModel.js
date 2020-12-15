@@ -11,57 +11,80 @@ class ShowModel extends Component {
       startValue: null,
       endValue: null,
       endOpen: false,
-      taksTypeData: [
-        {
-          id: 1,
-          title: '测试',
-        },
-        {
-          id: 2,
-          title: 'hah',
-        },
-      ],
+      taksTypeData: [],
+      name: undefined,
+      url: undefined,
+      tabCode: undefined,
+      available: undefined,
+      permission: undefined,
+      sort: 1,
+      type: undefined,
+      isdisMenu: false,
     };
   }
   componentDidMount() {
     this.props.onRef(this);
+    this.queryMenuType();
   }
+  // 菜单类型
+  queryMenuType = () => {
+    React.$ajax.getData('/api/sys/sys-module/queryMenuType').then((res) => {
+      if (res && res.code == 0) {
+        console.log(res);
+        let arr = [{ key: 'root', title: '根节点' }],
+          resData = res.data;
+        for (let key in resData) {
+          arr.unshift({ key, title: resData[key] });
+        }
+        this.setState({ taksTypeData: arr });
+      }
+    });
+  };
   onChange = (field, value) => {
     this.setState({
       [field]: value,
     });
   };
 
-  onStartChange = (value) => {
-    this.onChange('startValue', value);
-  };
-
-  onEndChange = (value) => {
-    this.onChange('endValue', value);
-  };
-  handleStartOpenChange = (open) => {
-    if (!open) {
-      this.setState({ endOpen: true });
-    }
-  };
-
   handleEndOpenChange = (open) => {
     this.setState({ endOpen: open });
   };
 
-  openModel = () => {
+  openModel = (item) => {
     this.setState({ visible: true });
+    if (item) {
+      let { name, url, tabCode, type, sort, permission, available } = item;
+      available = available == true ? 1 : 0;
+      if (type == 'root') {
+        this.setState({ name, url, tabCode, type, sort, permission, available, isdisMenu: true });
+      } else {
+        this.setState({ name, url, tabCode, type, sort, permission, available, isdisMenu: false });
+      }
+    } else {
+      this.props.form.resetFields();
+      this.setState({
+        name: undefined,
+        url: undefined,
+        tabCode: undefined,
+        type: undefined,
+        sort: undefined,
+        permission: undefined,
+        available: undefined,
+        isdisMenu: false,
+      });
+    }
   };
   handleOk = () => {
-    console.log('ok');
     this.props.form.validateFields((err, val) => {
       console.log(val);
-      this.props.editFormData && this.props.editFormData(val);
+      if (!err) {
+        this.props.editFormData && this.props.editFormData(val);
+      }
     });
   };
   handleCancel = () => {
-    this.setState({ visible: false });
     this.props.form.resetFields();
+    this.setState({ visible: false });
   };
   selectTaskType = () => {};
   handleSubmit = () => {};
@@ -69,7 +92,6 @@ class ShowModel extends Component {
   handleChangeNum = () => {};
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { startValue, endValue, endOpen } = this.state;
     return (
       <Modal
         wrapClassName="customModel"
@@ -88,8 +110,9 @@ class ShowModel extends Component {
             <Col xl={20} lg={20} md={20} sm={20} xs={20}>
               <Form.Item label="菜单名称">
                 {getFieldDecorator('name', {
-                  initialValue: undefined,
-                })(<Input placeholder="请输入" />)}
+                  initialValue: this.state.name,
+                  rules: [{ required: true, message: '请输入菜单名称' }],
+                })(<Input placeholder="请输入" autoComplete="off" />)}
               </Form.Item>
             </Col>
           </Row>
@@ -97,7 +120,8 @@ class ShowModel extends Component {
             <Col xl={20} lg={20} md={20} sm={20} xs={20}>
               <Form.Item label="菜单URL">
                 {getFieldDecorator('url', {
-                  initialValue: undefined,
+                  initialValue: this.state.url,
+                  rules: [{ required: false, message: '请输入菜单url' }],
                 })(<Input placeholder="请输入" />)}
               </Form.Item>
             </Col>
@@ -106,12 +130,19 @@ class ShowModel extends Component {
             <Col xl={20} lg={20} md={20} sm={20} xs={20}>
               <Form.Item label="菜单类型">
                 {getFieldDecorator('type', {
-                  initialValue: undefined,
+                  initialValue: this.state.type,
+                  rules: [{ required: true, message: '请选择菜单类型' }],
                 })(
-                  <Select placeholder="请选择" style={{ width: '100%' }} allowClear onChange={this.selectTaskType}>
+                  <Select
+                    placeholder="请选择"
+                    style={{ width: '100%' }}
+                    allowClear
+                    onChange={this.selectTaskType}
+                    disabled={this.state.isdisMenu}
+                  >
                     {this.state.taksTypeData.map((item) => {
                       return (
-                        <Option key={item.id} value={item.id}>
+                        <Option key={item.key} value={item.key} disabled={item.key == 'root' ? true : false}>
                           {item.title}
                         </Option>
                       );
@@ -123,9 +154,28 @@ class ShowModel extends Component {
           </Row>
           <Row type="flex" justify="start">
             <Col xl={20} lg={20} md={20} sm={20} xs={20}>
+              <Form.Item label="是否启用">
+                {getFieldDecorator('available', {
+                  initialValue: this.state.available,
+                  rules: [{ required: true, message: '请选择是否启用' }],
+                })(
+                  <Select placeholder="请选择" style={{ width: '100%' }} allowClear>
+                    <Option key={1} value={1}>
+                      是
+                    </Option>
+                    <Option key={1} value={0}>
+                      否
+                    </Option>
+                  </Select>
+                )}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row type="flex" justify="start">
+            <Col xl={20} lg={20} md={20} sm={20} xs={20}>
               <Form.Item label="页签标识">
-                {getFieldDecorator('page', {
-                  initialValue: undefined,
+                {getFieldDecorator('tabCode', {
+                  initialValue: this.state.tabCode,
                 })(<Input placeholder="请输入" />)}
               </Form.Item>
             </Col>
@@ -133,8 +183,8 @@ class ShowModel extends Component {
           <Row type="flex" justify="start">
             <Col xl={20} lg={20} md={20} sm={20} xs={20}>
               <Form.Item label="权限码">
-                {getFieldDecorator('label', {
-                  initialValue: undefined,
+                {getFieldDecorator('permission', {
+                  initialValue: this.state.permission,
                 })(<Input placeholder="请输入" />)}
               </Form.Item>
             </Col>
@@ -142,8 +192,8 @@ class ShowModel extends Component {
           <Row type="flex" justify="start">
             <Col xl={20} lg={20} md={20} sm={20} xs={20}>
               <Form.Item label="排序">
-                {getFieldDecorator('per', {
-                  initialValue: 1,
+                {getFieldDecorator('sort', {
+                  initialValue: this.state.sort,
                 })(<InputNumber min={1} max={100} style={{ width: '100%' }} onChange={this.handleChangeNum} />)}
               </Form.Item>
             </Col>

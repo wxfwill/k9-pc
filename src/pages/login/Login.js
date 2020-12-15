@@ -60,17 +60,17 @@ class Login extends Component {
           if (res && res.code == 0) {
             hide();
             this.setState({ loginLoading: false }, () => {
-              let { user, menuList, token } = res.data;
+              let { user, menus, token } = res.data;
               let userJson = JSON.stringify(user);
-              let munuJson = JSON.stringify(menuList);
+              let munuJson = JSON.stringify(menus);
               this.props.tokenAction(token);
-              this.props.menuAction(menuList);
+              this.props.menuAction(menus);
               this.props.userinfoAction(user);
               this.props.changeRouteAction('/app/index');
               sessionStorage.setItem('user', userJson);
               sessionStorage.setItem('menus', munuJson);
               message.success('登录成功！', 1, function () {
-                history.push({ pathname: '/app/index', menus: menuList });
+                history.push({ pathname: '/app/index', menus: menus });
               });
               //登录成功后记住账号、密码 / 清除记住的账号、密码
               remUser
