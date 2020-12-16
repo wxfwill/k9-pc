@@ -32,15 +32,21 @@ class RoleList extends Component {
       selectedRowKeys: [],
     };
   }
-  handleLimit = (limit) => {
-    this.setState({ limit });
+  handleLimit = (data) => {
+    console.log(data);
+    data.roleName = data.roleName ? data.roleName : '';
+    data.roleCode = data.roleCode ? data.roleCode : '';
+    let obj = Object.assign({}, this.state.param, data);
+    this.setState({ param: obj }, () => {
+      let { param, pagination, sortFieldName, sortType } = this.state;
+      this.fetch(param, pagination, sortFieldName, sortType);
+    });
   };
   componentDidMount() {
     let { param, pagination, sortFieldName, sortType } = this.state;
     this.fetch(param, pagination, sortFieldName, sortType);
   }
   fetch(param, pagination, sortFieldName, sortType) {
-    console.log(param);
     this.setState({ loading: true });
     let obj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
     React.$ajax
@@ -139,7 +145,7 @@ class RoleList extends Component {
   };
   // 分配菜单
   handleResours = (record) => {
-    this.resource.openModel();
+    this.resource.openModel(record.id);
     // this.props.history.push({ pathname: '/app/user/infoUserData', search: `?userId=${record.id}&formStatus=view` });
   };
   // 分配用户
@@ -149,16 +155,11 @@ class RoleList extends Component {
   };
   //删除
   deleteRole = (record, index) => {
-    let dataSource = this.state.dataSource;
-    let { pagination } = this.state;
-    React.$ajax.postData('/api/user/deleteUserByIds', { ids: [record.id] }).then((res) => {
+    React.$ajax.postData('/api/sys/sys-role/delBatch', { id: [record.id] }).then((res) => {
       if (res.code == 0) {
-        message.success('删除成功');
-        // dataSource.splice(index, 1);
-        // this.setState({ dataSource });
-        this.fetch({
-          pageSize: pagination.pageSize,
-          currPage: 1,
+        message.success('删除成功', 0.5, () => {
+          let { param, pagination, sortFieldName, sortType } = this.state;
+          this.fetch(param, pagination, sortFieldName, sortType);
         });
       }
     });
@@ -187,14 +188,7 @@ class RoleList extends Component {
                 <Button type="primary" style={{ marginRight: '20px' }} onClick={this.addInfo}>
                   新增
                 </Button>
-                <Button type="primary" style={{ marginRight: '20px' }} onClick={this.handleResours}>
-                  资源分配
-                </Button>
-                <Button type="primary" style={{ marginRight: '20px' }} onClick={this.handleUser}>
-                  分配用户
-                </Button>
-
-                <Button onClick={this.deleteMore}>批量删除</Button>
+                {/* <Button onClick={this.deleteMore}>批量删除</Button> */}
               </div>
               <CustomTable
                 setTableKey={(row) => {
@@ -203,7 +197,7 @@ class RoleList extends Component {
                 dataSource={this.state.dataSource}
                 pagination={this.state.pagination}
                 loading={this.state.loading}
-                columns={RoleHeaderLabel(this.viewEdit, this.handleResours, this.handleUser, this.deleteRole)}
+                columns={RoleHeaderLabel(this.viewEdit, this.handleResours, this.deleteRole)}
                 isBordered={true}
                 isRowSelects={false}
                 rowSelectKeys={this.state.selectedRowKeys}

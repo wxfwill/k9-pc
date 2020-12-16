@@ -77,13 +77,13 @@ class ShowModel extends Component {
           <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
             <Row gutter={24}>
               <Col xl={8} lg={12} md={12} sm={24} xs={24}>
-                <FormItem label="角色名称" {...thirdLayout}>
-                  {getFieldDecorator('policeName')(<Input placeholder="角色名称" />)}
+                <FormItem label="警名姓名" {...thirdLayout}>
+                  {getFieldDecorator('policeName')(<Input placeholder="警名姓名" />)}
                 </FormItem>
               </Col>
               <Col xl={8} lg={12} md={12} sm={24} xs={24}>
-                <FormItem label="角色编码" {...thirdLayout}>
-                  {getFieldDecorator('policeNumber')(<Input placeholder="角色编码" />)}
+                <FormItem label="警名编号" {...thirdLayout}>
+                  {getFieldDecorator('policeNumber')(<Input placeholder="警名编号" />)}
                 </FormItem>
               </Col>
               <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ textAlign: 'center' }}>

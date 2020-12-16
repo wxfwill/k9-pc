@@ -33,6 +33,7 @@ class MenuList extends Component {
   };
   handleAdd = (row) => {
     let { icon, level, moduleIndex } = row;
+    icon = '';
     this.setState({ type: '新增菜单', id: row.id, icon, level, moduleIndex }, () => {
       this.childEle.openModel();
     });

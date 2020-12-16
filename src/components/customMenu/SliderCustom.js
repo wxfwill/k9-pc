@@ -51,7 +51,6 @@ class SliderCustom extends Component {
     });
   };
   createMenu = (menu = []) => {
-    console.log(menu);
     return menu.map((item) => {
       if (item.children && item.children.length > 0) {
         return (

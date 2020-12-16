@@ -1,88 +1,92 @@
 import React, { Component } from 'react';
-import { Modal, Tree } from 'antd';
+import { Modal, Tree, message } from 'antd';
 const { TreeNode } = Tree;
-const treeData = [
-  {
-    title: '0-0',
-    key: '0-0',
-    children: [
-      {
-        title: '0-0-0',
-        key: '0-0-0',
-        children: [
-          { title: '0-0-0-0', key: '0-0-0-0' },
-          { title: '0-0-0-1', key: '0-0-0-1' },
-          { title: '0-0-0-2', key: '0-0-0-2' },
-        ],
-      },
-      {
-        title: '0-0-1',
-        key: '0-0-1',
-        children: [
-          { title: '0-0-1-0', key: '0-0-1-0' },
-          { title: '0-0-1-1', key: '0-0-1-1' },
-          { title: '0-0-1-2', key: '0-0-1-2' },
-        ],
-      },
-      {
-        title: '0-0-2',
-        key: '0-0-2',
-      },
-    ],
-  },
-  {
-    title: '0-1',
-    key: '0-1',
-    children: [
-      { title: '0-1-0-0', key: '0-1-0-0' },
-      { title: '0-1-0-1', key: '0-1-0-1' },
-      { title: '0-1-0-2', key: '0-1-0-2' },
-    ],
-  },
-  {
-    title: '0-2',
-    key: '0-2',
-  },
-];
-
 class TreeModel extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
-      expandedKeys: ['0-0-0', '0-0-1'],
+      roleId: null,
+      expandedKeys: [], // 默认展开节点
       autoExpandParent: true,
-      checkedKeys: ['0-0-0'],
-      selectedKeys: [],
+      checkedKeys: [], // 选中节点
+      menuTree: [], // 数据源
     };
   }
   componentDidMount() {
     this.props.onRef(this);
+    // this.getMenuTree();
   }
+  // 菜单树
+  getMenuTree = (id) => {
+    React.$ajax.getData('/api/sys/sys-module/queryMenuTree', {}).then((res) => {
+      if (res && res.code == 0) {
+        console.log(res);
+        let resData = res.data ? res.data : [];
+        let resArr = this.digui(resData);
+        console.log(this.digui(resData));
+        this.setState({ menuTree: resArr });
+        // resData.map()
+        this.getBindMenuId(id);
+      }
+    });
+  };
+  // 递归tree
+  digui = (arr) => {
+    if (arr && arr.length > 0) {
+      arr.map((item) => {
+        if (item.children && item.children.length > 0) {
+          this.digui(item.children);
+        } else {
+          item.children = [];
+        }
+      });
+    }
+    return arr;
+  };
   onExpand = (expandedKeys) => {
-    console.log('onExpand', expandedKeys);
-    // if not set autoExpandParent to false, if children expanded, parent can not collapse.
-    // or, you can remove all expanded children keys.
     this.setState({
       expandedKeys,
-      autoExpandParent: false,
+      autoExpandParent: true,
     });
   };
   onCheck = (checkedKeys) => {
-    console.log('onCheck', checkedKeys);
+    console.log('复选框');
+    console.log(checkedKeys);
     this.setState({ checkedKeys });
   };
-
-  onSelect = (selectedKeys, info) => {
-    console.log('onSelect', info);
-    this.setState({ selectedKeys });
+  openModel = (id) => {
+    this.setState({ visible: true, roleId: id }, () => {
+      // this.getBindMenuId(id);
+      this.getMenuTree(id);
+    });
   };
-
-  openModel = () => {
-    this.setState({ visible: true });
+  // 获取已绑定的菜单id
+  getBindMenuId = (id) => {
+    React.$ajax.getData('/api/sys/role-module/getMenuIdByRoleId', { roleId: id }).then((res) => {
+      if (res && res.code == 0) {
+        let resData = res.data ? res.data : [];
+        this.setState({ checkedKeys: resData, expandedKeys: resData });
+      }
+    });
+  };
+  // 绑定菜单
+  handleBindMenu = () => {
+    let per = {
+      menuId: this.state.checkedKeys,
+      roleId: this.state.roleId,
+    };
+    React.$ajax.postData('/api/sys/role-module/bindMenu', per).then((res) => {
+      if (res && res.code == 0) {
+        message.success('保存成功', 0.5, () => {
+          this.handleCancel();
+        });
+      }
+    });
   };
   handleOk = () => {
     console.log('ok');
+    this.handleBindMenu();
   };
   handleCancel = () => {
     this.setState({ visible: false });
@@ -91,12 +95,12 @@ class TreeModel extends Component {
     data.map((item) => {
       if (item.children) {
         return (
-          <TreeNode title={item.title} key={item.key} dataRef={item}>
+          <TreeNode title={item.name} key={item.id} dataRef={item}>
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode key={item.key} {...item} />;
+      return <TreeNode key={item.id} {...item} />;
     });
   render() {
     return (
@@ -112,18 +116,19 @@ class TreeModel extends Component {
         onOk={this.handleOk}
         onCancel={this.handleCancel}
       >
-        <Tree
-          checkable
-          onExpand={this.onExpand}
-          expandedKeys={this.state.expandedKeys}
-          autoExpandParent={this.state.autoExpandParent}
-          onCheck={this.onCheck}
-          checkedKeys={this.state.checkedKeys}
-          onSelect={this.onSelect}
-          selectedKeys={this.state.selectedKeys}
-        >
-          {this.renderTreeNodes(treeData)}
-        </Tree>
+        {this.state.menuTree && this.state.menuTree.length > 0 ? (
+          <Tree
+            checkable
+            onExpand={this.onExpand}
+            expandedKeys={this.state.expandedKeys}
+            autoExpandParent={this.state.autoExpandParent}
+            onCheck={this.onCheck}
+            checkedKeys={this.state.checkedKeys}
+            selectable={false}
+          >
+            {this.renderTreeNodes(this.state.menuTree)}
+          </Tree>
+        ) : null}
       </Modal>
     );
   }
