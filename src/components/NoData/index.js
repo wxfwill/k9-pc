@@ -9,7 +9,6 @@ class NoData extends Component {
     this.state = {
       dataSource: [],
       TableHeder: [],
-      tableObj: {},
     };
   }
   componentDidMount() {

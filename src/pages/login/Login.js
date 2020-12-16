@@ -140,14 +140,14 @@ class Login extends Component {
           <Form onSubmit={this.handleSubmit.bind(this)} className="login-form">
             <FormItem hasFeedback={this.state.validate}>
               {getFieldDecorator('userName', {
-                rules: [{ required: true, message: '请输入用户名!' }],
+                rules: [{ required: true, message: '请输入用户名或手机号!' }],
                 initialValue: this.state.username,
               })(
                 <Input
                   autoComplete="off"
                   onChange={this.handleInput.bind(this, 'username')}
                   prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="用户名"
+                  placeholder="用户名/手机号"
                   className="username"
                 />
               )}
