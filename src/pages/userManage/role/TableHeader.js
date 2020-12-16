@@ -2,7 +2,7 @@ import React from 'react';
 import { formatDate } from 'util/index.js';
 import { Button, Popconfirm } from 'antd';
 
-export const RoleHeaderLabel = (callbackEdit, callbackResources, callbackUser, callbackDel) => {
+export const RoleHeaderLabel = (callbackEdit, callbackResources, callbackDel) => {
   let data = [
     {
       title: '角色名称',
@@ -44,13 +44,13 @@ export const RoleHeaderLabel = (callbackEdit, callbackResources, callbackUser, c
             >
               菜单分配
             </Button>
-            <Button
+            {/* <Button
               size="small"
               style={{ marginRight: '10px', backgroundColor: '#e6a23c', color: '#fff' }}
               onClick={() => callbackUser && callbackUser(record)}
             >
               分配用户
-            </Button>
+            </Button> */}
             <Popconfirm title="确认删除此警员?" onConfirm={() => callbackDel && callbackDel(record, index)}>
               <Button type="danger" size="small">
                 删除

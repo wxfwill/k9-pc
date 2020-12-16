@@ -159,6 +159,8 @@ const RoleInfo = asyncComponent(() => import(/*webpackChunkName: 'user'*/ 'pages
 const MenuInfo = asyncComponent(() => import(/*webpackChunkName: 'user'*/ 'pages/userManage/menu/index'));
 // 机构列表
 const OrganList = asyncComponent(() => import(/*webpackChunkName: 'user'*/ 'pages/userManage/organ/index'));
+// 系统树
+const SysTreeList = asyncComponent(() => import(/*webpackChunkName: 'user'*/ 'pages/userManage/k9sysTree/index'));
 
 // 新版--上报统计
 // 上报
@@ -554,6 +556,11 @@ const routerArr = [
             path: '/app/user/organList',
             component: OrganList,
             name: '机构列表',
+          },
+          {
+            path: '/app/user/sysTree',
+            component: SysTreeList,
+            name: '系统树',
           },
           {
             path: '/app/user/roleList',
