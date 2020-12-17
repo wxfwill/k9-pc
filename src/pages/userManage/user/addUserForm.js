@@ -32,7 +32,7 @@ class FormCompomnent extends React.Component {
         sex: null, // 性别
         birthday: null, // 出生日期
         nation: undefined, // 名族
-        birthplace: undefined, // 籍贯
+        birthPlace: undefined, // 籍贯
         politicsStatus: undefined, // 政治面貌
         university: undefined, // 毕业院校
         dutyType: undefined, // 身份类别
@@ -47,7 +47,7 @@ class FormCompomnent extends React.Component {
         telphone: undefined, // 电话
         number: undefined, // 警员编号
         groupId: undefined, // 所属中队
-        role: undefined, // 角色
+        roles: undefined, // 角色
         remark: undefined, // 个人履历
         workWxUserId: null, // 企业微信号
       },
@@ -95,12 +95,14 @@ class FormCompomnent extends React.Component {
   getDetal = (userId) => {
     React.$ajax.getData('/api/user/queryUserInfoByUserId', { userId }).then((res) => {
       if (res.code == 0) {
-        let resData = res.data;
+        let resData = res.data ? res.data : {};
         console.log('res.data');
         console.log(res.data);
         resData.birthday = resData.birthday ? moment(resData.birthday) : null;
+        resData.roles = resData.roles ? resData.roles[0].roleId.toString() : undefined;
+        resData.groupId = resData.groupId ? resData.groupId.toString() : undefined;
         for (let key in resData) {
-          if (key != 'birthday' && !resData[key]) {
+          if (key != 'birthday' && !resData[key] && resData[key] != 0) {
             resData[key] = undefined;
           }
         }
@@ -146,9 +148,11 @@ class FormCompomnent extends React.Component {
   //检查警员编号是否重复
   checkNumber = (rule, value, callback) => {
     const re = /^[A-Za-z\d]{1,20}$/;
+    console.log(value);
     if (value && re.test(value)) {
       React.$ajax.getData('/api/user/isNotExistence', { number: value }).then((res) => {
-        if (!res.data && this.props.userInfo.account == value) {
+        console.log(this.props.userInfo.account);
+        if (!res.data || this.props.userInfo.account == value) {
           callback('警员编号重复');
         } else {
           callback();
@@ -166,6 +170,7 @@ class FormCompomnent extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         values.birthday = values.birthday ? moment(values.birthday).format('x') : null;
+        values.roles = [{ roleId: values.roles }];
         let obj = Object.assign({}, values, { id: userId, userId: userInfo.id.toString() });
         React.$ajax.postData('/api/user/createUser', obj).then((res) => {
           if (res && res.code == 0) {
@@ -268,7 +273,7 @@ class FormCompomnent extends React.Component {
                               message: '身份证输入不合法',
                             },
                           ],
-                          initialValue: this.state.identityNo,
+                          initialValue: formDataEle.identityNo,
                         })(<Input placeholder="身份证" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -308,10 +313,10 @@ class FormCompomnent extends React.Component {
                     </Col>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="籍贯" {...secondLayout}>
-                        {getFieldDecorator('birthplace', {
+                        {getFieldDecorator('birthPlace', {
                           //rules:[{required:true,message:'请输入籍贯'}],
                           rules: [{ max: 25, message: '籍贯长度不超过25' }],
-                          initialValue: this.state.birthplace,
+                          initialValue: formDataEle.birthPlace,
                         })(<Input placeholder="籍贯" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -587,7 +592,7 @@ class FormCompomnent extends React.Component {
                             {groupList &&
                               groupList.map((item, index) => {
                                 return (
-                                  <Option value={Number(item.id)} key={index}>
+                                  <Option value={item.id} key={index}>
                                     {item.name}
                                   </Option>
                                 );
@@ -600,9 +605,9 @@ class FormCompomnent extends React.Component {
                   <Row gutter={24}>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="角色" {...secondLayout}>
-                        {getFieldDecorator('role', {
+                        {getFieldDecorator('roles', {
                           rules: [{ required: true, message: '请选择角色' }],
-                          initialValue: formDataEle.role,
+                          initialValue: formDataEle.roles,
                         })(
                           <Select
                             disabled={disabled}

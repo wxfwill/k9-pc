@@ -19,6 +19,7 @@ class UserInfo extends Component {
         policeName: null,
         policeNumber: null,
         title: null,
+        orderDesc: true,
       },
       pagination: {
         currPage: 1,
@@ -115,16 +116,11 @@ class UserInfo extends Component {
   };
   //删除警员
   deleteUser = (record, index) => {
-    let dataSource = this.state.dataSource;
-    let { pagination } = this.state;
     React.$ajax.postData('/api/user/deleteUserByIds', { ids: [record.id] }).then((res) => {
       if (res.code == 0) {
-        message.success('删除成功');
-        // dataSource.splice(index, 1);
-        // this.setState({ dataSource });
-        this.fetch({
-          pageSize: pagination.pageSize,
-          currPage: 1,
+        message.success('删除成功', 0.5, () => {
+          let { sortFieldName, sortType, pagination, param } = this.state;
+          this.fetch(sortFieldName, sortType, pagination, param);
         });
       }
     });

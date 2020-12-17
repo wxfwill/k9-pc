@@ -5,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { RoleHeaderLabel } from './TableHeader';
 import RoleSearch from './RoleSearch';
 import AddEditModel from './AddEditModel';
-import ResourceModel from './ResourceModel';
+import ResourceModel from './ResourceModel2';
 import AllotUserModel from './AllotUserModel';
 class RoleList extends Component {
   constructor(props) {
@@ -145,7 +145,7 @@ class RoleList extends Component {
   };
   // 分配菜单
   handleResours = (record) => {
-    this.resource.openModel(record.id);
+    this.resource.openModel(record);
     // this.props.history.push({ pathname: '/app/user/infoUserData', search: `?userId=${record.id}&formStatus=view` });
   };
   // 分配用户

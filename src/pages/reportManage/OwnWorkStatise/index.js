@@ -42,7 +42,7 @@ class TeamWorkStatist extends Component {
     this.handleCommon(null, () => false);
   };
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '个人工作统计'] });
+    // React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '个人工作统计'] });
     if (JSON.stringify(util.urlParse(this.props.location.search)) == '{}') {
       let { param, sortFieldName, sortType, pagination } = this.state;
       this.getListData(param, sortFieldName, sortType, pagination);
@@ -69,19 +69,19 @@ class TeamWorkStatist extends Component {
       _param = Object.assign({}, param, {
         date: moment(data.year).format('YYYY'),
         dateType: 'year',
-        groupId: data && data.groupId ? [Number(data.groupId)] : [],
+        groupId: data && data.groupId ? [data.groupId] : [],
       });
     } else if (data && data.year && data.month) {
       _param = Object.assign({}, param, {
         date: moment(data.year).format('YYYY') + '-' + moment(data.month).format('M'),
         dateType: 'month',
-        groupId: data && data.groupId ? [Number(data.groupId)] : [],
+        groupId: data && data.groupId ? [data.groupId] : [],
       });
     } else {
       _param = Object.assign({}, param, {
         date: '',
         dateType: '',
-        groupId: data && data.groupId ? [Number(data.groupId)] : [],
+        groupId: data && data.groupId ? [data.groupId] : [],
       });
     }
     _pagination = Object.assign({}, pagination, { current: 1, currPage: 1, pageSize: 10 });
