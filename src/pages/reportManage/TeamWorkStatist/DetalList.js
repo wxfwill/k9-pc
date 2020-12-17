@@ -73,19 +73,19 @@ class TeamWorkStatist extends Component {
       _param = Object.assign({}, param, {
         date: moment(data.year).format('YYYY'),
         dateType: 'year',
-        groupId: data && data.groupId ? [Number(data.groupId)] : [],
+        groupId: data && data.groupId ? [data.groupId] : [],
       });
     } else if (data && data.year && data.month) {
       _param = Object.assign({}, param, {
         date: moment(data.year).format('YYYY') + '-' + moment(data.month).format('M'),
         dateType: 'month',
-        groupId: data && data.groupId ? [Number(data.groupId)] : [],
+        groupId: data && data.groupId ? [data.groupId] : [],
       });
     } else {
       _param = Object.assign({}, param, {
         date: '',
         dateType: '',
-        groupId: data && data.groupId ? [Number(data.groupId)] : [],
+        groupId: data && data.groupId ? [data.groupId] : [],
       });
     }
 

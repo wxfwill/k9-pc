@@ -21,7 +21,7 @@ const config = {
     port: 8001,
     open: false, // 打开默认浏览器
     // inline: true, // 实时刷新
-    // host:'0.0.0.0',
+    host: '172.20.5.198',
     hot: true, //开启HMR
     // hotOnly: true,
     // stats: "errors-only",

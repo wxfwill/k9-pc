@@ -79,22 +79,22 @@ class TeamWorkStatist extends Component {
       _param = Object.assign({}, param, {
         date: moment(data.year).format('YYYY'),
         dateType: 'year',
-        groupId: data && data.groupId ? [Number(data.groupId)] : [],
-        userId: data && data.userId ? [Number(data.userId)] : [],
+        groupId: data && data.groupId ? [data.groupId] : [],
+        userId: data && data.userId ? [data.userId] : [],
       });
     } else if (data && data.year && data.month) {
       _param = Object.assign({}, param, {
         date: moment(data.year).format('YYYY') + '-' + moment(data.month).format('M'),
         dateType: 'month',
-        groupId: data && data.groupId ? [Number(data.groupId)] : [],
-        userId: data && data.userId ? [Number(data.userId)] : [],
+        groupId: data && data.groupId ? [data.groupId] : [],
+        userId: data && data.userId ? [data.userId] : [],
       });
     } else {
       _param = Object.assign({}, param, {
         date: '',
         dateType: '',
-        groupId: data && data.groupId ? [Number(data.groupId)] : [],
-        userId: data && data.userId ? [Number(data.userId)] : [],
+        groupId: data && data.groupId ? [data.groupId] : [],
+        userId: data && data.userId ? [data.userId] : [],
       });
     }
     _pagination = Object.assign({}, pagination, { current: 1, currPage: 1, pageSize: 10 });
