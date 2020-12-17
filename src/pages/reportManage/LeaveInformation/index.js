@@ -51,8 +51,8 @@ class LeaveInformation extends Component {
   };
   handleSearchData = (data) => {
     let per = data;
-    per.groupIds = per.groupIds != null ? [Number(per.groupIds)] : [];
-    per.userIds = per.userIds != null ? [Number(per.userIds)] : [];
+    per.groupIds = per.groupIds != null ? [per.groupIds] : [];
+    per.userIds = per.userIds != null ? [per.userIds] : [];
     per.destination = per.destination != null ? per.destination : null;
     per.leaveType = per.leaveType != null ? per.leaveType : null;
     per.endDate = per.endDate ? moment(per.endDate).format('YYYY-MM-DD') : null;
@@ -89,8 +89,8 @@ class LeaveInformation extends Component {
   };
   exportLeaveLiust = (data) => {
     let per = data;
-    per.groupIds = per.groupIds != null ? [Number(per.groupIds)] : [];
-    per.userIds = per.userIds != null ? [Number(per.userIds)] : [];
+    per.groupIds = per.groupIds != null ? [per.groupIds] : [];
+    per.userIds = per.userIds != null ? [per.userIds] : [];
     per.destination = per.destination != null ? per.destination : null;
     per.leaveType = per.leaveType != null ? per.leaveType : null;
     per.endDate = per.endDate ? moment(per.endDate).format('YYYY-MM-DD') : null;
@@ -148,7 +148,7 @@ class LeaveInformation extends Component {
       destination,
       id: this.state.id,
       endDate: moment(endDate).format('x'),
-      leaveTime: Number(leaveTime),
+      leaveTime: leaveTime,
       leaveType,
       reason,
       startDate: moment(startDate).format('x'),

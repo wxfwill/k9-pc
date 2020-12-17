@@ -63,9 +63,9 @@ class AssessmentList extends Component {
     let { pagination } = this.state;
     let per = data || {};
     let _pagination;
-    per.approvalState = per.approvalState ? Number(per.approvalState) : null;
-    per.groupId = per.groupId ? [Number(per.groupId)] : [];
-    per.userId = per.userId ? [Number(per.userId)] : [];
+    per.approvalState = per.approvalState ? per.approvalState : null;
+    per.groupId = per.groupId ? [per.groupId] : [];
+    per.userId = per.userId ? [per.userId] : [];
     per.submitState = per.submitState ? per.submitState : null;
 
     if (per.month) {

@@ -54,6 +54,7 @@ class Login extends Component {
           account: values.userName.trim(),
           password: values.password.trim(),
         };
+        console.log(users);
         let desEncrypt = encodeAesString(JSON.stringify(users));
         let encrypt = encryptRAS();
         React.$ajax.login.postLogin({ k: encrypt, d: desEncrypt }).then((res) => {

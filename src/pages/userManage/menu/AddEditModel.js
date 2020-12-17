@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, InputNumber, Select, Row, Col, Form, Input } from 'antd';
+import { Modal, InputNumber, Select, Row, Col, Form, Input } from 'antd';
 import { editModel } from 'util/Layout';
 const Option = Select.Option;
 
@@ -17,6 +17,7 @@ class ShowModel extends Component {
       tabCode: undefined,
       available: undefined,
       permission: undefined,
+      icon: undefined,
       sort: 1,
       type: undefined,
       isdisMenu: false,
@@ -53,12 +54,12 @@ class ShowModel extends Component {
   openModel = (item) => {
     this.setState({ visible: true });
     if (item) {
-      let { name, url, tabCode, type, sort, permission, available } = item;
+      let { name, url, tabCode, type, sort, permission, available, icon } = item;
       available = available == true ? 1 : 0;
       if (type == 'root') {
-        this.setState({ name, url, tabCode, type, sort, permission, available, isdisMenu: true });
+        this.setState({ name, url, tabCode, type, sort, permission, available, icon, isdisMenu: true });
       } else {
-        this.setState({ name, url, tabCode, type, sort, permission, available, isdisMenu: false });
+        this.setState({ name, url, tabCode, type, sort, permission, available, icon, isdisMenu: false });
       }
     } else {
       this.props.form.resetFields();
@@ -68,6 +69,7 @@ class ShowModel extends Component {
         tabCode: undefined,
         type: undefined,
         sort: undefined,
+        icon: undefined,
         permission: undefined,
         available: undefined,
         isdisMenu: false,
@@ -91,7 +93,7 @@ class ShowModel extends Component {
   onChangeTextArea = () => {};
   handleChangeNum = () => {};
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, getFieldValue } = this.props.form;
     return (
       <Modal
         wrapClassName="customModel"
@@ -167,6 +169,25 @@ class ShowModel extends Component {
                       否
                     </Option>
                   </Select>
+                )}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row type="flex" justify="start">
+            <Col xl={20} lg={20} md={20} sm={20} xs={20}>
+              <Form.Item label="图标">
+                {getFieldDecorator('icon', {
+                  initialValue: this.state.icon,
+                })(
+                  <div className="icon_wrap">
+                    <Input placeholder="请输入" disabled={getFieldValue('type') == 'dir' ? false : true} />
+                    <span className="icon_tip">
+                      提示：图标请参考antd的Icon.
+                      <a target="_blank" href="https://3x.ant.design/components/icon-cn/">
+                        链接
+                      </a>
+                    </span>
+                  </div>
                 )}
               </Form.Item>
             </Col>

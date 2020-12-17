@@ -150,7 +150,7 @@ class FormCompomnent extends React.Component {
     const re = /^[A-Za-z\d]{1,20}$/;
     console.log(value);
     if (value && re.test(value)) {
-      React.$ajax.getData('/api/user/isNotExistence', { number: value }).then((res) => {
+      React.$ajax.getData('/api/user/isNotExistence', { newNumber: value, userId: this.state.userId }).then((res) => {
         console.log(this.props.userInfo.account);
         if (!res.data || this.props.userInfo.account == value) {
           callback('警员编号重复');

@@ -17,24 +17,24 @@ class MenuList extends Component {
     };
   }
   handleFormData = (data) => {
-    let { id, pid, type, icon, level, moduleIndex } = this.state;
+    let { id, pid, type, level, moduleIndex } = this.state;
     data.available = data.available == 1 ? true : false;
     if (type == '编辑菜单') {
       // 编辑
-      let obj = Object.assign({}, data, { id, pid, icon, level, moduleIndex });
+      let obj = Object.assign({}, data, { id, pid, level, moduleIndex });
       console.log(obj);
       this.addEditMenu(obj, '编辑成功');
     } else {
       // 新增
-      let obj = Object.assign({}, data, { pid: id, icon, level, moduleIndex });
+      let obj = Object.assign({}, data, { pid: id, level, moduleIndex });
       console.log(obj);
       this.addEditMenu(obj, '新增成功');
     }
   };
   handleAdd = (row) => {
-    let { icon, level, moduleIndex } = row;
-    icon = '';
-    this.setState({ type: '新增菜单', id: row.id, icon, level, moduleIndex }, () => {
+    let { level, moduleIndex } = row;
+    // icon = '';
+    this.setState({ type: '新增菜单', id: row.id, level, moduleIndex }, () => {
       this.childEle.openModel();
     });
   };
@@ -44,9 +44,8 @@ class MenuList extends Component {
   handleEdit = (row) => {
     // e.stopPropagation();
     console.log(row);
-    let { icon, level, moduleIndex } = row;
-    console.log();
-    this.setState({ type: '编辑菜单', id: row.id, pid: row.pid, icon, level, moduleIndex }, () => {
+    let { level, moduleIndex } = row;
+    this.setState({ type: '编辑菜单', id: row.id, pid: row.pid, level, moduleIndex }, () => {
       this.childEle.openModel(row);
     });
   };

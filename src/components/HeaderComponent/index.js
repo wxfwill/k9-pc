@@ -187,7 +187,7 @@ class HeaderComponent extends Component {
         <Menu.Item key="loginOut">
           <span style={{ cursor: 'pointer' }}>
             <Icon type="poweroff" />
-            注销
+            退出系统
           </span>
         </Menu.Item>
       </Menu>

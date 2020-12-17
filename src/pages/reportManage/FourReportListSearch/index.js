@@ -87,8 +87,8 @@ class FourReportListSearch extends Component {
     let per = data || {};
     let _pagination;
     per.taskType = per.taskType ? per.taskType : null;
-    per.groupId = per.groupId ? Number(per.groupId) : null;
-    per.userId = per.userId ? Number(per.userId) : null;
+    per.groupId = per.groupId ? per.groupId : null;
+    per.userId = per.userId ? per.userId : null;
     per.endDate = per.endDate ? moment(per.endDate).format('x') : null;
     per.startDate = per.startDate ? moment(per.startDate).format('x') : null;
     per.carDest = per.carDest ? per.carDest : null;

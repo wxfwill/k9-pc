@@ -61,8 +61,8 @@ class DailyInformation extends Component {
     let per = data || {};
     let _pagination,
       { pagination } = this.state;
-    per.userId = per.userId ? Number(per.userId) : null;
-    per.groupId = per.groupId ? Number(per.groupId) : null;
+    per.userId = per.userId ? per.userId : null;
+    per.groupId = per.groupId ? per.groupId : null;
     per.endDate = per.endDate ? moment(per.endDate).format('YYYY-MM-DD') : null;
     per.startDate = per.startDate ? moment(per.startDate).format('YYYY-MM-DD') : null;
     let newObj = Object.assign({}, this.state.param, per);

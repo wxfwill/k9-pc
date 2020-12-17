@@ -45,8 +45,8 @@ class AwardInformation extends Component {
   handleSearchData = (data, init) => {
     console.log(data);
     let per = data || {};
-    per.userIds = per.userIds ? [Number(per.userIds)] : [];
-    per.groupIds = per.groupIds ? [Number(per.groupIds)] : [];
+    per.userIds = per.userIds ? [per.userIds] : [];
+    per.groupIds = per.groupIds ? [per.groupIds] : [];
     per.endDate = per.endDate ? moment(per.endDate).format('YYYY-MM-DD') : null;
     per.startDate = per.startDate ? moment(per.startDate).format('YYYY-MM-DD') : null;
     per.rewardType = per.rewardType ? per.rewardType : null;
