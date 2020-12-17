@@ -8,6 +8,8 @@ import { saveToken } from 'store/actions/loginAction';
 
 import { constant } from 'libs/util/index';
 import { changeRoute } from 'store/actions/common';
+
+import ChangePassword from 'components/ChangePassword';
 const { Header } = Layout;
 
 const newMsgObj = {
@@ -31,6 +33,9 @@ class HeaderComponent extends Component {
     this.msgList = '';
     this.totalMsgNum = 0;
     this.timer = null;
+    this.state = {
+      isShow: false,
+    };
   }
   componentWillMount() {
     // this.props.sysActions.newSocket();
@@ -154,6 +159,11 @@ class HeaderComponent extends Component {
       this.downloadIM();
     } else if (key == 'loginOut') {
       this.handleLoginOut();
+    } else if (key == 'changePassword') {
+      //console.log('修改密码');
+      this.setState({
+        isShow: !this.state.isShow,
+      });
     }
   };
   dropMenu = () => {
@@ -169,6 +179,11 @@ class HeaderComponent extends Component {
             <Icon type="download" /> IM
           </span>
         </Menu.Item>
+        <Menu.Item key="changePassword">
+          <span style={{ cursor: 'pointer' }}>
+            <Icon type="edit" /> 修改密码
+          </span>
+        </Menu.Item>
         <Menu.Item key="loginOut">
           <span style={{ cursor: 'pointer' }}>
             <Icon type="poweroff" />
@@ -177,6 +192,12 @@ class HeaderComponent extends Component {
         </Menu.Item>
       </Menu>
     );
+  };
+  //关闭修改密码弹窗
+  handleCancel = () => {
+    this.setState({
+      isShow: false,
+    });
   };
   render() {
     const { name } = this.props.userinfo;
@@ -209,6 +230,7 @@ class HeaderComponent extends Component {
             </Col>
           </Row>
         </div>
+        <ChangePassword visible={this.state.isShow} handleCancel={this.handleCancel} />
       </Header>
     );
   }
