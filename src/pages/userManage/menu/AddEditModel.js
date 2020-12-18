@@ -55,11 +55,13 @@ class ShowModel extends Component {
     this.setState({ visible: true });
     if (item) {
       let { name, url, tabCode, type, sort, permission, available, icon } = item;
+      console.log(item.icon);
       available = available == true ? 1 : 0;
       if (type == 'root') {
         this.setState({ name, url, tabCode, type, sort, permission, available, icon, isdisMenu: true });
       } else {
-        this.setState({ name, url, tabCode, type, sort, permission, available, icon, isdisMenu: false });
+        console.log(icon);
+        this.setState({ name, url, tabCode, type, sort, permission, available, icon: icon, isdisMenu: false });
       }
     } else {
       this.props.form.resetFields();
@@ -83,6 +85,9 @@ class ShowModel extends Component {
         this.props.editFormData && this.props.editFormData(val);
       }
     });
+  };
+  handleInputChange = (val) => {
+    this.setState({ icon: val.currentTarget.value });
   };
   handleCancel = () => {
     this.props.form.resetFields();
@@ -179,8 +184,14 @@ class ShowModel extends Component {
                 {getFieldDecorator('icon', {
                   initialValue: this.state.icon,
                 })(
+                  // <Input placeholder="请输入" disabled={getFieldValue('type') == 'dir' ? false : true} />
                   <div className="icon_wrap">
-                    <Input placeholder="请输入" disabled={getFieldValue('type') == 'dir' ? false : true} />
+                    <Input
+                      placeholder="请输入"
+                      value={this.state.icon}
+                      onChange={this.handleInputChange}
+                      disabled={getFieldValue('type') == 'dir' ? false : true}
+                    />
                     <span className="icon_tip">
                       提示：图标请参考antd的Icon.
                       <a target="_blank" href="https://3x.ant.design/components/icon-cn/">

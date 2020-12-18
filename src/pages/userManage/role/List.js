@@ -5,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { RoleHeaderLabel } from './TableHeader';
 import RoleSearch from './RoleSearch';
 import AddEditModel from './AddEditModel';
-import ResourceModel from './ResourceModel2';
+import ResourceModel from './ResourceModel';
 import AllotUserModel from './AllotUserModel';
 class RoleList extends Component {
   constructor(props) {

@@ -11,7 +11,6 @@ class TreeModel extends Component {
       autoExpandParent: true,
       checkedKeys: [], // 选中节点
       menuTree: [], // 数据源
-      roleName: '角色资源分配',
     };
   }
   componentDidMount() {
@@ -51,15 +50,10 @@ class TreeModel extends Component {
       autoExpandParent: obj.expanded,
     });
   };
-  onCheck = (checkedKey) => {
+  onCheck = (checkedKeys) => {
     console.log('复选框');
-    console.log(checkedKey);
-    this.setState({ checkedKeys: checkedKey, expandedKeys: checkedKey });
-  };
-  onSelect = (select) => {
-    console.log('select框');
-    console.log(select);
-    this.setState({ checkedKeys: select });
+    console.log(checkedKeys);
+    this.setState({ checkedKeys });
   };
   openModel = (row) => {
     this.setState({ visible: true, roleId: row.id }, () => {
@@ -113,7 +107,7 @@ class TreeModel extends Component {
     return (
       <Modal
         wrapClassName="customModel"
-        title={this.state.roleName}
+        title="角色资源分配"
         visible={this.state.visible}
         width={'660px'}
         centered={false}
@@ -128,12 +122,13 @@ class TreeModel extends Component {
             checkable
             onExpand={this.onExpand}
             expandedKeys={this.state.expandedKeys}
-            selectedKeys={this.state.checkedKeys}
-            onSelect={this.onSelect}
+            // defaultExpandedKeys={this.state.expandedKeys}
             autoExpandParent={this.state.autoExpandParent}
             onCheck={this.onCheck}
             checkedKeys={this.state.checkedKeys}
+            // selectedKeys={this.state.checkedKeys}
             selectable={false}
+            // defaultExpandAll
           >
             {this.renderTreeNodes(this.state.menuTree)}
           </Tree>

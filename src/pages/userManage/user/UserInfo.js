@@ -72,7 +72,7 @@ class UserInfo extends Component {
       pagination.total = res.totalCount;
       pagination.current = res.currPage;
       pagination.pageSize = res.pageSize;
-      this.setState({ dataSource: res.list, loading: false, pagination });
+      this.setState({ dataSource: res.list ? res.list : [], loading: false, pagination });
     });
   }
   // 多选

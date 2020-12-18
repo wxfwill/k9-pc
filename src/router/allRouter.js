@@ -375,18 +375,28 @@ const routerArr = [
         name: 'assemble',
       },
 
-      { path: '/app/drill/pdogdrill', component: Pdogdrill },
       { path: '/app/drill/drillsub', component: Drillsub },
       { path: '/app/assess/officer', component: Officer },
       { path: '/app/dog/feed', component: DogFeed },
       { path: '/app/config/message', component: DeviceInforList },
       { path: '/app/test', component: TestMap },
-      { path: '/app/statisticalQuery/attendance', component: Attend },
-
       {
-        path: '/app/drill/plan',
-        component: DrillPlan,
+        path: '/app/drill',
+        name: '科学训练',
+        component: BearerRoute,
+        items: [
+          {
+            path: '/app/drill/plan',
+            component: DrillPlan,
+            name: '训练计划',
+          },
+          { path: '/app/drill/pdogdrill', component: Pdogdrill, name: '警犬计划' },
+          { path: '/app/drill/team', component: Team, name: '分组管理' },
+          { path: '/app/drill/teamAdd', component: AddTeam },
+          { path: '/app/drill/teamEdit', component: AddTeam },
+        ],
       },
+
       {
         path: '/app/drill/planAdd',
         component: AddPlan,
@@ -442,9 +452,7 @@ const routerArr = [
       },
       { path: '/app/dog/breedAdd', component: BreedAdd },
       { path: '/app/dog/breedEdit', component: BreedAdd },
-      { path: '/app/drill/team', component: Team },
-      { path: '/app/drill/teamAdd', component: AddTeam },
-      { path: '/app/drill/teamEdit', component: AddTeam },
+
       { path: '/app/duty/dutyWeek', component: ScheduleManage },
       { path: '/app/duty/groupInfo', component: GroupSchedule },
       { path: '/app/duty/groupInfoAdd', component: AddGropSchedule },
@@ -658,26 +666,6 @@ const routerArr = [
         component: MonitorDogInfoList,
       },
       {
-        path: '/app/holiday/attendance',
-        component: Call,
-      },
-      {
-        path: '/app/holiday/holidayList',
-        component: HolidayList,
-      },
-      {
-        path: '/app/holiday/holidayListAdd',
-        component: AddHolidayList,
-      },
-      {
-        path: '/app/holiday/holidayListView',
-        component: AddHolidayList,
-      },
-      {
-        path: '/app/holiday/holidayListEdit',
-        component: AddHolidayList,
-      },
-      {
         path: '/app/car/carList',
         component: CarList,
       },
@@ -689,23 +677,48 @@ const routerArr = [
         path: '/app/car/outList',
         component: OutList,
       },
+
       {
-        path: '/app/holiday/approve',
-        component: Approval,
-      },
-      {
-        path: '/app/holiday/approvalDetail',
-        component: ApprovalDetail,
-      },
-      {
-        path: '/app/attendanceManage',
+        path: '/app/holiday',
         component: BearerRoute,
         name: '考勤管理',
         items: [
           {
-            path: '/app/attendanceManage/attendanceInfor',
+            path: '/app/holiday/attendanceInfor',
             component: AttendanceInfor,
             name: '考勤信息查询',
+          },
+          {
+            path: '/app/holiday/approve',
+            component: Approval,
+            name: '请假审批',
+          },
+          {
+            path: '/app/holiday/approvalDetail',
+            component: ApprovalDetail,
+          },
+          {
+            path: '/app/holiday/attendance',
+            component: Call,
+            name: '点名记录',
+          },
+          {
+            path: '/app/holiday/holidayList',
+            component: HolidayList,
+            name: '假期配置',
+          },
+          { path: '/app/holiday/statistical', component: Attend, name: '考勤统计' },
+          {
+            path: '/app/holiday/holidayListAdd',
+            component: AddHolidayList,
+          },
+          {
+            path: '/app/holiday/holidayListView',
+            component: AddHolidayList,
+          },
+          {
+            path: '/app/holiday/holidayListEdit',
+            component: AddHolidayList,
           },
         ],
       },
