@@ -290,6 +290,13 @@ export const leaveInformationDetal = (editCallback) => {
       width: 120,
     },
     {
+      title: '请假时长',
+      dataIndex: 'leaveHours',
+      render: (txt, row, index) => {
+        return txt ? txt + '小时' : '--';
+      },
+    },
+    {
       title: '目的地',
       dataIndex: 'destination',
     },

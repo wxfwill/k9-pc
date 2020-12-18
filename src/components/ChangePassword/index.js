@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, TreeSelect, Select, Modal, message } from 'antd';
+import { Form, Input, Modal, message } from 'antd';
 const FormItem = Form.Item;
 class ChangePassword extends Component {
   constructor(props) {
@@ -8,8 +8,7 @@ class ChangePassword extends Component {
       visible: false,
     };
   }
-
-  componentDidMount() {}
+  
   componentWillReceiveProps(nextProps) {
     this.setState({
       visible: nextProps.visible,
