@@ -27,7 +27,7 @@ class DogTable extends Component {
     this.fetch();
   }
   fetch = (params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) => {
-    httpAjax('post', config.apiUrl + '/api/leaveRecord/leaveListPage', params).then((res) => {
+    React.$ajax.postData('/api/leaveRecord/leaveListPage', { ...params }).then((res) => {
       const pagination = { ...this.state.pagination };
       pagination.total = res.totalCount;
       pagination.current = res.currPage;

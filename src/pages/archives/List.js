@@ -50,12 +50,12 @@ class ArchivesList extends Component {
   fetch(sortFieldName, sortType, pagination, param) {
     let obj = { sortFieldName, sortType, ...pagination, param };
     this.setState({ loading: true });
-    React.$ajax.postData('/api/user/pageInfo', obj).then((res) => {
+    React.$ajax.postData('/api/work-wx-sp/pageInfo', obj).then((res) => {
       const pagination = { ...this.state.pagination };
       pagination.total = res.totalCount;
       pagination.current = res.currPage;
       pagination.pageSize = res.pageSize;
-      this.setState({ dataSource: res.list, loading: false, pagination });
+      this.setState({ dataSource: res.list ? res.list : [], loading: false, pagination });
     });
   }
   // 多选

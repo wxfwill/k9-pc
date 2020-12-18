@@ -21,6 +21,7 @@ export const menuOperate = (addCallback, editCallback, deleteCallback) => {
     {
       title: '菜单名称',
       dataIndex: 'name',
+      width: 200,
       align: 'left',
       key: 'name',
     },

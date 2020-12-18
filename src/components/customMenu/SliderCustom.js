@@ -50,36 +50,39 @@ class SliderCustom extends Component {
       firstHide: false,
     });
   };
-  createMenu = (menu = []) => {
-    return menu.map((item) => {
-      if (item.children && item.children.length > 0) {
-        return (
-          <Menu.SubMenu
-            key={item.url.split('/').slice(0, 3).join('/')}
-            title={
-              <span>
-                {item.icon && <Icon type={item.icon} />}
-                <span className="nav-text">{item.name}</span>
-              </span>
-            }
-          >
-            {this.createMenu(item.children)}
-          </Menu.SubMenu>
-        );
-      } else {
-        return (
-          <Menu.Item key={item.url.split('/').slice(0, 4).join('/')}>
-            <Link to={item.url}>
-              {item.icon && <Icon type={item.icon} />}
-              <span className="nav-text">{item.name}</span>
-            </Link>
-          </Menu.Item>
-        );
-      }
-    });
+  createMenu = (menu) => {
+    return menu && menu.length > 0
+      ? menu.map((item) => {
+          if (item.children && item.children.length > 0) {
+            return (
+              <Menu.SubMenu
+                key={item.url.split('/').slice(0, 3).join('/')}
+                title={
+                  <span>
+                    {item.icon && <Icon type={item.icon} />}
+                    <span className="nav-text">{item.name}</span>
+                  </span>
+                }
+              >
+                {this.createMenu(item.children)}
+              </Menu.SubMenu>
+            );
+          } else {
+            return (
+              <Menu.Item key={item.url.split('/').slice(0, 4).join('/')}>
+                <Link to={item.url}>
+                  {item.icon && <Icon type={item.icon} />}
+                  <span className="nav-text">{item.name}</span>
+                </Link>
+              </Menu.Item>
+            );
+          }
+        })
+      : null;
   };
   render() {
     const { menus } = this.props;
+    console.log(menus);
     return (
       <Sider
         trigger={null}
