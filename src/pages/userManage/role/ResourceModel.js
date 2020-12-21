@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Tree, message } from 'antd';
 const { TreeNode } = Tree;
+let test = [];
 class TreeModel extends Component {
   constructor(props) {
     super(props);
@@ -11,12 +12,37 @@ class TreeModel extends Component {
       autoExpandParent: true,
       checkedKeys: [], // 选中节点
       menuTree: [], // 数据源
+      allNodeArr: [],
     };
   }
   componentDidMount() {
     this.props.onRef(this);
     // this.getMenuTree();
   }
+  // 筛选所有子节点
+  requestList = (data) => {
+    data &&
+      data.map((item) => {
+        if (item.children && item.children.length > 0) {
+          this.requestList(item.children);
+        } else {
+          test.push(item.id);
+        }
+      });
+    this.setState({ allNodeArr: test });
+    return test;
+  };
+  uniqueTree = (uniqueArr, Arr) => {
+    let uniqueChild = [];
+    for (var i in Arr) {
+      for (var k in uniqueArr) {
+        if (uniqueArr[k] === Arr[i]) {
+          uniqueChild.push(uniqueArr[k]);
+        }
+      }
+    }
+    return uniqueChild;
+  };
   // 菜单树
   getMenuTree = (id) => {
     React.$ajax.getData('/api/sys/sys-module/queryMenuTree', {}).then((res) => {
@@ -26,7 +52,10 @@ class TreeModel extends Component {
         let resArr = this.digui(resData);
         console.log(this.digui(resData));
         this.setState({ menuTree: resArr });
-        // resData.map()
+
+        // 筛选所有的子节点
+        this.requestList(resArr);
+        // 当前绑定的菜单
         this.getBindMenuId(id);
       }
     });
@@ -50,10 +79,13 @@ class TreeModel extends Component {
       autoExpandParent: obj.expanded,
     });
   };
-  onCheck = (checkedKeys) => {
+  onCheck = (checkedKeys, info) => {
     console.log('复选框');
-    console.log(checkedKeys);
-    this.setState({ checkedKeys });
+    console.log(info);
+    let newCheckKeyRes = [...checkedKeys, ...info.halfCheckedKeys];
+    console.log(newCheckKeyRes);
+    this.setState({ checkedKeys, newCheckKeyRes });
+    // this.setState({ checkedKeys: checkedKeys.checked });
   };
   openModel = (row) => {
     this.setState({ visible: true, roleId: row.id }, () => {
@@ -67,14 +99,17 @@ class TreeModel extends Component {
     React.$ajax.getData('/api/sys/role-module/getMenuIdByRoleId', { roleId: id }).then((res) => {
       if (res && res.code == 0) {
         let resData = res.data ? res.data : [];
-        this.setState({ checkedKeys: resData, expandedKeys: resData });
+        // this.setState({ checkedKeys: resData, expandedKeys: resData });
+        let costomChild = this.uniqueTree(resData, this.state.allNodeArr);
+        this.setState({ checkedKeys: costomChild, expandedKeys: costomChild });
       }
     });
   };
   // 绑定菜单
   handleBindMenu = () => {
     let per = {
-      menuId: this.state.checkedKeys,
+      menuId: this.state.newCheckKeyRes,
+      // menuId: this.state.checkedKeys,
       roleId: this.state.roleId,
     };
     React.$ajax.postData('/api/sys/role-module/bindMenu', per).then((res) => {
@@ -127,6 +162,7 @@ class TreeModel extends Component {
             onCheck={this.onCheck}
             checkedKeys={this.state.checkedKeys}
             // selectedKeys={this.state.checkedKeys}
+            checkStrictly={false}
             selectable={false}
             // defaultExpandAll
           >

@@ -55,6 +55,10 @@ class DeployTable extends React.Component {
     React.$ajax
       .postData('/api/cmdMonitor/listEmergencyDeploymentPlan', { ...params })
       .then((res) => {
+        if (res && !res.data) {
+          this.setState({ loading: false });
+          return;
+        }
         const pagination = { ...this.state.pagination };
         pagination.total = res.data.totalCount;
         pagination.current = res.data.currPage;

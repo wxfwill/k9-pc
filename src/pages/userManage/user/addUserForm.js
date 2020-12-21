@@ -619,7 +619,7 @@ class FormCompomnent extends React.Component {
                               roleList.map((item, index) => {
                                 return (
                                   <Option value={item.id} key={index}>
-                                    {item.description}
+                                    {item.roleName}
                                   </Option>
                                 );
                               })}
