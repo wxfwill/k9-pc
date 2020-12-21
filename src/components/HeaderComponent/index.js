@@ -194,10 +194,15 @@ class HeaderComponent extends Component {
     );
   };
   //关闭修改密码弹窗
-  handleCancel = () => {
-    this.setState({
-      isShow: false,
-    });
+  handleCancel = (isSuccess) => {
+    this.setState(
+      {
+        isShow: false,
+      },
+      () => {
+        isSuccess && this.props.history.push('/login'); //修改密码成功，返回登录页
+      }
+    );
   };
   render() {
     const { name } = this.props.userinfo;

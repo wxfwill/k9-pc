@@ -8,7 +8,7 @@ class ChangePassword extends Component {
       visible: false,
     };
   }
-  
+
   componentWillReceiveProps(nextProps) {
     this.setState({
       visible: nextProps.visible,
@@ -31,7 +31,7 @@ class ChangePassword extends Component {
           .then((res) => {
             if (res && res.code == 0) {
               message.success('修改密码成功，请重新登录！');
-              this.props.handleCancel();
+              this.props.handleCancel(true);
             }
           });
       }
