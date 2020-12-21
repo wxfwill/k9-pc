@@ -81,31 +81,31 @@ class DogTable extends Component {
   }
   fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
     React.$ajax.postData('/api/dog/listData', { ...params }).then((res) => {
-      if (res && res.code == 0) {
-        const pagination = { ...this.state.pagination };
-        pagination.total = res.totalCount;
-        pagination.current = res.currPage;
-        var temp = pagination.current + 1;
-        pagination.pageSize = res.pageSize;
+      // if (res && res.code == 0) {
+      const pagination = { ...this.state.pagination };
+      pagination.total = res.totalCount;
+      pagination.current = res.currPage;
+      var temp = pagination.current + 1;
+      pagination.pageSize = res.pageSize;
 
-        let _total = res.totalCount,
-          _currPage = res.currPage,
-          _size = this.state.pageSize,
-          _show = _currPage == parseInt(_total / _size) + (_total % _size > 0 ? 1 : 0) || !_total ? false : true;
-        //parseInt(_total /_size) + ((_total % _size) > 0 ? 1 : 0)
-        let _listByLoad = {
-          loadingMore: false,
-          showLoadingMore: _show,
-          data: this.state.listByLoad.data.concat(res.list),
-        };
-        this.setState({
-          loading: false,
-          pagination,
-          currPage: temp,
-          listByLoad: _listByLoad,
-        });
-        this.addInfo();
-      }
+      let _total = res.totalCount,
+        _currPage = res.currPage,
+        _size = this.state.pageSize,
+        _show = _currPage == parseInt(_total / _size) + (_total % _size > 0 ? 1 : 0) || !_total ? false : true;
+      //parseInt(_total /_size) + ((_total % _size) > 0 ? 1 : 0)
+      let _listByLoad = {
+        loadingMore: false,
+        showLoadingMore: _show,
+        data: this.state.listByLoad.data.concat(res.list),
+      };
+      this.setState({
+        loading: false,
+        pagination,
+        currPage: temp,
+        listByLoad: _listByLoad,
+      });
+      this.addInfo();
+      // }
     });
   }
 

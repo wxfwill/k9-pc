@@ -694,6 +694,11 @@ const routerArr = [
             name: '请假审批',
           },
           {
+            path: '/app/holiday/LeaveInformation',
+            component: LeaveInformation,
+            name: '请假列表',
+          },
+          {
             path: '/app/holiday/approvalDetail',
             component: ApprovalDetail,
           },
@@ -776,11 +781,6 @@ const routerArr = [
             path: '/app/reportManage/DailyInformation',
             component: DailyInformation,
             name: '日报列表',
-          },
-          {
-            path: '/app/reportManage/LeaveInformation',
-            component: LeaveInformation,
-            name: '请假列表',
           },
           {
             path: '/app/reportManage/OvertimeInformation',
