@@ -5,15 +5,21 @@ const LoginComponent = asyncComponent(() => import(/*webpackChunkName: 'LoginCom
 
 //main
 // import Main from 'pages/main/Main';
-const Main = asyncComponent(() => import(/*webpackChunkName: 'IndexComponent'*/ 'pages/main/Main'));
+const Main = asyncComponent(() =>
+  import(/*webpackPrefetch: true */ /*webpackChunkName: 'IndexComponent'*/ 'pages/main/Main')
+);
 
 // 首页
 // import IndexComponent from 'pages/home/NewIndex';
-const IndexComponent = asyncComponent(() => import(/*webpackChunkName: 'IndexComponent'*/ 'pages/home/NewIndex'));
+const IndexComponent = asyncComponent(() =>
+  import(/*webpackPrefetch: true */ /*webpackChunkName: 'IndexComponent'*/ 'pages/home/NewIndex')
+);
 
 // 承载路由
 // import BearerRoute from 'pages/BearerRoute';
-const BearerRoute = asyncComponent(() => import(/*webpackChunkName: 'IndexComponent'*/ 'pages/BearerRoute'));
+const BearerRoute = asyncComponent(() =>
+  import(/*webpackPrefetch: true */ /*webpackChunkName: 'IndexComponent'*/ 'pages/BearerRoute')
+);
 
 // 网格化搜捕
 const DutyComponent = asyncComponent(() => import(/*webpackChunkName: 'monitoring'*/ 'pages/monitoring/DutyComponent'));
@@ -161,6 +167,8 @@ const MenuInfo = asyncComponent(() => import(/*webpackChunkName: 'user'*/ 'pages
 const OrganList = asyncComponent(() => import(/*webpackChunkName: 'user'*/ 'pages/userManage/organ/index'));
 // 系统树
 const SysTreeList = asyncComponent(() => import(/*webpackChunkName: 'user'*/ 'pages/userManage/k9sysTree/index'));
+// 系统参数
+const SysParam = asyncComponent(() => import(/*webpackChunkName: 'user'*/ 'pages/userManage/sysparam/List'));
 
 // 新版--上报统计
 // 上报
@@ -283,6 +291,8 @@ const AssembleAdd = asyncComponent(() =>
 // 档案管理
 const Archivew = asyncComponent(() => import(/*webpackChunkName: 'archives'*/ 'pages/archives/index'));
 const ArchivewList = asyncComponent(() => import(/*webpackChunkName: 'archives'*/ 'pages/archives/List'));
+// app管理
+const AppList = asyncComponent(() => import(/*webpackChunkName: 'appManage'*/ 'pages/appManage/List'));
 
 const routerArr = [
   {
@@ -552,7 +562,7 @@ const routerArr = [
       },
       {
         path: '/app/user',
-        name: '用户管理',
+        name: '系统管理',
         component: BearerRoute,
         items: [
           {
@@ -569,6 +579,11 @@ const routerArr = [
             path: '/app/user/sysTree',
             component: SysTreeList,
             name: '系统树',
+          },
+          {
+            path: '/app/user/sysParam',
+            component: SysParam,
+            name: '参数列表',
           },
           {
             path: '/app/user/roleList',
@@ -724,6 +739,18 @@ const routerArr = [
           {
             path: '/app/holiday/holidayListEdit',
             component: AddHolidayList,
+          },
+        ],
+      },
+      {
+        path: '/app/AppList',
+        component: BearerRoute,
+        name: 'App管理',
+        items: [
+          {
+            path: '/app/AppList/list',
+            component: AppList,
+            name: '列表',
           },
         ],
       },
