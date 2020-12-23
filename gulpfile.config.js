@@ -19,6 +19,26 @@ const remotePath = '/usr/local/apps/k9/web/test/'; // 远程服务器的路径,�
 const projectName = 'k9-web'; // 远程项目的名称
 const historyProjectName = '2020-12-20-16-32'; // 这个在回滚上一个版本的时候需要手动修改，滚动的版本号，例如：2019-4-17-20
 
+const ENV_LIST = [
+  {
+    envName: 'dev', // 开发
+  },
+  {
+    envName: 'test', // 测试
+  },
+  {
+    envName: 'pro', // 生产
+  },
+];
+const argv = JSON.parse(process.env.npm_config_argv).original || process.argv;
+console.log(argv);
+const HOST_ENV = argv[1] ? argv[1].split(':')[1] : '';
+//没有设置环境，则默认为第一个
+const HOST_CONF = HOST_ENV ? ENV_LIST.find((item) => item.envName === HOST_ENV) : ENV_LIST[0];
+console.log(HOST_CONF);
+console.log('=====打包环境====gulp');
+console.log(HOST_CONF.envName);
+
 const gulpConfig = {
   devServerSShConfig: {
     uploadFile: './dist/**',

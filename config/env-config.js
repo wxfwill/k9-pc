@@ -1,7 +1,7 @@
 const ENV_LIST = [
   {
     envName: 'dev', // 开发
-    apiUrl: '',
+    apiUrl: 'http://172.16.121.137:8030',
   },
   {
     envName: 'test', // 测试

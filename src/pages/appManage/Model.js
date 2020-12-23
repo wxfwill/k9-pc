@@ -17,8 +17,11 @@ class ShowModel extends Component {
       openAddr: undefined,
       openParam: undefined,
       enabled: undefined,
-      normalIcon: 'jhjhjhj',
-      highlightIcon: 'kkkkk',
+      normalIcon: null,
+      normalIconUrl: null,
+      highlightIcon: null,
+      highlightIconUrl: null,
+      id: null,
     };
   }
   componentDidMount() {
@@ -41,8 +44,33 @@ class ShowModel extends Component {
 
     if (item) {
       // 编辑
-      let { title, openType, openAddr, openParam, sn, enabled } = item;
-      this.setState({ title, openType, openAddr, openParam, sn, enabled });
+      let {
+        title,
+        openType,
+        openAddr,
+        normalIcon,
+        highlightIcon,
+        highlightIconUrl,
+        normalIconUrl,
+        openParam,
+        sn,
+        enabled,
+        id,
+      } = item;
+      console.log(normalIconUrl);
+      this.setState({
+        id,
+        title,
+        openType,
+        normalIcon,
+        highlightIcon,
+        highlightIconUrl,
+        normalIconUrl,
+        openAddr,
+        openParam,
+        sn,
+        enabled,
+      });
     } else {
       // 新增
       this.reset();
@@ -63,8 +91,10 @@ class ShowModel extends Component {
       openAddr: undefined,
       openParam: undefined,
       enabled: undefined,
-      normalIcon: 'eeee',
-      highlightIcon: 'tttt',
+      normalIcon: null,
+      highlightIcon: null,
+      highlightIconUrl: null,
+      normalIconUrl: null,
     });
   };
   handleCancel = () => {
@@ -92,12 +122,28 @@ class ShowModel extends Component {
       }
     });
   };
+  getIconUrl = (msg, type) => {
+    console.log(msg);
+    console.log(type);
+    if (type == 'default') {
+      // this.props.form.setFields({ normalIcon: msg });
+      this.setState({ normalIcon: msg }, () => {
+        this.props.form.resetFields(['normalIcon']);
+      });
+    } else {
+      // this.props.form.setFields({ highlightIcon: msg });
+      this.setState({ highlightIcon: msg }, () => {
+        this.props.form.resetFields(['highlightIcon']);
+      });
+    }
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
       <Modal
         wrapClassName="customModel"
         title={this.props.type}
+        // key={`default_${this.props.iconType}_icon_${this.state.id ? this.state.id : '123'}`}
         visible={this.state.visible}
         width={'50%'}
         centered={false}
@@ -182,8 +228,15 @@ class ShowModel extends Component {
                 {/* <CustomUpload iconKey={`default_${this.props.iconType}_icon`}></CustomUpload> */}
                 {getFieldDecorator('normalIcon', {
                   initialValue: this.state.normalIcon,
-                  rules: [{ required: false, message: '请选择默认图标' }],
-                })(<CustomUpload key={`default_${this.props.iconType}_icon`}></CustomUpload>)}
+                  rules: [{ required: true, message: '请选择默认图标' }],
+                })(
+                  <CustomUpload
+                    iconKey={`default_${this.props.iconType}_icon_${this.state.id ? this.state.id : '123'}`}
+                    parent={this}
+                    imgUrl={this.state.normalIconUrl}
+                    selectType="default"
+                  ></CustomUpload>
+                )}
               </Form.Item>
             </Col>
           </Row>
@@ -194,7 +247,14 @@ class ShowModel extends Component {
                 {getFieldDecorator('highlightIcon', {
                   initialValue: this.state.highlightIcon,
                   rules: [{ required: true, message: '请选择高亮图标' }],
-                })(<CustomUpload iconKey={`light_${this.props.iconType}_icon`}></CustomUpload>)}
+                })(
+                  <CustomUpload
+                    iconKey={`light_${this.props.iconType}_icon_${this.state.id ? this.state.id : '123'}`}
+                    parent={this}
+                    imgUrl={this.state.highlightIconUrl}
+                    selectType="light"
+                  ></CustomUpload>
+                )}
               </Form.Item>
             </Col>
           </Row>

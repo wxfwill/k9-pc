@@ -8,9 +8,9 @@
     "build": "set NODE_ENV=production&& webpack --progress --config config/webpack.prod.js",
     "dev": "npm run start --[dev]",
     "build:test": "npm run build --[test] && gulp default",
+    "build:dev": "npm run build --[dev] && gulp default",
     "build:pro": "npm run build --[pro]",
-    "build:analy": "npm run build --[analy]",
-    "upload": "vue-cli-service build --mode test && gulp deploy"
+    "build:analy": "npm run build --[analy]"
   },
   "keywords": [],
   "author": "will",
