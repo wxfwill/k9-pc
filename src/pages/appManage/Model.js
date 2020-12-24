@@ -21,7 +21,7 @@ class ShowModel extends Component {
       normalIconUrl: null,
       highlightIcon: null,
       highlightIconUrl: null,
-      id: null,
+      id: 0,
     };
   }
   componentDidMount() {
@@ -143,7 +143,7 @@ class ShowModel extends Component {
       <Modal
         wrapClassName="customModel"
         title={this.props.type}
-        // key={`default_${this.props.iconType}_icon_${this.state.id ? this.state.id : '123'}`}
+        key={`default_${this.props.iconType}`}
         visible={this.state.visible}
         width={'50%'}
         centered={false}
@@ -225,13 +225,12 @@ class ShowModel extends Component {
           <Row type="flex" justify="start">
             <Col xl={20} lg={20} md={20} sm={20} xs={20}>
               <Form.Item label="默认图标">
-                {/* <CustomUpload iconKey={`default_${this.props.iconType}_icon`}></CustomUpload> */}
                 {getFieldDecorator('normalIcon', {
                   initialValue: this.state.normalIcon,
                   rules: [{ required: true, message: '请选择默认图标' }],
                 })(
                   <CustomUpload
-                    iconKey={`default_${this.props.iconType}_icon_${this.state.id ? this.state.id : '123'}`}
+                    iconKey={`default_${this.props.iconType}_icon_${this.state.id}`}
                     parent={this}
                     imgUrl={this.state.normalIconUrl}
                     selectType="default"
@@ -243,14 +242,13 @@ class ShowModel extends Component {
           <Row type="flex" justify="start">
             <Col xl={20} lg={20} md={20} sm={20} xs={20}>
               <Form.Item label="高亮图标">
-                {/* <CustomUpload iconKey={`default_${this.props.iconType}_icon`}></CustomUpload> */}
                 {getFieldDecorator('highlightIcon', {
                   initialValue: this.state.highlightIcon,
                   rules: [{ required: true, message: '请选择高亮图标' }],
                 })(
                   <CustomUpload
-                    iconKey={`light_${this.props.iconType}_icon_${this.state.id ? this.state.id : '123'}`}
-                    parent={this}
+                    iconKey={`light_${this.props.iconType}_icon_${this.state.id}`}
+                    parent2={this}
                     imgUrl={this.state.highlightIconUrl}
                     selectType="light"
                   ></CustomUpload>

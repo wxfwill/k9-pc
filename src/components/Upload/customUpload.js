@@ -16,17 +16,19 @@ class CustomUpload extends React.Component {
   state = {
     loading: false,
     imageUrl: (() => {
-      console.log(this.props.imgUrl);
-      return this.props.imgUrl || null;
+      if (this.props.photoUrl) {
+        return `${process.env.BASE_URL}/api/user/showImg?fileName=${this.props.photoUrl}`;
+      }
+      return null;
     })(),
     file: null,
     icon: null,
   };
   beforeUpload = (file) => {
-    // const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    // if (!isJpgOrPng) {
-    //   message.error('图片格式错误');
-    // }
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('图片格式错误');
+    }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
       message.error('图片最大不超过2M!');
@@ -38,40 +40,36 @@ class CustomUpload extends React.Component {
       formData,
       file,
     });
-    // return isJpgOrPng && isLt2M;
-    return isLt2M;
+    return isJpgOrPng && isLt2M;
+  };
+  handleCustomRequest = (option) => {
+    const { onSuccess, onError, file, onProgress } = option;
+    let param = new FormData();
+    param.append('file', file);
+    React.$ajax.postData('/api/user/uploadImg', param).then((res) => {
+      this.setState({ loading: false });
+      if (res && res.code == 0) {
+        onSuccess(res, file);
+        message.success('上传成功');
+        let reader = new FileReader();
+        reader.addEventListener('load', () => {
+          this.setState({ imageUrl: reader.result });
+          this.props.parent.getchildmsg(res.data);
+        });
+        reader.readAsDataURL(file);
+      } else {
+        message.success('上传失败');
+      }
+    });
   };
   handleChange = (info) => {
-    console.log(info);
-
     if (info.file.status === 'uploading') {
       this.setState({ loading: true });
       return;
     }
-    if (info.file.status === 'done') {
-      console.log(info);
-      getBase64(info.file.originFileObj, (imageUrl) =>
-        this.setState({
-          imageUrl,
-          loading: false,
-        })
-      );
-      if (info.file.response && info.file.response.code == 0) {
-        this.setState({ icon: info.file.response.data });
-        info.file.response && message.success('上传成功');
-        if (this.props.selectType == 'default') {
-          // 默认
-          this.props.parent.getIconUrl(info.file.response.data, 'default');
-        } else {
-          this.props.parent2.getIconUrl(info.file.response.data, 'light');
-        }
-      } else {
-        info.file.response && message.error(info.file.response.msg);
-      }
-    }
   };
   componentDidMount() {
-    console.log(process.env.BASE_URL);
+    // ;
   }
   setSvg = (url) => {};
   render() {
@@ -81,18 +79,15 @@ class CustomUpload extends React.Component {
         <div className="ant-upload-text">{this.state.loading ? '上传中' : '开始上传'}</div>
       </div>
     );
-    const { imageUrl, file, formData } = this.state;
+    const { imageUrl } = this.state;
     return (
       <Upload
-        // key={this.props.iconKey}
         name="file"
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
-        data={{ file: formData }}
-        headers={{ k9token: this.props.token }}
-        accept=".png, .jpg, .jpeg, .svg"
-        action={process.env.BASE_URL + '/api/sys-appNavigation/uploadImg'}
+        customRequest={this.handleCustomRequest}
+        accept=".png, .jpg, .jpeg"
         beforeUpload={this.beforeUpload}
         onChange={this.handleChange}
       >

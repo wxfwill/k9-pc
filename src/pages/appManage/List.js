@@ -53,7 +53,8 @@ class SysTree extends Component {
   handleEdit = (row) => {
     // e.stopPropagation();
     console.log(row);
-    this.setState({ type: '编辑菜单', iconType: 'edit', id: row.id }, () => {
+    console.log(new Date().getTime());
+    this.setState({ type: '编辑菜单', iconType: 'edit', id: row.id, date: new Date().getTime() }, () => {
       this.childEle.openModel(row);
     });
   };
@@ -151,7 +152,7 @@ class SysTree extends Component {
           <AddEditModel
             onRef={(ref) => (this.childEle = ref)}
             type={this.state.type}
-            iconType={this.state.iconType}
+            iconType={new Date().getTime()}
             handleFormData={this.handleFormData}
           />
           <CustomTable

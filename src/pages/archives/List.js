@@ -133,12 +133,7 @@ class ArchivesList extends Component {
         <Row gutter={24}>
           <Col xl={24} lg={24} md={24} sm={24} xs={24}>
             <Card bordered={false}>
-              <div style={{ marginBottom: '20px' }}>
-                {/* <Button type="primary" style={{ marginRight: '20px' }} onClick={this.addInfo}>
-                  <Link to={{ pathname: '/app/user/infoAddUser', query: { targetText: '新增' } }}>新增人员</Link>
-                </Button>
-                <Button onClick={this.deleteMore}>批量删除</Button> */}
-              </div>
+              <div style={{ marginBottom: '20px' }}></div>
               <CustomTable
                 setTableKey={(row) => {
                   return row.id;

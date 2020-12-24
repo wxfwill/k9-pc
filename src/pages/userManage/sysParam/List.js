@@ -93,6 +93,13 @@ class SysTree extends Component {
       }
     });
   };
+  clearSysCache = () => {
+    React.$ajax.getData('/api/sys-common/clearAllCache').then((res) => {
+      if (res && res.code == 0) {
+        message.info('清除缓存成功');
+      }
+    });
+  };
   handleDelteMenu = (row) => {
     confirm({
       title: '提示',
@@ -159,6 +166,9 @@ class SysTree extends Component {
         </Card>
         <Button type="primary" style={{ margin: '10px 0' }} onClick={this.handleAdd.bind(this)}>
           新增
+        </Button>
+        <Button type="primary" style={{ margin: '10px 10px' }} onClick={this.clearSysCache.bind(this)}>
+          清除系统缓存
         </Button>
         <Card title="" bordered={false}>
           <AddEditModel
