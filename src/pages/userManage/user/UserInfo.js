@@ -140,7 +140,7 @@ class UserInfo extends Component {
             <Card bordered={false}>
               <div style={{ marginBottom: '20px' }}>
                 <Button type="primary" style={{ marginRight: '20px' }} onClick={this.addInfo}>
-                  <Link to={{ pathname: '/app/user/infoAddUser', query: { targetText: '新增' } }}>新增人员</Link>
+                  新增人员
                 </Button>
                 <Button onClick={this.deleteMore}>批量删除</Button>
               </div>

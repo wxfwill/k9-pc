@@ -42,15 +42,31 @@ export const menuOperate = (editCallback, deleteCallback) => {
     },
     {
       title: '默认图标',
-      dataIndex: 'normalIcon',
+      dataIndex: 'normalIconUrl',
       align: 'center',
-      key: 'normalIcon',
+      width: '20%',
+      key: 'normalIconUrl',
+      render: (txt, row) => {
+        return row.normalIconUrl ? (
+          <img src={row.normalIconUrl} alt="icon" style={{ width: '30px', height: '30px' }} />
+        ) : (
+          '暂无图标'
+        );
+      },
     },
     {
       title: '高亮图标',
-      dataIndex: 'highlightIcon',
+      dataIndex: 'highlightIconUrl',
       align: 'center',
-      key: 'highlightIcon',
+      width: '20%',
+      key: 'highlightIconUrl',
+      render: (txt, row) => {
+        return row.highlightIconUrl ? (
+          <img src={row.highlightIconUrl} alt="icon" style={{ width: '30px', height: '30px' }} />
+        ) : (
+          '暂无图标'
+        );
+      },
     },
     {
       title: '排序',
