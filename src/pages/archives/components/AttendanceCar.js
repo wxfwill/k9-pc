@@ -83,9 +83,9 @@ class AttendanceCar extends Component {
                     </tr>
                     <tr>
                       <th>防刺服</th>
-                      <td>{detailInfor.preventStabNum}件</td>
+                      <td>{detailInfor.preventStabNum ? detailInfor.preventStabNum : 0}件</td>
                       <th>防弹衣</th>
-                      <td>{detailInfor.bodyArmorNum}件</td>
+                      <td>{detailInfor.bodyArmorNum ? detailInfor.bodyArmorNum : 0}件</td>
                     </tr>
                     <tr>
                       <th>现勘箱</th>
