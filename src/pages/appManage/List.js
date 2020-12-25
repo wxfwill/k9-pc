@@ -174,7 +174,6 @@ class SysTree extends Component {
     );
   }
 }
-
 const SysTreeModel = Form.create()(SysTree);
 
 export default SysTreeModel;
