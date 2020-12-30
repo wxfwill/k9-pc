@@ -197,7 +197,7 @@ class SubTable extends React.Component {
       >
         <div className="item_body">
           <div className="body_detail">
-            <Link to={{ pathname: '/app/drill/teamEdit', query: { editItem: item } }}>
+            <Link to={{ pathname: '/app/monitoring/team/edit', query: { editItem: item } }}>
               <Icon type="edit" style={{ cursor: 'pointer', margin: '0 10px 0 -10px', color: '#999999' }} />
               <span style={{ color: '#999' }}>编辑</span>
             </Link>
@@ -220,7 +220,7 @@ class SubTable extends React.Component {
       <div className="dogCureTable" style={{ paddingTop: '0' }}>
         <div style={{ marginBottom: '20px' }}>
           <Button type="primary" style={{ marginRight: '20px' }}>
-            <Link to={{ pathname: `/app/drill/teamAdd`, query: { targetText: '新增' } }}>新增分组</Link>
+            <Link to={{ pathname: `/app/monitoring/team/add`, query: { targetText: '新增' } }}>新增分组</Link>
           </Button>
         </div>
 

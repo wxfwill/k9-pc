@@ -18,3 +18,6 @@ export const SOCKET_LIST_NEWS_MSG = 'SOCKET_LIST_NEWS_MSG';
 
 // 用户管理 职务信息
 export const USER_DUTY_LIST = 'USER_DUTY_LIST';
+
+// 网格化搜捕--查看地图
+export const GRID_SHOW_MAP = 'GRID_SHOW_MAP';

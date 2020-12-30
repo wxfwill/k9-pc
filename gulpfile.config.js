@@ -46,6 +46,7 @@ const gulpConfig = {
     uploadFile: './dist/**',
     sshConfig: {
       remotePath: remotePath + projectName, // 远程网站地址,会自动新建projectName文件夹
+      env: HOST_CONF.envName,
       ssh: {
         // 测试环境
         host: '172.16.121.137',

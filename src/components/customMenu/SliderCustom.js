@@ -90,7 +90,13 @@ class SliderCustom extends Component {
         breakpoint="lg"
         collapsible
         collapsed={this.props.isCollapsed}
-        style={{ background: '#fff', overflowY: 'auto', height: '100%', overflowX: 'hidden' }}
+        style={{
+          background: '#fff',
+          overflowY: 'auto',
+          height: '100%',
+          overflowX: 'hidden',
+          display: this.props.isShowGridMap ? 'none' : 'block',
+        }}
       >
         <Menu
           mode="inline"
@@ -120,6 +126,7 @@ class SliderCustom extends Component {
 const mapStateToProps = (state) => ({
   isCollapsed: state.commonReducer.collapsed,
   routeUrl: state.commonReducer.routeUrl,
+  isShowGridMap: state.commonReducer.isShowGridMap,
 });
 const mapDispatchToProps = (dispatch) => ({
   isCollapsedAction: () => dispatch(showNavCollapsed()),

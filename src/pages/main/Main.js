@@ -3,13 +3,11 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { Layout, BackTop } from 'antd';
-import ReactDOM from 'react-dom';
 import { renderRoutes } from 'react-router-config';
 import { showNavCollapsed, changeRoute, changeNavName } from 'store/actions/common';
 import SliderCustom from 'components/customMenu/SliderCustom';
 import CustomBreadcrumb from 'components/BeardComponent/Breadcrumbs';
 import HeaderComponent from 'components/HeaderComponent';
-import routerArr from '../../router/allRouter';
 
 const { Content, Footer, Sider } = Layout;
 require('style/index.less');
@@ -21,14 +19,7 @@ class MainComponent extends React.Component {
     this.menus = this.props.menus;
   }
   componentDidMount() {
-    // let dom = ReactDOM.findDOMNode(this.mainWrapper1.current);
-    // ;
-    // dom.onscroll = function (e) {
-    //   ;
-    //   ;
-    // };
-    // ;
-    // );
+    console.log(this.props.isShowGridMap);
     let _this = this;
     let beginTime = 0; //执行onbeforeunload的开始时间
     let differTime = 0; //时间差
@@ -126,13 +117,17 @@ class MainComponent extends React.Component {
             <CustomBreadcrumb />
             <div className="midder-content" id="mainWrapper1" style={{ height: '100%' }} ref={this.mainWrapper1}>
               {/* <CustomBreadcrumb arr={this.props.navData} /> */}
-              <Content style={{ background: '#f0f2f5', margin: 0, padding: '0 24px 0px' }}>
+              <Content style={{ background: '#f0f2f5', margin: 0, padding: '0 24px 0px', height: '100%' }}>
                 {/* {this.props.children} */}
                 {renderRoutes(route.items)}
               </Content>
             </div>
             <BackTop target={() => document.getElementById('mainWrapper1')} visibilityHeight={200} />
-            <Footer style={{ textAlign: 'center', padding: '10px' }}>{util.constant.footerText}</Footer>
+            <Footer
+              style={{ textAlign: 'center', padding: '10px', display: this.props.isShowGridMap ? 'none' : 'block' }}
+            >
+              {util.constant.footerText}
+            </Footer>
           </Layout>
         </Layout>
       </Layout>
@@ -147,6 +142,7 @@ const mapStateToProps = (state) => ({
   navData: state.commonReducer.navData,
   routeUrl: state.commonReducer.routeUrl,
   menus: state.loginReducer.menuList,
+  isShowGridMap: state.commonReducer.isShowGridMap,
 });
 const mapDispatchToProps = (dispatch) => ({
   isCollapsedAction: () => dispatch(showNavCollapsed()),

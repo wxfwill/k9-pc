@@ -7,7 +7,7 @@ import { showNavCollapsed } from 'store/actions/common';
 import { saveToken } from 'store/actions/loginAction';
 
 import { constant } from 'libs/util/index';
-import { changeRoute } from 'store/actions/common';
+import { changeRoute, changeMapType } from 'store/actions/common';
 
 import ChangePassword from 'components/ChangePassword';
 const { Header } = Layout;
@@ -149,6 +149,7 @@ class HeaderComponent extends Component {
     });
   };
   handleCollapsed = () => {
+    this.props.changeMapType(false);
     this.props.isCollapsedAction();
   };
   handleDrop = ({ key }) => {
@@ -251,6 +252,7 @@ const mapDispatchToProps = (dispatch) => ({
   tokenAction: (token) => dispatch(saveToken(token)),
   isCollapsedAction: () => dispatch(showNavCollapsed()),
   changeRouteAction: (url) => dispatch(changeRoute(url)),
+  changeMapType: (bool) => dispatch(changeMapType(bool)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(HeaderComponent));

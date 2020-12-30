@@ -20,11 +20,11 @@ const rootReducer = combineReducers({
 
 // redux持久化
 import { persistStore, persistReducer } from 'redux-persist';
-import storageSession from 'redux-persist/lib/storage/session';
+// import storageSession from 'redux-persist/lib/storage/session';
 import storage from 'redux-persist/lib/storage';
 const persistConfig = {
   key: 'root',
-  storage: storageSession,
+  storage: storage,
   whitelist: ['loginReducer', 'socketReducer', 'commonReducer', 'userReducer'], // 白名单
 };
 

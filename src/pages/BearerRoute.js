@@ -9,7 +9,7 @@ class ListHome extends React.Component {
 
   render() {
     const { location, history, route } = this.props;
-    return <div>{renderRoutes(route.items)}</div>;
+    return <div style={{ height: '100%' }}>{renderRoutes(route.items)}</div>;
   }
 }
 

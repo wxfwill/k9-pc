@@ -73,9 +73,10 @@ export const getBreadcrumbs = ({ flattenRoutes, location }) => {
 //   return BreadComponent;
 // };
 
-const BreadcrumbsHoc = (location = window.location, routes = []) => (Component) => {
+const BreadcrumbsHoc = (location = window.location, routes = [], isShowGridMap) => (Component) => {
   const BreadComponent = (
     <Component
+      isShowGridMap={isShowGridMap}
       breadcrumbs={getBreadcrumbs({
         flattenRoutes: flattenRoutes(routes),
         location,

@@ -1,6 +1,7 @@
 // 在Node中不能使用ES6语法的模块化
 const gulpConfig = require('./gulpfile.config.js');
 
+let port = 8000;
 const gulp = require('gulp');
 const GulpSSH = require('gulp-ssh');
 // 需要上传到服务器的路径
@@ -70,7 +71,13 @@ gulp.task('publish', () => {
 gulp.task(
   'default',
   gulp.series('execSSHDelete', 'publish', 'execSSHBackup', (done) => {
-    console.log('发布完毕...', 'http://' + config.ssh.host + ':8000');
+    if (config.env == 'dev') {
+      port = 8010;
+    } else {
+      port = 8000;
+    }
+    console.log('发布完毕...', '请通过以下地址访问...');
+    console.log(config.ssh.host + ':' + port);
     // Did you forget to signal async completion? 报错后需要调用done,以结束task
     done(); // 在不使用文件流的情况下，向task的函数里传入一个名叫done的回调函数，以结束task
   })

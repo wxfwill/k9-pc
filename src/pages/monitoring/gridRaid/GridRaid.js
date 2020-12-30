@@ -236,7 +236,7 @@ class _GridRaid extends Component {
           .postData('/api/cmdMonitor/saveGridTask', { ...params })
           .then((res) => {
             message.success('发布成功！页面即将跳转...', 2, function () {
-              history.push({ pathname: '/view/monitoring/grid' });
+              history.push({ pathname: '/app/monitoring/grid/list' });
             });
           })
           .catch(function (error) {
@@ -291,6 +291,7 @@ class _GridRaid extends Component {
     let _this = this,
       rectIndex = searchArea.index;
     const { selectOne, selectPeoples, reportUserList, allPeoples, reactMarkers } = this.state;
+    console.log(reportUserList);
 
     if (!_.isEmpty(selectOne)) {
       let newSelectOne = { ...selectOne, index: searchArea.index, searchArea };
@@ -854,7 +855,7 @@ class _GridRaid extends Component {
               <FormItem label="上报人员：" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
                 {getFieldDecorator('combatType', {
                   rules: [{ required: true, message: '请选择上报人员' }],
-                  initialValue: '',
+                  initialValue: undefined,
                 })(
                   <Select
                     placeholder="上报人员"

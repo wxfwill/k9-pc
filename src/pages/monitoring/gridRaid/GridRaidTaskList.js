@@ -42,6 +42,3 @@ class GridRaidTaskList extends Component {
 }
 
 export default GridRaidTaskList;
-
-// WEBPACK FOOTER //
-// ./src/components/view/monitoring/GridRaid/GridRaidTaskList.js

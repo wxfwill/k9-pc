@@ -1,9 +1,10 @@
-import { IS_COLLAPSED, NAV_DATA, MENU_HIGH_LINE } from '../actionTypes';
+import { IS_COLLAPSED, NAV_DATA, MENU_HIGH_LINE, GRID_SHOW_MAP } from '../actionTypes';
 
 const initialzeState = {
   collapsed: false,
-  routeUrl: '/app/home/index',
+  routeUrl: '/app/index',
   navData: [],
+  isShowGridMap: false,
 };
 
 export default function collaspedReducer(state = initialzeState, action) {
@@ -22,6 +23,11 @@ export default function collaspedReducer(state = initialzeState, action) {
       return {
         ...state,
         routeUrl: action.url,
+      };
+    case GRID_SHOW_MAP:
+      return {
+        ...state,
+        isShowGridMap: action.showMap,
       };
     default:
       return state;

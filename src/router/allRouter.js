@@ -22,6 +22,9 @@ const BearerRoute = asyncComponent(() =>
 );
 
 // 网格化搜捕
+const ViewGridMap = asyncComponent(() =>
+  import(/*webpackChunkName: 'monitoring'*/ 'pages/monitoring/GridRaid/GridDisplayMap')
+);
 const DutyComponent = asyncComponent(() => import(/*webpackChunkName: 'monitoring'*/ 'pages/monitoring/DutyComponent'));
 const Deploy = asyncComponent(() => import(/*webpackChunkName: 'monitoring'*/ 'pages/monitoring/Deploy'));
 const AddTask = asyncComponent(() => import(/*webpackChunkName: 'monitoring'*/ 'pages/monitoring/Deploy/add/AddTask'));
@@ -353,6 +356,31 @@ const routerArr = [
             component: EsayTaskAdd,
             name: 'assemble',
           },
+          {
+            path: '/app/monitoring/team',
+            component: BearerRoute,
+            name: '分组管理',
+            items: [
+              {
+                path: '/app/monitoring/team/list',
+                component: Team,
+                name: '列表',
+              },
+              {
+                path: '/app/monitoring/team/add',
+                component: AddTeam,
+                name: '新增',
+              },
+              {
+                path: '/app/monitoring/team/edit',
+                component: AddTeam,
+                name: '编辑',
+              },
+            ],
+          },
+          // { path: '/app/monitoring/team', component: Team, name: '分组管理' },
+          // { path: '/app/monitoring/teamAdd', component: AddTeam, name: '新增' },
+          // { path: '/app/monitoring/teamEdit', component: AddTeam, name: '编辑' },
           { path: '/app/monitoring/deployAdd', component: AddTask, name: 'assemble' },
           {
             path: '/app/monitoring/dutyAdd', // 新增日常巡逻
@@ -371,6 +399,7 @@ const routerArr = [
             items: [
               { path: '/app/monitoring/grid/list', component: GridRaidTaskList, name: '列表' },
               { path: '/app/monitoring/grid/addGrid', component: GridRaid, name: '新建' },
+              { path: '/app/monitoring/grid/viewMap', component: ViewGridMap, name: '查看轨迹' },
             ],
           },
           { path: '/app/monitoring/ViewGridRaidTask/:taskID', component: ViewGridRaidTask },
@@ -401,9 +430,6 @@ const routerArr = [
             name: '训练计划',
           },
           { path: '/app/drill/pdogdrill', component: Pdogdrill, name: '警犬计划' },
-          { path: '/app/drill/team', component: Team, name: '分组管理' },
-          { path: '/app/drill/teamAdd', component: AddTeam },
-          { path: '/app/drill/teamEdit', component: AddTeam },
         ],
       },
 

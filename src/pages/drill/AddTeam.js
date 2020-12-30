@@ -62,7 +62,7 @@ class AddPlan extends Component {
         }
         React.$ajax.postData('/api/train/saveTeam', params).then((res) => {
           if (res.code == 0) {
-            this.props.history.push('/app/drill/team');
+            this.props.history.push('/app/monitoring/team/list');
             message.info('保存成功！');
           } else {
             message.error('保存失败！');
@@ -106,7 +106,8 @@ class AddPlan extends Component {
     let param = new FormData(),
       configs = { headers: { 'Content-Type': 'multipart/form-data' } };
     param.append(key, value);
-    httpAjax('post', config.apiUrl + '/api/train/isNotExistTeamName', param, configs).then(callback);
+    // httpAjax('post', config.apiUrl + '/api/train/isNotExistTeamName', param, configs).then(callback);
+    React.$ajax.postData('/api/train/isNotExistTeamName', param).then(callback);
   };
 
   handleCancel = (e) => {
