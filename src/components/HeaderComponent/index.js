@@ -8,6 +8,7 @@ import { saveToken } from 'store/actions/loginAction';
 
 import { constant } from 'libs/util/index';
 import { changeRoute, changeMapType } from 'store/actions/common';
+import ScreenFull from '../Screenfull/index';
 
 import ChangePassword from 'components/ChangePassword';
 const { Header } = Layout;
@@ -233,6 +234,7 @@ class HeaderComponent extends Component {
                   <Icon type="down" />
                 </a>
               </Dropdown>
+              <ScreenFull></ScreenFull>
             </Col>
           </Row>
         </div>
