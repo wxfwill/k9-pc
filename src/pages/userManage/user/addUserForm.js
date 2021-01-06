@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal} from 'antd';
+import {Row, Col, Card, Form, Input, Radio, DatePicker, Button, Select, message} from 'antd';
 import {firstLayout, secondLayout} from 'util/Layout';
 import * as formData from './userData';
 import CustomUpload from 'components/Upload/customUpload';
@@ -53,7 +53,7 @@ class FormCompomnent extends React.Component {
       }
     };
   }
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     //工作单位
     React.$ajax.postData('/api/basicData/workUnitList').then((res) => {
       if (res.code == 0) {
@@ -115,7 +115,7 @@ class FormCompomnent extends React.Component {
   }
   newHandleNumber = () => {
     console.log('开始');
-    this.props.form.validateFields(['number'], (err, values) => {
+    this.props.form.validateFields(['number'], (err) => {
       if (!err) {
         console.log(this.props.form.getFieldValue('number'));
         console.log(this.state.userId);
