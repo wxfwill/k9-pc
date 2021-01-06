@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Modal, Tree, message } from 'antd';
-const { TreeNode } = Tree;
-let test = [];
+import React, {Component} from 'react';
+import {Modal, Tree, message} from 'antd';
+const {TreeNode} = Tree;
+const test = [];
 class TreeModel extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +12,7 @@ class TreeModel extends Component {
       autoExpandParent: true,
       checkedKeys: [], // 选中节点
       menuTree: [], // 数据源
-      allNodeArr: [],
+      allNodeArr: []
     };
   }
   componentDidMount() {
@@ -29,11 +29,11 @@ class TreeModel extends Component {
           test.push(item.id);
         }
       });
-    this.setState({ allNodeArr: test });
+    this.setState({allNodeArr: test});
     return test;
   };
   uniqueTree = (uniqueArr, Arr) => {
-    let uniqueChild = [];
+    const uniqueChild = [];
     for (var i in Arr) {
       for (var k in uniqueArr) {
         if (uniqueArr[k] === Arr[i]) {
@@ -48,10 +48,10 @@ class TreeModel extends Component {
     React.$ajax.getData('/api/sys/sys-module/queryMenuTree', {}).then((res) => {
       if (res && res.code == 0) {
         console.log(res);
-        let resData = res.data ? res.data : [];
-        let resArr = this.digui(resData);
+        const resData = res.data ? res.data : [];
+        const resArr = this.digui(resData);
         console.log(this.digui(resData));
-        this.setState({ menuTree: resArr });
+        this.setState({menuTree: resArr});
 
         // 筛选所有的子节点
         this.requestList(resArr);
@@ -76,41 +76,41 @@ class TreeModel extends Component {
   onExpand = (expandedKeys, obj) => {
     this.setState({
       expandedKeys,
-      autoExpandParent: obj.expanded,
+      autoExpandParent: obj.expanded
     });
   };
   onCheck = (checkedKeys, info) => {
     console.log('复选框');
     console.log(info);
-    let newCheckKeyRes = [...checkedKeys, ...info.halfCheckedKeys];
+    const newCheckKeyRes = [...checkedKeys, ...info.halfCheckedKeys];
     console.log(newCheckKeyRes);
-    this.setState({ checkedKeys, newCheckKeyRes });
+    this.setState({checkedKeys, newCheckKeyRes});
     // this.setState({ checkedKeys: checkedKeys.checked });
   };
   openModel = (row) => {
-    this.setState({ visible: true, roleId: row.id }, () => {
+    this.setState({visible: true, roleId: row.id}, () => {
       // this.getBindMenuId(id);
-      this.setState({ roleName: `${row.roleName}-菜单列表` });
+      this.setState({roleName: `${row.roleName}-菜单列表`});
       this.getMenuTree(row.id);
     });
   };
   // 获取已绑定的菜单id
   getBindMenuId = (id) => {
-    React.$ajax.getData('/api/sys/role-module/getMenuIdByRoleId', { roleId: id }).then((res) => {
+    React.$ajax.getData('/api/sys/role-module/getMenuIdByRoleId', {roleId: id}).then((res) => {
       if (res && res.code == 0) {
-        let resData = res.data ? res.data : [];
+        const resData = res.data ? res.data : [];
         // this.setState({ checkedKeys: resData, expandedKeys: resData });
-        let costomChild = this.uniqueTree(resData, this.state.allNodeArr);
-        this.setState({ checkedKeys: costomChild, expandedKeys: costomChild });
+        const costomChild = this.uniqueTree(resData, this.state.allNodeArr);
+        this.setState({checkedKeys: costomChild, expandedKeys: costomChild});
       }
     });
   };
   // 绑定菜单
   handleBindMenu = () => {
-    let per = {
+    const per = {
       menuId: this.state.newCheckKeyRes,
       // menuId: this.state.checkedKeys,
-      roleId: this.state.roleId,
+      roleId: this.state.roleId
     };
     React.$ajax.postData('/api/sys/role-module/bindMenu', per).then((res) => {
       if (res && res.code == 0) {
@@ -125,7 +125,7 @@ class TreeModel extends Component {
     this.handleBindMenu();
   };
   handleCancel = () => {
-    this.setState({ visible: false });
+    this.setState({visible: false});
   };
   renderTreeNodes = (data) =>
     data.map((item) => {
@@ -146,12 +146,11 @@ class TreeModel extends Component {
         visible={this.state.visible}
         width={'660px'}
         centered={false}
-        destroyOnClose={true}
+        destroyOnClose
         maskClosable={false}
         okText={'保存'}
         onOk={this.handleOk}
-        onCancel={this.handleCancel}
-      >
+        onCancel={this.handleCancel}>
         {this.state.menuTree && this.state.menuTree.length > 0 ? (
           <Tree
             checkable

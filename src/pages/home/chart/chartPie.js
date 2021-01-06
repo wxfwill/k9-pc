@@ -3,7 +3,7 @@
  */
 import React from 'react';
 // import echart from 'echarts';
-let echart = require('echarts/lib/echarts');
+const echart = require('echarts/lib/echarts');
 // 引入提示框和标题组件
 require('echarts/lib/component/tooltip');
 require('echarts/lib/component/title');
@@ -15,7 +15,7 @@ export const transformOptions = (list) => {
   const data =
     list &&
     list.map((item) => {
-      return { value: item.num, name: item.name, itemStyle: { color: item.bgColor } };
+      return {value: item.num, name: item.name, itemStyle: {color: item.bgColor}};
     });
   return {
     animation: false,
@@ -23,7 +23,7 @@ export const transformOptions = (list) => {
       trigger: 'item',
       formatter: function (item) {
         return echart.format.truncateText(`${item.name}: ${item.value} (${unit})`, 100, '12px Microsoft Yahei');
-      },
+      }
     },
     series: [
       {
@@ -34,24 +34,24 @@ export const transformOptions = (list) => {
         label: {
           normal: {
             position: 'center',
-            show: false,
+            show: false
           },
           emphasis: {
             show: false,
             textStyle: {
               fontSize: '16',
-              fontWeight: '600',
-            },
-          },
+              fontWeight: '600'
+            }
+          }
         },
         labelLine: {
           normal: {
-            show: false,
-          },
+            show: false
+          }
         },
-        data,
-      },
-    ],
+        data
+      }
+    ]
   };
 };
 
@@ -69,7 +69,7 @@ export const EchartPie = (list, refs = 'drillCycle') => {
             list.map((item, index) => {
               return (
                 <div key={index + 'cycle'} className="dec_item">
-                  <i style={{ background: item.bgColor }}></i>
+                  <i style={{background: item.bgColor}}></i>
                   <span>{item.name}</span>
                   <span>
                     {item.num}

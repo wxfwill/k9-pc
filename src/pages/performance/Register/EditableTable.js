@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Table, Select, Popconfirm, Input, DatePicker, Form, message } from 'antd';
+import {Button, Table, Select, Popconfirm, Input, DatePicker, Form, message} from 'antd';
 import moment from 'moment';
 import Immutable from 'immutable';
 import 'style/app/performance.less';
@@ -19,16 +19,16 @@ class EditableTableForm extends React.Component {
       selectedRowKeys: [],
       SubjectItems: [],
       disabled: false,
-      itemList: [],
+      itemList: []
     };
   }
   componentWillMount() {
     //获取科目信息和指标信息
-    const { typeId } = this.props;
-    let { itemData } = this.state;
-    React.$ajax.common.listSubjectItemByTypeId({ id: typeId }).then((res) => {
+    const {typeId} = this.props;
+    const {itemData} = this.state;
+    React.$ajax.common.listSubjectItemByTypeId({id: typeId}).then((res) => {
       if (res.code == 0) {
-        this.setState({ SubjectItems: res.data });
+        this.setState({SubjectItems: res.data});
       }
     });
   }
@@ -36,29 +36,29 @@ class EditableTableForm extends React.Component {
     if (Immutable.is(Immutable.Map(this.props.itemData), Immutable.Map(nextProps.itemData))) {
       return;
     }
-    const { itemData } = this.state;
+    const {itemData} = this.state;
     if (itemData != nextProps.itemData) {
-      this.setState({ itemData: nextProps.itemData });
+      this.setState({itemData: nextProps.itemData});
     }
   }
   addPerformItem = () => {
-    const { itemData, key } = this.state;
-    const { autonomyData } = this.props;
-    let newKey = 'key' + (key + 1);
-    this.setState({ key: newKey, score: '' });
+    const {itemData, key} = this.state;
+    const {autonomyData} = this.props;
+    const newKey = 'key' + (key + 1);
+    this.setState({key: newKey, score: ''});
     itemData.push({
       key: newKey,
       id: '',
       subjectId: '',
       itemId: '',
-      score: '',
+      score: ''
     });
-    this.setState({ itemData }, () => {
+    this.setState({itemData}, () => {
       itemData &&
         itemData.map((item, index) => {
-          if (!(typeof item.key == 'undefined') && item.id == '') {
+          if (!(typeof item.key === 'undefined') && item.id == '') {
             item.editable = true;
-            this.setState({ disabled: true });
+            this.setState({disabled: true});
           }
         });
     });
@@ -79,7 +79,7 @@ class EditableTableForm extends React.Component {
     this.setState({
       subjectId: record.subjectId,
       score: record.score,
-      examinerId: record.examinerId,
+      examinerId: record.examinerId
     });
     /* const newData = [...this.state.itemData];
 	 	 newData.map((item,index)=>{
@@ -90,14 +90,14 @@ class EditableTableForm extends React.Component {
     const target = newData.filter((item) => key === item.id)[0];
     if (target) {
       target.editable = true;
-      this.setState({ itemData: newData });
+      this.setState({itemData: newData});
     }
   }
   mapPerformanceCode = (code) => {};
   renderColumns(text, record, column) {
-    let { SubjectItems, itemList } = this.state;
-    const { getFieldDecorator } = this.props.form;
-    let subjectList =
+    const {SubjectItems, itemList} = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const subjectList =
       SubjectItems &&
       SubjectItems.map((item, index) => {
         return (
@@ -113,14 +113,13 @@ class EditableTableForm extends React.Component {
             <Form>
               <FormItem>
                 {getFieldDecorator('subject', {
-                  rules: [{ required: true, message: '请选择考核科目!' }],
-                  initialValue: (record && record.subjectId) || '',
+                  rules: [{required: true, message: '请选择考核科目!'}],
+                  initialValue: (record && record.subjectId) || ''
                 })(
                   <Select
                     initialValue={record.subjectId}
                     onChange={(value) => this.onSelectChange(value, record.id, column)}
-                    style={{ width: '100%' }}
-                  >
+                    style={{width: '100%'}}>
                     {subjectList}
                   </Select>
                 )}
@@ -143,14 +142,13 @@ class EditableTableForm extends React.Component {
             <Form>
               <FormItem>
                 {getFieldDecorator('item', {
-                  rules: [{ required: true, message: '请选择指标名称!' }],
-                  initialValue: isFlag ? (record && record.itemId) || '' : '',
+                  rules: [{required: true, message: '请选择指标名称!'}],
+                  initialValue: isFlag ? (record && record.itemId) || '' : ''
                 })(
                   <Select
                     initialValue={isFlag ? record.itemId : ''}
                     onChange={(value) => this.onSelectChange(value, record.id, column)}
-                    style={{ width: '100%' }}
-                  >
+                    style={{width: '100%'}}>
                     {itemList}
                   </Select>
                 )}
@@ -177,8 +175,8 @@ class EditableTableForm extends React.Component {
   };
   renderTimer(text, record, column) {}
   renderInput = (text, record, column) => {
-    const { getFieldDecorator } = this.props.form;
-    const { score } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {score} = this.state;
     if (record.editable == true) {
       if (column == 'score') {
         return (
@@ -186,13 +184,11 @@ class EditableTableForm extends React.Component {
             <FormItem>
               {getFieldDecorator('score', {
                 rules: [
-                  { required: true, message: '请输入考核分数' },
-                  { pattern: /^-?[0-9]\d*$/, message: '请输入数字' },
+                  {required: true, message: '请输入考核分数'},
+                  {pattern: /^-?[0-9]\d*$/, message: '请输入数字'}
                 ], //,{len:1,message:'不得超过两位数'}
-                initialValue: score,
-              })(
-                <Input style={{ margin: '-5px 0' }} onChange={(e) => this.onInputChange(e, text, record.id, column)} />
-              )}
+                initialValue: score
+              })(<Input style={{margin: '-5px 0'}} onChange={(e) => this.onInputChange(e, text, record.id, column)} />)}
             </FormItem>
           </Form>
         );
@@ -209,14 +205,14 @@ class EditableTableForm extends React.Component {
     const target = newData.filter((item) => key === item.id)[0];
     if (target) {
       if (column == 'score') {
-        this.setState({ score: e.target.value });
+        this.setState({score: e.target.value});
       }
       target[column] = e.target.value;
-      this.setState({ itemData: newData });
+      this.setState({itemData: newData});
     }
   }
   onSelectChange = (value, key, column) => {
-    let { itemList, itemData, SubjectItems } = this.state;
+    let {itemList, itemData, SubjectItems} = this.state;
     if (column == 'subjectId') {
       SubjectItems.map((sub) => {
         if (sub.id == value) {
@@ -230,10 +226,10 @@ class EditableTableForm extends React.Component {
         }
       });
 
-      this.setState({ subjectId: value, itemList: itemList, itemId: '', score: '' });
+      this.setState({subjectId: value, itemList: itemList, itemId: '', score: ''});
     } else {
       let optScore = 0;
-      let { subjectId } = this.state;
+      const {subjectId} = this.state;
       SubjectItems.map((sub) => {
         if (sub.id == subjectId) {
           sub.performanceCheckItemVOList.map((item, index) => {
@@ -243,14 +239,14 @@ class EditableTableForm extends React.Component {
           });
         }
       });
-      this.setState({ itemId: value, score: optScore });
+      this.setState({itemId: value, score: optScore});
     }
 
     const newData = [...this.state.itemData];
     const target = newData.filter((item) => key === item.id)[0];
     if (target) {
       target[column] = value;
-      this.setState({ itemData: newData });
+      this.setState({itemData: newData});
     }
   };
   //时间发生变化
@@ -267,15 +263,15 @@ class EditableTableForm extends React.Component {
         delete itme.editable;
       });
     }
-    this.setState({ itemData: oldData, disabled: false });
+    this.setState({itemData: oldData, disabled: false});
   };
   //保存编辑内容
   save(id, key) {
-    let { subjectId, startTime, endTime, address, score, remark, examinerId, content, reason, itemId } = this.state;
-    const { checkDate, userId } = this.props;
+    let {subjectId, startTime, endTime, address, score, remark, examinerId, content, reason, itemId} = this.state;
+    const {checkDate, userId} = this.props;
     const newData = [...this.state.itemData];
     const target = newData.filter((item) => id === item.id)[0];
-    let reqUrl = '';
+    const reqUrl = '';
     subjectId == null || subjectId == '' ? (subjectId = '1') : subjectId;
     if (target) {
       this.props.form.validateFields((err, values) => {
@@ -291,8 +287,8 @@ class EditableTableForm extends React.Component {
                 itemId: itemId,
                 subjectId,
                 score: values.score,
-                checkDate,
-              },
+                checkDate
+              }
             ];
           } else {
             options = [
@@ -302,16 +298,16 @@ class EditableTableForm extends React.Component {
                 subjectId,
                 itemId: itemId,
                 score: values.score,
-                checkDate,
-              },
+                checkDate
+              }
             ];
           }
           // this.setState({ itemData: newData });
 
-          this.cacheData = newData.map((item) => ({ ...item }));
+          this.cacheData = newData.map((item) => ({...item}));
           React.$ajax.performance.savePerformanceCheckRecord(options).then((res) => {
             if (res.code == 0) {
-              let data = [];
+              const data = [];
               newData.map((item) => {
                 if ((item.id == '' && item.key == key) || item.id == id) {
                   item.id = res.data[0].id;
@@ -322,7 +318,7 @@ class EditableTableForm extends React.Component {
                 }
                 data.push(item);
               });
-              this.setState({ disabled: false, newData: data });
+              this.setState({disabled: false, newData: data});
               let flag = '添加';
               key ? (flag = '修改') : flag;
               message.success(flag + '成功');
@@ -338,25 +334,25 @@ class EditableTableForm extends React.Component {
   //更新数据
   updateItemDate = () => {};
   RowSelectChange = (selectedRowKeys) => {
-    this.setState({ selectedRowKeys });
+    this.setState({selectedRowKeys});
   };
   deleteItem = () => {
     //const newData = [...this.state.itemData];
-    const { selectedRowKeys } = this.state;
-    const { autonomyData } = this.props;
+    const {selectedRowKeys} = this.state;
+    const {autonomyData} = this.props;
     let newItemData = [];
-    let options = {
-      ids: selectedRowKeys,
+    const options = {
+      ids: selectedRowKeys
     };
     if (selectedRowKeys.length >= 1) {
       React.$ajax.performance.deletePerformanceCheckRecord(options).then((res) => {
         if (res.code == 0) {
           newItemData = autonomyData.filter(
-            (item) => this.state.selectedRowKeys.map((rowid) => rowid).indexOf(item['id']) < 0
+            (item) => this.state.selectedRowKeys.map((rowid) => rowid).indexOf(item.id) < 0
           );
           message.success('删除成功');
           this.setState({
-            itemData: newItemData,
+            itemData: newItemData
           });
         } else {
           message.error('删除失败');
@@ -367,52 +363,52 @@ class EditableTableForm extends React.Component {
     }
   };
   render() {
-    const { editable, itemData, selectedRowKeys } = this.state;
-    const { tabKey } = this.props;
+    const {editable, itemData, selectedRowKeys} = this.state;
+    const {tabKey} = this.props;
     const rowSelection = {
       selectedRowKeys,
-      onChange: this.RowSelectChange,
+      onChange: this.RowSelectChange
     };
     const itemColumns = [
       {
         title: '序号',
         dataIndex: 'id',
-        key: 'id',
+        key: 'id'
       },
       {
         title: '考核项目',
         dataIndex: 'subjectName',
         key: 'subjectName',
-        render: (text, record) => this.renderColumns(text, record, 'subjectId'),
+        render: (text, record) => this.renderColumns(text, record, 'subjectId')
       },
       {
         title: '指标名称',
         dataIndex: 'item',
         key: 'item',
-        render: (text, record) => this.renderColumns(text, record, 'itemId'),
+        render: (text, record) => this.renderColumns(text, record, 'itemId')
       },
       {
         title: '考核人',
         dataIndex: 'examinerStr',
-        key: 'examinerStr',
+        key: 'examinerStr'
       },
       {
         title: '得分',
         dataIndex: 'score',
         key: 'score',
-        render: (text, record) => this.renderInput(text, record, 'score'),
+        render: (text, record) => this.renderInput(text, record, 'score')
       },
       {
         title: '操作',
         dataIndex: 'opreation',
         width: 120,
         render: (text, record, index) => {
-          const { editable } = record;
+          const {editable} = record;
           return (
             <div className="editable-row-operations">
               {editable ? (
                 <span>
-                  <Button onClick={() => this.save(record.id, record.key)} size="small" style={{ marginRight: '10px' }}>
+                  <Button onClick={() => this.save(record.id, record.key)} size="small" style={{marginRight: '10px'}}>
                     保存
                   </Button>
                   <Popconfirm title="确定删除?" onConfirm={() => this.cancel(record.id)}>
@@ -423,28 +419,26 @@ class EditableTableForm extends React.Component {
                 <div>
                   <Button
                     size="small"
-                    style={{ marginRight: '10px' }}
-                    onClick={() => this.editableCell(record.id, record)}
-                  >
+                    style={{marginRight: '10px'}}
+                    onClick={() => this.editableCell(record.id, record)}>
                     编辑
                   </Button>
                 </div>
               )}
             </div>
           );
-        },
-      },
+        }
+      }
     ];
     return (
       <div>
-        <div style={{ marginBottom: '10px' }}>
+        <div style={{marginBottom: '10px'}}>
           <Button
             size="small"
             type="primary"
             onClick={this.addPerformItem}
-            style={{ marginRight: '10px' }}
-            disabled={this.state.disabled}
-          >
+            style={{marginRight: '10px'}}
+            disabled={this.state.disabled}>
             新增
           </Button>
           <Button size="small" onClick={this.deleteItem}>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Table,
   Button,
@@ -13,9 +13,9 @@ import {
   Select,
   DatePicker,
   Form,
-  Input,
+  Input
 } from 'antd';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {firstLayout, secondLayout} from 'util/Layout';
 import MedicalRecordTable from './tables/MedicalRecordTable';
 import CureRecordTable from './tables/CureRecordTable';
 import moment from 'moment';
@@ -46,22 +46,22 @@ class DogTable extends Component {
       treatmentRecordInfo: '', //用药记录
       prescriptionsDelIds: [],
       recordId: '',
-      allDogs: [],
+      allDogs: []
     };
   }
   componentWillMount() {
     const recordId =
       sessionStorage.getItem('recordId') || (this.props.location.query && this.props.location.query.dogId); //  ;
     const formStatus = sessionStorage.getItem('formStatus'); //this.props.location.query&&this.props.location.query.formStatus  // ;
-    this.setState({ recordId: recordId });
+    this.setState({recordId: recordId});
     //获取单个数据信息
     // recordId&& this.getInfo(recordId);
     if (formStatus == 'view') {
-      this.setState({ disabled: true, isInitialValue: true }, () => {
+      this.setState({disabled: true, isInitialValue: true}, () => {
         recordId && this.getInfo(recordId);
       });
     } else if (formStatus == 'edit') {
-      this.setState({ isInitialValue: true }, () => {
+      this.setState({isInitialValue: true}, () => {
         recordId && this.getInfo(recordId);
       });
     }
@@ -69,31 +69,31 @@ class DogTable extends Component {
     const promises = ['/api/basicData/diseaseType', '/api/basicData/drugInfo', '/api/dog/listAll'].map(function (item) {
       return React.$ajax.postData(item, {});
     });
-    let _this = this;
+    const _this = this;
     Promise.all(promises).then((values) => {
       if (values[0].code == 0) {
-        _this.setState({ diseaseType: values[0].data });
+        _this.setState({diseaseType: values[0].data});
       }
       if (values[1].code == 0) {
-        _this.setState({ drugInfo: values[1].data });
+        _this.setState({drugInfo: values[1].data});
       }
       if (values[2].code == 0) {
-        _this.setState({ allDogs: values[2].data });
+        _this.setState({allDogs: values[2].data});
       }
     });
   }
 
   getInfo = (id) => {
-    React.$ajax.postData('/api/treatmentRecord/info', { id }).then((res) => {
-      let { code, data } = res;
-      if (0 == code) {
+    React.$ajax.postData('/api/treatmentRecord/info', {id}).then((res) => {
+      const {code, data} = res;
+      if (code == 0) {
         this.setState(
           {
             treatmentRecordHis: data.treatmentRecordHisList,
             loading: false,
             treatmentRecordInfo: data.treatmentRecordInfo,
             dogInfo: data.dogInfo,
-            cureDataSource: data.treatmentRecordInfo && data.treatmentRecordInfo.prescriptions,
+            cureDataSource: data.treatmentRecordInfo && data.treatmentRecordInfo.prescriptions
           },
           () => {
             this.state.cureDataSource &&
@@ -106,17 +106,17 @@ class DogTable extends Component {
     });
   };
   addCureRecord = () => {
-    let { cureDataSource, key } = this.state;
+    let {cureDataSource, key} = this.state;
     const newData = {
       key: key,
       drug: '',
       times: '',
       days: '',
       purpose: '',
-      editable: true,
+      editable: true
     };
-    this.setState({ key: ++key });
-    this.setState({ cureDataSource: [...cureDataSource, newData] }, () => {
+    this.setState({key: ++key});
+    this.setState({cureDataSource: [...cureDataSource, newData]}, () => {
       cureDataSource &&
         cureDataSource.map((item, index) => {
           item.editable = true;
@@ -149,8 +149,8 @@ class DogTable extends Component {
     }
   };
   renderSelect = (text, record, column) => {
-    const { getFieldDecorator } = this.props.form;
-    const { drugInfo, isInitialValue } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {drugInfo, isInitialValue} = this.state;
     const drugInfoOption =
       drugInfo &&
       drugInfo.map((item, index) => {
@@ -163,8 +163,8 @@ class DogTable extends Component {
     return (
       <FormItem>
         {getFieldDecorator(`drug&${record.key}`, {
-          rules: [{ required: true, message: '请输入药品名称' }],
-          initialValue: isInitialValue ? record.drugId : '',
+          rules: [{required: true, message: '请输入药品名称'}],
+          initialValue: isInitialValue ? record.drugId : ''
         })(<Input />)}
       </FormItem>
     );
@@ -174,19 +174,19 @@ class DogTable extends Component {
     const target = newData.filter((item) => record.key === item.key)[0];
     if (target) {
       target[column] = value;
-      this.setState({ cureDataSource: newData });
+      this.setState({cureDataSource: newData});
     }
   };
   //选择犬只 获取信息
   selectDog = (key) => {
-    this.setState({ detailLoading: true });
-    React.$ajax.postData('/api/treatmentRecord/getRecordsByDogId', { dogId: key }).then((res) => {
+    this.setState({detailLoading: true});
+    React.$ajax.postData('/api/treatmentRecord/getRecordsByDogId', {dogId: key}).then((res) => {
       const data = res.data;
       if (res.code == 0) {
         this.setState({
           detailLoading: false,
           treatmentRecordHis: data.treatmentRecordHisList,
-          dogInfo: data.dogInfo,
+          dogInfo: data.dogInfo
         });
       }
     });
@@ -211,13 +211,13 @@ class DogTable extends Component {
   };
 
   renderInput(text, record, column) {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     if (column == 'times') {
       return (
         <FormItem>
           {getFieldDecorator(`times&${record.key}`, {
-            rules: [{ required: true, message: '请填写用药次数' }, { validator: this.checkNumber }],
-            initialValue: text,
+            rules: [{required: true, message: '请填写用药次数'}, {validator: this.checkNumber}],
+            initialValue: text
           })(<Input onChange={(e) => this.valueChange(e, text, record, column)} />)}
         </FormItem>
       );
@@ -225,8 +225,8 @@ class DogTable extends Component {
       return (
         <FormItem>
           {getFieldDecorator(`days&${record.key}`, {
-            rules: [{ required: true, message: '请填写用药天数' }, { validator: this.checkNumber }],
-            initialValue: text,
+            rules: [{required: true, message: '请填写用药天数'}, {validator: this.checkNumber}],
+            initialValue: text
           })(<Input onChange={(e) => this.valueChange(e, text, record, column)} />)}
         </FormItem>
       );
@@ -235,10 +235,10 @@ class DogTable extends Component {
         <FormItem>
           {getFieldDecorator(`purpose&${record.key}`, {
             rules: [
-              { required: true, message: '请填写使用方式' },
-              { max: 25, message: '使用方式长度不超过25' },
+              {required: true, message: '请填写使用方式'},
+              {max: 25, message: '使用方式长度不超过25'}
             ],
-            initialValue: text,
+            initialValue: text
           })(<Input onChange={(e) => this.valueChange(e, text, record, column)} />)}
         </FormItem>
       );
@@ -248,10 +248,10 @@ class DogTable extends Component {
         <FormItem>
           {getFieldDecorator(`drug&${record.key}`, {
             rules: [
-              { required: true, message: '请填写操作方式' },
-              { max: 25, message: '操作方式长度不超过25' },
+              {required: true, message: '请填写操作方式'},
+              {max: 25, message: '操作方式长度不超过25'}
             ],
-            initialValue: text,
+            initialValue: text
           })(<Input onChange={(e) => this.valueChange(e, text, record, column)} />)}
         </FormItem>
       );
@@ -270,7 +270,7 @@ class DogTable extends Component {
       } else if (column == 'purpose') {
         target.purpose = e.target.value;
       }
-      this.setState({ cureDataSource: newData });
+      this.setState({cureDataSource: newData});
     }
   };
   renderOption = (options) => {
@@ -293,25 +293,25 @@ class DogTable extends Component {
         newSet.splice(i, 1);
       }
     }
-    let prescriptionsDelIds = [];
+    const prescriptionsDelIds = [];
     if (keys < 2000) {
       prescriptionsDelIds.push(keys);
     }
     this.setState({
       cureDataSource: newSet,
-      prescriptionsDelIds: prescriptionsDelIds,
+      prescriptionsDelIds: prescriptionsDelIds
     });
   };
   //保存编辑内容
   handleSubmit = (e) => {
     e.preventDefault();
-    const { recordId, prescriptionsDelIds, cureDataSource, isInitialValue } = this.state;
+    const {recordId, prescriptionsDelIds, cureDataSource, isInitialValue} = this.state;
     //  recordId 单条数据的ID
-    const { id } = JSON.parse(sessionStorage.getItem('user')); //登录用户ID
-    let params = {}; //,prescriptions=[];
+    const {id} = JSON.parse(sessionStorage.getItem('user')); //登录用户ID
+    const params = {}; //,prescriptions=[];
     this.props.form.validateFields((err, values) => {
-      let count = 0,
-        obj = {};
+      const count = 0;
+      const obj = {};
       if (!err) {
         Object.keys(values).forEach((key) => {
           if (key.indexOf('drugId') == -1 && key.indexOf('number') == -1 && key.indexOf('days') == -1) {
@@ -351,7 +351,7 @@ class DogTable extends Component {
   };
   collapseChange(keys) {
     if (keys.includes('5')) {
-      this.setState({ showRecord: true });
+      this.setState({showRecord: true});
     }
   }
   render() {
@@ -365,30 +365,30 @@ class DogTable extends Component {
       treatmentRecordInfo,
       detailLoading,
       diseaseType,
-      isInitialValue,
+      isInitialValue
     } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     const recordsColumns = [
       {
         title: '药物或操作',
         dataIndex: 'drug',
-        render: (text, record, index) => this.renderInput(text, record, 'drug'),
+        render: (text, record, index) => this.renderInput(text, record, 'drug')
       },
       {
         title: '次数',
         dataIndex: 'times',
-        render: (text, record, index) => this.renderInput(text, record, 'times'),
+        render: (text, record, index) => this.renderInput(text, record, 'times')
       },
       {
         title: '天数',
         dataIndex: 'days',
-        render: (text, record, index) => this.renderInput(text, record, 'days'),
+        render: (text, record, index) => this.renderInput(text, record, 'days')
       },
       {
         title: '用法',
         dataIndex: 'purpose',
-        render: (text, record, index) => this.renderInput(text, record, 'purpose'),
-      },
+        render: (text, record, index) => this.renderInput(text, record, 'purpose')
+      }
     ];
     recordsColumns.push({
       title: '操作',
@@ -403,13 +403,13 @@ class DogTable extends Component {
             }
           </div>
         );
-      },
+      }
     });
     const canEdit = this.props.location.pathname.indexOf('Edit') > 0;
     return (
       <div>
         {dogInfo && dogInfo.medicalReportName ? (
-          <Button type="primary" style={{ position: 'absolute', top: '144px', right: '80px', zIndex: 10 }}>
+          <Button type="primary" style={{position: 'absolute', top: '144px', right: '80px', zIndex: 10}}>
             <a href={'/api/dog/dlmedicalReport?id=' + this.state.recordId} target="_blank" rel="noopener noreferrer">
               查看体检表
             </a>
@@ -422,8 +422,7 @@ class DogTable extends Component {
           <Form onSubmit={this.handleSubmit}>
             <Collapse
               defaultActiveKey={this.state.showRecord ? ['1', '2', '3', '4', '5', '6'] : ['1', '2', '3', '4']}
-              onChange={this.collapseChange.bind(this)}
-            >
+              onChange={this.collapseChange.bind(this)}>
               {!disabled && !isInitialValue ? (
                 <Panel showArrow={false} header={this.baseHeader('选择犬只')} key="1">
                   <Row gutter={24}>
@@ -432,7 +431,7 @@ class DogTable extends Component {
                         <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                           <FormItem label="犬只名称" {...secondLayout}>
                             {getFieldDecorator('dogId', {
-                              rules: [{ required: true, message: '请选择犬只' }],
+                              rules: [{required: true, message: '请选择犬只'}]
                             })(
                               <Select disabled={disabled} onChange={this.selectDog}>
                                 {allDogs.map((t) => (
@@ -485,25 +484,24 @@ class DogTable extends Component {
                         <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                           <FormItem label="发病时间" {...secondLayout}>
                             {getFieldDecorator('morbidityTime', {
-                              rules: [{ required: true, message: '请选择发病时间' }],
+                              rules: [{required: true, message: '请选择发病时间'}],
                               initialValue: isInitialValue
                                 ? moment(treatmentRecordInfo.morbidityTime)
-                                : moment(new Date()),
+                                : moment(new Date())
                             })(<DatePicker format="YYYY-MM-DD" disabled={canEdit} />)}
                           </FormItem>
                         </Col>
                         <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                           <FormItem label="疾病类型" {...secondLayout}>
                             {getFieldDecorator('disease', {
-                              rules: [{ required: true, message: '请选择疾病类型' }],
-                              initialValue: isInitialValue ? treatmentRecordInfo.treatmentResults : '',
+                              rules: [{required: true, message: '请选择疾病类型'}],
+                              initialValue: isInitialValue ? treatmentRecordInfo.treatmentResults : ''
                             })(
                               <Select
                                 disabled={disabled}
                                 filterOption={(input, option) =>
                                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                }
-                              >
+                                }>
                                 {this.renderOption(diseaseType)}
                               </Select>
                             )}
@@ -519,18 +517,18 @@ class DogTable extends Component {
                           <FormItem label="症状" {...secondLayout}>
                             {getFieldDecorator('symptom', {
                               rules: [
-                                { required: true, message: '请填写症状' },
-                                { max: 25, message: '症状长度不超过25' },
+                                {required: true, message: '请填写症状'},
+                                {max: 25, message: '症状长度不超过25'}
                               ],
-                              initialValue: isInitialValue ? treatmentRecordInfo.symptom : '',
+                              initialValue: isInitialValue ? treatmentRecordInfo.symptom : ''
                             })(<Input disabled={canEdit} />)}
                           </FormItem>
                         </Col>
                         <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                           <FormItem label="治疗结果" {...secondLayout}>
                             {getFieldDecorator('treatmentResults', {
-                              rules: [{ required: true, message: '请选择治疗结果' }],
-                              initialValue: isInitialValue ? treatmentRecordInfo.treatmentResults : '',
+                              rules: [{required: true, message: '请选择治疗结果'}],
+                              initialValue: isInitialValue ? treatmentRecordInfo.treatmentResults : ''
                             })(
                               <Select disabled={disabled}>
                                 <Option value={1}>治愈</Option>
@@ -557,7 +555,7 @@ class DogTable extends Component {
                 <Panel showArrow={false} header={this.baseHeader('治疗记录')} key="4">
                   <Row gutter={24}>
                     <Col xxl={16} xl={24} lg={24} md={24} sm={24} xs={24}>
-                      <Button onClick={this.addCureRecord} size="small" style={{ marginBottom: '10px' }}>
+                      <Button onClick={this.addCureRecord} size="small" style={{marginBottom: '10px'}}>
                         添加治疗记录
                       </Button>
                       <Table
@@ -584,19 +582,11 @@ class DogTable extends Component {
             </Collapse>
             {!disabled ? (
               <Row gutter={24}>
-                <Col
-                  xxl={16}
-                  xl={24}
-                  lg={24}
-                  md={24}
-                  sm={24}
-                  xs={24}
-                  style={{ textAlign: 'center', marginTop: '40px' }}
-                >
+                <Col xxl={16} xl={24} lg={24} md={24} sm={24} xs={24} style={{textAlign: 'center', marginTop: '40px'}}>
                   <Button type="primary" htmlType="submit">
                     提交
                   </Button>
-                  <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                  <Button style={{marginLeft: 8}} onClick={this.handleReset}>
                     清空
                   </Button>
                 </Col>

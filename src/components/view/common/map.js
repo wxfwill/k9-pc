@@ -18,29 +18,29 @@ export const tMap = function (options) {
 };
 //创建地图
 tMap.prototype.setMap = function (options) {
-  let _this = this;
-  let labelText = this.options.labelText;
+  const _this = this;
+  const labelText = this.options.labelText;
   _this.getCityCenter(this.lat, this.lng, labelText, options.zoom, options.id);
 };
 //获取城市列表接口设置中心点
 tMap.prototype.getCityCenter = function (lat, lng, labelText, zoom, id) {
-  let _this = this;
+  const _this = this;
   this.map = new qq.maps.Map(document.getElementById(id || 'container'), {
     center: this.center,
     zoom: zoom || 13,
     mapTypeControlOptions: {
       //设置控件的地图类型ID，ROADMAP显示普通街道地图，SATELLITE显示卫星图像，HYBRID显示卫星图像上的主要街道透明层
       mapTypeIds: [qq.maps.MapTypeId.ROADMAP, qq.maps.MapTypeId.SATELLITE, qq.maps.MapTypeId.HYBRID],
-      position: qq.maps.ControlPosition.TOP_CENTER, //设置控件位置相对上方中间位置对齐
+      position: qq.maps.ControlPosition.TOP_CENTER //设置控件位置相对上方中间位置对齐
     },
     zoomControl: false, //缩放控件
-    panControl: false, //平移控件
+    panControl: false //平移控件
   });
-  let label = new qq.maps.Label({
+  const label = new qq.maps.Label({
     position: new qq.maps.LatLng(lat, lng),
     map: _this.map,
     content: labelText,
-    offset: new qq.maps.Size(8, -40),
+    offset: new qq.maps.Size(8, -40)
   });
   console.log(_this, 'ewsewew');
 };
@@ -61,7 +61,7 @@ tMap.prototype.drawPolyline = function (params) {
     visible: true,
     //折线的zIndex
     zIndex: 99999999,
-    ...params,
+    ...params
   });
 };
 tMap.prototype.initEvents = function (Event, callback) {
@@ -69,9 +69,9 @@ tMap.prototype.initEvents = function (Event, callback) {
 };
 //获取地图中心点创建地图
 tMap.prototype.getMapCenter = function (lat, lng) {
-  let _this = this;
-  this.lat = typeof lat == 'undefined' ? 22.543099 : lat;
-  this.lng = typeof lng == 'undefined' ? 114.057868 : lng;
+  const _this = this;
+  this.lat = typeof lat === 'undefined' ? 22.543099 : lat;
+  this.lng = typeof lng === 'undefined' ? 114.057868 : lng;
   return new qq.maps.LatLng(this.lat, this.lng);
 };
 //设置跳动标记
@@ -79,34 +79,34 @@ tMap.prototype.setBeatMark = function () {
   if (typeof this.options.beatMark !== 'undefined' && this.options.beatMark === false) {
     return;
   }
-  let _this = this;
-  let anchor = new qq.maps.Point(10, 30);
+  const _this = this;
+  const anchor = new qq.maps.Point(10, 30);
   let size = new qq.maps.Size(32, 30);
-  let origin = new qq.maps.Point(0, 0);
-  let icon = new qq.maps.MarkerImage('http://lbs.qq.com/javascript_v2/sample/img/plane.png', size, origin, anchor);
+  const origin = new qq.maps.Point(0, 0);
+  const icon = new qq.maps.MarkerImage('http://lbs.qq.com/javascript_v2/sample/img/plane.png', size, origin, anchor);
   size = new qq.maps.Size(52, 30);
-  let originShadow = new qq.maps.Point(32, 0);
-  let shadow = new qq.maps.MarkerImage(
+  const originShadow = new qq.maps.Point(32, 0);
+  const shadow = new qq.maps.MarkerImage(
     'http://lbs.qq.com/javascript_v2/sample/img/plane.png',
     size,
     originShadow,
     anchor
   );
-  let marker = new qq.maps.Marker({
+  const marker = new qq.maps.Marker({
     icon: icon,
     shadow: shadow,
     map: _this.map,
     position: _this.center,
-    animation: qq.maps.MarkerAnimation.BOUNCE,
+    animation: qq.maps.MarkerAnimation.BOUNCE
   });
   return this;
 };
 
 //绘图功能
 tMap.prototype.drawingManager = function () {
-  let Tmap = this.map,
-    _this = this;
-  let drawingManager = new qq.maps.drawing.DrawingManager({
+  const Tmap = this.map;
+  const _this = this;
+  const drawingManager = new qq.maps.drawing.DrawingManager({
     drawingMode: qq.maps.drawing.OverlayType.POLYGON,
     drawingControl: true,
     drawingControlOptions: {
@@ -116,16 +116,16 @@ tMap.prototype.drawingManager = function () {
         qq.maps.drawing.OverlayType.CIRCLE,
         qq.maps.drawing.OverlayType.POLYGON,
         qq.maps.drawing.OverlayType.POLYLINE,
-        qq.maps.drawing.OverlayType.RECTANGLE,
-      ],
+        qq.maps.drawing.OverlayType.RECTANGLE
+      ]
     },
     polygonOptions: {
       fillColor: new qq.maps.Color(0, 0, 0, 0),
       strokeColor: new qq.maps.Color(88, 88, 88, 1),
       strokeWeight: 2,
       clickable: false,
-      zIndex: 1,
-    },
+      zIndex: 1
+    }
   });
 
   this._drawingManager = drawingManager; //保留原生的drawingManager,其它地方需要用到
@@ -136,20 +136,20 @@ tMap.prototype.drawingManager = function () {
 
     _this.drawShape = {
       drawShapeType: 'polygon', //绘制的形状,多边形
-      latLngArr: event.path.elems, //多边形的点
+      latLngArr: event.path.elems //多边形的点
     };
 
-    let latArr = [],
-      lngArr = [];
+    const latArr = [];
+    const lngArr = [];
     $.each(event.path.elems, function (index, item) {
       latArr.push(item.lat);
       lngArr.push(item.lng);
     });
 
-    let maxLat = Math.max(...latArr);
-    let minLat = Math.min(...latArr);
-    let maxLng = Math.max(...lngArr);
-    let minLng = Math.min(...lngArr);
+    const maxLat = Math.max(...latArr);
+    const minLat = Math.min(...latArr);
+    const maxLng = Math.max(...lngArr);
+    const minLng = Math.min(...lngArr);
     drawingManager.setDrawingMode(null); //绘制完成退出编辑
     _this.createGrid(maxLat, minLat, maxLng, minLng); //绘制网格
     //_this.createTestMaker();  //注释掉
@@ -160,15 +160,15 @@ tMap.prototype.drawingManager = function () {
       strokeColor: new qq.maps.Color(88, 88, 88, 1),
       strokeWeight: 1,
       fillColor: new qq.maps.Color(0, 0, 0, 0.5),
-      map: _this.map,
+      map: _this.map
     });
     _this.polygon.setZIndex(1);
   });
 };
 
 tMap.prototype.searchService = function () {
-  let map = this.map;
-  let searchService = new qq.maps.SearchService({
+  const map = this.map;
+  const searchService = new qq.maps.SearchService({
     location: '深圳',
     pageIndex: 0,
     pageCapacity: 1,
@@ -177,10 +177,10 @@ tMap.prototype.searchService = function () {
       //设置回调函数参数
       var pois = results.detail.pois;
       var infoWin = new qq.maps.InfoWindow({
-        map: map,
+        map: map
       });
       var latlngBounds = new qq.maps.LatLngBounds();
-      if (typeof pois == 'undefined') {
+      if (typeof pois === 'undefined') {
         return;
       }
       for (var i = 0, l = pois.length; i < l; i++) {
@@ -212,34 +212,34 @@ tMap.prototype.searchService = function () {
     //若服务请求失败，则运行以下函数
     error: function () {
       console.log('出错了。');
-    },
+    }
   });
   return searchService;
 };
 //圈定目标区域范围
 tMap.prototype.createGrid = function (maxLat, minLat, maxLng, minLng) {
-  let _this = this;
+  const _this = this;
 
   //目标范围矩形路径
-  let path1 = [
+  const path1 = [
     new qq.maps.LatLng(maxLat, minLng),
     new qq.maps.LatLng(minLat, minLng),
     new qq.maps.LatLng(minLat, maxLng),
-    new qq.maps.LatLng(maxLat, maxLng),
+    new qq.maps.LatLng(maxLat, maxLng)
   ];
 
-  let polygon = new qq.maps.Polygon({
+  const polygon = new qq.maps.Polygon({
     path: path1,
     strokeColor: '#ccc',
     strokeWeight: 0,
     fillColor: new qq.maps.Color(255, 208, 70, 0.3),
-    map: _this.map,
+    map: _this.map
   });
   polygon.setZIndex(0);
 
   //网格路径
-  let rowStepSize = (maxLat - minLat) / 5;
-  let colStepSize = (maxLng - minLng) / 5;
+  const rowStepSize = (maxLat - minLat) / 5;
+  const colStepSize = (maxLng - minLng) / 5;
   this.maxLat = maxLat;
   this.minLat = minLat;
   this.maxLng = maxLng;
@@ -251,7 +251,7 @@ tMap.prototype.createGrid = function (maxLat, minLat, maxLng, minLng) {
   for (let i = 1; i <= 4; i++) {
     Array.prototype.push.call(_this.rowLinePath, [
       new qq.maps.LatLng(minLat + rowStepSize * i, minLng),
-      new qq.maps.LatLng(minLat + rowStepSize * i, maxLng),
+      new qq.maps.LatLng(minLat + rowStepSize * i, maxLng)
     ]);
   }
 
@@ -259,7 +259,7 @@ tMap.prototype.createGrid = function (maxLat, minLat, maxLng, minLng) {
   for (let i = 1; i <= 4; i++) {
     Array.prototype.push.call(_this.colLinePath, [
       new qq.maps.LatLng(minLat, minLng + colStepSize * i),
-      new qq.maps.LatLng(maxLat, minLng + colStepSize * i),
+      new qq.maps.LatLng(maxLat, minLng + colStepSize * i)
     ]);
   }
 
@@ -291,7 +291,7 @@ tMap.prototype.createGrid = function (maxLat, minLat, maxLng, minLng) {
       b: new qq.maps.LatLng(tpoint[0], maxLng),
       c: new qq.maps.LatLng(tpoint[0] + rowStepSize, tpoint[1]),
       d: new qq.maps.LatLng(tpoint[0] + rowStepSize, maxLng),
-      index: index++,
+      index: index++
     });
     if (r == 6) {
       tpoint[0] = maxLat;
@@ -309,14 +309,14 @@ tMap.prototype.createGrid = function (maxLat, minLat, maxLng, minLng) {
         path: [rectangle[i].a, rectangle[i].c, rectangle[i].d, rectangle[i].b, rectangle[i].a],
         visible: true,
         zIndex: 1000,
-        clickable: true,
+        clickable: true
       });
 
       var label = new qq.maps.Label({
         position: targetArea.getBounds().getCenter(),
         map: _this.map,
         content: rectangle[i].index + '',
-        style: { userSelect: 'none', color: '#f00', fontSize: '16px', fontWeight: 'bold' },
+        style: {userSelect: 'none', color: '#f00', fontSize: '16px', fontWeight: 'bold'}
       });
 
       _this.Event.addListener(targetArea, 'mouseup', function (event) {
@@ -368,9 +368,9 @@ tMap.prototype.createGrid = function (maxLat, minLat, maxLng, minLng) {
 };
 //
 tMap.prototype.cratePolyline = function (rowLinePath, colLinePath) {
-  let _this = this;
+  const _this = this;
 
-  let newArr = [...rowLinePath, ...colLinePath];
+  const newArr = [...rowLinePath, ...colLinePath];
   $.each(newArr, function (index, item) {
     var path = item;
     var polyline = new qq.maps.Polyline({
@@ -394,31 +394,31 @@ tMap.prototype.cratePolyline = function (rowLinePath, colLinePath) {
       //折线是否可见
       visible: true,
       //折线的zIndex
-      zIndex: 1000,
+      zIndex: 1000
     });
     Array.prototype.push.call(_this.gridArray, polyline);
   });
 };
 
 tMap.prototype.drawingCircle = function (callBack) {
-  let Tmap = this.map;
-  let subObject = null;
+  const Tmap = this.map;
+  const subObject = null;
   var drawingManager = new qq.maps.drawing.DrawingManager({
     drawingControl: true,
     drawingControlOptions: {
       position: qq.maps.ControlPosition.TOP_CENTER,
-      drawingModes: [qq.maps.drawing.OverlayType.CIRCLE],
+      drawingModes: [qq.maps.drawing.OverlayType.CIRCLE]
     },
     circleOptions: {
       fillColor: new qq.maps.Color(255, 208, 70, 0.3),
       strokeColor: new qq.maps.Color(88, 88, 88, 1),
       strokeWeight: 3,
-      clickable: false,
-    },
+      clickable: false
+    }
   });
   drawingManager.setMap(Tmap);
   this.Event.addListener(drawingManager, 'circlecomplete', function (event) {
-    callBack({ coord: event.center, radius: event.radius });
+    callBack({coord: event.center, radius: event.radius});
     drawingManager.setDrawingMode(null); //绘制完成退出编辑
     //  drawingManager.setMap(null);//绘制完成移除画图组件
   });
@@ -426,21 +426,21 @@ tMap.prototype.drawingCircle = function (callBack) {
 
 // 绘制多边形
 tMap.prototype._drawingPolygon = function (callBack) {
-  let Tmap = this.map;
-  let subObject = null;
+  const Tmap = this.map;
+  const subObject = null;
   var drawingManager = new qq.maps.drawing.DrawingManager({
     drawingControl: true,
     drawingControlOptions: {
       position: qq.maps.ControlPosition.TOP_CENTER,
-      drawingModes: [qq.maps.drawing.OverlayType.POLYGON],
+      drawingModes: [qq.maps.drawing.OverlayType.POLYGON]
     },
     polygonOptions: {
       fillColor: new qq.maps.Color(0, 0, 0, 0),
       strokeColor: new qq.maps.Color(88, 88, 88, 1),
       strokeWeight: 2,
       clickable: false,
-      zIndex: 1,
-    },
+      zIndex: 1
+    }
   });
   drawingManager.setMap(Tmap);
   this.Event.addListener(drawingManager, 'polygoncomplete', function (event) {
@@ -453,10 +453,10 @@ tMap.prototype._drawingPolygon = function (callBack) {
 /*********************服务类***************************/
 //地址解析
 tMap.prototype.resolveLatLng = function (latlngMsg, callBack) {
-  let geocoder = new qq.maps.Geocoder();
-  let lat = parseFloat(latlngMsg.lat);
-  let lng = parseFloat(latlngMsg.lng);
-  let latLng = new qq.maps.LatLng(lat, lng);
+  const geocoder = new qq.maps.Geocoder();
+  const lat = parseFloat(latlngMsg.lat);
+  const lng = parseFloat(latlngMsg.lng);
+  const latLng = new qq.maps.LatLng(lat, lng);
   geocoder.getAddress(latLng);
   geocoder.setComplete(function (result) {
     callBack(result.detail.address);
@@ -478,8 +478,8 @@ tMap.prototype.clearCircle = function () {
 tMap.prototype.drawingLine = function (data) {
   this.map.setMapTypeId(qq.maps.MapTypeId.HYBRID); //显示卫星地图
 
-  let path = [];
-  let _this = this;
+  const path = [];
+  const _this = this;
   if (data.length > 0) {
     data.forEach((item, index) => {
       path.push(new qq.maps.LatLng(item.lat, item.lng));
@@ -492,7 +492,7 @@ tMap.prototype.drawingLine = function (data) {
             map: _this.map,
             path: fData,
             strokeColor: '#1c29d8',
-            strokeWeight: 5,
+            strokeWeight: 5
           });
         },
         50,
@@ -506,9 +506,9 @@ tMap.prototype.drawingLine = function (data) {
 
 //添加坐标点标注
 tMap.prototype.createTestMaker = function () {
-  let _this = this;
-  let labelArr = [...this.rowLinePath];
-  let otherMakerArr = [];
+  const _this = this;
+  const labelArr = [...this.rowLinePath];
+  const otherMakerArr = [];
   labelArr.push(
     [new qq.maps.LatLng(_this.maxLat, _this.minLng), new qq.maps.LatLng(_this.minLat, _this.maxLng)],
     [new qq.maps.LatLng(_this.minLat, _this.minLng), new qq.maps.LatLng(_this.maxLat, _this.maxLng)]
@@ -518,10 +518,10 @@ tMap.prototype.createTestMaker = function () {
       new qq.maps.LatLng(_this.minLat + _this.rowStepSize * i, _this.minLng + _this.colStepSize),
       new qq.maps.LatLng(_this.minLat + _this.rowStepSize * i, _this.minLng + _this.colStepSize * 2),
       new qq.maps.LatLng(_this.minLat + _this.rowStepSize * i, _this.minLng + _this.colStepSize * 3),
-      new qq.maps.LatLng(_this.minLat + _this.rowStepSize * i, _this.minLng + _this.colStepSize * 4),
+      new qq.maps.LatLng(_this.minLat + _this.rowStepSize * i, _this.minLng + _this.colStepSize * 4)
     ]);
   }
-  let resultLabelArray = [...labelArr, ..._this.colLinePath, ...otherMakerArr];
+  const resultLabelArray = [...labelArr, ..._this.colLinePath, ...otherMakerArr];
   $.each(resultLabelArray, function (index, item) {
     $.each(item, function (index1, item1) {
       var label = new qq.maps.Label({
@@ -535,8 +535,8 @@ tMap.prototype.createTestMaker = function () {
           fontSize: '12px',
           fontWeight: 'bold',
           background: new qq.maps.Color(0, 0, 0, 0),
-          borderColor: new qq.maps.Color(0, 0, 0, 0),
-        },
+          borderColor: new qq.maps.Color(0, 0, 0, 0)
+        }
       });
       Array.prototype.push.call(_this.labelArray, label);
     });
@@ -547,13 +547,13 @@ tMap.prototype.createTestMaker = function () {
 
 //多点标记并添加判断
 tMap.prototype.createMakers = function (DataCallback, markerFun) {
-  let _this = this;
+  const _this = this;
   this.Event.addListener(this.map, 'click', function (event) {
     DataCallback && DataCallback(event);
     var marker = new qq.maps.Marker({
       position: event.latLng,
       map: _this.map,
-      zIndex: 3,
+      zIndex: 3
     });
     _this.Event.addListener(marker, 'click', function (event) {});
     markerFun && markerFun(marker);
@@ -562,14 +562,14 @@ tMap.prototype.createMakers = function (DataCallback, markerFun) {
 
 //根据四点经纬度绘制网格
 tMap.prototype.dotCreateGrid = function (latLngPath, num) {
-  let _this = this;
-  let maxLat = latLngPath[0].lat - 0;
-  let minLat = latLngPath[2].lat - 0;
-  let maxLng = latLngPath[1].lng - 0;
-  let minLng = latLngPath[0].lng - 0;
+  const _this = this;
+  const maxLat = latLngPath[0].lat - 0;
+  const minLat = latLngPath[2].lat - 0;
+  const maxLng = latLngPath[1].lng - 0;
+  const minLng = latLngPath[0].lng - 0;
   //网格路径
-  let rowStepSize = (maxLat - minLat) / num; //列的单份长度
-  let colStepSize = (maxLng - minLng) / num; //行的单份长度
+  const rowStepSize = (maxLat - minLat) / num; //列的单份长度
+  const colStepSize = (maxLng - minLng) / num; //行的单份长度
   console.log(rowStepSize, colStepSize, 'rowStepSize,colStepSize', maxLat, minLat, maxLng, minLng);
 
   var rectangle = []; //矩形数据
@@ -601,13 +601,13 @@ tMap.prototype.dotCreateGrid = function (latLngPath, num) {
         path: [rectangle[i].a, rectangle[i].b, rectangle[i].d, rectangle[i].c, rectangle[i].a],
         visible: true,
         zIndex: 1000,
-        clickable: true,
+        clickable: true
       });
       var label = new qq.maps.Label({
         position: targetArea.getBounds().getCenter(),
         map: _this.map,
         content: rectangle[i].index + '',
-        style: { userSelect: 'none', color: '#f00', fontSize: '16px', fontWeight: 'bold' },
+        style: {userSelect: 'none', color: '#f00', fontSize: '16px', fontWeight: 'bold'}
       });
     })(); //使用闭包缓存目标区域
   }
@@ -623,7 +623,7 @@ tMap.prototype.setPolyline = function () {
     strokeColor: '#1c29d8',
     strokeWeight: 10,
     editable: false,
-    map: this.map,
+    map: this.map
   });
 };
 tMap.prototype.drawingPolyline = function (data) {
@@ -636,8 +636,8 @@ tMap.prototype.drawingPolyline = function (data) {
 //绘制多边形
 //---------------------------------
 tMap.prototype.drawingPolygon = function (data, noGrid) {
-  let latArr = [],
-    lngArr = [];
+  const latArr = [];
+  const lngArr = [];
   var path = [];
   data.forEach(function (item, index) {
     path.push(new qq.maps.LatLng(item.lat, item.lng));
@@ -653,26 +653,26 @@ tMap.prototype.drawingPolygon = function (data, noGrid) {
     map: this.map,
     path: path,
     visible: true,
-    zIndex: 0,
+    zIndex: 0
   });
 
   //------------------------------
   //绘制网格
   //------------------------------
-  let maxLat = Math.max(...latArr);
-  let minLat = Math.min(...latArr);
-  let maxLng = Math.max(...lngArr);
-  let minLng = Math.min(...lngArr);
+  const maxLat = Math.max(...latArr);
+  const minLat = Math.min(...latArr);
+  const maxLng = Math.max(...lngArr);
+  const minLng = Math.min(...lngArr);
   noGrid ? '' : this.createGrid(maxLat, minLat, maxLng, minLng);
 };
 
 /***********************获取系列********************/
 //画线
 tMap.prototype.getLabelContent = function (argument) {
-  let _this = this;
+  const _this = this;
   let latArr = [];
   let lngArr = [];
-  let totalArr = [];
+  const totalArr = [];
   this.labelArray.forEach(function (element, index) {
     Array.prototype.push.call(totalArr, element.content.split('<br/>'));
     Array.prototype.push.call(latArr, element.content.split('<br/>')[0]);
@@ -682,8 +682,8 @@ tMap.prototype.getLabelContent = function (argument) {
     return b - a;
   });
   lngArr = Array.from(new Set(lngArr)).sort();
-  let len = latArr.length - 1;
-  let rectArr = [];
+  const len = latArr.length - 1;
+  const rectArr = [];
   for (let i = 0; i < len; i++) {
     rectArr.push([latArr[i], lngArr[0], latArr[i], lngArr[1], latArr[i + 1], lngArr[1], latArr[i + 1], lngArr[0]]);
     rectArr.push([latArr[i], lngArr[1], latArr[i], lngArr[2], latArr[i + 1], lngArr[2], latArr[i + 1], lngArr[1]]);
@@ -692,11 +692,11 @@ tMap.prototype.getLabelContent = function (argument) {
     rectArr.push([latArr[i], lngArr[4], latArr[i], lngArr[5], latArr[i + 1], lngArr[5], latArr[i + 1], lngArr[4]]);
   }
   rectArr.forEach(function (item, index) {
-    let path = [
+    const path = [
       new qq.maps.LatLng(item[0], item[1]),
       new qq.maps.LatLng(item[2], item[3]),
       new qq.maps.LatLng(item[4], item[5]),
-      new qq.maps.LatLng(item[6], item[7]),
+      new qq.maps.LatLng(item[6], item[7])
     ];
     var polygon = new qq.maps.Polygon({
       path: path,
@@ -704,13 +704,13 @@ tMap.prototype.getLabelContent = function (argument) {
       strokeWeight: 1,
       zIndex: 0,
       fillColor: new qq.maps.Color(0, 0, 0, 0),
-      map: _this.map,
+      map: _this.map
     });
     var cssC = {
       color: '#f00',
       fontSize: '16px',
       fontWeight: 'bold',
-      userSelect: 'none',
+      userSelect: 'none'
     };
     var label = new qq.maps.Label({
       //如果为true，表示可点击，默认true。
@@ -735,7 +735,7 @@ tMap.prototype.getLabelContent = function (argument) {
       visible: true,
 
       //标签的z轴高度，zIndex大的标签，显示在zIndex小的前面。
-      zIndex: 1000,
+      zIndex: 1000
     });
     Array.prototype.push.call(_this.rectArrs, polygon);
   });

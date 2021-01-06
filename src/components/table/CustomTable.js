@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Table } from 'antd';
+import React, {Component} from 'react';
+import {Table} from 'antd';
 import NoData from 'components/NoData/index';
 class CustomTable extends Component {
   constructor(props) {
@@ -12,9 +12,9 @@ class CustomTable extends Component {
         defaultCurrent: 1,
         current: 1,
         onShowSizeChange: this.handleOnShowSizeChange,
-        onChange: this.handleChangeSize,
+        onChange: this.handleChangeSize
       },
-      selectedRowKeys: [],
+      selectedRowKeys: []
     };
   }
   // 每页显示数量
@@ -30,7 +30,7 @@ class CustomTable extends Component {
     this.props.handleSelectChange && this.props.handleSelectChange(selectedRowKeys);
   };
   render() {
-    let {
+    const {
       dataSource,
       columns,
       isBordered,
@@ -39,7 +39,7 @@ class CustomTable extends Component {
       isRowSelects,
       isScroll,
       rowSelectKeys,
-      isAllRows,
+      isAllRows
     } = this.props;
     if (!dataSource) {
       throw new Error('dataSource是必传参数');
@@ -49,16 +49,16 @@ class CustomTable extends Component {
     }
 
     // 分页
-    let newPage = pagination ? Object.assign({}, this.state.pagination, pagination) : false;
+    const newPage = pagination ? Object.assign({}, this.state.pagination, pagination) : false;
     // loading
-    let newloading = loading ? loading : this.state.loading;
+    const newloading = loading || this.state.loading;
     // 是否多选
     const rowSelection = {
       onChange: this.onSelectChange,
-      selectedRowKeys: rowSelectKeys,
+      selectedRowKeys: rowSelectKeys
     };
-    let newisRowSelects = isRowSelects ? rowSelection : null;
-    let setScroll = isScroll ? isScroll : { x: null };
+    const newisRowSelects = isRowSelects ? rowSelection : null;
+    const setScroll = isScroll || {x: null};
     return (
       <Table
         dataSource={dataSource}
@@ -69,19 +69,19 @@ class CustomTable extends Component {
         locale={{
           emptyText: (() => {
             return newloading ? (
-              <div style={{ margin: '70px 0', color: 'black' }}>正在加载中...</div>
+              <div style={{margin: '70px 0', color: 'black'}}>正在加载中...</div>
             ) : dataSource.length == 0 ? (
               <NoData></NoData>
             ) : null;
-          })(),
+          })()
         }}
         loading={newloading}
         scroll={setScroll}
         indentSize={20}
-        expandRowByClick={true}
-        defaultExpandAllRows={isAllRows ? true : false}
+        expandRowByClick
+        defaultExpandAllRows={!!isAllRows}
         rowSelection={newisRowSelects}
-        bordered={isBordered == true ? true : false}
+        bordered={isBordered == true}
         pagination={newPage}
       />
     );

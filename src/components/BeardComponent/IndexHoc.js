@@ -1,5 +1,5 @@
 import React from 'react';
-import { matchPath } from 'react-router';
+import {matchPath} from 'react-router';
 
 // 以递归的方式展平react router数组
 const flattenRoutes = (arr) =>
@@ -9,16 +9,16 @@ const flattenRoutes = (arr) =>
   }, []);
 
 // 对每个路径提供匹配的breadcrumb
-const getBreadcrumb = ({ flattenRoutes, curSection, pathSection }) => {
+const getBreadcrumb = ({flattenRoutes, curSection, pathSection}) => {
   const matchRoute = flattenRoutes.find((ele) => {
-    const { path } = ele;
+    const {path} = ele;
     if (!path) {
       throw new Error('React-Router 规定 Router 中每一个 route 必须包含 `path` 属性');
     }
     // 查找是否有匹配
     // exact 为 react-router4+ 的属性，用于精确匹配路由
     // matchPath 为 react-router4+ 提供的API，
-    return matchPath(pathSection, { path, exact: true });
+    return matchPath(pathSection, {path, exact: true});
   });
 
   // 返回breadcrumb的值，没有name属性的话就返回匹配子路径名
@@ -33,9 +33,9 @@ const getBreadcrumb = ({ flattenRoutes, curSection, pathSection }) => {
 };
 
 // 将路径名split成若干部分，分别查找路由匹配项
-export const getBreadcrumbs = ({ flattenRoutes, location }) => {
+export const getBreadcrumbs = ({flattenRoutes, location}) => {
   // 初始化匹配数组match
-  let res = [];
+  const res = [];
   // 取得路径名，然后将路径分割成每一路由部分.
   // 对每一部分执行一次`getBreadcrumb()`获取到面包屑名称.
   location.pathname
@@ -48,7 +48,7 @@ export const getBreadcrumbs = ({ flattenRoutes, location }) => {
         const breadcrumb = getBreadcrumb({
           flattenRoutes,
           curSection,
-          pathSection,
+          pathSection
         });
         // 将面包屑导入到 res 数组中
         breadcrumb && res.push(breadcrumb);
@@ -79,7 +79,7 @@ const BreadcrumbsHoc = (location = window.location, routes = [], isShowGridMap) 
       isShowGridMap={isShowGridMap}
       breadcrumbs={getBreadcrumbs({
         flattenRoutes: flattenRoutes(routes),
-        location,
+        location
       })}
     />
   );

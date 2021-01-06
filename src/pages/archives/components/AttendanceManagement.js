@@ -1,33 +1,33 @@
 //考勤管理
-import React, { Component } from 'react';
-import { Icon } from 'antd';
+import React, {Component} from 'react';
+import {Icon} from 'antd';
 import NoData from 'components/NoData';
 class AttendanceManagement extends Component {
   constructor(props) {
     super(props);
     this.state = {
       detailInfor: '',
-      currentIndex: '',
+      currentIndex: ''
     };
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
       detailInfor: nextProps.detailInfor,
-      currentIndex: nextProps.currentIndex,
+      currentIndex: nextProps.currentIndex
     });
   }
   //打印
   onPrint = (e) => {
-    const { detailInfor } = this.state;
+    const {detailInfor} = this.state;
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
     util.jQPrintPartialHtml('#print-view' + detailInfor.bookName + detailInfor.id);
   };
   render() {
-    const { detailInfor, currentIndex } = this.state;
-    let punchIn = {}; //上班打卡
-    let clockOut = {}; //下班打卡
-    let punchOut = []; //外出打卡
+    const {detailInfor, currentIndex} = this.state;
+    const punchIn = {}; //上班打卡
+    const clockOut = {}; //下班打卡
+    const punchOut = []; //外出打卡
     if (detailInfor.workwxClockDetailDOS && detailInfor.workwxClockDetailDOS.length > 0) {
       detailInfor.workwxClockDetailDOS.map((item) => {
         if (item.checkinType === '上班打卡') {
@@ -43,7 +43,7 @@ class AttendanceManagement extends Component {
         if (item.checkinType === '外出打卡') {
           punchOut.push({
             checkinDate: item.checkinDate, //打卡时间
-            locationTitle: item.locationTitle, //打卡地点
+            locationTitle: item.locationTitle //打卡地点
           });
         }
       });
@@ -82,7 +82,7 @@ class AttendanceManagement extends Component {
                   <tbody className="no-wrap-th">
                     <tr>
                       <th>上班（{util.formatDate(new Date(detailInfor.workDate), 'hh:mm')}）</th>
-                      <td style={punchIn.clockType != '正常' ? { color: 'red' } : {}}>
+                      <td style={punchIn.clockType != '正常' ? {color: 'red'} : {}}>
                         {punchIn.clockType && punchIn.clockType === '旷工'
                           ? punchIn.exceptionType
                           : punchIn.checkinDate &&
@@ -90,11 +90,11 @@ class AttendanceManagement extends Component {
                         {punchIn.clockType && punchIn.clockType === '旷工' ? (
                           ''
                         ) : (
-                          <span style={{ marginLeft: 6, whiteSpace: 'nowrap' }}>{punchIn.clockType}</span>
+                          <span style={{marginLeft: 6, whiteSpace: 'nowrap'}}>{punchIn.clockType}</span>
                         )}
                       </td>
                       <th>下班（{util.formatDate(new Date(detailInfor.offWorkDate), 'hh:mm')}）</th>
-                      <td style={clockOut.clockType != '正常' ? { color: 'red' } : {}}>
+                      <td style={clockOut.clockType != '正常' ? {color: 'red'} : {}}>
                         {clockOut.clockType && clockOut.clockType === '旷工'
                           ? clockOut.exceptionType
                           : clockOut.checkinDate &&
@@ -102,7 +102,7 @@ class AttendanceManagement extends Component {
                         {clockOut.clockType && clockOut.clockType === '旷工' ? (
                           ''
                         ) : (
-                          <span style={{ marginLeft: 6, whiteSpace: 'nowrap' }}>{clockOut.clockType}</span>
+                          <span style={{marginLeft: 6, whiteSpace: 'nowrap'}}>{clockOut.clockType}</span>
                         )}
                       </td>
                     </tr>

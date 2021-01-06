@@ -1,7 +1,7 @@
 //MonitoringViewInfo
 //监控查看信息
-import React, { Component } from 'react';
-import { Icon } from 'antd';
+import React, {Component} from 'react';
+import {Icon} from 'antd';
 import NoData from 'components/NoData';
 
 class MonitoringViewInfo extends Component {
@@ -9,24 +9,24 @@ class MonitoringViewInfo extends Component {
     super(props);
     this.state = {
       detailInfor: '',
-      currentIndex: '',
+      currentIndex: ''
     };
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
       detailInfor: nextProps.detailInfor,
-      currentIndex: nextProps.currentIndex,
+      currentIndex: nextProps.currentIndex
     });
   }
   //打印
   onPrint = (e) => {
-    const { detailInfor } = this.state;
+    const {detailInfor} = this.state;
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
     util.jQPrintPartialHtml('#print-view' + detailInfor.bookName + detailInfor.id);
   };
   render() {
-    const { detailInfor, currentIndex } = this.state;
+    const {detailInfor, currentIndex} = this.state;
     return (
       <div className="book-box">
         <div className="page-head">

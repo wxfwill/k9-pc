@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -12,7 +12,7 @@ class SearchForm extends React.Component {
     this.state = {
       expand: true,
       dutyList: [],
-      peoples: [],
+      peoples: []
     };
   }
   componentDidMount() {
@@ -27,12 +27,12 @@ class SearchForm extends React.Component {
   }
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
-    let timeData = 'range-time-picker';
+    const {limit} = this.props;
+    const timeData = 'range-time-picker';
     this.props.form.validateFields((err, values) => {
       limit({
         taskName: values.taskName && values.taskName,
-        queryTime: values.queryTime && values.queryTime.format('YYYY-MM-DD'),
+        queryTime: values.queryTime && values.queryTime.format('YYYY-MM-DD')
       });
     });
   };
@@ -40,24 +40,24 @@ class SearchForm extends React.Component {
     this.props.form.resetFields();
   };
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   searchPeople = (name = '') => {
-    React.$ajax.postData('/api/userCenter/getTrainer', { name }).then((res) => {
+    React.$ajax.postData('/api/userCenter/getTrainer', {name}).then((res) => {
       if (res.code == 0) {
-        this.setState({ peoples: res.data });
+        this.setState({peoples: res.data});
       }
     });
   };
   render() {
-    const { getFieldDecorator } = this.props.form;
-    let { expand, dutyList, peoples } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {expand, dutyList, peoples} = this.state;
     const dutyListOption =
       dutyList &&
       dutyList.map((item, index) => {
@@ -82,11 +82,11 @@ class SearchForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit" onClick={this.handleSearch}>
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
           </Col>

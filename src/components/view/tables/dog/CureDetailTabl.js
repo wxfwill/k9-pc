@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import classnames from 'classnames';
 import httpAjax from 'libs/httpAjax';
-import { Collapse, Icon, Tag, Row, Col, Table, Card } from 'antd';
+import {Collapse, Icon, Tag, Row, Col, Table, Card} from 'antd';
 import moment from 'moment';
 import 'style/view/common/detailTable.less';
 const Panel = Collapse.Panel;
@@ -13,11 +13,11 @@ class CureDetailTabl extends Component {
       loading: true,
       baseData: '',
       medicalrecords: [],
-      title: '病历记录',
+      title: '病历记录'
     };
   }
   componentWillMount() {
-    const { caption } = this.props;
+    const {caption} = this.props;
     this.fetch(caption);
   }
   componentWillReceiveProps(nextProps) {
@@ -27,12 +27,12 @@ class CureDetailTabl extends Component {
     this.props.handleShow();
   }
   fetch(params) {
-    httpAjax('post', config.apiUrl + '/api/treatmentRecord/info', { id: params.id })
+    httpAjax('post', config.apiUrl + '/api/treatmentRecord/info', {id: params.id})
       .then((res) => {
         this.setState({
           loading: false,
           baseData: res.data && res.data.dogInfo,
-          medicalrecords: res.data && res.data.treatmentRecordInfo,
+          medicalrecords: res.data && res.data.treatmentRecordInfo
         });
       })
       .catch(function (error) {
@@ -41,7 +41,7 @@ class CureDetailTabl extends Component {
   }
   renderhead(caption) {
     if (caption.length > 0) {
-      let MonthYear = caption.split('_')[1];
+      const MonthYear = caption.split('_')[1];
       return (
         <div>
           <Icon type="calendar" />
@@ -52,7 +52,7 @@ class CureDetailTabl extends Component {
     }
   }
   checkHeader() {
-    const { title } = this.state;
+    const {title} = this.state;
     return (
       <div>
         <Icon type="bars" />
@@ -72,43 +72,43 @@ class CureDetailTabl extends Component {
   }
 
   render() {
-    const { changeLeft, caption } = this.props;
-    const { baseData, medicalrecords, loading } = this.state;
-    let date = new Date(baseData.birthday);
-    let YMD = date.toLocaleString().split(' ')[0];
+    const {changeLeft, caption} = this.props;
+    const {baseData, medicalrecords, loading} = this.state;
+    const date = new Date(baseData.birthday);
+    const YMD = date.toLocaleString().split(' ')[0];
     //let HMS = date.toString().split(' ')[4];
-    let morbidityTime = YMD; //+' '+HMS;
+    const morbidityTime = YMD; //+' '+HMS;
     const recordsColumns = [
       {
         title: '发病日期',
         dataIndex: 'morbidityTime',
         render: (time) => {
-          let date = new Date(time);
-          let YMD = date.toLocaleString().split(' ')[0];
-          let HMS = date.toString().split(' ')[4];
-          let morbidityTime = YMD + ' ' + HMS;
+          const date = new Date(time);
+          const YMD = date.toLocaleString().split(' ')[0];
+          const HMS = date.toString().split(' ')[4];
+          const morbidityTime = YMD + ' ' + HMS;
           return morbidityTime;
-        },
+        }
       },
       {
         title: '主要症状',
-        dataIndex: 'symptom',
+        dataIndex: 'symptom'
       },
       {
         title: '治疗结果',
         dataIndex: 'treatmentResults',
         render: (result) => {
-          let resArr = [<Tag color="#2db7f5">痊&nbsp;&nbsp;&nbsp;愈</Tag>, <Tag color="#f50">未痊愈</Tag>];
+          const resArr = [<Tag color="#2db7f5">痊&nbsp;&nbsp;&nbsp;愈</Tag>, <Tag color="#f50">未痊愈</Tag>];
           return resArr[result - 1];
-        },
+        }
       },
       {
         title: '兽医',
-        dataIndex: 'veterinaryName',
-      },
+        dataIndex: 'veterinaryName'
+      }
     ];
     return (
-      <div className={classnames('off-detail')} style={{ left: changeLeft ? '360px' : '100%' }}>
+      <div className={classnames('off-detail')} style={{left: changeLeft ? '360px' : '100%'}}>
         <div className="detail-table">
           <Card title={this.state.title}>
             {/*<span>创建时间:20180201</span>*/}

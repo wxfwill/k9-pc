@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import CustomTable from 'components/table/CustomTable';
 
-import { Card, message, Modal, Popconfirm } from 'antd';
+import {Card, message, Modal} from 'antd';
 import AddEditModel from './AddEditModel';
-import { menuOperate } from './operateData';
-const { confirm } = Modal;
+import {menuOperate} from './operateData';
+const {confirm} = Modal;
 class MenuList extends Component {
   constructor(props) {
     super(props);
@@ -13,39 +13,39 @@ class MenuList extends Component {
       id: 0,
       pid: 0,
       type: '新增菜单',
-      tableData: [],
+      tableData: []
     };
   }
+  componentDidMount() {
+    this.getMenuTree();
+  }
   handleFormData = (data) => {
-    let { id, pid, type, level, moduleIndex } = this.state;
-    data.available = data.available == 1 ? true : false;
+    const {id, pid, type, level, moduleIndex} = this.state;
+    data.available = data.available == 1;
     if (type == '编辑菜单') {
       // 编辑
-      let obj = Object.assign({}, data, { id, pid, level, moduleIndex });
+      const obj = Object.assign({}, data, {id, pid, level, moduleIndex});
       console.log(obj);
       this.addEditMenu(obj, '编辑成功');
     } else {
       // 新增
-      let obj = Object.assign({}, data, { pid: id, level, moduleIndex });
+      const obj = Object.assign({}, data, {pid: id, level, moduleIndex});
       console.log(obj);
       this.addEditMenu(obj, '新增成功');
     }
   };
   handleAdd = (row) => {
-    let { level, moduleIndex } = row;
+    const {level, moduleIndex} = row;
     // icon = '';
-    this.setState({ type: '新增菜单', id: row.id, level, moduleIndex }, () => {
+    this.setState({type: '新增菜单', id: row.id, level, moduleIndex}, () => {
       this.childEle.openModel();
     });
   };
-  componentDidMount() {
-    this.getMenuTree();
-  }
   handleEdit = (row) => {
     // e.stopPropagation();
     console.log(row);
-    let { level, moduleIndex } = row;
-    this.setState({ type: '编辑菜单', id: row.id, pid: row.pid, level, moduleIndex }, () => {
+    const {level, moduleIndex} = row;
+    this.setState({type: '编辑菜单', id: row.id, pid: row.pid, level, moduleIndex}, () => {
       this.childEle.openModel(row);
     });
   };
@@ -54,14 +54,14 @@ class MenuList extends Component {
     React.$ajax.getData('/api/sys/sys-module/queryMenuTree', {}).then((res) => {
       if (res && res.code == 0) {
         console.log(res);
-        let resData = res.data ? res.data : [];
-        this.setState({ tableData: resData });
+        const resData = res.data ? res.data : [];
+        this.setState({tableData: resData});
       }
     });
   };
   // 菜单详情
   getMenuDetal = (id) => {
-    React.$ajax.getData('/api/sys/sys-module/queryMenuTree', { id }).then((res) => {
+    React.$ajax.getData('/api/sys/sys-module/queryMenuTree', {id}).then((res) => {
       if (res && res.code == 0) {
         console.log(res);
       }
@@ -69,7 +69,7 @@ class MenuList extends Component {
   };
   // 删除菜单
   delteMenu = (id) => {
-    React.$ajax.getData('/api/sys/sys-module/delCascade', { id }).then((res) => {
+    React.$ajax.getData('/api/sys/sys-module/delCascade', {id}).then((res) => {
       if (res && res.code == 0) {
         console.log(res);
         this.getMenuTree();
@@ -95,7 +95,7 @@ class MenuList extends Component {
       onOk: () => {
         this.delteMenu(row.id);
       },
-      onCancel() {},
+      onCancel() {}
     });
   };
   render() {
@@ -115,10 +115,9 @@ class MenuList extends Component {
               dataSource={this.state.tableData}
               loading={this.state.loading}
               columns={menuOperate(this.handleAdd, this.handleEdit, this.handleDelteMenu)}
-              isBordered={true}
+              isBordered
               isRowSelects={false}
-              isAllRows={false}
-            ></CustomTable>
+              isAllRows={false}></CustomTable>
           ) : null}
         </Card>
       </div>

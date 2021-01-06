@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 class RequestTeamProps extends Component {
   constructor(props) {
     super(props);
-    this.state = { teamData: [] };
+    this.state = {teamData: []};
   }
   componentDidMount() {
     // 查询中队信息
@@ -12,13 +12,13 @@ class RequestTeamProps extends Component {
   queryAllTeam = () => {
     React.$ajax.common.queryAllGroups().then((res) => {
       if (res.code == 0) {
-        let resObj = res.data;
-        let newArr = [];
-        for (let key in resObj) {
-          let obj = { id: key, name: resObj[key] };
+        const resObj = res.data;
+        const newArr = [];
+        for (const key in resObj) {
+          const obj = {id: key, name: resObj[key]};
           newArr.push(obj);
         }
-        this.setState({ teamData: newArr });
+        this.setState({teamData: newArr});
       }
     });
   };

@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import httpAjax from 'libs/httpAjax';
-const { MonthPicker } = DatePicker;
+const {MonthPicker} = DatePicker;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -12,14 +12,14 @@ class SearchForm extends React.Component {
     expand: true,
     dogName: '',
     veterinaryName: '',
-    treatmentResults: '',
+    treatmentResults: ''
   };
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
+    const {limit} = this.props;
     this.props.form.validateFields((err, fieldsValue) => {
       Object.keys(fieldsValue).forEach(function (item, index) {
-        typeof fieldsValue[item] == 'undefined' ? (fieldsValue[item] = '') : '';
+        typeof fieldsValue[item] === 'undefined' ? (fieldsValue[item] = '') : '';
       });
       if (fieldsValue.yearMonth != '') {
         fieldsValue.yearMonth = fieldsValue.yearMonth.format('YYYY-MM');
@@ -31,19 +31,19 @@ class SearchForm extends React.Component {
     this.props.form.resetFields();
   };
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   render() {
-    let expand = this.state.expand;
-    const { getFieldDecorator } = this.props.form;
+    const expand = this.state.expand;
+    const {getFieldDecorator} = this.props.form;
     const rangeConfig = {
-      rules: [{ type: 'array', message: 'Please select time!' }],
+      rules: [{type: 'array', message: 'Please select time!'}]
     };
     return (
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
@@ -71,14 +71,14 @@ class SearchForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
-            <a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>
+            <a style={{marginLeft: 8, fontSize: 12}} onClick={this.toggle}>
               {this.state.expand ? '展开' : '收起'} <Icon type={this.state.expand ? 'down' : 'up'} />
             </a>
           </Col>

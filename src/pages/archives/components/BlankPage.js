@@ -1,19 +1,19 @@
 //最后一页
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 class BlankPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentIndex: '',
+      currentIndex: ''
     };
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
-      currentIndex: nextProps.currentIndex,
+      currentIndex: nextProps.currentIndex
     });
   }
   render() {
-    const { currentIndex } = this.state;
+    const {currentIndex} = this.state;
     return (
       //   <div className="book-box">
       //     <div className="">

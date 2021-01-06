@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Upload, Icon, message } from 'antd';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {Upload, Icon, message} from 'antd';
+import {connect} from 'react-redux';
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -9,7 +9,7 @@ function getBase64(img, callback) {
 }
 
 @connect(
-  (state) => ({ token: state.loginReducer.token })
+  (state) => ({token: state.loginReducer.token})
   // (dispatch) => ({ changeNavData: (nav) => dispatch(changeNavName(nav)) })
 )
 class CustomUpload extends React.Component {
@@ -20,8 +20,11 @@ class CustomUpload extends React.Component {
       return this.props.imgUrl || null;
     })(),
     file: null,
-    icon: null,
+    icon: null
   };
+  componentDidMount() {
+    console.log(process.env.BASE_URL);
+  }
   beforeUpload = (file) => {
     // const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     // if (!isJpgOrPng) {
@@ -32,11 +35,11 @@ class CustomUpload extends React.Component {
       message.error('图片最大不超过2M!');
     }
     window.File = false;
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('file', file);
     this.setState({
       formData,
-      file,
+      file
     });
     // return isJpgOrPng && isLt2M;
     return isLt2M;
@@ -45,7 +48,7 @@ class CustomUpload extends React.Component {
     console.log(info);
 
     if (info.file.status === 'uploading') {
-      this.setState({ loading: true });
+      this.setState({loading: true});
       return;
     }
     if (info.file.status === 'done') {
@@ -53,11 +56,11 @@ class CustomUpload extends React.Component {
       getBase64(info.file.originFileObj, (imageUrl) =>
         this.setState({
           imageUrl,
-          loading: false,
+          loading: false
         })
       );
       if (info.file.response && info.file.response.code == 0) {
-        this.setState({ icon: info.file.response.data });
+        this.setState({icon: info.file.response.data});
         info.file.response && message.success('上传成功');
         if (this.props.selectType == 'default') {
           // 默认
@@ -70,9 +73,6 @@ class CustomUpload extends React.Component {
       }
     }
   };
-  componentDidMount() {
-    console.log(process.env.BASE_URL);
-  }
   setSvg = (url) => {};
   render() {
     const uploadButton = (
@@ -81,7 +81,7 @@ class CustomUpload extends React.Component {
         <div className="ant-upload-text">{this.state.loading ? '上传中' : '开始上传'}</div>
       </div>
     );
-    const { imageUrl, file, formData } = this.state;
+    const {imageUrl, file, formData} = this.state;
     return (
       <Upload
         // key={this.props.iconKey}
@@ -89,14 +89,13 @@ class CustomUpload extends React.Component {
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
-        data={{ file: formData }}
-        headers={{ k9token: this.props.token }}
+        data={{file: formData}}
+        headers={{k9token: this.props.token}}
         accept=".png, .jpg, .jpeg, .svg"
         action={process.env.BASE_URL + '/api/sys-appNavigation/uploadImg'}
         beforeUpload={this.beforeUpload}
-        onChange={this.handleChange}
-      >
-        {imageUrl ? <img src={imageUrl} alt="icon" style={{ width: '100%', height: '88px' }} /> : uploadButton}
+        onChange={this.handleChange}>
+        {imageUrl ? <img src={imageUrl} alt="icon" style={{width: '100%', height: '88px'}} /> : uploadButton}
       </Upload>
     );
   }

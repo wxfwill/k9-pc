@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Button, Icon, message, Card, Row, Col, DatePicker, Form, Input, Tooltip, Select } from 'antd';
-import { firstLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Button, Icon, message, Card, Row, Col, DatePicker, Form, Input, Tooltip, Select} from 'antd';
+import {firstLayout} from 'util/Layout';
 import PeoModal from 'components/view/monitoring/Deploy/add/PeoModal';
 import moment from 'moment';
 import 'style/view/common/detailTable.less';
@@ -18,7 +18,7 @@ class AddPlan extends Component {
       peoples: [],
       peoValue: this.mapPeoples(),
       targetKeys: this.mapPeoples('id'),
-      reportArr: [],
+      reportArr: []
     };
     this.isRequest = false;
     this.reportUserId = '';
@@ -44,7 +44,7 @@ class AddPlan extends Component {
         const params = {
           ...values,
           userIds: this.state.targetKeys.join(','),
-          taskTime: moment().format('YYYY-MM-DD'),
+          taskTime: moment().format('YYYY-MM-DD')
         };
         if (id) {
           params.id = id;
@@ -67,13 +67,13 @@ class AddPlan extends Component {
     });
   };
   sendReport(val, backCall) {
-    let user = JSON.parse(sessionStorage.getItem('user'));
-    let data = {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    const data = {
       type: 6, //任务类型1训练2巡逻3紧急调配4网格搜捕5定点集合6外勤任务
       dataId: val.id,
       taskName: val.name,
       userId: this.reportUserId,
-      approveUserId: user.id,
+      approveUserId: user.id
     };
     React.$ajax.postData('/api/taskReport/saveInfo', data).then((result) => {
       if (result.code == 0) {
@@ -85,54 +85,54 @@ class AddPlan extends Component {
     this.reportUserId = data;
   };
   searchPeople = (name = '') => {
-    React.$ajax.postData('/api/userCenter/getTrainer', { name }).then((res) => {
+    React.$ajax.postData('/api/userCenter/getTrainer', {name}).then((res) => {
       if (res.code == 0) {
         res.data.map((item) => {
           this.peoplesMap[item.id] = item;
         });
-        this.setState({ peoples: res.data });
+        this.setState({peoples: res.data});
         if (this.props.location.query && this.props.location.query.editItem) {
-          let editItem = this.props.location.query.editItem;
-          let reportArr = [];
+          const editItem = this.props.location.query.editItem;
+          const reportArr = [];
           editItem.userIds.split(',').map((item) => {
             reportArr.push(this.peoplesMap[item]);
           });
           this.reportUserId = editItem.reportUserId || '';
           this.setState({
-            reportArr: reportArr,
+            reportArr: reportArr
           });
         }
       }
     });
   };
   addPeople() {
-    this.setState({ peoVisible: true });
+    this.setState({peoVisible: true});
   }
   handleCancel = (e) => {
     this.setState({
       orgVisible: false,
       peoVisible: false,
-      changeLeft: false,
+      changeLeft: false
     });
   };
   handleAdd(peopleMsg) {
-    let values = [];
-    let targetKeys = [];
-    let arr = [];
+    const values = [];
+    const targetKeys = [];
+    const arr = [];
     peopleMsg.forEach((item, index) => {
       values.push(item.name);
       targetKeys.push(item.key);
-      arr.push({ id: item.key, name: item.name });
+      arr.push({id: item.key, name: item.name});
     });
     this.props.form.setFieldsValue({
-      members: values.join(','),
+      members: values.join(',')
     });
     this.setState({
       peoValue: values.join(','),
       targetKeys: targetKeys,
-      reportArr: arr,
+      reportArr: arr
     });
-    this.setState({ peoVisible: false });
+    this.setState({peoVisible: false});
     if (!arr.some((item) => item.id == this.reportUserId)) {
       this.props.form.resetFields(['reportUserId']);
     }
@@ -148,13 +148,13 @@ class AddPlan extends Component {
   };
   handleReset = () => {
     this.setState({
-      peoValue: '',
+      peoValue: ''
     });
     this.props.form.resetFields();
   };
   render() {
-    const { disabled, typeOption, places, peoples, reportArr } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const {disabled, typeOption, places, peoples, reportArr} = this.state;
+    const {getFieldDecorator} = this.props.form;
     let editItem;
     if (this.props.location.query) {
       editItem = this.props.location.query.editItem;
@@ -162,51 +162,50 @@ class AddPlan extends Component {
     return (
       <Row gutter={24}>
         <Col span={24}>
-          <Card title="创建任务" bordered={true}>
+          <Card title="创建任务" bordered>
             <Col xxl={16} xl={22} lg={24} md={24} sm={24} xs={24}>
               <Form className="ant-advanced-search-form">
                 <Row gutter={24}>
                   <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-                    <FormItem label="开始时间: " {...firstLayout} labelCol={{ span: 6 }}>
+                    <FormItem label="开始时间: " {...firstLayout} labelCol={{span: 6}}>
                       {getFieldDecorator('taskTime', {
-                        rules: [{ required: true, message: '请选择任务计划开始时间' }],
-                        initialValue: editItem ? editItem.taskTime : null,
+                        rules: [{required: true, message: '请选择任务计划开始时间'}],
+                        initialValue: editItem ? editItem.taskTime : null
                       })(<DatePicker />)}
                     </FormItem>
                   </Col>
                 </Row>
                 <Row gutter={24}>
                   <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-                    <FormItem label="任务名称: " {...firstLayout} labelCol={{ span: 6 }}>
+                    <FormItem label="任务名称: " {...firstLayout} labelCol={{span: 6}}>
                       {getFieldDecorator('name', {
                         rules: [
-                          { required: true, message: '请输入任务名称' },
-                          { max: 50, message: '任务名称长度不超过50' },
+                          {required: true, message: '请输入任务名称'},
+                          {max: 50, message: '任务名称长度不超过50'}
                         ],
-                        initialValue: editItem ? editItem.name : '',
-                      })(<Input placeholder="请输入任务名称" autosize={{ minRows: 2, maxRows: 24 }} />)}
+                        initialValue: editItem ? editItem.name : ''
+                      })(<Input placeholder="请输入任务名称" autosize={{minRows: 2, maxRows: 24}} />)}
                     </FormItem>
                   </Col>
                 </Row>
                 <Row gutter={24}>
                   <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-                    <FormItem label="人员: " {...firstLayout} labelCol={{ span: 6 }}>
+                    <FormItem label="人员: " {...firstLayout} labelCol={{span: 6}}>
                       {getFieldDecorator('members', {
-                        rules: [{ required: true, message: '请选择人员' }],
-                        initialValue: this.state.peoValue || '',
+                        rules: [{required: true, message: '请选择人员'}],
+                        initialValue: this.state.peoValue || ''
                       })(
                         <Tooltip
                           trigger={['hover']}
                           title={this.state.peoValue}
                           placement="topLeft"
-                          overlayClassName="numeric-input"
-                        >
+                          overlayClassName="numeric-input">
                           <Input
                             placeholder="请选择队员"
                             value={this.state.peoValue}
-                            disabled={true}
+                            disabled
                             addonBefore={
-                              <Icon type="plus" style={{ cursor: 'pointer' }} onClick={this.addPeople.bind(this)} />
+                              <Icon type="plus" style={{cursor: 'pointer'}} onClick={this.addPeople.bind(this)} />
                             }
                           />
                         </Tooltip>
@@ -216,10 +215,10 @@ class AddPlan extends Component {
                 </Row>
                 <Row gutter={24}>
                   <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-                    <FormItem label="上报人员：" {...firstLayout} labelCol={{ span: 6 }}>
+                    <FormItem label="上报人员：" {...firstLayout} labelCol={{span: 6}}>
                       {getFieldDecorator('reportUserId', {
-                        rules: [{ required: true, message: '请选择上报人员' }],
-                        initialValue: editItem ? editItem.reportUserName : '',
+                        rules: [{required: true, message: '请选择上报人员'}],
+                        initialValue: editItem ? editItem.reportUserName : ''
                       })(
                         <Select disabled={disabled} mode="single" onChange={this.changeReport}>
                           {reportArr.map((item) => (
@@ -234,23 +233,23 @@ class AddPlan extends Component {
                 </Row>
                 <Row gutter={24}>
                   <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-                    <FormItem label="任务描述：" {...firstLayout} labelCol={{ span: 6 }}>
+                    <FormItem label="任务描述：" {...firstLayout} labelCol={{span: 6}}>
                       {getFieldDecorator('content', {
                         rules: [
-                          { required: true, message: '请输入任务描述' },
-                          { max: 1000, message: '任务描述：长度不超过1000' },
+                          {required: true, message: '请输入任务描述'},
+                          {max: 1000, message: '任务描述：长度不超过1000'}
                         ],
-                        initialValue: editItem ? editItem.content : '',
+                        initialValue: editItem ? editItem.content : ''
                       })(<Input.TextArea placeholder="任务描述" />)}
                     </FormItem>
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={24} style={{ textAlign: 'center', marginTop: '40px' }}>
+                  <Col span={24} style={{textAlign: 'center', marginTop: '40px'}}>
                     <Button type="primary" htmlType="submit" onClick={() => this.handleSubmit()}>
                       发布
                     </Button>
-                    <Button style={{ marginLeft: 10 }} onClick={this.handleReset}>
+                    <Button style={{marginLeft: 10}} onClick={this.handleReset}>
                       清空
                     </Button>
                   </Col>

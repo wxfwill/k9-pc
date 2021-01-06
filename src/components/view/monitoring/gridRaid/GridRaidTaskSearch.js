@@ -1,39 +1,39 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
+import moment from 'moment';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
-import moment from 'moment';
 const Option = Select.Option;
 
 require('style/view/common/conduct.less');
 class SearchForm extends React.Component {
   state = {
     expand: true,
-    taskName: '',
+    taskName: ''
   };
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
-    let timeData = 'range-time-picker';
+    const {limit} = this.props;
+    const timeData = 'range-time-picker';
     this.props.form.validateFields((err, fieldsValue) => {
       const rangeTimeValue = fieldsValue['range-time-picker'];
       let rangeValueArr = ['', ''];
-      if (!(typeof rangeTimeValue == 'undefined' || rangeTimeValue.length == 0)) {
+      if (!(typeof rangeTimeValue === 'undefined' || rangeTimeValue.length == 0)) {
         rangeValueArr = [
           rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss'),
-          rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss'),
+          rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss')
         ];
       }
       const values = {
         ...fieldsValue,
-        'range-time-picker': rangeValueArr,
+        'range-time-picker': rangeValueArr
       };
-      typeof values.taskName == 'undefined' ? (values.taskName = '') : '';
-      let subData = {
+      typeof values.taskName === 'undefined' ? (values.taskName = '') : '';
+      const subData = {
         startDate: values[timeData][0] && moment(values[timeData][0]).format('x'),
         endDate: values[timeData][1] && moment(values[timeData][1]).format('x'),
-        taskName: values.taskName,
+        taskName: values.taskName
       };
       limit(subData);
     });
@@ -44,19 +44,19 @@ class SearchForm extends React.Component {
   };
 
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   render() {
-    let expand = this.state.expand;
-    const { getFieldDecorator } = this.props.form;
+    const expand = this.state.expand;
+    const {getFieldDecorator} = this.props.form;
     const rangeConfig = {
-      rules: [{ type: 'array', message: 'Please select time!' }],
+      rules: [{type: 'array', message: 'Please select time!'}]
     };
     return (
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
@@ -76,12 +76,12 @@ class SearchForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               <Icon type="search" />
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               <Icon type="rollback" />
               清空
             </Button>

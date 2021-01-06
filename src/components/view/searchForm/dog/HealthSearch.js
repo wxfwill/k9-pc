@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
@@ -10,14 +10,14 @@ require('style/view/common/conduct.less');
 class SearchForm extends React.Component {
   state = {
     date: '',
-    dogName: '',
+    dogName: ''
   };
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
-    const { date, dogName } = this.state;
+    const {limit} = this.props;
+    const {date, dogName} = this.state;
     this.props.form.validateFields((err, values) => {
-      limit({ qryDate: values.date && values.date.format('YYYY-MM-DD'), dogName });
+      limit({qryDate: values.date && values.date.format('YYYY-MM-DD'), dogName});
     });
   };
 
@@ -25,19 +25,19 @@ class SearchForm extends React.Component {
     this.props.form.resetFields();
     this.setState({
       date: '',
-      dogName: '',
+      dogName: ''
     });
   };
 
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     const rangeConfig = {
-      rules: [{ type: 'array', message: 'Please select time!' }],
+      rules: [{type: 'array', message: 'Please select time!'}]
     };
 
     return (
@@ -51,9 +51,9 @@ class SearchForm extends React.Component {
                 <DatePicker
                   showTime
                   format="YYYY-MM-DD"
-                  style={{ width: '220px' }}
+                  style={{width: '220px'}}
                   onOk={(date) => {
-                    this.setState({ date });
+                    this.setState({date});
                   }}
                 />
               )}
@@ -65,18 +65,18 @@ class SearchForm extends React.Component {
                 placeholder="请输入犬名"
                 value={this.state.dogName}
                 onChange={(e) => {
-                  this.setState({ dogName: e.target.value });
+                  this.setState({dogName: e.target.value});
                 }}
               />
             </FormItem>
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset.bind(this)}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset.bind(this)}>
               清空
             </Button>
           </Col>

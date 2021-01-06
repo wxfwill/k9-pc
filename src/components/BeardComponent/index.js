@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { Breadcrumb } from 'antd';
-import { Link } from 'react-router-dom';
+import {Breadcrumb} from 'antd';
+import {Link} from 'react-router-dom';
 
 const CustomBreadcrumb = (props) => {
   return props.arr.length > 0 ? (
-    <div id="Breadcrumb" style={{ padding: '10px 25px 10px 24px' }}>
+    <div id="Breadcrumb" style={{padding: '10px 25px 10px 24px'}}>
       <Breadcrumb>
         {/* <Breadcrumb.Item>
           <Link to="/index">首页</Link>
@@ -28,7 +28,7 @@ const CustomBreadcrumb = (props) => {
 };
 
 CustomBreadcrumb.propTypes = {
-  arr: PropTypes.array.isRequired,
+  arr: PropTypes.array.isRequired
 };
 
 function shouldRender(nextProps, prevProps) {

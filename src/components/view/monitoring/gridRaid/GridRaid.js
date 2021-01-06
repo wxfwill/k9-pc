@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 // import * as systomState from 'actions/systomStatus';
 import _ from 'underscore';
 import {
@@ -24,16 +24,16 @@ import {
   Tabs,
   Input,
   message,
-  DatePicker,
+  DatePicker
 } from 'antd';
 import GridUserInfoTable from './GridUserInfoTable';
 import GridTable from './GridTable';
 import moment from 'moment';
-import { tMap } from 'components/view/common/createGridMap';
+import {tMap} from 'components/view/common/createGridMap';
 import httpAjax from 'libs/httpAjax';
 
 const Panel = Collapse.Panel;
-const antIcon = <Icon type="loading" style={{ fontSize: 30 }} spin />;
+const antIcon = <Icon type="loading" style={{fontSize: 30}} spin />;
 const Option = Select.Option;
 const OptGroup = Select.OptGroup;
 const ButtonGroup = Button.Group;
@@ -41,9 +41,9 @@ const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const Search = Input.Search;
 // card
-const { Meta } = Card;
+const {Meta} = Card;
 
-let mockDate = [];
+const mockDate = [];
 for (var i = 0; i < 50; i++) {
   mockDate.push(i);
 }
@@ -69,10 +69,10 @@ class _GridRaid extends Component {
       showAllPeo: false,
       radiusList: [],
       radiusList2: [
-        { id: 5, name: '5公里', value: 3 },
-        { id: 10, name: '10公里', value: 4 },
-        { id: 20, name: '20公里', value: 5 },
-        { id: 30, name: '30公里', value: 6 },
+        {id: 5, name: '5公里', value: 3},
+        {id: 10, name: '10公里', value: 4},
+        {id: 20, name: '20公里', value: 5},
+        {id: 30, name: '30公里', value: 6}
       ],
       radius: 0, //搜索半径 默认 10 km
       parts: 0, //栅格等分 3 x 3
@@ -85,7 +85,7 @@ class _GridRaid extends Component {
       teamList: [],
       selectTeamId: '',
       reportUserList: [],
-      reportUserId: '',
+      reportUserId: ''
     };
     this.TMap = null;
     this.markerList = [];
@@ -94,19 +94,19 @@ class _GridRaid extends Component {
     this.rectIndex = 1; //当前编辑栅格 index
   }
   componentWillMount() {
-    let { unfold } = this.props.systomActions;
+    const {unfold} = this.props.systomActions;
     unfold(true);
   }
   componentDidMount() {
-    let _this = this;
+    const _this = this;
 
     _this.gridSearchTaskSaveDTO = {
-      userAreas: [], //人员区域信息
+      userAreas: [] //人员区域信息
     }; //区域搜索任务信息
 
     this.timmer = setTimeout(function () {
       _this.setState({
-        loading: false,
+        loading: false
       });
     }, 1000);
 
@@ -116,12 +116,12 @@ class _GridRaid extends Component {
         labelText: '',
         OverlayType: 'MARKER',
         radius: this.state.radius,
-        parts: this.state.parts,
+        parts: this.state.parts
       };
       if (typeof this.props.location.query !== 'undefined') {
         options = {
           labelText: '',
-          ...this.props.location.query,
+          ...this.props.location.query
         };
       }
 
@@ -149,7 +149,7 @@ class _GridRaid extends Component {
       this.TMap.showSelPeopleDlg = function (rect) {
         //点击搜索矩形区域,弹出对话框
         console.log(rect, 'mouseup');
-        _this.setState({ searchArea: rect });
+        _this.setState({searchArea: rect});
         _this.dragOnePeople(rect);
         // _this.setState({selPeopleDlgVisible:true});
       };
@@ -165,14 +165,13 @@ class _GridRaid extends Component {
     this.handleSelectPeopleOk = function () {
       console.log('this.currSelUser');
       console.log(_this.currSelUser);
-      _this.setState({ selPeopleDlgVisible: false }); //隐藏对话框
-      _this.refs['child'].addUser(_this.currSelUser); //调用子组件在右侧显示人员列表
+      _this.setState({selPeopleDlgVisible: false}); //隐藏对话框
+      _this.refs.child.addUser(_this.currSelUser); //调用子组件在右侧显示人员列表
 
       let userId = -1;
       _this.selPeopleArr.forEach(function (item, index) {
         if (item.number == _this.currSelUser.key) {
           userId = item.id;
-          return;
         }
       });
 
@@ -182,7 +181,7 @@ class _GridRaid extends Component {
         number: _this.currSelUser.key,
         userName: _this.currSelUser.label,
         area: _this.state.searchArea,
-        referencePoint: _this.state.searchArea.latLng,
+        referencePoint: _this.state.searchArea.latLng
       });
 
       //创建一个Marker,标识执勤人员的位置
@@ -191,13 +190,13 @@ class _GridRaid extends Component {
         map: this.TMap.map,
         visible: true,
         title: _this.currSelUser.key + '-' + _this.currSelUser.label,
-        icon: new qq.maps.MarkerImage(jc_path, new qq.maps.Size(48, 48)),
+        icon: new qq.maps.MarkerImage(jc_path, new qq.maps.Size(48, 48))
         //animation:qq.maps.MarkerAnimation.BOUNCE
       });
     };
 
     this.handleSelectPeopleCancel = function () {
-      _this.setState({ selPeopleDlgVisible: false });
+      _this.setState({selPeopleDlgVisible: false});
     };
 
     this.selectPeople = function (userArea) {
@@ -208,8 +207,8 @@ class _GridRaid extends Component {
 
   //提交网格化搜索
   subGridSearchTask = () => {
-    const { history } = this.props;
-    const { selectPeoples, reportUserId } = this.state;
+    const {history} = this.props;
+    const {selectPeoples, reportUserId} = this.state;
     this.props.form.validateFields((err, values) => {
       if (selectPeoples.length <= 0) {
         message.info('请分配人员！');
@@ -221,7 +220,7 @@ class _GridRaid extends Component {
           taskName: values.taskName,
           content: values.content,
           reportUserId: reportUserId,
-          taskDate: moment(values.taskDate).format('x'),
+          taskDate: moment(values.taskDate).format('x')
         };
 
         params.userAreaDTOs = selectPeoples.map((t) => {
@@ -231,13 +230,13 @@ class _GridRaid extends Component {
             number: t.number,
             userName: t.name,
             area: t.searchArea,
-            referencePoint: t.searchArea.latLng,
+            referencePoint: t.searchArea.latLng
           };
         });
-        httpAjax('post', config.apiUrl + '/api/cmdMonitor/saveGridTask', { ...params })
+        httpAjax('post', config.apiUrl + '/api/cmdMonitor/saveGridTask', {...params})
           .then((res) => {
             message.success('发布成功！页面即将跳转...', 2, function () {
-              history.push({ pathname: '/view/monitoring/grid' });
+              history.push({pathname: '/view/monitoring/grid'});
             });
           })
           .catch(function (error) {
@@ -254,11 +253,11 @@ class _GridRaid extends Component {
   resetMapSearch = (parts) => {
     // 选择搜索半径 重新绘制搜索网格
     console.log(parts);
-    const { radiusList } = this.state;
+    const {radiusList} = this.state;
     // this.setState({parts: value});
     radiusList.forEach((item) => {
       if (item.parts == parts) {
-        this.setState({ radius: item.radius, parts: parts }, () => {
+        this.setState({radius: item.radius, parts: parts}, () => {
           this.repaint();
         });
         // this.repaint();
@@ -267,11 +266,11 @@ class _GridRaid extends Component {
   };
   showAllPeople = (event, rect, targetArea) => {
     //点击栅格 展示所有人员选择列表
-    const { allPeopleH } = this.state; //弹窗高度
+    const {allPeopleH} = this.state; //弹窗高度
     this.rectIndex = rect.index;
     let top = event.cursorPixel.y;
-    let left = event.cursorPixel.x;
-    let containerH = document.getElementById('container').offsetHeight;
+    const left = event.cursorPixel.x;
+    const containerH = document.getElementById('container').offsetHeight;
     top = top + allPeopleH > containerH ? containerH - allPeopleH : top;
     this.setState({
       showAllPeo: !this.state.showAllPeo,
@@ -279,25 +278,25 @@ class _GridRaid extends Component {
       allPeopleLeft: left,
       targetEvent: event,
       curSearchRect: rect,
-      currentArea: targetArea,
+      currentArea: targetArea
     });
   };
   checkOnePeople = () => {
-    const { targetEvent, curSearchRect, currentArea } = this.state;
+    const {targetEvent, curSearchRect, currentArea} = this.state;
     this.dragOnePeople(targetEvent, curSearchRect, currentArea);
     // this.setState({showAllPeo: !this.state.showAllPeo, curSearchRect: null, currentArea: null, selectOne: null})
   };
   dragOnePeople = (targetEvent, searchArea, currentArea) => {
     //栅格填充已选人员
-    let _this = this,
-      rectIndex = searchArea.index;
-    const { selectOne, selectPeoples, reportUserList, allPeoples, reactMarkers } = this.state;
+    const _this = this;
+    const rectIndex = searchArea.index;
+    const {selectOne, selectPeoples, reportUserList, allPeoples, reactMarkers} = this.state;
 
     if (!_.isEmpty(selectOne)) {
-      let newSelectOne = { ...selectOne, index: searchArea.index, searchArea };
+      const newSelectOne = {...selectOne, index: searchArea.index, searchArea};
       // 同一个区域不能添加同一个人
-      let isAddFlag = true,
-        hasMarker = false; //判断是否已生成marker
+      let isAddFlag = true;
+      let hasMarker = false; //判断是否已生成marker
       selectPeoples.forEach((item, index) => {
         // if(item.number==newSelectOne.number && item.index==newSelectOne.index){
         //     message.info('同一个区域不能添加同一个人!');
@@ -327,14 +326,14 @@ class _GridRaid extends Component {
       }
       console.log(reportUserList, 'reportUserList');
       // this.setState({selectOne: null}); //添加后清除所选人员
-      this.setState({ selectPeoples, reportUserList });
+      this.setState({selectPeoples, reportUserList});
       allPeoples.forEach((item, index) => {
         // 可选列表隐藏已选人员
         if (item.id == selectOne.id) {
           item.hide = true;
         }
       });
-      this.setState({ allPeoples });
+      this.setState({allPeoples});
       // 生成marker
       if (!hasMarker) {
         //该区域没有选择人员
@@ -347,7 +346,7 @@ class _GridRaid extends Component {
           title: `${selectOne.name}-${selectOne.number}`,
           icon: new qq.maps.MarkerImage(jc_path, new qq.maps.Size(48, 48)),
           id: selectOne.id,
-          index: rectIndex,
+          index: rectIndex
           //animation:qq.maps.MarkerAnimation.BOUNCE
         });
         this.TMap.Event.addListener(marker, 'click', function (event) {
@@ -367,12 +366,12 @@ class _GridRaid extends Component {
             fontSize: '10px',
             background: ' transparent',
             border: 'none',
-            wordWrap: 'break-word',
+            wordWrap: 'break-word'
           },
           visible: true,
           zIndex: 1000,
           id: selectOne.id,
-          index: rectIndex,
+          index: rectIndex
         });
         this.TMap.Event.addListener(label, 'click', function (event) {
           console.log(event);
@@ -419,17 +418,17 @@ class _GridRaid extends Component {
     }
   };
   handleLimit = (limit) => {
-    this.setState({ limit: limit });
+    this.setState({limit: limit});
   };
 
   getGridSearchUsers() {
     //获取下拉框中的用户列表
     var params = {
-      rid: Math.random(),
+      rid: Math.random()
     };
 
     var me = this;
-    httpAjax('post', config.apiUrl + '/api/userCenter/gridSearchUser', { ...params })
+    httpAjax('post', config.apiUrl + '/api/userCenter/gridSearchUser', {...params})
       .then((res) => {
         me.selPeopleArr = res.data; //保存到当前对象中,后面要获取这个用户的id
         const selPeopleOptions = [];
@@ -441,10 +440,10 @@ class _GridRaid extends Component {
           );
         });
 
-        me.setState({ selPeopleOptions: selPeopleOptions });
+        me.setState({selPeopleOptions: selPeopleOptions});
 
         if (res.code == 0) {
-          this.setState({ allPeoples: res.data });
+          this.setState({allPeoples: res.data});
         }
       })
       .catch(function (error) {
@@ -454,9 +453,9 @@ class _GridRaid extends Component {
 
   getTeamPeople = (id, qryStr = '') => {
     const teamId = id == 0 || id ? id : this.state.selectTeamId;
-    httpAjax('post', config.apiUrl + '/api/userCenter/getUserByPatrolsTeam', { teamId, qryStr }).then((res) => {
+    httpAjax('post', config.apiUrl + '/api/userCenter/getUserByPatrolsTeam', {teamId, qryStr}).then((res) => {
       if (res.code == 0) {
-        this.setState({ allPeoples: res.data });
+        this.setState({allPeoples: res.data});
       }
     });
   };
@@ -464,7 +463,7 @@ class _GridRaid extends Component {
   renderSelectNums = (id) => {
     //更新展示该人员已选次数
     let nums = 0;
-    const { selectPeoples, allPeoples } = this.state;
+    const {selectPeoples, allPeoples} = this.state;
     selectPeoples.forEach((item) => {
       if (item.id == id) {
         nums++;
@@ -478,17 +477,17 @@ class _GridRaid extends Component {
   deleteSelectPeoSec = (item) => {
     //删除已选区域人员 sec
     console.log(item);
-    let marker,
-      label,
-      { selectPeoples, allPeoples } = this.state,
-      filter_markerList = [],
-      filter_labelList = [],
-      filter_curReactMarkers = [],
-      filter_selectPeoples = [],
-      filter_reportUserList = [];
+    let marker;
+    let label;
+    const {selectPeoples, allPeoples} = this.state;
+    const filter_markerList = [];
+    const filter_labelList = [];
+    const filter_curReactMarkers = [];
+    const filter_selectPeoples = [];
+    const filter_reportUserList = [];
 
-    let curReactMarkers = this.reactMarkers[item.index],
-      isOnly = false;
+    let curReactMarkers = this.reactMarkers[item.index];
+    let isOnly = false;
     if (curReactMarkers && curReactMarkers.length == 1) {
       isOnly = true;
     }
@@ -531,10 +530,9 @@ class _GridRaid extends Component {
       }
     });
 
-    let listHas = {}; //重组上报人员
+    const listHas = {}; //重组上报人员
     filter_selectPeoples.forEach((item, index) => {
       if (listHas[item.number]) {
-        return;
       } else {
         filter_reportUserList.push(item);
         listHas[item.number] = true;
@@ -570,15 +568,15 @@ class _GridRaid extends Component {
     this.labelList = filter_labelList;
     curReactMarkers = filter_curReactMarkers;
     this.reactMarkers[item.index] = curReactMarkers;
-    this.setState({ selectPeoples: filter_selectPeoples, reportUserList: filter_reportUserList });
+    this.setState({selectPeoples: filter_selectPeoples, reportUserList: filter_reportUserList});
   };
   deleteSelectPeo = () => {
     //删除已选区域人员
     const GridUserInfoTable = this.refs.child;
-    const { selectedRows } = GridUserInfoTable.state;
-    let { selectPeoples, allPeoples } = this.state;
+    const {selectedRows} = GridUserInfoTable.state;
+    let {selectPeoples, allPeoples} = this.state;
     //  debugger
-    let filter_selectPeoples = [];
+    const filter_selectPeoples = [];
 
     selectPeoples.forEach((item, index) => {
       // 删除选中的人员
@@ -602,9 +600,9 @@ class _GridRaid extends Component {
       });
     });
     selectPeoples = filter_selectPeoples;
-    this.setState({ selectPeoples: filter_selectPeoples });
+    this.setState({selectPeoples: filter_selectPeoples});
 
-    let filter_markerList = [];
+    const filter_markerList = [];
     this.markerList.forEach((mItem, index) => {
       // 删除地图标记
       let hasFind = false;
@@ -621,7 +619,7 @@ class _GridRaid extends Component {
 
     this.markerList = filter_markerList;
 
-    let filter_labelList = [];
+    const filter_labelList = [];
 
     this.labelList.forEach((lItem, index) => {
       let hasFind = false;
@@ -642,8 +640,8 @@ class _GridRaid extends Component {
   };
 
   clearAllSelect = () => {
-    const { allPeoples } = this.state;
-    this.setState({ selectPeoples: [], showAllPeo: false });
+    const {allPeoples} = this.state;
+    this.setState({selectPeoples: [], showAllPeo: false});
     this.markerList.forEach((t) => {
       t.setMap(null);
     });
@@ -658,14 +656,14 @@ class _GridRaid extends Component {
     this.reactMarkers = {};
   };
   repaint = () => {
-    const { radius, parts } = this.state;
+    const {radius, parts} = this.state;
     this.clearAllSelect();
-    this.TMap = new tMap({ zoom: 5, labelText: '', OverlayType: 'MARKER', radius: radius, parts: parts });
+    this.TMap = new tMap({zoom: 5, labelText: '', OverlayType: 'MARKER', radius: radius, parts: parts});
     this.TMap.drawingManager(); //绘图功能
     this.onSearch();
     this.TMap.showSelPeopleDlg = (rect) => {
       //点击搜索矩形区域,弹出对话框
-      this.setState({ searchArea: rect });
+      this.setState({searchArea: rect});
       this.dragOnePeople(rect);
       // _this.setState({selPeopleDlgVisible:true});
     };
@@ -678,7 +676,7 @@ class _GridRaid extends Component {
   getAllTeam = () => {
     httpAjax('post', config.apiUrl + '/api/userCenter/getAllPatrolsTeam').then((res) => {
       if (res.code == 0) {
-        this.setState({ teamList: res.data, selectTeamId: res.data[0].id });
+        this.setState({teamList: res.data, selectTeamId: res.data[0].id});
         this.getTeamPeople(res.data[0].id);
       }
     });
@@ -688,10 +686,10 @@ class _GridRaid extends Component {
     return new Promise((reslove, reject) => {
       httpAjax('post', config.apiUrl + '/api/cmdMonitor/gridSearchSet')
         .then((res) => {
-          let radiusList = JSON.parse(res.data.pvalue.replace(/\'/g, '"'));
-          let radius = radiusList[0].radius,
-            parts = radiusList[0].parts;
-          this.setState({ radiusList: radiusList, radius: radius, parts: parts });
+          const radiusList = JSON.parse(res.data.pvalue.replace(/\'/g, '"'));
+          const radius = radiusList[0].radius;
+          const parts = radiusList[0].parts;
+          this.setState({radiusList: radiusList, radius: radius, parts: parts});
           reslove();
         })
         .catch(function (error) {
@@ -703,9 +701,9 @@ class _GridRaid extends Component {
 
   //地点搜索
   onSearch = (value) => {
-    const { searchPlace } = this.state;
+    const {searchPlace} = this.state;
     if (value) {
-      this.setState({ searchPlace: value });
+      this.setState({searchPlace: value});
     }
     if (value || searchPlace) {
       this.TMap.searchService().search(value || searchPlace);
@@ -713,8 +711,8 @@ class _GridRaid extends Component {
   };
 
   render() {
-    const { collapsed } = this.props.systomState;
-    const { getFieldProps, getFieldDecorator } = this.props.form;
+    const {collapsed} = this.props.systomState;
+    const {getFieldProps, getFieldDecorator} = this.props.form;
     const {
       allPeopleH,
       allPeoples,
@@ -728,7 +726,7 @@ class _GridRaid extends Component {
       selectTeamId,
       reportUserList,
       radiusList,
-      parts,
+      parts
     } = this.state;
     const title = (
       <div className="card_title">
@@ -737,11 +735,11 @@ class _GridRaid extends Component {
       </div>
     );
     const tabSearch = [
-      <div className="tabSearch" style={{ marginBottom: '10px' }} key="tab_1">
-        <span style={{ marginRight: '15px' }}>区域人员</span>
+      <div className="tabSearch" style={{marginBottom: '10px'}} key="tab_1">
+        <span style={{marginRight: '15px'}}>区域人员</span>
         <Input.Search
           placeholder="姓名/警号"
-          style={{ width: 200 }}
+          style={{width: 200}}
           enterButton
           onSearch={(value) => {
             this.getTeamPeople(null, value);
@@ -749,30 +747,29 @@ class _GridRaid extends Component {
         />
       </div>,
       <div className="tabSearch" key="tab_2">
-        <span style={{ marginRight: '15px' }}>选择小队</span>
+        <span style={{marginRight: '15px'}}>选择小队</span>
         <Select
-          style={{ width: 200, paddingBottom: '10px' }}
-          dropdownStyle={{ zIndex: '99999' }}
+          style={{width: 200, paddingBottom: '10px'}}
+          dropdownStyle={{zIndex: '99999'}}
           value={selectTeamId}
           onChange={(value) => {
-            this.setState({ selectTeamId: value });
+            this.setState({selectTeamId: value});
             this.getTeamPeople(value);
-          }}
-        >
+          }}>
           {teamList.map((item, index) => {
             return <Option value={item.id}>{item.name}</Option>;
           })}
         </Select>
-      </div>,
+      </div>
     ];
     return (
-      <div className="GridRaid" style={{ left: collapsed ? '92px' : '212px' }}>
+      <div className="GridRaid" style={{left: collapsed ? '92px' : '212px'}}>
         <Spin
           indicator={antIcon}
           size="large"
           tip="数据加载中..."
           spinning={this.state.loading}
-          style={{ position: 'absolute', top: '50%', left: '50%', zIndex: '9999' }}
+          style={{position: 'absolute', top: '50%', left: '50%', zIndex: '9999'}}
         />
 
         <Row gutter={24} id="container">
@@ -793,24 +790,22 @@ class _GridRaid extends Component {
               right: '0',
               zIndex: '9999',
               maxHeight: 600,
-              overflow: 'auto',
-            }}
-          >
-            <div style={{ marginBottom: 18 }}>
+              overflow: 'auto'
+            }}>
+            <div style={{marginBottom: 18}}>
               <Search placeholder="地点搜索" onSearch={(value) => this.onSearch(value)} enterButton />
             </div>
             <Form horizontal="true">
-              <FormItem label="搜索半径：" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
+              <FormItem label="搜索半径：" labelCol={{span: 6}} wrapperCol={{span: 14}}>
                 {getFieldDecorator('searchArea', {
-                  rules: [{ required: true, message: '请选择搜索半径' }],
-                  initialValue: parts,
+                  rules: [{required: true, message: '请选择搜索半径'}],
+                  initialValue: parts
                 })(
                   <Select
                     placeholder="搜索半径"
                     onChange={(value) => {
                       this.resetMapSearch(value);
-                    }}
-                  >
+                    }}>
                     {radiusList &&
                       radiusList.map((item) => (
                         <Option key={item.radius} value={item.parts}>
@@ -821,41 +816,40 @@ class _GridRaid extends Component {
                 )}
               </FormItem>
 
-              <FormItem label="任务名称：" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
+              <FormItem label="任务名称：" labelCol={{span: 6}} wrapperCol={{span: 14}}>
                 {getFieldDecorator('taskName', {
                   rules: [
-                    { required: true, message: '请输入任务名称...' },
-                    { max: 50, message: '任务名称长度不超过50' },
+                    {required: true, message: '请输入任务名称...'},
+                    {max: 50, message: '任务名称长度不超过50'}
                   ],
-                  initialValue: '',
+                  initialValue: ''
                 })(<Input placeholder="请输入任务名称..." />)}
               </FormItem>
-              <FormItem label="任务内容：" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
+              <FormItem label="任务内容：" labelCol={{span: 6}} wrapperCol={{span: 14}}>
                 {getFieldDecorator('content', {
                   rules: [
-                    { required: true, message: '请输入任务内容...' },
-                    { max: 1000, message: '任务内容长度不超过1000' },
+                    {required: true, message: '请输入任务内容...'},
+                    {max: 1000, message: '任务内容长度不超过1000'}
                   ],
-                  initialValue: '',
+                  initialValue: ''
                 })(<Input placeholder="请输入任务内容..." />)}
               </FormItem>
-              <FormItem label="执行时间：" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
+              <FormItem label="执行时间：" labelCol={{span: 6}} wrapperCol={{span: 14}}>
                 {getFieldDecorator('taskDate', {
-                  rules: [{ required: true, message: '请选择时间' }],
-                  initialValue: '',
+                  rules: [{required: true, message: '请选择时间'}],
+                  initialValue: ''
                 })(<DatePicker format="YYYY-MM-DD " />)}
               </FormItem>
-              <FormItem label="上报人员：" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
+              <FormItem label="上报人员：" labelCol={{span: 6}} wrapperCol={{span: 14}}>
                 {getFieldDecorator('combatType', {
-                  rules: [{ required: true, message: '请选择上报人员' }],
-                  initialValue: '',
+                  rules: [{required: true, message: '请选择上报人员'}],
+                  initialValue: ''
                 })(
                   <Select
                     placeholder="上报人员"
                     onChange={(value) => {
-                      this.setState({ reportUserId: value });
-                    }}
-                  >
+                      this.setState({reportUserId: value});
+                    }}>
                     {reportUserList &&
                       reportUserList.map((item) => (
                         <Option key={item.id} value={item.id}>
@@ -866,13 +860,12 @@ class _GridRaid extends Component {
                 )}
               </FormItem>
 
-              <FormItem style={{ display: 'none' }} label="任务人员：" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
+              <FormItem style={{display: 'none'}} label="任务人员：" labelCol={{span: 6}} wrapperCol={{span: 14}}>
                 <Button
                   type="primary"
                   onClick={() => {
-                    this.setState({ showAllPeo: !showAllPeo });
-                  }}
-                >
+                    this.setState({showAllPeo: !showAllPeo});
+                  }}>
                   分配人员
                 </Button>
               </FormItem>
@@ -891,7 +884,7 @@ class _GridRaid extends Component {
                   isCheck={false}
                   selectPeoples={selectPeoples}
                   contralDeleteBtn={(status) => {
-                    this.setState({ showDeleteBtn: status });
+                    this.setState({showDeleteBtn: status});
                   }}
                   ref="child"
                 />
@@ -932,7 +925,7 @@ class _GridRaid extends Component {
         </Row>
         <Row gutter={24} id="peo_container">
           <div
-            class="showAllPeoCard"
+            className="showAllPeoCard"
             style={{
               display: showAllPeo ? 'block' : 'none',
               width: 335,
@@ -941,16 +934,14 @@ class _GridRaid extends Component {
               position: 'absolute',
               top: allPeopleTop,
               left: allPeopleLeft,
-              zIndex: '9999',
-            }}
-          >
+              zIndex: '9999'
+            }}>
             <Card
               bordered={false}
               bordered
-              bodyStyle={{ paddingTop: 0 }}
-              style={{ width: 335, height: allPeopleH - 50, overflow: 'auto' }}
-            >
-              <div className="avator_card" style={{ padding: 5 }}>
+              bodyStyle={{paddingTop: 0}}
+              style={{width: 335, height: allPeopleH - 50, overflow: 'auto'}}>
+              <div className="avator_card" style={{padding: 5}}>
                 <List
                   className="demo-loadmore-list"
                   loading={false}
@@ -958,7 +949,7 @@ class _GridRaid extends Component {
                   size="small"
                   itemLayout="horizontal"
                   dataSource={this.reactMarkers[this.rectIndex]}
-                  locale={{ emptyText: '暂无配置' }}
+                  locale={{emptyText: '暂无配置'}}
                   renderItem={(item) => (
                     <List.Item
                       actions={[
@@ -968,9 +959,8 @@ class _GridRaid extends Component {
                           }}
                           type="delete"
                           key="delete"
-                        />,
-                      ]}
-                    >
+                        />
+                      ]}>
                       <Skeleton avatar title={false} loading={false} active>
                         <List.Item.Meta avatar={<Avatar src={jc_path} />} title={item.name} />
                       </Skeleton>
@@ -979,7 +969,7 @@ class _GridRaid extends Component {
                 />
               </div>
               <Tabs defaultActiveKey="1">
-                <TabPane tab={tabSearch} key="1" style={{ width: '100%' }}>
+                <TabPane tab={tabSearch} key="1" style={{width: '100%'}}>
                   <Row>
                     {allPeoples.map((t) => {
                       return (
@@ -990,9 +980,8 @@ class _GridRaid extends Component {
                             this.checkOnePeople(t);
                           }}
                           onMouseDown={() => {
-                            this.setState({ selectOne: t });
-                          }}
-                        >
+                            this.setState({selectOne: t});
+                          }}>
                           {this.renderSelectNums(t.id)}
                           <div className="cover_peo"></div>
                           <img src={this.state.jc_path} />
@@ -1007,19 +996,17 @@ class _GridRaid extends Component {
               </Tabs>
             </Card>
             <Card
-              bodyStyle={{ paddingTop: 0 }}
-              style={{ width: 335, height: 50 }}
+              bodyStyle={{paddingTop: 0}}
+              style={{width: 335, height: 50}}
               actions={[
                 <Radio.Button
                   onClick={() => {
-                    this.setState({ showAllPeo: false });
+                    this.setState({showAllPeo: false});
                   }}
-                  value="large"
-                >
+                  value="large">
                   确定
-                </Radio.Button>,
-              ]}
-            ></Card>
+                </Radio.Button>
+              ]}></Card>
           </div>
         </Row>
       </div>
@@ -1027,7 +1014,7 @@ class _GridRaid extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  systomState: state.system,
+  systomState: state.system
 });
 const mapDispatchToProps = (dispatch) => ({
   // systomActions: bindActionCreators(systomState, dispatch),

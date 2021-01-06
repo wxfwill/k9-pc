@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker, Divider } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker, Divider} from 'antd';
+import {thirdLayout} from 'util/Layout';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -10,7 +10,7 @@ class SearchForm extends React.Component {
     super(props);
     this.state = {
       expand: false,
-      dutyList: [],
+      dutyList: []
     };
   }
   componentDidMount() {
@@ -24,7 +24,7 @@ class SearchForm extends React.Component {
   }
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
+    const {limit} = this.props;
     this.props.form.validateFields((err, values) => {
       limit(values);
     });
@@ -33,17 +33,17 @@ class SearchForm extends React.Component {
     this.props.form.resetFields();
   };
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   render() {
-    const { getFieldDecorator } = this.props.form;
-    let { expand, dutyList } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {expand, dutyList} = this.state;
     const dutyListOption =
       dutyList &&
       dutyList.map((item, index) => {
@@ -66,11 +66,11 @@ class SearchForm extends React.Component {
               {getFieldDecorator('roleCode')(<Input placeholder="角色编码" />)}
             </FormItem>
           </Col>
-          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ textAlign: 'left' }}>
+          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{textAlign: 'left'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               重置
             </Button>
           </Col>

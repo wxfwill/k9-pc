@@ -1,49 +1,49 @@
-import React, { Component } from 'react';
-import { Card, Button, Carousel, Table } from 'antd';
+import React, {Component} from 'react';
+import {Card, Button, Carousel, Table} from 'antd';
 import Moment from 'moment';
-// import echart from 'echarts';
-let echart = require('echarts/lib/echarts');
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 
-import { transformOptions, EchartPie } from './chart/chartPie';
-import { tMap } from 'components/view/common/map';
+import {transformOptions, EchartPie} from './chart/chartPie';
+import {tMap} from 'components/view/common/map';
 import TodayCard from './card/TodayCard';
 import 'style/view/page/newIndex.less';
+// import echart from 'echarts';
+const echart = require('echarts/lib/echarts');
 const list = [
-  { label: '带班领导', value: '--' },
+  {label: '带班领导', value: '--'},
   {
     label: '值班',
-    value: '--',
+    value: '--'
   },
   {
     label: '值班辅警',
-    value: '--',
+    value: '--'
   },
   {
     label: '值班中队',
-    value: '--',
-  },
+    value: '--'
+  }
 ];
 const dogList = [
   {
     title: '全部犬只',
     num: '--',
     bgColor: '#49a9ee',
-    type: 'all',
+    type: 'all'
   },
   {
     title: '出勤犬只',
     num: '--',
     bgColor: '#98d87d',
-    type: 'duty',
+    type: 'duty'
   },
   {
     title: '服役犬只',
     num: '--',
     bgColor: '#ffd86e',
-    type: 'service',
-  },
+    type: 'service'
+  }
 ];
 
 const mockXl = [
@@ -52,15 +52,15 @@ const mockXl = [
     name: '训练场',
     num: '--',
     unit: '头',
-    percent: '--%',
+    percent: '--%'
   },
   {
     bgColor: '#98d87d',
     name: '室内',
     num: '--',
     unit: '头',
-    percent: '--%',
-  },
+    percent: '--%'
+  }
 ];
 const mockJb = [
   {
@@ -68,15 +68,15 @@ const mockJb = [
     name: '已处理',
     num: '0',
     unit: '条',
-    percent: '--%',
+    percent: '--%'
   },
   {
     bgColor: '#ffd86e',
     name: '待处理',
     num: '0',
     unit: '条',
-    percent: '--%',
-  },
+    percent: '--%'
+  }
 ];
 
 class NewIndex extends Component {
@@ -94,14 +94,14 @@ class NewIndex extends Component {
       zoomLevel: 0,
       mouseoverPoint: {},
       dogDrill: [],
-      mouseover: false,
+      mouseover: false
     };
     this.drillEchart = null;
     this.cureEchar = null;
     this.TMap = null;
     this.MarkList = [];
     this.MapLableArr = [];
-    this.center = { lat: 22.557140481350014, lng: 114.08466517925262 };
+    this.center = {lat: 22.557140481350014, lng: 114.08466517925262};
     this.allDogs = 0;
     this.allDogsMapLabel = null;
     this.dogPoints = [];
@@ -110,15 +110,15 @@ class NewIndex extends Component {
   }
 
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: [] });
-    const { lat, lng } = this.center;
+    React.store.dispatch({type: 'NAV_DATA', nav: []});
+    const {lat, lng} = this.center;
 
     this.drillEchart = echart.init(this.refs.drillCycle);
     this.drillEchart.setOption(transformOptions(mockXl));
 
     this.cureEchart = echart.init(this.refs.cureCycle);
     this.cureEchart.setOption(transformOptions(mockJb));
-    this.TMap = new tMap({ labelText: '', lat, lng, zoom: 11, id: 'container' });
+    this.TMap = new tMap({labelText: '', lat, lng, zoom: 11, id: 'container'});
     this.getAreaDogs();
     this.getDogCureData();
     this.getTeamData();
@@ -150,7 +150,7 @@ class NewIndex extends Component {
         }
         qq.maps.event.addDomListener(label, 'mouseover', (e) => self.mouseoverDogsPoint(e, item));
         qq.maps.event.addDomListener(label, 'mouseout', (e) => {
-          self.setState({ mouseoverPoint: {}, mouseover: false });
+          self.setState({mouseoverPoint: {}, mouseover: false});
         });
 
         self.dogPoints.push(label);
@@ -176,26 +176,26 @@ class NewIndex extends Component {
       mouseoverPoint: {
         pixel: {
           x: e.pixel.x - 50,
-          y: e.pixel.y - 180,
+          y: e.pixel.y - 180
         },
-        item,
+        item
       },
-      mouseover: true,
+      mouseover: true
     });
   };
   mapZoomChange = (map) => {
-    const { lat, lng } = this.center;
-    const { AreaDogNum } = this.state;
+    const {lat, lng} = this.center;
+    const {AreaDogNum} = this.state;
     const zoomLevel = map.getZoom();
-    this.setState({ zoomLevel });
+    this.setState({zoomLevel});
     // map.setCenter(new qq.maps.LatLng(lat,lng));
     if (zoomLevel <= 10) {
       this.TMap.clear(this.MapLableArr);
-      this.allDogsMapLabel = this.drawMapLabel({ areaName: '深圳市', dogNumber: this.allDogs, lat, lng });
+      this.allDogsMapLabel = this.drawMapLabel({areaName: '深圳市', dogNumber: this.allDogs, lat, lng});
     } else {
       this.TMap.clear([this.allDogsMapLabel]);
       AreaDogNum.forEach((item) => {
-        let label = this.drawMapLabel(item);
+        const label = this.drawMapLabel(item);
         this.MapLableArr.push(label);
       });
     }
@@ -218,8 +218,8 @@ class NewIndex extends Component {
       list &&
       list.map((item, index) => {
         return (
-          <Link to={{ pathname: '/app/dog/info', query: { type: item.type } }} key={index + 'doglist'}>
-            <div className="k9_card" style={{ background: item.bgColor }}>
+          <Link to={{pathname: '/app/dog/info', query: {type: item.type}}} key={index + 'doglist'}>
+            <div className="k9_card" style={{background: item.bgColor}}>
               <span className="k9_card_img"></span>
               <div className="card_title">{item.title}</div>
               <div className="dog_num">
@@ -239,8 +239,8 @@ class NewIndex extends Component {
           list.map((item, index) => {
             return (
               <div key={index + 'Carousel'}>
-                <p style={{ marginBottom: 5, whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.p1}</p>
-                <p style={{ marginBottom: 0, whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.p2}</p>
+                <p style={{marginBottom: 5, whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>{item.p1}</p>
+                <p style={{marginBottom: 0, whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>{item.p2}</p>
               </div>
             );
           })}
@@ -251,11 +251,11 @@ class NewIndex extends Component {
     React.$ajax.home.dogAreaStatistics().then((res) => {
       if (res.code == 0) {
         const AreaDogNum = res.data;
-        this.setState({ AreaDogNum });
+        this.setState({AreaDogNum});
 
         AreaDogNum.forEach((item) => {
           this.allDogs += item.dogNumber;
-          let label = this.drawMapLabel(item);
+          const label = this.drawMapLabel(item);
           this.MapLableArr.push(label);
         });
       }
@@ -283,22 +283,22 @@ class NewIndex extends Component {
             title: '全部犬只',
             num: res.data.totalNum,
             bgColor: '#49a9ee',
-            type: 'all',
+            type: 'all'
           },
           {
             title: '出勤犬只',
             num: res.data.onDutyNum,
             bgColor: '#98d87d',
-            type: 'duty',
+            type: 'duty'
           },
           {
             title: '服役犬只',
             num: res.data.serviceNum,
             bgColor: '#ffd86e',
-            type: 'service',
-          },
+            type: 'service'
+          }
         ];
-        this.setState({ dogsInfo });
+        this.setState({dogsInfo});
       }
     });
     // httpAjax('post', config.apiUrl + '/api/dog/getDogCountNum').then((res) => {
@@ -330,33 +330,33 @@ class NewIndex extends Component {
   getDogCureData = () => {
     React.$ajax.home.treatmentSituation().then((res) => {
       if (res.code == 0) {
-        const { type1, type2, tips } = res.data;
+        const {type1, type2, tips} = res.data;
         const cureCycleList = [
           {
             bgColor: '#49a9ee',
             name: '已处理',
             num: type1,
-            unit: '条',
+            unit: '条'
           },
           {
             bgColor: '#ffd86e',
             name: '待处理',
             num: type2,
-            unit: '条',
-          },
+            unit: '条'
+          }
         ];
-        let cureTips = [];
+        const cureTips = [];
         tips.forEach((item, i) => {
           if (i % 2 == 0) {
-            let obj = {
+            const obj = {
               p1: tips[i],
-              p2: tips[i + 1] || ' ',
+              p2: tips[i + 1] || ' '
             };
             cureTips.push(obj);
           }
         });
         this.cureEchart.setOption(transformOptions(cureCycleList));
-        this.setState({ cureCycleList, cureTips });
+        this.setState({cureCycleList, cureTips});
       }
     });
 
@@ -395,8 +395,8 @@ class NewIndex extends Component {
 
   getTeamData = () => {
     React.$ajax.home.listTrainerRank().then((res) => {
-      let resData = res.data ? res.data : [];
-      this.setState({ rankData: resData });
+      const resData = res.data ? res.data : [];
+      this.setState({rankData: resData});
     });
   };
   // /api/train/getTrainSituation
@@ -412,7 +412,7 @@ class NewIndex extends Component {
             percent:
               res.data.indoorNum == 0
                 ? 0
-                : (100 * (res.data.indoorNum / (res.data.indoorNum + res.data.outdoorNum))).toFixed(0) + '%',
+                : (100 * (res.data.indoorNum / (res.data.indoorNum + res.data.outdoorNum))).toFixed(0) + '%'
           },
           {
             bgColor: '#98d87d',
@@ -422,42 +422,42 @@ class NewIndex extends Component {
             percent:
               res.data.outdoorNum == 0
                 ? 0
-                : (100 * (res.data.outdoorNum / (res.data.indoorNum + res.data.outdoorNum))).toFixed(0) + '%',
-          },
+                : (100 * (res.data.outdoorNum / (res.data.indoorNum + res.data.outdoorNum))).toFixed(0) + '%'
+          }
         ];
-        let cureTips = [];
+        const cureTips = [];
         res.data.logs.forEach((item, i) => {
           if (i % 2 == 0) {
-            let obj = {
+            const obj = {
               p1: res.data.logs[i],
-              p2: res.data.logs[i + 1] || ' ',
+              p2: res.data.logs[i + 1] || ' '
             };
             cureTips.push(obj);
           }
         });
         this.drillEchart.setOption(transformOptions(newData));
-        this.setState({ trainSituationData: newData, dogDrill: cureTips });
+        this.setState({trainSituationData: newData, dogDrill: cureTips});
       }
     });
   };
   getDutyData = () => {
     React.$ajax.home.getTodayOnDuty().then((res) => {
       const dutyList = [
-        { label: '带班领导', value: res.data.onDutyLeaderName },
+        {label: '带班领导', value: res.data.onDutyLeaderName},
         {
           label: '值班',
-          value: res.data.onDutyUserName,
+          value: res.data.onDutyUserName
         },
         {
           label: '值班辅警',
-          value: res.data.onDutyPoliceName,
+          value: res.data.onDutyPoliceName
         },
         {
           label: '值班中队',
-          value: res.data.onDutyTeam,
-        },
+          value: res.data.onDutyTeam
+        }
       ];
-      this.setState({ dutyList });
+      this.setState({dutyList});
     });
   };
   drawMapLabel = (item, content) => {
@@ -468,10 +468,10 @@ class NewIndex extends Component {
       position: new qq.maps.LatLng(item.lat, item.lng),
       style: {
         border: 'none',
-        background: 'transparent',
+        background: 'transparent'
       },
       visible: true,
-      zIndex: 1000,
+      zIndex: 1000
     });
   };
   drawPointStyle = (areaName, dogNumber) => {
@@ -481,29 +481,29 @@ class NewIndex extends Component {
         </div>`;
   };
   render() {
-    const sorceColor = { 1: 'red', 2: 'orange', 3: '#ffce08' };
+    const sorceColor = {1: 'red', 2: 'orange', 3: '#ffce08'};
     const mouseoverColumns = [
       {
         dataIndex: 'label',
-        key: Math.random(),
+        key: Math.random()
       },
       {
         dataIndex: 'value',
-        key: Math.random(),
-      },
+        key: Math.random()
+      }
     ];
     const columns = [
       {
         title: '训导员',
         dataIndex: 'userName',
         key: 'userName',
-        rowClassName: 'tab_header',
+        rowClassName: 'tab_header'
       },
       {
         title: '综合得分',
         dataIndex: 'totalScore',
         key: 'key',
-        rowClassName: 'tab_row',
+        rowClassName: 'tab_row'
       },
       {
         title: '排名',
@@ -511,19 +511,19 @@ class NewIndex extends Component {
         key: 'userId',
         rowClassName: 'tab_row',
         render: (a, b, i) => {
-          return <span style={{ color: sorceColor[i + 1], fontWeight: 800 }}>{i + 1}</span>;
-        },
-      },
+          return <span style={{color: sorceColor[i + 1], fontWeight: 800}}>{i + 1}</span>;
+        }
+      }
     ];
     const formItemLayout = {
       labelCol: {
-        xs: { span: 24 },
-        sm: { span: 6 },
+        xs: {span: 24},
+        sm: {span: 6}
       },
       wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 14 },
-      },
+        xs: {span: 24},
+        sm: {span: 14}
+      }
     };
 
     const {
@@ -535,34 +535,34 @@ class NewIndex extends Component {
       mouseoverPoint,
       dogDrill,
       mouseover,
-      trainSituationData,
+      trainSituationData
     } = this.state;
     const mouseOverData = [
       {
         key: 1,
         label: '犬名',
-        value: mouseoverPoint.item && mouseoverPoint.item.name,
+        value: mouseoverPoint.item && mouseoverPoint.item.name
       },
       {
         key: 2,
         label: 'ID',
-        value: mouseoverPoint.item && mouseoverPoint.item.number,
+        value: mouseoverPoint.item && mouseoverPoint.item.number
       },
       {
         key: 3,
         label: '训导员',
-        value: mouseoverPoint.item && mouseoverPoint.item.trainerName,
+        value: mouseoverPoint.item && mouseoverPoint.item.trainerName
       },
       {
         key: 4,
         label: '单位',
-        value: mouseoverPoint.item && mouseoverPoint.item.subordinateArea,
-      },
+        value: mouseoverPoint.item && mouseoverPoint.item.subordinateArea
+      }
     ];
     return (
       <div className="newIndex">
         <div className="newindex-top">
-          <div style={{ width: '360px' }}>
+          <div style={{width: '360px'}}>
             {/* <Link to="/archivew">
               <Button type="primary">跳转档案</Button>
             </Link> */}
@@ -570,17 +570,16 @@ class NewIndex extends Component {
             <Card
               title="今日值班"
               extra={Moment().format('YYYY-MM-DD')}
-              style={{ width: 360, marginBottom: '10px' }}
-              bodyStyle={{ padding: '10px 24px' }}
-            >
+              style={{width: 360, marginBottom: '10px'}}
+              bodyStyle={{padding: '10px 24px'}}>
               {this.renderLabel(dutyList)}
             </Card>
             <div>{this.renderDogCard(dogsInfo)}</div>
           </div>
           <div className="index_map">
             <div className="map_title">
-              <div style={{ marginLeft: '40px' }}>犬只分布情况</div>
-              <div style={{ marginRight: '40px' }}>
+              <div style={{marginLeft: '40px'}}>犬只分布情况</div>
+              <div style={{marginRight: '40px'}}>
                 <Button.Group>
                   <Button>全部犬只</Button>
                   <Button>园区情况</Button>
@@ -593,9 +592,8 @@ class NewIndex extends Component {
               style={{
                 display: mouseover ? 'block' : 'none',
                 left: `${mouseoverPoint.pixel && mouseoverPoint.pixel.x}px`,
-                top: `${mouseoverPoint.pixel && mouseoverPoint.pixel.y}px`,
-              }}
-            >
+                top: `${mouseoverPoint.pixel && mouseoverPoint.pixel.y}px`
+              }}>
               {mouseoverPoint.item ? (
                 <img src={`${config.apiUrl}/api/dog/img?id=${mouseoverPoint.item && mouseoverPoint.item.id}`} />
               ) : (
@@ -616,16 +614,16 @@ class NewIndex extends Component {
           </div>
         </div>
         <div className="index_footer">
-          <Card title="警犬训练概况" bodyStyle={{ padding: '0 24px' }}>
+          <Card title="警犬训练概况" bodyStyle={{padding: '0 24px'}}>
             {EchartPie(trainSituationData)}
             {/*提示信息 {this.renderCarousel(dogDrill)}*/}
           </Card>
-          <Card title="犬病诊疗概况" bodyStyle={{ padding: '0 24px' }}>
+          <Card title="犬病诊疗概况" bodyStyle={{padding: '0 24px'}}>
             {EchartPie(cureCycleList, 'cureCycle')}
             {/*   {this.renderCarousel(cureTips)}*/}
           </Card>
-          <Card title="绩效考核排名" bodyStyle={{ padding: '0' }}>
-            <div style={{ height: 254, overflow: 'auto', padding: '0 24px', marginbottom: 1 }}>
+          <Card title="绩效考核排名" bodyStyle={{padding: '0'}}>
+            <div style={{height: 254, overflow: 'auto', padding: '0 24px', marginbottom: 1}}>
               <Table
                 rowKey={(row) => {
                   return 'key_' + row.userId;
@@ -636,7 +634,7 @@ class NewIndex extends Component {
               />
             </div>
           </Card>
-          <Card title="最新消息" bodyStyle={{ padding: '0 24px' }}>
+          <Card title="最新消息" bodyStyle={{padding: '0 24px'}}>
             <TodayCard />
           </Card>
         </div>
@@ -646,6 +644,6 @@ class NewIndex extends Component {
 }
 const mapStateToProps = (state) => ({
   socketMsg: state.system && state.system.socketMsg,
-  token: state.loginReducer.token,
+  token: state.loginReducer.token
 });
 export default connect(mapStateToProps)(NewIndex);

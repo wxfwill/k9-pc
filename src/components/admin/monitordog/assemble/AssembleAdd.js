@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { Row, Col, Card, Radio, Form, Input, Select, Button, Icon, Tooltip, message, DatePicker } from 'antd';
-import { firstLayout, secondLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Row, Col, Card, Radio, Form, Input, Select, Button, Icon, Tooltip, message, DatePicker} from 'antd';
+import {firstLayout, secondLayout} from 'util/Layout';
 import OrgModal from './add/OrgModal';
 import PeoModal from './add/PeoModal';
 import MapModal from './add/MapModal';
 import Moment from 'moment';
-const { TextArea } = Input;
+const {TextArea} = Input;
 const FormItem = Form.Item;
 const Option = Select.Option;
-const combatTypeObj = { 1: '反恐处突', 2: '突发事件', 3: '侦查破案', 4: ' 重点安保' };
+const combatTypeObj = {1: '反恐处突', 2: '突发事件', 3: '侦查破案', 4: ' 重点安保'};
 const combatTypeList = [
-  { num: 1, text: '反恐处突' },
-  { num: 2, text: '突发事件' },
-  { num: 3, text: '侦查破案' },
-  { num: 4, text: '重点安保' },
+  {num: 1, text: '反恐处突'},
+  {num: 2, text: '突发事件'},
+  {num: 3, text: '侦查破案'},
+  {num: 4, text: '重点安保'}
 ];
 
 class AddForm extends Component {
@@ -29,7 +29,7 @@ class AddForm extends Component {
       startDateStr: '',
       selectTime: '',
       combatType: '',
-      reportArr: [],
+      reportArr: []
     };
     this.isRequest = false;
     this.reportUserId = '';
@@ -42,21 +42,21 @@ class AddForm extends Component {
     if (this.isRequest) {
       return false;
     }
-    let { history } = this.props;
+    const {history} = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        let { subCoord, targetKeys, startDateStr, combatType, point } = this.state;
-        let subData = {
+        const {subCoord, targetKeys, startDateStr, combatType, point} = this.state;
+        const subData = {
           taskName: values.taskName,
           userIds: targetKeys,
           location: values.location,
           reportUserId: this.reportUserId,
           assembleTime: values.assembleTime.format('x'),
           lat: point.lat,
-          lng: point.lng,
+          lng: point.lng
         };
         this.isRequest = true;
-        React.$ajax.postData('/api/cmdMonitor/saveAssemblePoint', { ...subData }).then((res) => {
+        React.$ajax.postData('/api/cmdMonitor/saveAssemblePoint', {...subData}).then((res) => {
           this.isRequest = false;
           if (res.code == 0) {
             /* this.sendReport(res.data, (result) => {
@@ -66,7 +66,7 @@ class AddForm extends Component {
               message.success('保存成功！');
             } else {
               message.success('发布成功！页面即将跳转...', 2, function () {
-                history.push({ pathname: '/app/monitoring/assemble' });
+                history.push({pathname: '/app/monitoring/assemble'});
               });
             }
           } else {
@@ -77,13 +77,13 @@ class AddForm extends Component {
     });
   };
   sendReport(val, backCall) {
-    let user = JSON.parse(sessionStorage.getItem('user'));
-    let data = {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    const data = {
       type: 5, //任务类型1训练2巡逻3紧急调配4网格搜捕5定点集合6外勤任务
       dataId: val.id,
       taskName: val.taskName,
       userId: this.reportUserId,
-      approveUserId: user.id,
+      approveUserId: user.id
     };
     React.$ajax.postData('/api/taskReport/saveInfo', data).then((result) => {
       if (result.code == 0) {
@@ -98,7 +98,7 @@ class AddForm extends Component {
     this.setState({
       peoValue: '',
       address: '',
-      startDateStr: '',
+      startDateStr: ''
     });
     this.props.form.resetFields();
   };
@@ -110,27 +110,27 @@ class AddForm extends Component {
       }
       console.log('Received values of form: ', values);
       form.resetFields();
-      this.setState({ orgVisible: false });
+      this.setState({orgVisible: false});
     });
   };
   handleAdd(peopleMsg) {
-    let values = [];
-    let targetKeys = [];
-    let arr = [];
+    const values = [];
+    const targetKeys = [];
+    const arr = [];
     peopleMsg.forEach((item, index) => {
       values.push(item.name);
       targetKeys.push(item.key);
-      arr.push({ id: item.key, name: item.name });
+      arr.push({id: item.key, name: item.name});
     });
     this.props.form.setFieldsValue({
-      userIds: values.join(','),
+      userIds: values.join(',')
     });
     this.setState({
       peoValue: values.join(','),
       targetKeys: targetKeys,
-      reportArr: arr,
+      reportArr: arr
     });
-    this.setState({ peoVisible: false });
+    this.setState({peoVisible: false});
     if (!arr.some((item) => item.id == this.reportUserId)) {
       this.props.form.resetFields(['reportUserId', '']);
     }
@@ -143,45 +143,45 @@ class AddForm extends Component {
       }
       console.log('Received values of form: ', values);
       form.resetFields();
-      this.setState({ changeLeft: false });
+      this.setState({changeLeft: false});
     });
   };
   handleCancel = (e) => {
     this.setState({
       orgVisible: false,
       peoVisible: false,
-      changeLeft: false,
+      changeLeft: false
     });
   };
   addOrg() {
-    this.setState({ orgVisible: true });
+    this.setState({orgVisible: true});
     this.props.form.setFieldsValue({
-      taskOrigin: this.state.value,
+      taskOrigin: this.state.value
     });
   }
   addPeople() {
-    this.setState({ peoVisible: true });
+    this.setState({peoVisible: true});
   }
   addCoord() {
-    this.setState({ changeLeft: true });
+    this.setState({changeLeft: true});
   }
   handleShow(addressMsg) {
-    let _this = this;
+    const _this = this;
     this.setState(
       {
-        changeLeft: false,
+        changeLeft: false
       },
       function () {
-        if (typeof addressMsg != 'undefined') {
-          let { point, address } = addressMsg;
+        if (typeof addressMsg !== 'undefined') {
+          const {point, address} = addressMsg;
           _this.setState(
             {
               point,
-              address,
+              address
             },
             function () {
               _this.props.form.setFieldsValue({
-                location: address,
+                location: address
               });
             }
           );
@@ -193,13 +193,13 @@ class AddForm extends Component {
     this.orgForm = form;
   };
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { taskName, location, userIds, combatType, taskContent, startDateStr, reportArr } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {taskName, location, userIds, combatType, taskContent, startDateStr, reportArr} = this.state;
     return (
       <div className="AddTask">
         <Row gutter={24}>
           <Col span={24}>
-            <Card title="新增定点集合" bordered={true}>
+            <Card title="新增定点集合" bordered>
               <Col xxl={16} xl={22} lg={24} md={24} sm={24} xs={24}>
                 <Form className="ant-advanced-search-form">
                   <Row gutter={24}>
@@ -207,24 +207,24 @@ class AddForm extends Component {
                       <FormItem label={'任务名称'} {...secondLayout} hasFeedback>
                         {getFieldDecorator('taskName', {
                           rules: [
-                            { required: true, message: '请输入任务名称' },
-                            { max: 25, message: '任务名称长度不超过25' },
+                            {required: true, message: '请输入任务名称'},
+                            {max: 25, message: '任务名称长度不超过25'}
                           ],
-                          initialValue: taskName || '',
+                          initialValue: taskName || ''
                         })(<Input placeholder="任务名称" />)}
                       </FormItem>
                     </Col>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label={'选择集合点'} {...secondLayout} hasFeedback>
                         {getFieldDecorator('location', {
-                          rules: [{ required: true, message: '请选择集合点' }],
-                          initialValue: this.state.address || '',
+                          rules: [{required: true, message: '请选择集合点'}],
+                          initialValue: this.state.address || ''
                         })(
                           <Input
                             placeholder="集合点"
-                            disabled={true}
+                            disabled
                             addonBefore={
-                              <Icon type="plus" style={{ cursor: 'pointer' }} onClick={this.addCoord.bind(this)} />
+                              <Icon type="plus" style={{cursor: 'pointer'}} onClick={this.addCoord.bind(this)} />
                             }
                           />
                         )}
@@ -235,21 +235,20 @@ class AddForm extends Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label={'选择人员'} {...secondLayout} hasFeedback>
                         {getFieldDecorator('userIds', {
-                          rules: [{ required: true, message: '请添加集合人员' }],
-                          initialValue: this.state.peoValue || '',
+                          rules: [{required: true, message: '请添加集合人员'}],
+                          initialValue: this.state.peoValue || ''
                         })(
                           <Tooltip
                             trigger={['hover']}
                             title={this.state.peoValue}
                             placement="topLeft"
-                            overlayClassName="numeric-input"
-                          >
+                            overlayClassName="numeric-input">
                             <Input
                               placeholder="集合人员"
                               value={this.state.peoValue}
-                              disabled={true}
+                              disabled
                               addonBefore={
-                                <Icon type="plus" style={{ cursor: 'pointer' }} onClick={this.addPeople.bind(this)} />
+                                <Icon type="plus" style={{cursor: 'pointer'}} onClick={this.addPeople.bind(this)} />
                               }
                             />
                           </Tooltip>
@@ -259,14 +258,14 @@ class AddForm extends Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label={'选择日期'} {...secondLayout} hasFeedback>
                         {getFieldDecorator('assembleTime', {
-                          rules: [{ required: true, message: '请选择日期' }],
-                          initialValue: startDateStr ? Moment(startDateStr) : null,
+                          rules: [{required: true, message: '请选择日期'}],
+                          initialValue: startDateStr ? Moment(startDateStr) : null
                         })(
                           <DatePicker
                             showTime
                             format="YYYY-MM-DD HH:mm"
                             onChange={(value, dateString) => {
-                              this.setState({ startDateStr: dateString });
+                              this.setState({startDateStr: dateString});
                             }}
                             disabledDate={(current) =>
                               current && current.isBefore(new Date(new Date().getTime() - 24 * 60 * 60 * 1000))
@@ -278,9 +277,9 @@ class AddForm extends Component {
                   </Row>
                   <Row gutter={24}>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-                      <FormItem label="上报人员：" {...secondLayout} labelCol={{ span: 6 }}>
+                      <FormItem label="上报人员：" {...secondLayout} labelCol={{span: 6}}>
                         {getFieldDecorator('reportUserId', {
-                          rules: [{ required: true, message: '请选择上报人员' }],
+                          rules: [{required: true, message: '请选择上报人员'}]
                         })(
                           <Select mode="single" onChange={this.changeReport}>
                             {reportArr.map((item) => (
@@ -294,11 +293,11 @@ class AddForm extends Component {
                     </Col>
                   </Row>
                   <Row>
-                    <Col span={24} style={{ textAlign: 'center', marginTop: '40px' }}>
-                      <Button type="primary" style={{ marginLeft: 8 }} onClick={() => this.handleSubmit('publish')}>
+                    <Col span={24} style={{textAlign: 'center', marginTop: '40px'}}>
+                      <Button type="primary" style={{marginLeft: 8}} onClick={() => this.handleSubmit('publish')}>
                         发布
                       </Button>
-                      <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                      <Button style={{marginLeft: 8}} onClick={this.handleReset}>
                         清空
                       </Button>
                     </Col>

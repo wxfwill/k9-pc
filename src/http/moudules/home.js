@@ -5,49 +5,49 @@ export const dogAreaStatistics = (data) => {
   return axios({
     url: '/api/overView/dogAreaStatistics',
     method: 'post',
-    data,
+    data
   });
 };
 
 export const getDogCountNum = () => {
   return axios({
     url: '/api/dog/getDogCountNum',
-    method: 'post',
+    method: 'post'
   });
 };
 
 export const treatmentSituation = () => {
   return axios({
     url: '/api/overView/treatmentSituation',
-    method: 'post',
+    method: 'post'
   });
 };
 
 export const listTrainerRank = () => {
   return axios({
     url: '/api/trainCheck/listTrainerRank',
-    method: 'post',
+    method: 'post'
   });
 };
 
 export const getTrainSituation = () => {
   return axios({
     url: '/api/train/getTrainSituation',
-    method: 'post',
+    method: 'post'
   });
 };
 
 export const getTodayOnDuty = () => {
   return axios({
     url: '/api/onDuty/getTodayOnDuty',
-    method: 'post',
+    method: 'post'
   });
 };
 
 export const todayLog = () => {
   return axios({
     url: '/api/overView/todayLog',
-    method: 'post',
+    method: 'post'
   });
 };
 
@@ -56,10 +56,10 @@ export const downCaseInfo = (params) => {
   return axios({
     url: '/case/download/' + params.id + '?template=' + params.template,
     headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
+      'Content-Type': 'application/json;charset=UTF-8'
     },
     method: 'get',
-    responseType: 'blob',
+    responseType: 'blob'
   });
 };
 
@@ -69,6 +69,6 @@ export const downDocFile = (params) => {
     url: '/judDoc/download',
     method: 'get',
     responseType: 'blob',
-    params,
+    params
   });
 };

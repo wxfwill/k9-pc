@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Table, Button, Tag, Badge, List, Card, Icon, Avatar, Col, Row, Tooltip, Popconfirm, message } from 'antd';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Table, Button, Tag, Badge, List, Card, Icon, Avatar, Col, Row, Tooltip, Popconfirm, message} from 'antd';
+import {Link} from 'react-router-dom';
 import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 import Immutable from 'immutable';
@@ -14,7 +14,7 @@ class ConductTable extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 8,
       currPage: 1,
@@ -27,8 +27,8 @@ class ConductTable extends React.Component {
       listByLoad: {
         loadingMore: false,
         showLoadingMore: false,
-        data: [],
-      },
+        data: []
+      }
     };
   }
   componentWillMount() {
@@ -38,55 +38,55 @@ class ConductTable extends React.Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let isReset = util.method.isObjectValueEqual(nextProps, this.props);
+    const isReset = util.method.isObjectValueEqual(nextProps, this.props);
     if (!isReset) {
-      let filter = nextProps.filter;
-      let _this = this;
+      const filter = nextProps.filter;
+      const _this = this;
       // 点击查询不支持过滤巡逻状态
-      this.setState({ firstLoad: true, taskStatus: '' });
-      this.setState({ filter }, function () {
+      this.setState({firstLoad: true, taskStatus: ''});
+      this.setState({filter}, function () {
         _this.fetch({
           pageSize: _this.state.pageSize,
           currPage: 1,
-          ...filter,
+          ...filter
         });
       });
     }
   }
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
-    let { filter } = this.state;
+    const {filter} = this.state;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
       currPage: pagination.current,
-      ...filter,
+      ...filter
     });
   };
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage, isFinish: this.state.taskStatus }) {
-    this.setState({ loading: true });
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage, isFinish: this.state.taskStatus}) {
+    this.setState({loading: true});
     React.$ajax
-      .postData('/api/dailyPatrols/listDailyPatrols', { ...params, ...this.state.filter })
+      .postData('/api/dailyPatrols/listDailyPatrols', {...params, ...this.state.filter})
       .then((obj) => {
-        const pagination = { ...this.state.pagination };
-        let res = obj.data;
+        const pagination = {...this.state.pagination};
+        const res = obj.data;
         pagination.total = parseInt(res.pageSize) * parseInt(res.totalPage);
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
 
-        let _total = res.totalCount,
-          _currPage = res.currPage,
-          _temp = pagination.current + 1,
-          _size = this.state.pageSize,
-          _show = _currPage == parseInt(_total / _size) + (_total % _size > 0 ? 1 : 0) || !_total ? false : true,
-          _listByLoad = {
-            loadingMore: false,
-            showLoadingMore: _show,
-            data: this.state.firstLoad ? res.list : this.state.listByLoad.data.concat(res.list),
-          };
+        const _total = res.totalCount;
+        const _currPage = res.currPage;
+        const _temp = pagination.current + 1;
+        const _size = this.state.pageSize;
+        const _show = !(_currPage == parseInt(_total / _size) + (_total % _size > 0 ? 1 : 0) || !_total);
+        const _listByLoad = {
+          loadingMore: false,
+          showLoadingMore: _show,
+          data: this.state.firstLoad ? res.list : this.state.listByLoad.data.concat(res.list)
+        };
 
         this.setState({
           data: res.list,
@@ -94,7 +94,7 @@ class ConductTable extends React.Component {
           firstLoad: false,
           pagination,
           currPage: _temp,
-          listByLoad: _listByLoad,
+          listByLoad: _listByLoad
         });
       })
       .catch(function (error) {
@@ -107,11 +107,11 @@ class ConductTable extends React.Component {
   };
   // 正在巡逻和巡逻完成
   switchTaskStatus = (st) => {
-    this.setState({ firstLoad: true, taskStatus: st });
+    this.setState({firstLoad: true, taskStatus: st});
     this.fetch({
       pageSize: this.state.pageSize,
       currPage: 1,
-      isFinish: st,
+      isFinish: st
     });
   };
   footer(currentPageData) {
@@ -128,19 +128,19 @@ class ConductTable extends React.Component {
   }
 
   deleteTask = (id, index) => {
-    httpAjax('post', config.apiUrl + '/api/dailyPatrols/delTaskById', { id: id }).then((res) => {
+    httpAjax('post', config.apiUrl + '/api/dailyPatrols/delTaskById', {id: id}).then((res) => {
       if (res.code == 0) {
         message.success('删除成功');
         this.setState(
           {
             currPage: 1,
             listByLoad: {
-              data: [],
-            },
+              data: []
+            }
           },
           this.fetch({
             pageSize: this.state.pageSize,
-            currPage: 1,
+            currPage: 1
           })
         );
       } else {
@@ -150,9 +150,9 @@ class ConductTable extends React.Component {
   };
 
   render() {
-    const { loadingMore, showLoadingMore } = this.state.listByLoad;
+    const {loadingMore, showLoadingMore} = this.state.listByLoad;
     const loadMore = showLoadingMore ? (
-      <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
+      <div style={{textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px'}}>
         {loadingMore && <Spin />}
         {!loadingMore && (
           <Button loading={this.state.loading} onClick={this.onLoadMore}>
@@ -173,22 +173,20 @@ class ConductTable extends React.Component {
             type="primary"
             onClick={() => {
               this.switchTaskStatus('1');
-            }}
-          >
+            }}>
             <i className="iconfont icon-zhuazhualiugou"></i> 正在巡逻
           </Button>
           <Button
             type="primary"
             onClick={() => {
               this.switchTaskStatus('2');
-            }}
-          >
+            }}>
             {' '}
             <Icon type="check-circle-o" /> 巡逻完成
           </Button>
         </div>
         <List
-          grid={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 3, xl: 3, xxl: 4 }}
+          grid={{gutter: 16, xs: 1, sm: 2, md: 3, lg: 3, xl: 3, xxl: 4}}
           loading={this.state.loading}
           dataSource={this.state.listByLoad.data}
           loadMore={loadMore}
@@ -196,25 +194,24 @@ class ConductTable extends React.Component {
             <List.Item>
               <Card
                 className="deployCards"
-                hoverable={true}
+                hoverable
                 actions={
                   item.saveStatus === 0
                     ? [
-                        <Link to={{ pathname: '/app/monitoring/dutyEdit', query: { id: item.id } }}>
+                        <Link to={{pathname: '/app/monitoring/dutyEdit', query: {id: item.id}}}>
                           {' '}
                           <Icon type="edit" /> 编辑草稿
                         </Link>,
                         <Popconfirm title="确认删除此任务信息?" onConfirm={() => this.deleteTask(item.id)}>
                           <Icon type="delete" /> 删除
-                        </Popconfirm>,
+                        </Popconfirm>
                       ]
                     : [
-                        <Link to={{ pathname: '/app/monitoring/RoundsTrack/' + item.id, query: { type: 'duty' } }}>
+                        <Link to={{pathname: '/app/monitoring/RoundsTrack/' + item.id, query: {type: 'duty'}}}>
                           <Icon type="eye" /> 查看轨迹
-                        </Link>,
+                        </Link>
                       ]
-                }
-              >
+                }>
                 <Row>
                   <Col md={4} sm={24} xs={24}>
                     {' '}
@@ -222,19 +219,18 @@ class ConductTable extends React.Component {
                   </Col>
                   <Col md={20}>
                     <div className="cardsList-div">
-                      <table style={{ fontSize: 12, color: '#666' }}>
+                      <table style={{fontSize: 12, color: '#666'}}>
                         <tbody>
                           <tr>
-                            <td style={{ fontSize: 14, fontWeight: 800, paddingBottom: '8px' }}>
+                            <td style={{fontSize: 14, fontWeight: 800, paddingBottom: '8px'}}>
                               <span
                                 style={{
                                   width: 155,
                                   height: 17,
                                   whiteSpace: 'nowrap',
                                   overflow: 'hidden',
-                                  textOverflow: 'ellipsis',
-                                }}
-                              >
+                                  textOverflow: 'ellipsis'
+                                }}>
                                 {item.taskName}
                               </span>
                             </td>
@@ -275,7 +271,7 @@ class ConductTable extends React.Component {
                               {
                                 <Tooltip placement="bottom" title={item.patrolsLocation || '-'}>
                                   {' '}
-                                  <Icon style={{ color: '#1890ff' }} type="environment-o" />
+                                  <Icon style={{color: '#1890ff'}} type="environment-o" />
                                 </Tooltip>
                               }
                             </td>

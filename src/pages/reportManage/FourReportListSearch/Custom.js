@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRequest } from '../Common/useRequest.js';
+import {useRequest} from '../Common/useRequest.js';
 
 export default function Custom() {
   const teamData = useRequest();

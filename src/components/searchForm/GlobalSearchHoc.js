@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Radio, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Radio, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -10,7 +10,7 @@ const RequestHoc = (params = defaultParams) => (WrappedComponent) => {
   return class extends Component {
     constructor(props) {
       super(props);
-      this.state = { teamData: [], userNameArr: [], allHouseData: [] };
+      this.state = {teamData: [], userNameArr: [], allHouseData: []};
     }
     componentDidMount() {
       // 查询中队信息
@@ -24,19 +24,19 @@ const RequestHoc = (params = defaultParams) => (WrappedComponent) => {
     }
     queryGroupUser = util.Debounce(
       (keyword) => {
-        React.$ajax.common.queryGroupUser({ keyword }).then((res) => {
+        React.$ajax.common.queryGroupUser({keyword}).then((res) => {
           if (res.code == 0) {
-            let resObj = res.data;
-            let arr = [];
-            for (let key in resObj) {
+            const resObj = res.data;
+            const arr = [];
+            for (const key in resObj) {
               if (resObj[key] && resObj[key].length > 0) {
                 arr.push({
                   name: key,
-                  children: resObj[key],
+                  children: resObj[key]
                 });
               }
             }
-            this.setState({ userNameArr: arr });
+            this.setState({userNameArr: arr});
           }
         });
       },
@@ -46,13 +46,13 @@ const RequestHoc = (params = defaultParams) => (WrappedComponent) => {
     queryAllTeam = () => {
       React.$ajax.common.queryAllGroups().then((res) => {
         if (res.code == 0) {
-          let resObj = res.data;
-          let newArr = [];
-          for (let key in resObj) {
-            let obj = { id: key, name: resObj[key] };
+          const resObj = res.data;
+          const newArr = [];
+          for (const key in resObj) {
+            const obj = {id: key, name: resObj[key]};
             newArr.push(obj);
           }
-          this.setState({ teamData: newArr });
+          this.setState({teamData: newArr});
         }
       });
     };

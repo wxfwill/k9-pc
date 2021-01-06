@@ -1,48 +1,48 @@
 import React from 'react';
-import { Button } from 'antd';
+import {Button} from 'antd';
 
 export const tableHeaderLabel = (editCallback) => {
-  let data = [
+  const data = [
     {
       title: '姓名',
       dataIndex: 'applyUser',
-      width: 100,
+      width: 100
     },
     {
       title: '任务开始时间',
       dataIndex: 'startTime',
       render: (txt, record) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
-      },
+      }
     },
     {
       title: '任务结束时间',
       dataIndex: 'endTime',
       render: (txt, record) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
-      },
+      }
     },
     {
       title: '车牌号码',
-      dataIndex: 'carNo',
+      dataIndex: 'carNo'
     },
     {
       title: '用车类型',
       dataIndex: 'carUseType',
-      width: 100,
+      width: 100
     },
     {
       title: '目的地',
-      dataIndex: 'carUseDest',
+      dataIndex: 'carUseDest'
     },
     {
       title: '用车事由',
-      dataIndex: 'carUseReason',
+      dataIndex: 'carUseReason'
     },
     {
       title: '备注',
-      dataIndex: 'note',
-    },
+      dataIndex: 'note'
+    }
     // {
     //   title: '操作',
     //   dataIndex: 'inoption',
@@ -59,59 +59,59 @@ export const tableHeaderLabel = (editCallback) => {
 };
 
 export const tableHeaderLabel1 = (editCallback) => {
-  let data = [
+  const data = [
     {
       title: '姓名',
       dataIndex: 'applyUser',
-      width: 100,
+      width: 100
     },
     {
       title: '开始时间',
       dataIndex: 'startTime',
       render: (txt, record) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
-      },
+      }
     },
     {
       title: '结束时间',
       dataIndex: 'endTime',
       render: (txt, record) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
-      },
+      }
     },
     {
       title: '用车类型',
       dataIndex: 'taskType',
-      width: 100,
+      width: 100
     },
     {
       title: '地点',
       dataIndex: 'taskDestLocation',
-      width: 120,
+      width: 120
     },
     {
       title: '带队民警',
       dataIndex: 'policeLeader',
-      width: 100,
+      width: 100
     },
     {
       title: '车牌号码',
-      dataIndex: 'carNo',
+      dataIndex: 'carNo'
     },
     {
       title: '用车时长',
       dataIndex: 'usedTimeNote',
-      width: 120,
+      width: 120
     },
     {
       title: '出勤装备',
       dataIndex: 'allEquipment',
-      width: 120,
+      width: 120
     },
     {
       title: '备注',
-      dataIndex: 'note',
-    },
+      dataIndex: 'note'
+    }
     // {
     //   title: '操作',
     //   dataIndex: 'inoption',
@@ -129,27 +129,27 @@ export const tableHeaderLabel1 = (editCallback) => {
 export const ownTableHeaderDetal = [
   {
     title: '任务类型',
-    dataIndex: 'category',
+    dataIndex: 'category'
   },
   {
     title: '人员名称',
-    dataIndex: 'userName',
+    dataIndex: 'userName'
   },
   {
     title: '任务时间',
     dataIndex: 'repTime',
     render: (txt, record) => {
       return util.formatDate(new Date(txt), 'yyyy-MM-dd');
-    },
+    }
   },
 
   {
     title: '任务地点',
-    dataIndex: 'taskLocation',
+    dataIndex: 'taskLocation'
   },
   {
     title: '来源',
-    dataIndex: 'sourceNote',
+    dataIndex: 'sourceNote'
   },
   // {
   //   title: '抓捕人数',
@@ -158,44 +158,44 @@ export const ownTableHeaderDetal = [
   {
     title: '详细情况',
     dataIndex: 'repDetail',
-    width: 210,
-  },
+    width: 210
+  }
 ];
 
 export const teamTableHeaderDetal = [
   {
     title: '中队名称',
-    dataIndex: 'groupName',
+    dataIndex: 'groupName'
   },
   {
     title: '队员姓名',
     dataIndex: 'userNames',
     render: (txt, record) => {
       return txt.join('、');
-    },
+    }
   },
   {
     title: '任务时间',
     dataIndex: 'repTime',
     render: (txt, record) => {
       return util.formatDate(new Date(txt), 'yyyy-MM-dd');
-    },
+    }
   },
   {
     title: '任务类型',
     dataIndex: 'category',
     render: (txt, record) => {
       return txt.join();
-    },
+    }
   },
   {
     title: '任务地点',
-    dataIndex: 'taskLocation',
+    dataIndex: 'taskLocation'
   },
   {
     title: '详细情况',
-    dataIndex: 'repDetail',
-  },
+    dataIndex: 'repDetail'
+  }
 ];
 
 export const dailyInformationDetal = [
@@ -204,34 +204,34 @@ export const dailyInformationDetal = [
     dataIndex: 'id',
     render: (txt, record, index) => {
       return (record.pageNumber - 1) * 10 + index + 1;
-    },
+    }
   },
   {
     title: '人员名称',
-    dataIndex: 'repUser',
+    dataIndex: 'repUser'
   },
   {
     title: '汇报时间',
     dataIndex: 'repTime',
     render: (txt, record) => {
       return txt ? util.formatDate(new Date(txt), 'yyyy-MM-dd') : '';
-    },
+    }
   },
   {
     title: '早晨(7:00-8:00)',
-    dataIndex: 'morn',
+    dataIndex: 'morn'
   },
   {
     title: '上午(9:00-11:30)',
-    dataIndex: 'forenoon',
+    dataIndex: 'forenoon'
   },
   {
     title: '下午(15:00-18:00)',
-    dataIndex: 'afternoon',
+    dataIndex: 'afternoon'
   },
   {
     title: '晚上(19:00-22:00)',
-    dataIndex: 'night',
+    dataIndex: 'night'
   },
   // {
   //   title: '加分事项',
@@ -243,12 +243,12 @@ export const dailyInformationDetal = [
   // },
   {
     title: '评论',
-    dataIndex: 'comments',
-  },
+    dataIndex: 'comments'
+  }
 ];
 
 export const leaveInformationDetal = (editCallback) => {
-  let data = [
+  const data = [
     // {
     //   title: '序号',
     //   dataIndex: 'id',
@@ -261,12 +261,12 @@ export const leaveInformationDetal = (editCallback) => {
       dataIndex: 'leaveDate',
       render: (txt, row, index) => {
         return txt ? util.formatDate(new Date(txt), 'yyyy-MM-dd') : '--';
-      },
+      }
     },
     {
       title: '请假人',
       dataIndex: 'userName',
-      width: 100,
+      width: 100
     },
     {
       title: '请假开始时间',
@@ -274,7 +274,7 @@ export const leaveInformationDetal = (editCallback) => {
       render: (txt, row, index) => {
         //return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
         return txt ? util.formatDate(new Date(txt), 'yyyy-MM-dd') : '--';
-      },
+      }
     },
     {
       title: '请假结束时间',
@@ -282,43 +282,43 @@ export const leaveInformationDetal = (editCallback) => {
       render: (txt, row, index) => {
         //return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
         return txt ? util.formatDate(new Date(txt), 'yyyy-MM-dd') : '--';
-      },
+      }
     },
     {
       title: '请假类型',
       dataIndex: 'leaveType',
-      width: 120,
+      width: 120
     },
     {
       title: '请假时长',
       dataIndex: 'leaveHours',
       render: (txt, row, index) => {
         return txt ? txt + '小时' : '--';
-      },
+      }
     },
     {
       title: '目的地',
-      dataIndex: 'destination',
+      dataIndex: 'destination'
     },
     {
       title: '请休假事由',
       dataIndex: 'reason',
-      width: 220,
+      width: 220
     },
     {
       title: '审批状态',
       dataIndex: 'approvalState',
       render: (txt, recode, index) => {
         return txt && txt.split('-')[1];
-      },
+      }
     },
     {
       title: '审批人',
-      dataIndex: 'approvalUserName',
+      dataIndex: 'approvalUserName'
     },
     {
       title: '备注',
-      dataIndex: 'remarks',
+      dataIndex: 'remarks'
     },
     {
       title: '操作',
@@ -329,8 +329,8 @@ export const leaveInformationDetal = (editCallback) => {
             编辑
           </Button>
         ) : null;
-      },
-    },
+      }
+    }
   ];
   return data;
 };
@@ -338,76 +338,76 @@ export const leaveInformationDetal = (editCallback) => {
 export const OvertimeInformationDetal = [
   {
     title: '序号',
-    dataIndex: 'id',
+    dataIndex: 'id'
   },
   {
     title: '人员名称',
-    dataIndex: '人员名称',
+    dataIndex: '人员名称'
   },
   {
     title: '开始时间',
-    dataIndex: '开始时间',
+    dataIndex: '开始时间'
   },
   {
     title: '结束时间',
-    dataIndex: '结束时间',
+    dataIndex: '结束时间'
   },
   {
     title: '类型',
-    dataIndex: '类型',
+    dataIndex: '类型'
   },
   {
     title: '时长',
-    dataIndex: '时长',
+    dataIndex: '时长'
   },
   {
     title: '事由',
-    dataIndex: '事由',
-  },
+    dataIndex: '事由'
+  }
 ];
 
 export const AwardInformationDetal = (editCallback) => {
-  let data = [
+  const data = [
     {
       title: '序号',
       dataIndex: 'id',
       render: (txt, row, index) => {
         return index + 1;
-      },
+      }
     },
     {
       title: '人员名称',
-      dataIndex: 'userName',
+      dataIndex: 'userName'
     },
     {
       title: '完成时间',
       dataIndex: 'completeDate',
       render: (txt, row, index) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd');
-      },
+      }
     },
     {
       title: '加分原因',
-      dataIndex: 'reason',
+      dataIndex: 'reason'
     },
     {
       title: '详细情况',
-      dataIndex: 'particulars',
+      dataIndex: 'particulars'
     },
     {
       title: '审批人',
-      dataIndex: 'approvalUserName',
+      dataIndex: 'approvalUserName'
     },
     {
       title: '审批时间',
       dataIndex: 'approvalDate',
       render: (txt, row, index) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd');
-      },
+      }
     },
     {
       title: '备注',
-      dataIndex: 'remarks',
+      dataIndex: 'remarks'
     },
     {
       title: '操作',
@@ -418,8 +418,8 @@ export const AwardInformationDetal = (editCallback) => {
             编辑
           </Button>
         ) : null;
-      },
-    },
+      }
+    }
   ];
   return data;
 };

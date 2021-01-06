@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Radio, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Radio, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import moment from 'moment';
 import httpAjax from 'libs/httpAjax';
 import RequestHoc from 'components/searchForm/GlobalSearchHoc';
@@ -16,24 +16,24 @@ class SearchForm extends Component {
       allHouseData: [
         {
           id: 1,
-          name: '一中队',
+          name: '一中队'
         },
         {
           id: 2,
-          name: '二中队',
-        },
+          name: '二中队'
+        }
       ],
       taksTypeData: [
         {
           id: 0,
-          title: '外出任务',
+          title: '外出任务'
         },
         {
           id: 1,
-          title: '内务任务',
-        },
+          title: '内务任务'
+        }
       ],
-      feedbalVal: null,
+      feedbalVal: null
     };
   }
   componentDidMount() {
@@ -51,7 +51,7 @@ class SearchForm extends Component {
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   selectHouseId = () => {};
@@ -61,21 +61,21 @@ class SearchForm extends Component {
   hangdleFeedback = () => {};
   handlePrif = () => {};
   render() {
-    const { getFieldDecorator } = this.props.form;
-    let { expand, dutyList } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {expand, dutyList} = this.state;
     return (
       <React.Fragment>
         <Col xl={6} lg={6} md={8} sm={12} xs={12}>
           <FormItem label="完成时间" {...thirdLayout}>
             {getFieldDecorator('repDateStart', {
-              initialValue: null,
+              initialValue: null
             })(<DatePicker placeholder="请输入" onChange={this.onChangeStartTime} />)}
           </FormItem>
         </Col>
         <Col xl={6} lg={6} md={8} sm={12} xs={12}>
           <FormItem label="任务类型" {...thirdLayout} hasFeedback>
             {getFieldDecorator('categoryIds')(
-              <Select placeholder="请选择" style={{ width: '100%' }} allowClear onChange={this.selectTaskType}>
+              <Select placeholder="请选择" style={{width: '100%'}} allowClear onChange={this.selectTaskType}>
                 {this.state.taksTypeData.map((item) => {
                   return (
                     <Option key={item.id} value={item.id}>
@@ -88,15 +88,12 @@ class SearchForm extends Component {
           </FormItem>
         </Col>
         <Col xl={6} lg={6} md={8} sm={12} xs={12}>
-          <FormItem
-            label="审批状态"
-            labelCol={{ xl: { span: 9 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
-          >
+          <FormItem label="审批状态" labelCol={{xl: {span: 9}, md: {span: 10}, sm: {span: 12}, xs: {span: 12}}}>
             {getFieldDecorator('isFeedback', {
-              initialValue: this.state.feedbalVal,
+              initialValue: this.state.feedbalVal
             })(
               <Radio.Group onChange={this.hangdleFeedback}>
-                <Radio value={true}>已通过</Radio>
+                <Radio value>已通过</Radio>
                 <Radio value={false}>已撤销</Radio>
               </Radio.Group>
             )}

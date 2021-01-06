@@ -6,7 +6,7 @@ export const getCombatStaff = (data) => {
   return axios({
     url: '/api/userCenter/getCombatStaff',
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -15,7 +15,7 @@ export const queryGroupUser = (data) => {
   return axios({
     url: '/api/userCenter/queryGroupUser',
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -24,7 +24,7 @@ export const queryAllGroups = (data) => {
   return axios({
     url: '/api/userCenter/queryAllGroups',
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -33,7 +33,7 @@ export const queryRulesByRootName = (params) => {
   return axios({
     url: '/api/integral-rule/queryRulesByRootName',
     method: 'get',
-    params,
+    params
   });
 };
 
@@ -42,7 +42,7 @@ export const queryRulesByRootCode = (params) => {
   return axios({
     url: '/api/integral-rule/queryRulesByRootCode',
     method: 'get',
-    params,
+    params
   });
 };
 
@@ -51,7 +51,7 @@ export const queryAllType = (params) => {
   return axios({
     url: '/api/integral-rule/queryAll',
     method: 'get',
-    params,
+    params
   });
 };
 
@@ -60,7 +60,7 @@ export const subordinateAreaList = (data) => {
   return axios({
     url: '/api/basicData/subordinateAreaList',
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -69,7 +69,7 @@ export const getTrainer = (data) => {
   return axios({
     url: '/api/userCenter/getTrainer',
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -79,6 +79,6 @@ export const listSubjectItemByTypeId = (data) => {
   return axios({
     url: '/api/performanceCheck/listSubjectItemByTypeId',
     method: 'post',
-    data,
+    data
   });
 };

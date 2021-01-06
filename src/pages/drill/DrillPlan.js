@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Row, Col, Card } from 'antd';
+import React, {Component} from 'react';
+import {Row, Col, Card} from 'antd';
 
 import SubSearch from 'components/view/searchForm/drill/PlanSearch';
 import SubTable from 'components/view/tables/drill/PlanTable';
@@ -8,16 +8,14 @@ class DrillPlan extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      limit: null,
+      limit: null
     };
   }
   handleLimit = (limit) => {
-    this.setState({ limit });
+    this.setState({limit});
   };
   componentWillUnmount() {
-    this.setState = (state, callback) => {
-      return;
-    };
+    this.setState = (state, callback) => {};
   }
   render() {
     return (

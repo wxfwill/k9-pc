@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Modal, InputNumber, DatePicker, Select, Row, Col, Form, Input } from 'antd';
-import { editModel } from 'util/Layout';
+import React, {Component} from 'react';
+import {Modal, InputNumber, DatePicker, Select, Row, Col, Form, Input} from 'antd';
+import {editModel} from 'util/Layout';
 import moment from 'moment';
-const { TextArea } = Input;
+const {TextArea} = Input;
 const Option = Select.Option;
 
 class ShowModel extends Component {
@@ -19,14 +19,14 @@ class ShowModel extends Component {
       startDate: null,
       endDate: null,
       destination: undefined,
-      reason: undefined,
+      reason: undefined
     };
   }
   componentDidMount() {
     this.props.onRef(this);
   }
   disabledStartDate = (startDate) => {
-    const { endDate } = this.state;
+    const {endDate} = this.state;
     if (!startDate || !endDate) {
       return false;
     }
@@ -34,7 +34,7 @@ class ShowModel extends Component {
   };
 
   disabledEndDate = (endDate) => {
-    const { startDate } = this.state;
+    const {startDate} = this.state;
     if (!endDate || !startDate) {
       return false;
     }
@@ -43,7 +43,7 @@ class ShowModel extends Component {
   onChange = (field, value, callback) => {
     this.setState(
       {
-        [field]: value,
+        [field]: value
       },
       () => {
         return callback && callback();
@@ -53,20 +53,20 @@ class ShowModel extends Component {
 
   onStartChange = (value) => {
     this.onChange('startDate', value, () => {
-      let { startDate, endDate } = this.state;
+      const {startDate, endDate} = this.state;
       if (endDate && startDate) {
-        let time = util.getStartEndHours(startDate, endDate);
-        this.setState({ leaveTime: Number(time).toFixed(1) });
+        const time = util.getStartEndHours(startDate, endDate);
+        this.setState({leaveTime: Number(time).toFixed(1)});
       }
     });
   };
 
   onEndChange = (value) => {
     this.onChange('endDate', value, () => {
-      let { startDate, endDate } = this.state;
+      const {startDate, endDate} = this.state;
       if (startDate && endDate) {
-        let time = util.getStartEndHours(startDate, endDate);
-        this.setState({ leaveTime: Number(time).toFixed(1) });
+        const time = util.getStartEndHours(startDate, endDate);
+        this.setState({leaveTime: Number(time).toFixed(1)});
       }
     });
   };
@@ -77,16 +77,16 @@ class ShowModel extends Component {
   };
 
   handleEndOpenChange = (open) => {
-    this.setState({ endOpen: open });
+    this.setState({endOpen: open});
   };
 
   openModel = (id) => {
-    React.$ajax.postData('/api/leaveAfterSync/getLeaveAfterSyncInfo', { id }).then((res) => {
+    React.$ajax.postData('/api/leaveAfterSync/getLeaveAfterSyncInfo', {id}).then((res) => {
       if (res && res.code == 0) {
-        this.setState({ visible: true });
-        let resData = res.data;
-        let { reason, destination, userName, leaveType, startDate, endDate, leaveHours } = resData;
-        let long = Number(leaveHours) * 1000;
+        this.setState({visible: true});
+        const resData = res.data;
+        const {reason, destination, userName, leaveType, startDate, endDate, leaveHours} = resData;
+        const long = Number(leaveHours) * 1000;
         this.setState({
           reason,
           destination,
@@ -95,7 +95,7 @@ class ShowModel extends Component {
           leaveTime: Number(leaveHours),
           // leaveTime: Number(moment.duration(long).asHours()),
           startDate: moment(startDate),
-          endDate: moment(endDate),
+          endDate: moment(endDate)
         });
       }
     });
@@ -108,7 +108,7 @@ class ShowModel extends Component {
     });
   };
   handleCancel = () => {
-    this.setState({ visible: false });
+    this.setState({visible: false});
     this.props.form.resetFields();
   };
   selectTaskType = () => {};
@@ -116,8 +116,8 @@ class ShowModel extends Component {
   onChangeTextArea = () => {};
   onChangeLeaveTime = () => {};
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { startDate, endDate, endOpen } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {startDate, endDate, endOpen} = this.state;
     return (
       <Modal
         wrapClassName="customModel"
@@ -129,23 +129,22 @@ class ShowModel extends Component {
         maskClosable={false}
         okText={'保存'}
         onOk={this.handleOk}
-        onCancel={this.handleCancel}
-      >
+        onCancel={this.handleCancel}>
         <Form onSubmit={this.handleSubmit} {...editModel}>
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="请假人">
                 {getFieldDecorator('userName', {
-                  initialValue: this.state.userName,
+                  initialValue: this.state.userName
                 })(<Input placeholder="请输入" />)}
               </Form.Item>
             </Col>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="请假类型">
                 {getFieldDecorator('leaveType', {
-                  initialValue: this.state.leaveType,
+                  initialValue: this.state.leaveType
                 })(
-                  <Select placeholder="请选择" style={{ width: '100%' }} allowClear onChange={this.selectTaskType}>
+                  <Select placeholder="请选择" style={{width: '100%'}} allowClear onChange={this.selectTaskType}>
                     {this.props.leaveType.map((item) => {
                       return (
                         <Option key={item.id} value={item.ruleName}>
@@ -166,13 +165,13 @@ class ShowModel extends Component {
                   rules: [
                     {
                       required: true,
-                      message: '请选择开始时间',
-                    },
-                  ],
+                      message: '请选择开始时间'
+                    }
+                  ]
                 })(
                   <DatePicker
                     disabledDate={this.disabledStartDate}
-                    style={{ width: '100%' }}
+                    style={{width: '100%'}}
                     showTime
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="开始时间"
@@ -189,14 +188,14 @@ class ShowModel extends Component {
                   rules: [
                     {
                       required: true,
-                      message: '请选择结束时间',
-                    },
-                  ],
+                      message: '请选择结束时间'
+                    }
+                  ]
                 })(
                   <DatePicker
                     disabledDate={this.disabledEndDate}
                     showTime
-                    style={{ width: '100%' }}
+                    style={{width: '100%'}}
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="结束时间"
                     onChange={this.onEndChange}
@@ -212,11 +211,11 @@ class ShowModel extends Component {
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="请假时长(h)">
                 {getFieldDecorator('leaveTime', {
-                  initialValue: this.state.leaveTime,
+                  initialValue: this.state.leaveTime
                 })(
                   <InputNumber
                     placeholder="请输入"
-                    style={{ width: '460px' }}
+                    style={{width: '460px'}}
                     min={0}
                     max={10000}
                     step={0.1}
@@ -230,8 +229,8 @@ class ShowModel extends Component {
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="请假目的地">
                 {getFieldDecorator('destination', {
-                  initialValue: this.state.destination,
-                })(<Input placeholder="请输入" style={{ width: '460px' }} />)}
+                  initialValue: this.state.destination
+                })(<Input placeholder="请输入" style={{width: '460px'}} />)}
               </Form.Item>
             </Col>
           </Row>
@@ -239,13 +238,13 @@ class ShowModel extends Component {
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="请假事由">
                 {getFieldDecorator('reason', {
-                  initialValue: this.state.reason,
+                  initialValue: this.state.reason
                 })(
                   <TextArea
                     placeholder="请输入"
                     allowClear
-                    style={{ width: '460px' }}
-                    autoSize={{ minRows: 2, maxRows: 6 }}
+                    style={{width: '460px'}}
+                    autoSize={{minRows: 2, maxRows: 6}}
                     onChange={this.onChangeTextArea}
                   />
                 )}
@@ -261,6 +260,6 @@ class ShowModel extends Component {
   }
 }
 
-const EditForm = Form.create({ name: 'EditModel' })(ShowModel);
+const EditForm = Form.create({name: 'EditModel'})(ShowModel);
 
 export default EditForm;

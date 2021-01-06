@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Table, Button, Tag, Badge, Icon } from 'antd';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Table, Button, Tag, Badge, Icon} from 'antd';
+import {Link} from 'react-router-dom';
 import moment from 'moment';
 import CureDetailTabl from './CureDetailTabl';
+import Immutable from 'immutable';
 const localSVG = require('images/banglocation.svg');
 require('style/view/common/deployTable.less');
-import Immutable from 'immutable';
 class CureTable extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +13,7 @@ class CureTable extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 3,
       currPage: 1,
@@ -21,22 +21,22 @@ class CureTable extends React.Component {
       loading: false,
       filter: null,
       changeLeft: false,
-      showDetail: false,
+      showDetail: false
     };
   }
   componentWillMount() {
     this.fetch();
   }
   handleShow() {
-    let _this = this;
+    const _this = this;
     this.setState(
       {
-        changeLeft: false,
+        changeLeft: false
       },
       function () {
         setTimeout(() => {
           _this.setState({
-            showDetail: false,
+            showDetail: false
           });
         }, 600);
       }
@@ -46,40 +46,40 @@ class CureTable extends React.Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let filter = nextProps.filter;
-    let isReset = util.method.isObjectValueEqual(nextProps, this.props);
+    const filter = nextProps.filter;
+    const isReset = util.method.isObjectValueEqual(nextProps, this.props);
     if (!isReset) {
-      let _this = this;
-      this.setState({ filter }, function () {
+      const _this = this;
+      this.setState({filter}, function () {
         _this.fetch({
           pageSize: _this.state.pageSize,
           currPage: 1,
-          ...filter,
+          ...filter
         });
       });
     }
   }
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
-      currPage: pagination.current,
+      currPage: pagination.current
     });
   };
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+    this.setState({loading: true});
     React.$ajax
-      .postData('/api/treatmentRecord/list', { ...params })
+      .postData('/api/treatmentRecord/list', {...params})
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
-        this.setState({ data: res.list, loading: false, pagination });
+        this.setState({data: res.list, loading: false, pagination});
       })
       .catch(function (error) {
         console.log(error);
@@ -89,7 +89,7 @@ class CureTable extends React.Component {
     this.setState({
       detailTitle: data,
       showDetail: true,
-      changeLeft: true,
+      changeLeft: true
     });
   };
   render() {
@@ -107,11 +107,11 @@ class CureTable extends React.Component {
                 fontSize: '12px',
                 height: '16px',
                 lineHeight: '16px',
-                backgroundColor: '#99a9bf',
+                backgroundColor: '#99a9bf'
               }}
             />
           );
-        },
+        }
       },
       {
         title: '发病日期',
@@ -119,31 +119,31 @@ class CureTable extends React.Component {
         key: 'morbidityTime',
         render: (time) => {
           return moment(time).format('YYYY-MM-DD');
-        },
+        }
       },
       {
         title: '犬名',
         dataIndex: 'dogName',
-        key: 'dogName',
+        key: 'dogName'
       },
       {
         title: '发病症状',
         dataIndex: 'symptom',
-        key: 'symptom',
+        key: 'symptom'
       },
       {
         title: '诊断结果',
         dataIndex: 'treatmentResults',
         key: 'treatmentResults',
         render: (result) => {
-          let resArr = [<Tag color="#2db7f5">痊&nbsp;&nbsp;&nbsp;愈</Tag>, <Tag color="#f50">未痊愈</Tag>];
+          const resArr = [<Tag color="#2db7f5">痊&nbsp;&nbsp;&nbsp;愈</Tag>, <Tag color="#f50">未痊愈</Tag>];
           return resArr[result - 1];
-        },
+        }
       },
       {
         title: '兽医',
         dataIndex: 'veterinaryName',
-        key: 'veterinaryName',
+        key: 'veterinaryName'
       },
       {
         title: '操作',
@@ -151,12 +151,12 @@ class CureTable extends React.Component {
         key: 'key',
         render: (data, item, b) => {
           return (
-            <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={this.queryDetail.bind(this, item)}>
+            <span style={{color: '#1890ff', cursor: 'pointer'}} onClick={this.queryDetail.bind(this, item)}>
               查看详情
             </span>
           );
-        },
-      },
+        }
+      }
     ];
     return (
       <div>

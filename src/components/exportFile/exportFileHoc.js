@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { message } from 'antd';
+import React, {Component} from 'react';
+import {message} from 'antd';
 
 const defaultParam = {};
 const ExportFileHoc = (params = defaultParam) => (CustomCom) => {
@@ -14,7 +14,7 @@ const ExportFileHoc = (params = defaultParam) => (CustomCom) => {
       }
       React.$ajax.fileDataPost(url, data).then((res) => {
         if (res.type && res.type.includes('application/json')) {
-          let reader = new FileReader();
+          const reader = new FileReader();
           reader.onload = (e) => {
             if (e.target.readyState == 2) {
               let res1 = {};

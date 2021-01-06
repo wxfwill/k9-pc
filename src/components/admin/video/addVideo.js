@@ -1,15 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal } from 'antd';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {connect} from 'react-redux';
+import {Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal} from 'antd';
+import {firstLayout, secondLayout} from 'util/Layout';
 import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 require('style/app/dogInfo/addDogForm.less');
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-const { TextArea } = Input;
-const { MonthPicker } = DatePicker;
+const {TextArea} = Input;
+const {MonthPicker} = DatePicker;
 
 class VideoInfo extends React.Component {
   constructor(props) {
@@ -22,17 +22,17 @@ class VideoInfo extends React.Component {
       remark: '',
       userName: '',
       password: '',
-      videoData: {},
+      videoData: {}
     };
   }
 
   handleSubmit = () => {
-    const { code, playUrl, remark, userName, password } = this.state;
+    const {code, playUrl, remark, userName, password} = this.state;
     const VideoId = this.props.location.query && this.props.location.query.VideoId;
 
     const successMess = VideoId ? '修改成功' : '添加成功';
     const errorMess = VideoId ? '修改失败' : '添加失败';
-    const parms = { code, playUrl, remark, userName, password };
+    const parms = {code, playUrl, remark, userName, password};
     if (VideoId) {
       parms.id = VideoId;
     }
@@ -59,10 +59,10 @@ class VideoInfo extends React.Component {
     const VideoId = this.props.location.query && this.props.location.query.VideoId;
     const pathname = this.props.location.pathname;
     if (VideoId) {
-      httpAjax('post', config.apiUrl + '/api/video/info', { id: VideoId })
+      httpAjax('post', config.apiUrl + '/api/video/info', {id: VideoId})
         .then((res) => {
           if (res.code == 0) {
-            this.setState({ videoData: res.data, ...res.data });
+            this.setState({videoData: res.data, ...res.data});
           } else {
             message.error('请求失败');
           }
@@ -71,22 +71,22 @@ class VideoInfo extends React.Component {
           console.log(error);
         });
       if (pathname.indexOf('Detail') > -1) {
-        this.setState({ isInitialValue: true, disabled: true });
+        this.setState({isInitialValue: true, disabled: true});
       } else {
-        this.setState({ isInitialValue: true, disabled: false });
+        this.setState({isInitialValue: true, disabled: false});
       }
     }
   }
 
   render() {
     // console.log(this.props,this.state, 'asdasdq')
-    const { getFieldDecorator } = this.props.form;
-    const { isInitialValue, disabled, videoData } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {isInitialValue, disabled, videoData} = this.state;
     return (
       <div className="AddDogForm">
         <Row gutter={24}>
           <Col span={24}>
-            <Card title="视频信息" bordered={true}>
+            <Card title="视频信息" bordered>
               <Col xxl={16} xl={22} lg={24} md={24} sm={24} xs={24}>
                 <Form className="ant-advanced-search-form">
                   <Row gutter={24}>
@@ -94,15 +94,15 @@ class VideoInfo extends React.Component {
                       <FormItem label="视频编号" {...secondLayout} hasFeedback>
                         {getFieldDecorator('number', {
                           rules: [
-                            { required: true, whitespace: true, message: '请输入视频编号' },
-                            { validator: this.checkNumber },
+                            {required: true, whitespace: true, message: '请输入视频编号'},
+                            {validator: this.checkNumber}
                           ],
-                          initialValue: isInitialValue ? videoData.code : '',
+                          initialValue: isInitialValue ? videoData.code : ''
                         })(
                           <Input
                             placeholder="视频编号"
                             onChange={(e) => {
-                              this.setState({ code: e.target.value });
+                              this.setState({code: e.target.value});
                             }}
                             disabled={disabled}
                           />
@@ -112,13 +112,13 @@ class VideoInfo extends React.Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="URL" {...secondLayout} hasFeedback>
                         {getFieldDecorator('videoUrl', {
-                          rules: [{ required: true, message: '请输入URL地址' }],
-                          initialValue: isInitialValue ? videoData.playUrl : '',
+                          rules: [{required: true, message: '请输入URL地址'}],
+                          initialValue: isInitialValue ? videoData.playUrl : ''
                         })(
                           <Input
                             placeholder="视频的URL"
                             onChange={(e) => {
-                              this.setState({ playUrl: e.target.value });
+                              this.setState({playUrl: e.target.value});
                             }}
                             disabled={disabled}
                           />
@@ -131,15 +131,15 @@ class VideoInfo extends React.Component {
                       <FormItem label="用户名" {...secondLayout} hasFeedback>
                         {getFieldDecorator('name', {
                           rules: [
-                            { required: true, whitespace: true, message: '请输入用户名' },
-                            { validator: this.checkNumber },
+                            {required: true, whitespace: true, message: '请输入用户名'},
+                            {validator: this.checkNumber}
                           ],
-                          initialValue: isInitialValue ? videoData.userName : '',
+                          initialValue: isInitialValue ? videoData.userName : ''
                         })(
                           <Input
                             placeholder="用户名"
                             onChange={(e) => {
-                              this.setState({ userName: e.target.value });
+                              this.setState({userName: e.target.value});
                             }}
                             disabled={disabled}
                           />
@@ -149,13 +149,13 @@ class VideoInfo extends React.Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="密码" {...secondLayout} hasFeedback>
                         {getFieldDecorator('password', {
-                          rules: [{ required: true, message: '请输入密码' }],
-                          initialValue: isInitialValue ? videoData.password : '',
+                          rules: [{required: true, message: '请输入密码'}],
+                          initialValue: isInitialValue ? videoData.password : ''
                         })(
                           <Input
                             placeholder="密码"
                             onChange={(e) => {
-                              this.setState({ password: e.target.value });
+                              this.setState({password: e.target.value});
                             }}
                             disabled={disabled}
                           />
@@ -180,11 +180,11 @@ class VideoInfo extends React.Component {
 
                   {!disabled ? (
                     <Row>
-                      <Col span={24} style={{ textAlign: 'center', marginTop: '40px' }}>
+                      <Col span={24} style={{textAlign: 'center', marginTop: '40px'}}>
                         <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>
                           提交
                         </Button>
-                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                        <Button style={{marginLeft: 8}} onClick={this.handleReset}>
                           清空
                         </Button>
                       </Col>
@@ -205,7 +205,7 @@ class VideoInfo extends React.Component {
 const AddViewForm = Form.create()(VideoInfo);
 
 const mapStateToProps = (state) => ({
-  loginState: state.login,
+  loginState: state.login
 });
 
 export default connect(mapStateToProps)(AddViewForm);

@@ -1,7 +1,7 @@
-import { SOCKET_LIST_NEWS_MSG, LOGIN_PASSWORD, USER_INFO, PASSWORD_DATA, USER_TOKEN } from '../actionTypes';
+import {SOCKET_LIST_NEWS_MSG} from '../actionTypes';
 
 const initialzeState = {
-  newLIst: [],
+  newLIst: []
 };
 
 export default function accountReducer(state = initialzeState, action) {
@@ -9,11 +9,9 @@ export default function accountReducer(state = initialzeState, action) {
     case SOCKET_LIST_NEWS_MSG:
       return {
         ...state,
-        newLIst: action.newLIst,
+        newLIst: action.newLIst
       };
-      break;
     default:
       return state;
-      break;
   }
 }

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Card, Tooltip } from 'antd';
+import React, {Component} from 'react';
+import {Card, Tooltip} from 'antd';
 import httpAjax from 'libs/httpAjax';
 require('style/view/page/card.less');
 require('style/view/home/todayCard.less');
@@ -8,21 +8,21 @@ class TodayCard extends Component {
     super(props);
     this.state = {
       listData: [],
-      top: 0,
+      top: 0
     };
   }
   componentWillMount() {}
   componentDidMount() {
-    let _this = this;
+    const _this = this;
     this.timer && clearInterval(this.timer);
     React.$ajax.home
       .todayLog()
       .then((res) => {
-        let { data, code } = res;
-        if (0 == code) {
+        const {data, code} = res;
+        if (code == 0) {
           this.setState(
             {
-              listData: data.concat(data),
+              listData: data.concat(data)
             },
             function () {
               _this.handleScroll();
@@ -49,7 +49,7 @@ class TodayCard extends Component {
     var top = Math.abs(parseInt(this.refs.list.style.top));
     this.timer = setInterval(() => {
       this.setState({
-        top: Math.abs(this.state.top) >= ulHeight ? -2 : this.state.top - 2,
+        top: Math.abs(this.state.top) >= ulHeight ? -2 : this.state.top - 2
       });
     }, 150);
   }
@@ -61,10 +61,9 @@ class TodayCard extends Component {
             <ul
               className="listWrapper"
               ref="list"
-              style={{ top: this.state.top }}
+              style={{top: this.state.top}}
               onMouseEnter={this.handleEnter.bind(this)}
-              onMouseLeave={this.handleLeave.bind(this)}
-            >
+              onMouseLeave={this.handleLeave.bind(this)}>
               {this.state.listData.length > 0
                 ? this.state.listData.map(function (item, index) {
                     return (
@@ -76,8 +75,7 @@ class TodayCard extends Component {
                             {item.content}
                           </span>
                         }
-                        key={index}
-                      >
+                        key={index}>
                         <li key={index}>
                           【{item.type}】{item.time}
                           {item.content}

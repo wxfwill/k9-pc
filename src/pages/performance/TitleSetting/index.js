@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Row, Col, Card, Button, Input, InputNumber, message, Popconfirm } from 'antd';
+import React, {Component} from 'react';
+import {Row, Col, Card, Button, Input, InputNumber, message, Popconfirm} from 'antd';
 import NoData from 'components/NoData/index';
 import 'style/pages/performance/TitleSetting/index.less';
 class TitleSetting extends Component {
@@ -9,7 +9,7 @@ class TitleSetting extends Component {
       dataSource: [],
       defaultData: [],
       keyIndex: 0,
-      dataLen: 0,
+      dataLen: 0
     };
   }
   componentDidMount() {
@@ -23,17 +23,17 @@ class TitleSetting extends Component {
         this.setState({
           dataSource: [...res.data],
           defaultData: [...res.data],
-          dataLen: res.data.length,
+          dataLen: res.data.length
         });
       }
     });
   };
   //添加头衔
   addTitles = () => {
-    let { dataSource, keyIndex } = this.state;
+    const {dataSource, keyIndex} = this.state;
     let rank = 1;
     if (dataSource && dataSource.length > 0) {
-      let len = dataSource.length;
+      const len = dataSource.length;
       if (len > 1) {
         rank = Number(dataSource[len - 2].end) + 1; //新增项默认在前一项的值上加1
       }
@@ -42,20 +42,20 @@ class TitleSetting extends Component {
         start: rank,
         title: '',
         keyIndex: keyIndex,
-        isNew: true,
+        isNew: true
       });
     } else {
-      dataSource.push({ end: '', start: 1, title: '', keyIndex: keyIndex, isNew: true });
+      dataSource.push({end: '', start: 1, title: '', keyIndex: keyIndex, isNew: true});
     }
     this.setState({
       dataSource: dataSource,
       keyIndex: keyIndex + 1,
-      dataLen: dataSource.length,
+      dataLen: dataSource.length
     });
   };
   //删除头衔
   deleteTitles = (data) => {
-    const { dataSource } = this.state;
+    const {dataSource} = this.state;
     dataSource && dataSource.length > 0
       ? dataSource.map((item, i) => {
           if (item.isNew) {
@@ -71,7 +71,7 @@ class TitleSetting extends Component {
       : null;
     this.setState({
       dataSource: dataSource,
-      dataLen: dataSource.length,
+      dataLen: dataSource.length
     });
   };
   //获取头衔等级名称
@@ -93,7 +93,7 @@ class TitleSetting extends Component {
     });
   };
   getFormData = (data, callback) => {
-    let { dataSource } = this.state;
+    const {dataSource} = this.state;
     dataSource && dataSource.length > 0
       ? dataSource.map((item) => {
           if (item.isNew) {
@@ -108,12 +108,12 @@ class TitleSetting extends Component {
         })
       : null;
     this.setState({
-      dataSource: dataSource,
+      dataSource: dataSource
     });
   };
   //提交
   onSubmit = () => {
-    let { dataSource, dataLen } = this.state;
+    const {dataSource, dataLen} = this.state;
     let isPass = true;
     dataSource.map((item, index) => {
       if (dataLen - 1 !== index) {
@@ -128,7 +128,7 @@ class TitleSetting extends Component {
     }
     const len = dataSource.length;
     dataSource[len - 1].start = dataSource[len - 2].end + 1; //最后一项的最小值等于倒数第二项的最大值加1
-    React.$ajax.postData('/api/integral-title/create', { titles: dataSource }).then((res) => {
+    React.$ajax.postData('/api/integral-title/create', {titles: dataSource}).then((res) => {
       if (res && res.code == 0) {
         message.success('保存成功！', 2);
         // this.getAll();
@@ -137,15 +137,15 @@ class TitleSetting extends Component {
   };
   // 取消
   onCancel = () => {
-    const { defaultData } = this.state;
+    const {defaultData} = this.state;
     this.setState({
       dataSource: [...defaultData],
       dataLen: defaultData.length,
-      keyIndex: 0,
+      keyIndex: 0
     });
   };
   render() {
-    const { dataSource, dataLen } = this.state;
+    const {dataSource, dataLen} = this.state;
     return (
       <Row className="title-setting">
         <Col xl={24} lg={24} md={24} sm={24} xs={24}>
@@ -223,7 +223,7 @@ class TitleSetting extends Component {
                 确定
               </Button>
               <Popconfirm title="确定取消?" onConfirm={() => this.onCancel()}>
-                <Button style={{ marginLeft: 16 }}>取消</Button>
+                <Button style={{marginLeft: 16}}>取消</Button>
               </Popconfirm>
             </div>
           </Card>

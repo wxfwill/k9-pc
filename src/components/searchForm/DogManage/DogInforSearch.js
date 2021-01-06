@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import httpAjax from 'libs/httpAjax';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
@@ -14,7 +14,7 @@ class SearchForm extends React.Component {
       expand: true,
       dogBreed: [],
       workUnitList: [],
-      trainerList: [],
+      trainerList: []
     };
   }
   componentWillMount() {
@@ -22,29 +22,29 @@ class SearchForm extends React.Component {
     this.getTrainer();
     httpAjax('post', config.apiUrl + '/api/basicData/dogBreed', {}).then((res) => {
       if (res.code == 0) {
-        this.setState({ dogBreed: res.data });
+        this.setState({dogBreed: res.data});
         sessionStorage.setItem('dogBreeds', JSON.stringify(res.data));
       }
     });
     //获取服役单位下拉项
     httpAjax('post', config.apiUrl + '/api/basicData/workUnitList', {}).then((res) => {
       if (res.code == 0) {
-        this.setState({ workUnitList: res.data });
+        this.setState({workUnitList: res.data});
         sessionStorage.setItem('workUnitList', JSON.stringify(res.data));
       }
     });
     // 获取带犬员信息
   }
   getTrainer = (name = '') =>
-    httpAjax('post', config.apiUrl + '/api/userCenter/getTrainer', { name }).then((res) => {
+    httpAjax('post', config.apiUrl + '/api/userCenter/getTrainer', {name}).then((res) => {
       if (res.code == 0) {
-        this.setState({ trainerList: res.data });
+        this.setState({trainerList: res.data});
       }
     });
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
-    let timeData = 'range-time-picker';
+    const {limit} = this.props;
+    const timeData = 'range-time-picker';
     this.props.form.validateFields((err, values) => {
       limit(values);
     });
@@ -53,17 +53,17 @@ class SearchForm extends React.Component {
     this.props.form.resetFields();
   };
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   render() {
-    let { expand, dogBreed, workUnitList, trainerList } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const {expand, dogBreed, workUnitList, trainerList} = this.state;
+    const {getFieldDecorator} = this.props.form;
     const dogBreedOption =
       dogBreed &&
       dogBreed.map((item, index) => {
@@ -82,8 +82,8 @@ class SearchForm extends React.Component {
           </Option>
         );
       });
-    let service = '',
-      duty = '';
+    let service = '';
+    let duty = '';
     if (this.props.type == 'service') {
       service = '0';
     } else if (this.props.type == 'duty') {
@@ -110,7 +110,7 @@ class SearchForm extends React.Component {
             </FormItem>
           </Col>
 
-          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ display: expand ? 'none' : 'block' }}>
+          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{display: expand ? 'none' : 'block'}}>
             <FormItem label="带犬员" {...thirdLayout}>
               {getFieldDecorator(
                 'trainerIds',
@@ -136,7 +136,7 @@ class SearchForm extends React.Component {
               )}
             </FormItem>
           </Col>
-          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ display: expand ? 'none' : 'block' }}>
+          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{display: expand ? 'none' : 'block'}}>
             <FormItem label="性别" {...thirdLayout}>
               {getFieldDecorator(
                 'sex',
@@ -149,10 +149,10 @@ class SearchForm extends React.Component {
               )}
             </FormItem>
           </Col>
-          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ display: expand ? 'none' : 'block' }}>
+          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{display: expand ? 'none' : 'block'}}>
             <FormItem label="服役状态" {...thirdLayout}>
               {getFieldDecorator('serviceStatus', {
-                initialValue: service,
+                initialValue: service
               })(
                 <Select placeholder="服役状态">
                   <Option value="0">服役中</Option>
@@ -161,10 +161,10 @@ class SearchForm extends React.Component {
               )}
             </FormItem>
           </Col>
-          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ display: expand ? 'none' : 'block' }}>
+          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{display: expand ? 'none' : 'block'}}>
             <FormItem label="出勤状态" {...thirdLayout}>
               {getFieldDecorator('onduty', {
-                initialValue: duty,
+                initialValue: duty
               })(
                 <Select placeholder="出勤状态">
                   <Option value="1">出勤</Option>
@@ -175,14 +175,14 @@ class SearchForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
-            <a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>
+            <a style={{marginLeft: 8, fontSize: 12}} onClick={this.toggle}>
               {this.state.expand ? '展开' : '收起'} <Icon type={this.state.expand ? 'down' : 'up'} />
             </a>
           </Col>

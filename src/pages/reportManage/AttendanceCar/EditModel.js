@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Modal, Radio, DatePicker, TreeSelect, Select, Row, Col, Form, Input } from 'antd';
-import { editModel } from 'util/Layout';
+import React, {Component} from 'react';
+import {Modal, Radio, DatePicker, TreeSelect, Select, Row, Col, Form, Input} from 'antd';
+import {editModel} from 'util/Layout';
 import moment from 'moment';
-const { TextArea } = Input;
+const {TextArea} = Input;
 const Option = Select.Option;
-const { TreeNode } = TreeSelect;
+const {TreeNode} = TreeSelect;
 class ShowModel extends Component {
   constructor(props) {
     super(props);
@@ -26,14 +26,18 @@ class ShowModel extends Component {
       repDetail: undefined, // 上报详情
       feedbackContext: undefined, // 反馈详情
       carPelper: undefined, // 车辆驾驶员
-      carNumber: undefined, //车牌号码
+      carNumber: undefined //车牌号码
     };
   }
   componentDidMount() {
     this.props.onRef(this);
   }
+  UNSAFE_componentWillReceiveProps() {}
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
+  }
   disabledStartDate = (startValue) => {
-    const { endValue } = this.state;
+    const {endValue} = this.state;
     if (!startValue || !endValue) {
       return false;
     }
@@ -41,7 +45,7 @@ class ShowModel extends Component {
   };
 
   disabledEndDate = (endValue) => {
-    const { startValue } = this.state;
+    const {startValue} = this.state;
     if (!endValue || !startValue) {
       return false;
     }
@@ -49,7 +53,7 @@ class ShowModel extends Component {
   };
   onChange = (field, value) => {
     this.setState({
-      [field]: value,
+      [field]: value
     });
   };
 
@@ -62,45 +66,45 @@ class ShowModel extends Component {
   };
   handleStartOpenChange = (open) => {
     if (!open) {
-      this.setState({ endOpen: true });
+      this.setState({endOpen: true});
     }
   };
 
   handleEndOpenChange = (open) => {
-    this.setState({ endOpen: open });
+    this.setState({endOpen: open});
   };
   setUser = (key, data) => {
-    let arr = [];
+    const arr = [];
     data.map((item) => {
       arr.push(item.id);
     });
-    this.setState({ [key]: arr });
+    this.setState({[key]: arr});
   };
   getCarInfo = (repId) => {
-    React.$ajax.getData('/api/report/getCarUseDetail', { repId }).then((res) => {
+    React.$ajax.getData('/api/report/getCarUseDetail', {repId}).then((res) => {
       if (res && res.code == 0) {
-        this.setState({ visible: true });
-        let resData = res.data;
+        this.setState({visible: true});
+        const resData = res.data;
         console.log(resData);
-        let { arrestNum, categoryIds, repTime, taskLocation, repDetail, feedbackContext, users } = resData;
+        const {arrestNum, repTime, taskLocation, repDetail, feedbackContext, users} = resData;
         if (users) {
-          for (let key in users) {
+          for (const key in users) {
             this.setUser(key, users[key]);
           }
         }
-        this.setState({ arrestNum, taskLocation, repTime: moment(repTime), repDetail, feedbackContext });
+        this.setState({arrestNum, taskLocation, repTime: moment(repTime), repDetail, feedbackContext});
       }
     });
   };
   openModel = (id) => {
-    this.setState({ id });
+    this.setState({id});
     this.getCarInfo(id);
   };
   handleOk = () => {
     console.log('ok');
     this.props.form.validateFields((err, val) => {
-      let obj = {};
-      let {
+      const obj = {};
+      const {
         apply,
         peer,
         categoryIds,
@@ -110,21 +114,21 @@ class ShowModel extends Component {
         taskAssignLeader,
         taskLocation,
         repDetail,
-        feedbackContext,
+        feedbackContext
       } = val;
-      let users = {
-        apply: apply ? apply : null,
+      const users = {
+        apply: apply || null,
         peer,
         carUseAuditor,
-        taskAssignLeader: taskAssignLeader ? [taskAssignLeader.toString()] : null,
+        taskAssignLeader: taskAssignLeader ? [taskAssignLeader.toString()] : null
       };
       obj.id = this.state.id;
       obj.users = users;
       obj.categoryIds = categoryIds ? [categoryIds] : null;
-      obj.arrestNum = arrestNum ? arrestNum : null;
-      obj.taskLocation = taskLocation ? taskLocation : null;
-      obj.repDetail = repDetail ? repDetail : null;
-      obj.feedbackContext = feedbackContext ? feedbackContext : null;
+      obj.arrestNum = arrestNum || null;
+      obj.taskLocation = taskLocation || null;
+      obj.repDetail = repDetail || null;
+      obj.feedbackContext = feedbackContext || null;
       obj.repTime = repTime ? moment(repTime).format('x') : null;
       console.log(obj);
 
@@ -132,7 +136,7 @@ class ShowModel extends Component {
     });
   };
   handleCancel = () => {
-    this.setState({ visible: false });
+    this.setState({visible: false});
     this.props.form.resetFields();
   };
   selectTaskType = () => {};
@@ -150,13 +154,9 @@ class ShowModel extends Component {
   handleTreeName1 = (val, label, extra) => {
     console.log(val);
   };
-  componentWillReceiveProps(nextProps) {}
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { startValue, endValue, endOpen } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {startValue, endValue, endOpen} = this.state;
     return (
       <Modal
         wrapClassName="customModel"
@@ -168,30 +168,28 @@ class ShowModel extends Component {
         maskClosable={false}
         okText={'保存'}
         onOk={this.handleOk}
-        onCancel={this.handleCancel}
-      >
+        onCancel={this.handleCancel}>
         <Form onSubmit={this.handleSubmit} {...editModel}>
           <Row gutter={24}>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="申请人">
                 {getFieldDecorator('apply', {
-                  initialValue: this.state.apply,
+                  initialValue: this.state.apply
                 })(
                   <TreeSelect
                     showSearch
-                    style={{ width: '100%' }}
+                    style={{width: '100%'}}
                     filterTreeNode={() => true}
                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                     placeholder="请选择"
                     allowClear
                     onSearch={(value) => {
-                      const { setFieldsValue, getFieldValue } = this.props.form;
-                      setFieldsValue({ name: undefined });
+                      const {setFieldsValue, getFieldValue} = this.props.form;
+                      setFieldsValue({name: undefined});
                       this.props.queryGroupUser && this.props.queryGroupUser(value, 'name');
                     }}
-                    onChange={this.handleTreeName}
-                  >
+                    onChange={this.handleTreeName}>
                     {this.props.personnelTree && this.props.personnelTree.length > 0
                       ? this.props.personnelTree.map((item) => {
                           return (
@@ -212,18 +210,17 @@ class ShowModel extends Component {
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="同行人">
                 {getFieldDecorator('peer', {
-                  initialValue: this.state.peer,
+                  initialValue: this.state.peer
                 })(
                   <TreeSelect
-                    treeCheckable={true}
-                    style={{ width: '100%' }}
+                    treeCheckable
+                    style={{width: '100%'}}
                     filterTreeNode={() => true}
                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                     placeholder="请选择"
                     allowClear
-                    onChange={this.handleTreeName}
-                  >
+                    onChange={this.handleTreeName}>
                     {this.props.personnelTree2 && this.props.personnelTree2.length > 0
                       ? this.props.personnelTree2.map((item) => {
                           return (
@@ -246,17 +243,16 @@ class ShowModel extends Component {
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="用车类型">
                 {getFieldDecorator('categoryIds', {
-                  initialValue: this.state.categoryIds,
+                  initialValue: this.state.categoryIds
                 })(
                   <TreeSelect
-                    style={{ width: '100%' }}
+                    style={{width: '100%'}}
                     filterTreeNode={() => true}
                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                     placeholder="请选择"
                     allowClear
-                    onChange={this.handleTaskName}
-                  >
+                    onChange={this.handleTaskName}>
                     {this.props.taskTypeList && this.props.taskTypeList.length > 0
                       ? this.props.taskTypeList.map((item) => {
                           return (
@@ -277,11 +273,11 @@ class ShowModel extends Component {
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="任务时间">
                 {getFieldDecorator('repTime', {
-                  initialValue: this.state.repTime,
+                  initialValue: this.state.repTime
                 })(
                   <DatePicker
                     // disabledDate={this.disabledStartDate}
-                    style={{ width: '100%' }}
+                    style={{width: '100%'}}
                     allowClear
                     showTime
                     format="YYYY-MM-DD HH:mm:ss"
@@ -297,10 +293,10 @@ class ShowModel extends Component {
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="是否填报">
                 {getFieldDecorator('fill', {
-                  initialValue: endValue,
+                  initialValue: endValue
                 })(
                   <Radio.Group onChange={this.hangdleFeedback}>
-                    <Radio value={true}>已填报</Radio>
+                    <Radio value>已填报</Radio>
                     <Radio value={false}>未填报</Radio>
                   </Radio.Group>
                 )}
@@ -309,18 +305,17 @@ class ShowModel extends Component {
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="用车审核人">
                 {getFieldDecorator('carUseAuditor', {
-                  initialValue: this.state.carUseAuditor,
+                  initialValue: this.state.carUseAuditor
                 })(
                   <TreeSelect
-                    treeCheckable={true}
-                    style={{ width: '100%' }}
+                    treeCheckable
+                    style={{width: '100%'}}
                     filterTreeNode={() => true}
                     // getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                     placeholder="请选择"
                     allowClear
-                    onChange={this.handleApproval}
-                  >
+                    onChange={this.handleApproval}>
                     {this.props.personnelTree2 && this.props.personnelTree2.length > 0
                       ? this.props.personnelTree2.map((item) => {
                           return (
@@ -343,29 +338,28 @@ class ShowModel extends Component {
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="抓捕人数">
                 {getFieldDecorator('arrestNum', {
-                  initialValue: this.state.arrestNum,
+                  initialValue: this.state.arrestNum
                 })(<Input placeholder="请输入" allowClear />)}
               </Form.Item>
             </Col>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="派发任务领导">
                 {getFieldDecorator('taskAssignLeader', {
-                  initialValue: this.state.taskAssignLeader,
+                  initialValue: this.state.taskAssignLeader
                 })(
                   <TreeSelect
                     showSearch
-                    style={{ width: '100%' }}
+                    style={{width: '100%'}}
                     filterTreeNode={() => true}
-                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                     placeholder="请选择"
                     allowClear
                     onSearch={(value) => {
-                      const { setFieldsValue, getFieldValue } = this.props.form;
-                      setFieldsValue({ leader: undefined });
+                      const {setFieldsValue, getFieldValue} = this.props.form;
+                      setFieldsValue({leader: undefined});
                       this.props.queryGroupUser && this.props.queryGroupUser(value, 'leader');
                     }}
-                    onChange={this.handleTreeName1}
-                  >
+                    onChange={this.handleTreeName1}>
                     {this.props.personnelTree1 && this.props.personnelTree1.length > 0
                       ? this.props.personnelTree1.map((item) => {
                           return (
@@ -388,14 +382,14 @@ class ShowModel extends Component {
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="车牌号码">
                 {getFieldDecorator('carNumber', {
-                  initialValue: this.state.carNumber,
+                  initialValue: this.state.carNumber
                 })(<Input placeholder="请输入" allowClear />)}
               </Form.Item>
             </Col>
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="车辆驾驶员">
                 {getFieldDecorator('carPelper', {
-                  initialValue: this.state.carPelper,
+                  initialValue: this.state.carPelper
                 })(<Input placeholder="请输入" allowClear />)}
               </Form.Item>
             </Col>
@@ -404,8 +398,8 @@ class ShowModel extends Component {
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="地点">
                 {getFieldDecorator('taskLocation', {
-                  initialValue: this.state.taskLocation,
-                })(<Input placeholder="请输入" allowClear style={{ width: '460px' }} />)}
+                  initialValue: this.state.taskLocation
+                })(<Input placeholder="请输入" allowClear style={{width: '460px'}} />)}
               </Form.Item>
             </Col>
           </Row>
@@ -413,13 +407,13 @@ class ShowModel extends Component {
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="上报详情">
                 {getFieldDecorator('repDetail', {
-                  initialValue: this.state.repDetail,
+                  initialValue: this.state.repDetail
                 })(
                   <TextArea
                     placeholder="请输入"
                     allowClear
-                    style={{ width: '460px' }}
-                    autoSize={{ minRows: 2, maxRows: 6 }}
+                    style={{width: '460px'}}
+                    autoSize={{minRows: 2, maxRows: 6}}
                     onChange={this.onChangeTextArea}
                   />
                 )}
@@ -430,13 +424,13 @@ class ShowModel extends Component {
             <Col xl={12} lg={12} md={12} sm={12} xs={12}>
               <Form.Item label="反馈详情">
                 {getFieldDecorator('feedbackContext', {
-                  initialValue: this.state.feedbackContext,
+                  initialValue: this.state.feedbackContext
                 })(
                   <TextArea
                     placeholder="请输入"
                     allowClear
-                    style={{ width: '460px' }}
-                    autoSize={{ minRows: 2, maxRows: 6 }}
+                    style={{width: '460px'}}
+                    autoSize={{minRows: 2, maxRows: 6}}
                     onChange={this.onChangeTextArea}
                   />
                 )}
@@ -449,6 +443,6 @@ class ShowModel extends Component {
   }
 }
 
-const EditForm = Form.create({ name: 'EditModel' })(ShowModel);
+const EditForm = Form.create({name: 'EditModel'})(ShowModel);
 
 export default EditForm;

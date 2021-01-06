@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {
   Row,
   Col,
@@ -16,16 +16,16 @@ import {
   Modal,
   AutoComplete,
   Divider,
-  Tag,
+  Tag
 } from 'antd';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {firstLayout, secondLayout} from 'util/Layout';
 import moment from 'moment';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const AutoOption = AutoComplete.Option;
-const { TextArea } = Input;
-const { MonthPicker } = DatePicker;
+const {TextArea} = Input;
+const {MonthPicker} = DatePicker;
 require('style/app/dogInfo/addDogForm.less');
 function onSelect(value) {
   console.log('onSelect', value);
@@ -65,7 +65,7 @@ class FormCompomnent extends React.Component {
       allBracelet: [],
       jobUsageList: [],
       trainerList: [],
-      lastestUploadImg: config.apiUrl + `/api/dog/img?id=${sessionStorage.getItem('dogId')}&t=${new Date().getTime()}`,
+      lastestUploadImg: config.apiUrl + `/api/dog/img?id=${sessionStorage.getItem('dogId')}&t=${new Date().getTime()}`
     };
   }
 
@@ -75,29 +75,29 @@ class FormCompomnent extends React.Component {
     this.getAllBraceletInfo();
     React.$ajax.postData('/api/basicData/furColor', {}).then((res) => {
       if (res.code == 0) {
-        this.setState({ dogColor: res.data });
+        this.setState({dogColor: res.data});
       }
     });
     const formStatus = sessionStorage.getItem('formStatus'); //this.props.location.query&&this.props.location.query.targetText;
     const dogId = sessionStorage.getItem('dogId'); //this.props.location.query&&this.props.location.query.dogId;
     const dogBreeds = JSON.parse(sessionStorage.getItem('dogBreeds'));
     const workUnitList = JSON.parse(sessionStorage.getItem('workUnitList'));
-    this.setState({ dogId, dogBreeds, workUnitList });
+    this.setState({dogId, dogBreeds, workUnitList});
     if (formStatus == 'view') {
-      this.setState({ disabled: true, isInitialValue: true });
+      this.setState({disabled: true, isInitialValue: true});
     } else if (formStatus == 'edit') {
-      this.setState({ isInitialValue: true });
+      this.setState({isInitialValue: true});
     } else if (formStatus == 'add') {
-      this.setState({ isInitialValue: false });
+      this.setState({isInitialValue: false});
     }
     //根据id获取单个犬只数据
     if (dogId) {
-      React.$ajax.postData('/api/dog/info', { id: dogId }).then((res) => {
+      React.$ajax.postData('/api/dog/info', {id: dogId}).then((res) => {
         if (res.code == 0) {
-          this.setState({ dogInfor: res.data, ...res.data });
+          this.setState({dogInfor: res.data, ...res.data});
           this.selectHouseId(res.data.houseId || 1);
           if (res.data.medicalReportName == 'none') {
-            this.setState({ reportFilelist: [] });
+            this.setState({reportFilelist: []});
           } else {
             this.setState({
               reportFilelist: [
@@ -105,13 +105,13 @@ class FormCompomnent extends React.Component {
                   uid: -1,
                   name: res.data.medicalReportName,
                   status: 'done',
-                  url: config.apiUrl + '/api/dog/dlmedicalReport?id=' + res.data.id,
-                },
-              ],
+                  url: config.apiUrl + '/api/dog/dlmedicalReport?id=' + res.data.id
+                }
+              ]
             });
           }
           if (res.data.photo == 'none') {
-            this.setState({ fileList: [] });
+            this.setState({fileList: []});
           } else {
             this.setState({
               fileList: [
@@ -119,9 +119,9 @@ class FormCompomnent extends React.Component {
                   uid: -1,
                   name: res.data.photo,
                   status: 'done',
-                  url: this.state.lastestUploadImg,
-                },
-              ],
+                  url: this.state.lastestUploadImg
+                }
+              ]
             });
           }
         }
@@ -129,50 +129,50 @@ class FormCompomnent extends React.Component {
     }
 
     // 获取父犬list
-    React.$ajax.postData('/api/dog/getAncestorInfo', { sexId: 1 }).then((res) => {
+    React.$ajax.postData('/api/dog/getAncestorInfo', {sexId: 1}).then((res) => {
       if (res.code == 0) {
         sessionStorage.setItem('fatherSource', JSON.stringify(res.data));
-        this.setState({ fatherSource: res.data });
+        this.setState({fatherSource: res.data});
       }
     });
     // 获取母犬list
-    React.$ajax.postData('/api/dog/getAncestorInfo', { sexId: 0 }).then((res) => {
+    React.$ajax.postData('/api/dog/getAncestorInfo', {sexId: 0}).then((res) => {
       if (res.code == 0) {
         sessionStorage.setItem('motherSource', JSON.stringify(res.data));
-        this.setState({ motherSource: res.data });
+        this.setState({motherSource: res.data});
       }
     });
     //
     this.getJobUsage();
   }
-  handleCancel = () => this.setState({ previewVisible: false });
+  handleCancel = () => this.setState({previewVisible: false});
   handlePreview = (params) => {
     this.setState({
-      previewVisible: true,
+      previewVisible: true
     });
   };
   handleChange = (fileList) => {
-    this.setState({ fileList, lastestUploadImg: '' });
+    this.setState({fileList, lastestUploadImg: ''});
   };
   handleChangeHe = (fileList) => {
-    this.setState({ heFileList: fileList, lastestUploadImg: '' });
+    this.setState({heFileList: fileList, lastestUploadImg: ''});
   };
   beforeUpload(file) {
-    this.setState({ lastestUploadImg: '' });
-    let _this = this;
-    let url = window.URL.createObjectURL(file);
+    this.setState({lastestUploadImg: ''});
+    const _this = this;
+    const url = window.URL.createObjectURL(file);
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
       message.error('Image must smaller than 2MB!');
       return false;
     }
     if (isLt2M) {
-      this.setState(({ fileList }) => ({
+      this.setState(({fileList}) => ({
         fileList: [file],
-        previewImage: url,
+        previewImage: url
       }));
     }
-    let promise = new Promise(function (resolve, reject) {
+    const promise = new Promise(function (resolve, reject) {
       if (isLt2M) {
         // resolve(_this.state.fileList);
       } else {
@@ -182,13 +182,13 @@ class FormCompomnent extends React.Component {
     return promise;
   }
   handleClear = () => {
-    this.setState({ fileList: [], previewImage: '' });
+    this.setState({fileList: [], previewImage: ''});
   };
   //检查犬只编号是否重复
   checkNumber = (rule, value, callback) => {
     console.log(value);
     console.log(value.length);
-    const { dogInfor, isInitialValue } = this.state;
+    const {dogInfor, isInitialValue} = this.state;
     const numberValue = this.props.form.getFieldValue('number');
     const dogNumber = dogInfor && dogInfor.number;
     const re = /^[A-Za-z\d]{1,20}$/;
@@ -212,7 +212,7 @@ class FormCompomnent extends React.Component {
   };
   // 校验芯片号格式和是否重复
   checkChipCode = (rule, value, callback) => {
-    const { dogInfor, isInitialValue } = this.state;
+    const {dogInfor, isInitialValue} = this.state;
     const chipCode = this.props.form.getFieldValue('chipCode');
     const initChipCode = dogInfor && dogInfor.chipCode;
     /* 格式：长度为16位的数字和字母组合 */
@@ -270,8 +270,8 @@ class FormCompomnent extends React.Component {
   };
   // 请求后台验证
   httpAjaxHadnle = (key, value, callback) => {
-    let param = new FormData(),
-      configs = { headers: { 'Content-Type': 'multipart/form-data' } };
+    const param = new FormData();
+    const configs = {headers: {'Content-Type': 'multipart/form-data'}};
     param.append(key, value);
     //httpAjax('post', config.apiUrl + '/api/dog/isNotExistence', param, configs).then(callback);
     React.$ajax.postData('/api/dog/isNotExistence', param).then(callback);
@@ -289,15 +289,15 @@ class FormCompomnent extends React.Component {
       fatherName,
       motherId,
       motherName,
-      reportFilelist,
+      reportFilelist
     } = this.state;
-    const { id } = JSON.parse(sessionStorage.getItem('user'));
+    const {id} = JSON.parse(sessionStorage.getItem('user'));
     const successMess = dogId ? '修改成功' : '添加成功';
     const errorMess = dogId ? '修改失败' : '添加失败';
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const options = values;
-        let param = new FormData(); // 创建form对象
+        const param = new FormData(); // 创建form对象
         if (options.birthday) {
           options.birthday = moment(new Date(values.birthday)).format('YYYY-MM');
         }
@@ -340,8 +340,8 @@ class FormCompomnent extends React.Component {
           param.append('reportOperation', 0);
         }
 
-        let configs = {
-          headers: { 'Content-Type': 'multipart/form-data' },
+        const configs = {
+          headers: {'Content-Type': 'multipart/form-data'}
         };
         if (dogId) {
           param.append('id', dogId);
@@ -359,7 +359,8 @@ class FormCompomnent extends React.Component {
         param.birthdayStr = values.birthdayStr ? `${moment(values.birthdayStr).format('YYYY-MM')}` : '';
         param.houseId = values.houseId;
         //httpAjax('post', config.apiUrl + '/api/dog/saveInfo', param, configs)
-        React.$ajax.postData('/api/dog/saveInfo', param, configs)
+        React.$ajax
+          .postData('/api/dog/saveInfo', param, configs)
           .then((res) => {
             if (res.code == 0) {
               message.success(successMess);
@@ -375,34 +376,34 @@ class FormCompomnent extends React.Component {
     });
   };
   getAllHouse = () => {
-    this.setState({ roomIdvisible: true });
+    this.setState({roomIdvisible: true});
     React.$ajax.postData('/api/dogRoom/allHouse').then((res) => {
       if (res.code == '0') {
-        this.setState({ allHouseData: res.data });
+        this.setState({allHouseData: res.data});
         // this.selectHouseId(res.data[0].id);
       }
     });
   };
   // 直系亲属模态窗
   getParentIds = () => {
-    this.setState({ parentIdVisible: true });
+    this.setState({parentIdVisible: true});
     React.$ajax.postData('/api/dogRoom/allHouse').then((res) => {
       if (res.code == '0') {
-        this.setState({ allHouseData: res.data });
+        this.setState({allHouseData: res.data});
         // this.selectHouseId(res.data[0].id);
       }
     });
   };
   // 切换父母数据源
   switchParentSource = (t) => {
-    this.setState({ parentSelectType: t.target.value });
+    this.setState({parentSelectType: t.target.value});
   };
 
   getAllBraceletInfo = () => {
     React.$ajax.postData('/api/braceletInfo/listAll').then((res) => {
       if (res.code == '0') {
         this.setState({
-          allBracelet: res.data,
+          allBracelet: res.data
           // braceletId: res.data[0] && res.data[0].id
         });
       }
@@ -413,31 +414,31 @@ class FormCompomnent extends React.Component {
   getJobUsage = () => {
     React.$ajax.postData('/api/basicData/jobUsage').then((res) => {
       this.setState({
-        jobUsageList: res.data,
+        jobUsageList: res.data
       });
     });
   };
   // /api/userCenter/getTrainer
   getTrainer = () => {
-    React.$ajax.postData('/api/userCenter/getTrainer', { name: '' }).then((res) => {
+    React.$ajax.postData('/api/userCenter/getTrainer', {name: ''}).then((res) => {
       this.setState({
-        trainerList: res.data,
+        trainerList: res.data
       });
     });
   };
 
   selectHouseId = (value) => {
-    React.$ajax.postData('/api/dogRoom/listRoomByHouse', { houseId: value }).then((res) => {
+    React.$ajax.postData('/api/dogRoom/listRoomByHouse', {houseId: value}).then((res) => {
       // if(res.code == '0') {
-      this.setState({ dogList: res.data, roomIndex: 'qwe' });
+      this.setState({dogList: res.data, roomIndex: 'qwe'});
       //	}
     });
   };
 
   handleSearch = (v) => {
-    let types = this.state.parentSelectType,
-      source = types ? sessionStorage.getItem('fatherSource') : sessionStorage.getItem('motherSource'),
-      target = [];
+    const types = this.state.parentSelectType;
+    const source = types ? sessionStorage.getItem('fatherSource') : sessionStorage.getItem('motherSource');
+    let target = [];
     if (v) {
       // 匹配
       JSON.parse(source).map((item, i) => {
@@ -448,26 +449,26 @@ class FormCompomnent extends React.Component {
       target = JSON.parse(source);
     }
     if (types) {
-      this.setState({ fatherSource: target });
+      this.setState({fatherSource: target});
     } else {
-      this.setState({ motherSource: target });
+      this.setState({motherSource: target});
     }
   };
   // 选中所选父犬
   selectParent = (v) => {
     if (v && v.toString().indexOf('-') > -1) {
-      let types = this.state.parentSelectType,
-        tempArr = v.split('-');
+      const types = this.state.parentSelectType;
+      const tempArr = v.split('-');
       if (types) {
-        this.setState({ fatherId: tempArr[1], fatherName: tempArr[0] });
+        this.setState({fatherId: tempArr[1], fatherName: tempArr[0]});
       } else {
-        this.setState({ motherId: tempArr[1], motherName: tempArr[0] });
+        this.setState({motherId: tempArr[1], motherName: tempArr[0]});
       }
     }
   };
   render() {
     console.log(this.state);
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     const {
       showImgUrl,
       previewVisible,
@@ -482,7 +483,7 @@ class FormCompomnent extends React.Component {
       workUnitList,
       dogId,
       allBracelet,
-      braceletId,
+      braceletId
     } = this.state;
     const uploadButton = (
       <div>
@@ -518,7 +519,7 @@ class FormCompomnent extends React.Component {
         );
       });
 
-    const { fatherSource, motherSource } = this.state;
+    const {fatherSource, motherSource} = this.state;
     const fatherChildren = fatherSource.map((item, index) => {
       return (
         <AutoOption key={item.id} value={item.name + '-' + item.id}>
@@ -537,15 +538,15 @@ class FormCompomnent extends React.Component {
       <div className="AddDogForm">
         <Row gutter={24}>
           <Col span={24}>
-            <Card title="犬只信息" bordered={true}>
+            <Card title="犬只信息" bordered>
               <Col xxl={16} xl={22} lg={24} md={24} sm={24} xs={24}>
                 <Form className="ant-advanced-search-form">
                   <Row gutter={24}>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="档案编号" {...secondLayout} hasFeedback>
                         {getFieldDecorator('number', {
-                          rules: [{ validator: this.checkNumber }],
-                          initialValue: isInitialValue ? dogInfor.number : '',
+                          rules: [{validator: this.checkNumber}],
+                          initialValue: isInitialValue ? dogInfor.number : ''
                         })(<Input placeholder="档案编号" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -553,8 +554,8 @@ class FormCompomnent extends React.Component {
                       <FormItem label="犬只名称" {...secondLayout}>
                         {getFieldDecorator('name', {
                           //rules:[{required:true,message:'请输入犬只名称'}],
-                          rules: [{ validator: this.checkName }],
-                          initialValue: isInitialValue ? dogInfor.name : '',
+                          rules: [{validator: this.checkName}],
+                          initialValue: isInitialValue ? dogInfor.name : ''
                         })(<Input placeholder="犬只名称" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -564,7 +565,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="性别" {...secondLayout}>
                         {getFieldDecorator('sex', {
                           //rules: [{ required: true, message: '请选择性别' }],
-                          initialValue: isInitialValue ? dogInfor.sex : '',
+                          initialValue: isInitialValue ? dogInfor.sex : ''
                         })(
                           <RadioGroup disabled={disabled}>
                             <Radio value={0}>母</Radio>
@@ -577,7 +578,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="出生日期" {...secondLayout}>
                         {getFieldDecorator('birthdayStr', {
                           //rules:[{required:true,message:'请选择出生日期'}],
-                          initialValue: isInitialValue ? dogInfor.birthday && moment(new Date(dogInfor.birthday)) : '',
+                          initialValue: isInitialValue ? dogInfor.birthday && moment(new Date(dogInfor.birthday)) : ''
                         })(<MonthPicker disabled={disabled} format="YYYY-MM" />)}
                       </FormItem>
                     </Col>
@@ -587,7 +588,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="犬只品种" {...secondLayout}>
                         {getFieldDecorator('breed', {
                           //rules: [{ required: true, message: '请选择犬只品种' }],
-                          initialValue: isInitialValue ? dogInfor.breed : '',
+                          initialValue: isInitialValue ? dogInfor.breed : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择犬只品种</Option>
@@ -600,10 +601,10 @@ class FormCompomnent extends React.Component {
                       <FormItem label="芯片号" {...secondLayout}>
                         {getFieldDecorator('chipCode', {
                           rules: [
-                            { required: true, whitespace: true, message: '请输入芯片号' },
-                            { validator: this.checkChipCode },
+                            {required: true, whitespace: true, message: '请输入芯片号'},
+                            {validator: this.checkChipCode}
                           ],
-                          initialValue: isInitialValue ? dogInfor.chipCode : '',
+                          initialValue: isInitialValue ? dogInfor.chipCode : ''
                         })(<Input placeholder="芯片号" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -613,7 +614,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="犬只毛色" {...secondLayout}>
                         {getFieldDecorator('color', {
                           //rules: [{ required: true, message: '请选择犬只毛色' }],
-                          initialValue: isInitialValue ? dogInfor.color : '',
+                          initialValue: isInitialValue ? dogInfor.color : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择犬只毛色</Option>
@@ -626,7 +627,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="犬只毛型" {...secondLayout}>
                         {getFieldDecorator('woolType', {
                           //rules:[{required:true,message:'请输入犬只毛型'}],
-                          initialValue: isInitialValue ? dogInfor.woolType : '',
+                          initialValue: isInitialValue ? dogInfor.woolType : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择犬只毛型</Option>
@@ -640,9 +641,9 @@ class FormCompomnent extends React.Component {
                   <FormItem label="外貌特征" {...firstLayout}>
                     {getFieldDecorator('appearance', {
                       //rules: [{ required: true, message: '请输入外貌特征' }],
-                      rules: [{ validator: this.checkAppearance }],
-                      initialValue: isInitialValue ? dogInfor.appearance : '',
-                    })(<TextArea placeholder="外貌特征" autosize={{ minRows: 3, maxRows: 6 }} disabled={disabled} />)}
+                      rules: [{validator: this.checkAppearance}],
+                      initialValue: isInitialValue ? dogInfor.appearance : ''
+                    })(<TextArea placeholder="外貌特征" autosize={{minRows: 3, maxRows: 6}} disabled={disabled} />)}
                   </FormItem>
 
                   <Row gutter={24}>
@@ -667,7 +668,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="训导员" {...secondLayout}>
                         {getFieldDecorator('trainerId', {
                           //rules: [{ required: true, message: '请输入训导员' }],
-                          initialValue: isInitialValue ? dogInfor.trainerId || '' : '',
+                          initialValue: isInitialValue ? dogInfor.trainerId || '' : ''
                         })(
                           <Select>
                             <Option value={''}>请选择训导员</Option>
@@ -697,7 +698,7 @@ class FormCompomnent extends React.Component {
                             ? dogInfor.jobUsage
                               ? dogInfor.jobUsage.split(',').map((t) => Array(t))
                               : []
-                            : [],
+                            : []
                         })(
                           <Select disabled={disabled} mode="multiple">
                             {this.state.jobUsageList.map((item) => (
@@ -731,15 +732,15 @@ class FormCompomnent extends React.Component {
                       <FormItem label="犬只类别" {...secondLayout}>
                         {getFieldDecorator('type', {
                           //rules: [{ required: true, message: '是否在职' }],
-                          initialValue: isInitialValue ? dogInfor.type : '',
-                        })(<Select disabled={true}></Select>)}
+                          initialValue: isInitialValue ? dogInfor.type : ''
+                        })(<Select disabled></Select>)}
                       </FormItem>
                     </Col>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="训练等级" {...secondLayout}>
                         {getFieldDecorator('trainingLevel', {
                           //rules:[{required:true,message:'请选择专业'}],
-                          initialValue: isInitialValue ? dogInfor.trainingLevel : '',
+                          initialValue: isInitialValue ? dogInfor.trainingLevel : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择训练等级</Option>
@@ -756,7 +757,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="种犬等级" {...secondLayout}>
                         {getFieldDecorator('studLevel', {
                           //rules: [{ required: true, message: '请选择职务' }],
-                          initialValue: isInitialValue ? dogInfor.studLevel : '',
+                          initialValue: isInitialValue ? dogInfor.studLevel : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择种犬等级</Option>
@@ -775,7 +776,7 @@ class FormCompomnent extends React.Component {
                             ? dogInfor.inbreedingCoefficient != null
                               ? dogInfor.inbreedingCoefficient
                               : ''
-                            : '',
+                            : ''
                         })(<Input placeholder="近交系数" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -785,8 +786,8 @@ class FormCompomnent extends React.Component {
                       <FormItem label="繁殖单位" {...secondLayout}>
                         {getFieldDecorator('breedUnit', {
                           //rules: [{ required: true, message: '请输入繁殖单位' }],
-                          rules: [{ validator: this.checkBreedUnit }],
-                          initialValue: isInitialValue ? dogInfor.breedUnit : '',
+                          rules: [{validator: this.checkBreedUnit}],
+                          initialValue: isInitialValue ? dogInfor.breedUnit : ''
                         })(<Input placeholder="繁殖单位" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -794,7 +795,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="犬只归属" {...secondLayout}>
                         {getFieldDecorator('origin', {
                           //rules: [{ required: true, message: '请填写犬只归属' }],
-                          initialValue: isInitialValue ? dogInfor.origin : '',
+                          initialValue: isInitialValue ? dogInfor.origin : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择犬只归属</Option>
@@ -810,7 +811,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="服役状态" {...secondLayout}>
                         {getFieldDecorator('serviceStatus', {
                           //rules: [{ required: true, message: '请填写犬只归属' }],
-                          initialValue: isInitialValue ? dogInfor.serviceStatus : '',
+                          initialValue: isInitialValue ? dogInfor.serviceStatus : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择服役状态</Option>
@@ -824,7 +825,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="服役单位" {...secondLayout}>
                         {getFieldDecorator('serviceUnit', {
                           //rules: [{ required: true, message: '请选择服役单位' }],
-                          initialValue: isInitialValue ? dogInfor.serviceUnit : '',
+                          initialValue: isInitialValue ? dogInfor.serviceUnit : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择服役单位</Option>
@@ -876,9 +877,9 @@ class FormCompomnent extends React.Component {
                   <FormItem label="备注" {...firstLayout}>
                     {getFieldDecorator('remark', {
                       //rules: [{ required: true, message: '请输入外貌特征' }],
-                      rules: [{ validator: this.checkRemark }],
-                      initialValue: isInitialValue ? dogInfor.remark : '',
-                    })(<TextArea placeholder="备注" autosize={{ minRows: 3, maxRows: 6 }} disabled={disabled} />)}
+                      rules: [{validator: this.checkRemark}],
+                      initialValue: isInitialValue ? dogInfor.remark : ''
+                    })(<TextArea placeholder="备注" autosize={{minRows: 3, maxRows: 6}} disabled={disabled} />)}
                   </FormItem>
                   <Row gutter={24}>
                     {/* <FormItem label='犬只体检报告' {...secondLayout} >
@@ -923,18 +924,13 @@ class FormCompomnent extends React.Component {
                           accept="image/*"
                           listType="picture-card"
                           onChange={this.handleChange.bind(this)}
-                          beforeUpload={this.beforeUpload.bind(this)}
-                        >
+                          beforeUpload={this.beforeUpload.bind(this)}>
                           {isInitialValue && dogInfor.photo != '' ? '' : uploadButton}
                           {
                             fileList.length == 0 && dogInfor.photo == 'none' ? (
                               uploadButton
                             ) : (
-                              <img
-                                src={this.state.lastestUploadImg}
-                                style={{ width: '100px', height: '100px' }}
-                                alt=""
-                              />
+                              <img src={this.state.lastestUploadImg} style={{width: '100px', height: '100px'}} alt="" />
                             )
                             //fileList.length == 0 && this.state.lastestUploadImg === '' ? uploadButton : ''
                           }
@@ -946,7 +942,7 @@ class FormCompomnent extends React.Component {
                           <div className="pre-container">
                             <img
                               src={previewImage}
-                              style={{ width: '100px', height: '100px' }}
+                              style={{width: '100px', height: '100px'}}
                               alt=""
                               onClick={() => this.handlePreview()}
                             />
@@ -966,13 +962,12 @@ class FormCompomnent extends React.Component {
                           // listType="picture-card"
                           fileList={this.state.reportFilelist}
                           onChange={(file) => {
-                            this.setState({ reportFilelist: [file.file] });
+                            this.setState({reportFilelist: [file.file]});
                           }}
-                          onRemove={() => this.setState({ reportFilelist: [] })}
+                          onRemove={() => this.setState({reportFilelist: []})}
                           beforeUpload={(file) => {
                             return false;
-                          }}
-                        >
+                          }}>
                           <Button>
                             <Icon type="upload" /> 点击上传
                           </Button>
@@ -982,23 +977,22 @@ class FormCompomnent extends React.Component {
                   </Row>
 
                   <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                    <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                    <img alt="example" style={{width: '100%'}} src={previewImage} />
                   </Modal>
                   <Modal
                     title="选择犬舍"
                     visible={this.state.roomIdvisible}
                     onOk={() => {
-                      this.setState({ roomIdvisible: false });
+                      this.setState({roomIdvisible: false});
                     }}
                     onCancel={() => {
-                      this.setState({ roomIdvisible: false });
-                    }}
-                  >
+                      this.setState({roomIdvisible: false});
+                    }}>
                     <FormItem label="选择楼号" {...firstLayout}>
                       {getFieldDecorator('houseId', {
-                        initialValue: isInitialValue ? dogInfor.houseId : 1,
+                        initialValue: isInitialValue ? dogInfor.houseId : 1
                       })(
-                        <Select style={{ width: 120 }} onChange={this.selectHouseId}>
+                        <Select style={{width: 120}} onChange={this.selectHouseId}>
                           {this.state.allHouseData.map((item) => {
                             return (
                               <Option key={item.id} value={item.id}>
@@ -1016,11 +1010,10 @@ class FormCompomnent extends React.Component {
                           roomId: this.state.dogList[e.target.value].id,
                           roomName: '',
                           roomIdName:
-                            this.state.dogList[e.target.value].houseName + this.state.dogList[e.target.value].name,
+                            this.state.dogList[e.target.value].houseName + this.state.dogList[e.target.value].name
                         });
                       }}
-                      value={this.state.roomIndex}
-                    >
+                      value={this.state.roomIndex}>
                       {this.state.dogList.map((item, index) => {
                         return (
                           <Radio key={item.id} value={index}>
@@ -1035,12 +1028,11 @@ class FormCompomnent extends React.Component {
                     title="选择直系亲属"
                     visible={this.state.parentIdVisible}
                     onOk={() => {
-                      this.setState({ parentIdVisible: false });
+                      this.setState({parentIdVisible: false});
                     }}
                     onCancel={() => {
-                      this.setState({ parentIdVisible: false });
-                    }}
-                  >
+                      this.setState({parentIdVisible: false});
+                    }}>
                     <FormItem>
                       <span>直系亲属：</span>
                       <Tag color="#2db7f5">
@@ -1060,19 +1052,18 @@ class FormCompomnent extends React.Component {
                         <Radio value={1}>父</Radio>
                         <Radio value={0}>母</Radio>
                       </Radio.Group>
-                      <div className="global-search-wrapper" style={{ width: 300 }}>
+                      <div className="global-search-wrapper" style={{width: 300}}>
                         <AutoComplete
                           className="global-search"
                           size="large"
                           style={{
                             width: '100%',
                             marginLeft: '45px',
-                            display: this.state.parentSelectType ? 'block' : 'none',
+                            display: this.state.parentSelectType ? 'block' : 'none'
                           }}
                           onSearch={this.handleSearch}
                           onSelect={this.selectParent}
-                          placeholder="请输入名称关键字，如“牙膏”"
-                        >
+                          placeholder="请输入名称关键字，如“牙膏”">
                           {fatherChildren}
                         </AutoComplete>
 
@@ -1082,12 +1073,11 @@ class FormCompomnent extends React.Component {
                           style={{
                             width: '100%',
                             marginLeft: '45px',
-                            display: this.state.parentSelectType ? 'none' : 'block',
+                            display: this.state.parentSelectType ? 'none' : 'block'
                           }}
                           onSearch={this.handleSearch}
                           onSelect={this.selectParent}
-                          placeholder="请输入名称关键字，如“牙膏”"
-                        >
+                          placeholder="请输入名称关键字，如“牙膏”">
                           {motherChildren}
                         </AutoComplete>
                       </div>
@@ -1096,11 +1086,11 @@ class FormCompomnent extends React.Component {
 
                   {!disabled ? (
                     <Row>
-                      <Col span={24} style={{ textAlign: 'center', marginTop: '40px' }}>
+                      <Col span={24} style={{textAlign: 'center', marginTop: '40px'}}>
                         <Button type="primary" htmlType="submit" onClick={this.handleSubmit.bind(this)}>
                           提交
                         </Button>
-                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                        <Button style={{marginLeft: 8}} onClick={this.handleReset}>
                           清空
                         </Button>
                       </Col>
@@ -1120,7 +1110,7 @@ class FormCompomnent extends React.Component {
 const AddDogForm = Form.create()(FormCompomnent);
 
 const mapStateToProps = (state) => ({
-  loginState: state.login,
+  loginState: state.login
 });
 export default connect(mapStateToProps)(AddDogForm);
 

@@ -1,6 +1,6 @@
 // 绩效考核
-import React, { Component } from 'react';
-import { Icon } from 'antd';
+import React, {Component} from 'react';
+import {Icon} from 'antd';
 import NoData from 'components/NoData';
 import 'style/pages/archives/components/PerformanceAssessment.less';
 class PerformanceAssessment extends Component {
@@ -8,24 +8,24 @@ class PerformanceAssessment extends Component {
     super(props);
     this.state = {
       detailInfor: '',
-      currentIndex: '',
+      currentIndex: ''
     };
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
       detailInfor: nextProps.detailInfor,
-      currentIndex: nextProps.currentIndex,
+      currentIndex: nextProps.currentIndex
     });
   }
   //打印
   onPrint = (e) => {
-    const { detailInfor } = this.state;
+    const {detailInfor} = this.state;
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
     util.jQPrintPartialHtml('#print-view' + detailInfor.bookName + detailInfor.id);
   };
   render() {
-    const { detailInfor, currentIndex } = this.state;
+    const {detailInfor, currentIndex} = this.state;
     const JZG = detailInfor ? detailInfor.assessmentValues : null; //价值观数据
     const Other = detailInfor ? detailInfor.otherReasonsDTOS : null; //业务与内务考核-其他加减分项参数
     return (
@@ -41,8 +41,7 @@ class PerformanceAssessment extends Component {
               {!detailInfor.noData ? (
                 <div
                   className="print-view performance-assessment-cont"
-                  id={'print-view' + detailInfor.bookName + detailInfor.id}
-                >
+                  id={'print-view' + detailInfor.bookName + detailInfor.id}>
                   <div className="mgt12 infor clearfix">
                     <div className="fl">
                       <img src={require('../../../images/archives/head.png')} width="32" height="32" />

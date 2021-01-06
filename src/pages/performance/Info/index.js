@@ -1,25 +1,23 @@
-import React, { Component } from 'react';
-import { Row, Col, Card, Button } from 'antd';
+import React, {Component} from 'react';
+import {Row, Col, Card, Button} from 'antd';
 import RegisterTable from './Table';
 import RegisterSearch from './Search';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 class PerformanceRegister extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      limit: null,
+      limit: null
     };
   }
   handleLimit = (limit) => {
-    this.setState({ limit });
+    this.setState({limit});
   };
   componentWillUnmount() {
-    this.setState = (state, callback) => {
-      return;
-    };
+    this.setState = (state, callback) => {};
   }
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['绩效考核', '考核列表'] });
+    React.store.dispatch({type: 'NAV_DATA', nav: ['绩效考核', '考核列表']});
   }
   render() {
     return (

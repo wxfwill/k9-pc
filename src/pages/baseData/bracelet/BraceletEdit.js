@@ -1,13 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal } from 'antd';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {connect} from 'react-redux';
+import {Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal} from 'antd';
+import {firstLayout, secondLayout} from 'util/Layout';
 require('style/app/dogInfo/addDogForm.less');
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-const { TextArea } = Input;
-const { MonthPicker } = DatePicker;
+const {TextArea} = Input;
+const {MonthPicker} = DatePicker;
 
 class VideoInfo extends React.Component {
   constructor(props) {
@@ -18,21 +18,21 @@ class VideoInfo extends React.Component {
       uniqueNo: '',
       name: '',
       dogList: [],
-      videoData: {},
+      videoData: {}
     };
   }
 
   handleSubmit = () => {
     this.props.form.validateFields((err, values) => {
-      let count = 0,
-        obj = {};
+      const count = 0;
+      const obj = {};
       if (!err) {
-        const { uniqueNo, name } = this.state;
+        const {uniqueNo, name} = this.state;
         const VideoId = this.props.location.query && this.props.location.query.VideoId;
 
         const successMess = VideoId ? '修改成功' : '添加成功';
         const errorMess = VideoId ? '修改失败' : '添加失败';
-        const parms = { uniqueNo, name, dogId: values.dogId };
+        const parms = {uniqueNo, name, dogId: values.dogId};
         if (VideoId) {
           parms.id = VideoId;
         }
@@ -54,9 +54,9 @@ class VideoInfo extends React.Component {
   };
 
   searchDog = (name = '') => {
-    React.$ajax.postData('/api/dog/listAll', { name }).then((res) => {
+    React.$ajax.postData('/api/dog/listAll', {name}).then((res) => {
       if (res.code == 0) {
-        this.setState({ dogList: res.data });
+        this.setState({dogList: res.data});
       }
     });
   };
@@ -71,10 +71,10 @@ class VideoInfo extends React.Component {
     const pathname = this.props.location.pathname;
     if (VideoId) {
       React.$ajax
-        .postData('/api/braceletInfo/info', { id: VideoId })
+        .postData('/api/braceletInfo/info', {id: VideoId})
         .then((res) => {
           if (res.code == 0) {
-            this.setState({ videoData: res.data, ...res.data });
+            this.setState({videoData: res.data, ...res.data});
           } else {
             message.error('请求失败');
           }
@@ -83,22 +83,22 @@ class VideoInfo extends React.Component {
           console.log(error);
         });
       if (pathname.indexOf('Detail') > -1) {
-        this.setState({ isInitialValue: true, disabled: true });
+        this.setState({isInitialValue: true, disabled: true});
       } else {
-        this.setState({ isInitialValue: true, disabled: false });
+        this.setState({isInitialValue: true, disabled: false});
       }
     }
   }
 
   render() {
     // console.log(this.props,this.state, 'asdasdq')
-    const { getFieldDecorator } = this.props.form;
-    const { isInitialValue, disabled, videoData, dogList } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {isInitialValue, disabled, videoData, dogList} = this.state;
     return (
       <div className="AddDogForm">
         <Row gutter={24}>
           <Col span={24}>
-            <Card title="颈环信息" bordered={true}>
+            <Card title="颈环信息" bordered>
               <Col xxl={16} xl={22} lg={24} md={24} sm={24} xs={24}>
                 <Form className="ant-advanced-search-form">
                   <Row gutter={24}>
@@ -106,15 +106,15 @@ class VideoInfo extends React.Component {
                       <FormItem label="颈环编号" {...secondLayout} hasFeedback>
                         {getFieldDecorator('uniqueNo', {
                           rules: [
-                            { required: true, whitespace: true, message: '请输入颈环编号' },
-                            { validator: this.checkNumber },
+                            {required: true, whitespace: true, message: '请输入颈环编号'},
+                            {validator: this.checkNumber}
                           ],
-                          initialValue: isInitialValue ? videoData.uniqueNo : '',
+                          initialValue: isInitialValue ? videoData.uniqueNo : ''
                         })(
                           <Input
                             placeholder="颈环编号"
                             onChange={(e) => {
-                              this.setState({ uniqueNo: e.target.value });
+                              this.setState({uniqueNo: e.target.value});
                             }}
                             disabled={disabled}
                           />
@@ -124,13 +124,13 @@ class VideoInfo extends React.Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="名称" {...secondLayout} hasFeedback>
                         {getFieldDecorator('name', {
-                          rules: [{ required: true, message: '请输入名称' }],
-                          initialValue: isInitialValue ? videoData.name : '',
+                          rules: [{required: true, message: '请输入名称'}],
+                          initialValue: isInitialValue ? videoData.name : ''
                         })(
                           <Input
                             placeholder="名称"
                             onChange={(e) => {
-                              this.setState({ name: e.target.value });
+                              this.setState({name: e.target.value});
                             }}
                             disabled={disabled}
                           />
@@ -143,18 +143,17 @@ class VideoInfo extends React.Component {
                       <FormItem label="警犬" {...secondLayout} hasFeedback>
                         {getFieldDecorator('dogId', {
                           //   rules: [{ required: true,whitespace:true, message: '请选择警犬' },{validator: this.checkNumber}],
-                          initialValue: isInitialValue ? videoData.dogId : '',
+                          initialValue: isInitialValue ? videoData.dogId : ''
                         })(
                           <Select
                             placeholder="警犬"
                             optionLabelProp="children"
                             showSearch
-                            autosize={{ minRows: 2, maxRows: 24 }}
+                            autosize={{minRows: 2, maxRows: 24}}
                             disabled={disabled}
                             filterOption={(input, option) =>
                               option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                            }
-                          >
+                            }>
                             {dogList.map((item) => (
                               <Option value={item.id} key={item.id + '_dog'}>
                                 {item.name}
@@ -182,11 +181,11 @@ class VideoInfo extends React.Component {
 
                   {!disabled ? (
                     <Row>
-                      <Col span={24} style={{ textAlign: 'center', marginTop: '40px' }}>
+                      <Col span={24} style={{textAlign: 'center', marginTop: '40px'}}>
                         <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>
                           提交
                         </Button>
-                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                        <Button style={{marginLeft: 8}} onClick={this.handleReset}>
                           清空
                         </Button>
                       </Col>
@@ -207,7 +206,7 @@ class VideoInfo extends React.Component {
 const AddViewForm = Form.create()(VideoInfo);
 
 const mapStateToProps = (state) => ({
-  loginState: state.login,
+  loginState: state.login
 });
 export default connect(mapStateToProps)(AddViewForm);
 

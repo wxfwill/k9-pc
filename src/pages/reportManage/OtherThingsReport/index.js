@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Row,
   Col,
@@ -13,19 +13,19 @@ import {
   Select,
   TreeSelect,
   Popconfirm,
-  message,
+  message
 } from 'antd';
 import Moment from 'moment';
 
 import 'style/pages/reportManage/FourReport/index.less';
 
-const { TextArea } = Input;
-const { Option } = Select;
-const { TreeNode } = TreeSelect;
+const {TextArea} = Input;
+const {Option} = Select;
+const {TreeNode} = TreeSelect;
 
 const EditableContext = React.createContext();
 
-const EditableRow = ({ form, index, ...props }) => (
+const EditableRow = ({form, index, ...props}) => (
   <EditableContext.Provider value={form}>
     <tr {...props} />
   </EditableContext.Provider>
@@ -55,18 +55,18 @@ function queryGroupUser(keyword) {
     return;
   }
   isSearch = false;
-  let dataObj = {
-    keyword: keyword,
+  const dataObj = {
+    keyword: keyword
   };
   React.$ajax.common
     .queryGroupUser(dataObj)
     .then((res) => {
       if (res.code == 0) {
-        let arr = [];
+        const arr = [];
         for (const name in res.data) {
           arr.push({
             name: name,
-            children: res.data[name],
+            children: res.data[name]
           });
         }
         personnelTree = arr;
@@ -80,7 +80,7 @@ function queryGroupUser(keyword) {
 }
 queryGroupUser();
 //查询类
-let ruleList = [];
+const ruleList = [];
 (function () {
   React.$ajax.common
     .queryAllType()
@@ -103,12 +103,12 @@ let ruleList = [];
 class EditableCell extends React.Component {
   state = {
     editing: false,
-    searchPeers: '',
+    searchPeers: ''
   };
 
   toggleEdit = () => {
     const editing = !this.state.editing;
-    this.setState({ editing }, () => {
+    this.setState({editing}, () => {
       if (editing) {
         this.input.focus();
       }
@@ -117,19 +117,19 @@ class EditableCell extends React.Component {
 
   save = (e) => {
     console.log(e);
-    const { record, handleSave } = this.props;
+    const {record, handleSave} = this.props;
     this.form.validateFields((error, values) => {
       if (error && error[e.currentTarget.id]) {
         return;
       }
       this.toggleEdit();
-      handleSave({ ...record, ...values });
+      handleSave({...record, ...values});
     });
   };
 
   renderCell = (form) => {
     this.form = form;
-    const { dataIndex, record, title } = this.props;
+    const {dataIndex, record, title} = this.props;
     let domHtml = '';
     switch (title) {
       case '时间':
@@ -150,15 +150,14 @@ class EditableCell extends React.Component {
           <TreeSelect
             ref={(node) => (this.input = node)}
             showSearch
-            style={{ width: '100%' }}
-            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            style={{width: '100%'}}
+            dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
             placeholder="请选择类别"
             allowClear
             multiple
             treeDefaultExpandAll
             treeNodeFilterProp="title"
-            onChange={this.save}
-          >
+            onChange={this.save}>
             {ruleList && ruleList.length > 0
               ? ruleList.map((item) => {
                   return (
@@ -181,10 +180,9 @@ class EditableCell extends React.Component {
             ref={(node) => (this.input = node)}
             mode="multiple"
             optionFilterProp="children"
-            style={{ width: '100%' }}
+            style={{width: '100%'}}
             placeholder="请输入汇报人"
-            onChange={this.save}
-          >
+            onChange={this.save}>
             {personnelList && personnelList.length > 0
               ? personnelList.map((item) => {
                   return <Option key={item.id}>{item.name}</Option>;
@@ -198,8 +196,8 @@ class EditableCell extends React.Component {
           <TreeSelect
             ref={(node) => (this.input = node)}
             showSearch
-            style={{ width: '100%' }}
-            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            style={{width: '100%'}}
+            dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
             placeholder="请选择同行人"
             allowClear
             multiple
@@ -207,8 +205,7 @@ class EditableCell extends React.Component {
             onSearch={(value) => {
               queryGroupUser(value);
             }}
-            onChange={this.save}
-          >
+            onChange={this.save}>
             {personnelTree && personnelTree.length > 0
               ? personnelTree.map((item) => {
                   return (
@@ -233,22 +230,22 @@ class EditableCell extends React.Component {
     }
     //return domHtml;
     return (
-      <Form.Item style={{ margin: 0 }}>
+      <Form.Item style={{margin: 0}}>
         {form.getFieldDecorator(dataIndex, {
           rules: [
             {
               required: true,
-              message: `${title}不能为空！`,
-            },
+              message: `${title}不能为空！`
+            }
           ],
-          initialValue: record[dataIndex],
+          initialValue: record[dataIndex]
         })(domHtml)}
       </Form.Item>
     );
   };
 
   render() {
-    const { editable, dataIndex, title, record, index, handleSave, children, ...restProps } = this.props;
+    const {editable, dataIndex, title, record, index, handleSave, children, ...restProps} = this.props;
     return (
       <td {...restProps}>
         {editable ? <EditableContext.Consumer>{this.renderCell}</EditableContext.Consumer> : children}
@@ -265,43 +262,43 @@ class OtherThingsReport extends Component {
         title: '序号',
         dataIndex: 'key',
         //width: '70px',
-        fixed: 'left',
+        fixed: 'left'
       },
       {
         title: '时间',
         dataIndex: 'repTime',
         //width: '220px',
-        editable: true,
+        editable: true
       },
       {
         title: '来源',
         dataIndex: 'source',
         //width: '150px',
-        editable: true,
+        editable: true
       },
       {
         title: '类别',
         dataIndex: 'categoryIds',
         //width: '140px',
-        editable: true,
+        editable: true
       },
       {
         title: '汇报人',
         dataIndex: 'rep',
         //width: '150px',
-        editable: true,
+        editable: true
       },
       {
         title: '同行人',
         dataIndex: 'peer',
         //width: '140px',
-        editable: true,
+        editable: true
       },
       {
         title: '详细情况',
         dataIndex: 'repDetail',
         //width: '160px',
-        editable: true,
+        editable: true
       },
       {
         title: '操作',
@@ -313,25 +310,25 @@ class OtherThingsReport extends Component {
             <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.key)}>
               <a>删除</a>
             </Popconfirm>
-          ) : null,
-      },
+          ) : null
+      }
     ];
 
     this.state = {
       dataSource: [],
-      count: 1,
+      count: 1
     };
   }
 
   handleDelete = (key) => {
     const dataSource = [...this.state.dataSource];
     this.setState({
-      dataSource: dataSource.filter((item) => item.key !== key),
+      dataSource: dataSource.filter((item) => item.key !== key)
     });
   };
 
   handleAdd = () => {
-    const { count, dataSource } = this.state;
+    const {count, dataSource} = this.state;
     const newData = {
       key: count,
       operationKey: this.state.count,
@@ -340,15 +337,15 @@ class OtherThingsReport extends Component {
       categoryIds: [], //类别
       rep: [], //汇报人
       peer: [], //同行人
-      repDetail: '',
+      repDetail: ''
     };
     this.setState({
       dataSource: [...dataSource, newData],
-      count: count + 1,
+      count: count + 1
     });
   };
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '其他事物上报'] });
+    React.store.dispatch({type: 'NAV_DATA', nav: ['上报管理', '其他事物上报']});
   }
   handleSave = (row) => {
     const newData = [...this.state.dataSource];
@@ -356,16 +353,16 @@ class OtherThingsReport extends Component {
     const item = newData[index];
     newData.splice(index, 1, {
       ...item,
-      ...row,
+      ...row
     });
-    this.setState({ dataSource: newData });
+    this.setState({dataSource: newData});
   };
 
   //提交报备信息
   onSubmit = () => {
-    const { dataSource } = this.state;
+    const {dataSource} = this.state;
     if (dataSource && dataSource.length > 0) {
-      let arr = [];
+      const arr = [];
       dataSource.map((item) => {
         arr.push({
           categoryIds: item.categoryIds, //类别
@@ -373,11 +370,11 @@ class OtherThingsReport extends Component {
           repDetail: item.repDetail,
           repTime: Moment(item.repTime),
           source: item.source,
-          rep: item.rep,
+          rep: item.rep
         });
       });
       const dataObj = {
-        reports: arr,
+        reports: arr
       };
       React.$ajax
         .postData('/api/report/createOtherReport', dataObj)
@@ -398,12 +395,12 @@ class OtherThingsReport extends Component {
   };
 
   render() {
-    const { dataSource } = this.state;
+    const {dataSource} = this.state;
     const components = {
       body: {
         row: EditableFormRow,
-        cell: EditableCell,
-      },
+        cell: EditableCell
+      }
     };
     const columns = this.columns.map((col) => {
       if (!col.editable) {
@@ -416,8 +413,8 @@ class OtherThingsReport extends Component {
           editable: col.editable,
           dataIndex: col.dataIndex,
           title: col.title,
-          handleSave: this.handleSave,
-        }),
+          handleSave: this.handleSave
+        })
       };
     });
     return (
@@ -429,9 +426,8 @@ class OtherThingsReport extends Component {
               onClick={this.handleAdd}
               type="primary"
               style={{
-                marginBottom: 16,
-              }}
-            >
+                marginBottom: 16
+              }}>
               增加行
             </Button>
             <Table
@@ -448,9 +444,8 @@ class OtherThingsReport extends Component {
                 onClick={this.onSubmit}
                 type="primary"
                 style={{
-                  marginTop: 30,
-                }}
-              >
+                  marginTop: 30
+                }}>
                 提交
               </Button>
             ) : null}

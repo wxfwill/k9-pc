@@ -1,29 +1,29 @@
-import React,{ Component } from 'react';
-import { Row, Col, Card} from 'antd';
+import React, {Component} from 'react';
+import {Row, Col, Card} from 'antd';
 
 import SubSearch from 'components/admin/searchForm/ScheduleManage/GroupScheduleSearch';
 import SubTable from 'components/admin/tables/ScheduleManage/GroupScheduleTable';
 require('style/view/assess/officer.less');
-class GroupInfo extends Component{
-  constructor(props){
+class GroupInfo extends Component {
+  constructor(props) {
     super(props);
-    this.state= {
-      limit:null
-    }
+    this.state = {
+      limit: null
+    };
   }
-  handleLimit= (limit)=>{
+  handleLimit = (limit) => {
     this.setState({limit});
-  }
-  render(){
+  };
+  render() {
     return (
       <div className="DutyComponent Officer">
-      {/* <Row gutter={24}>
+        {/* <Row gutter={24}>
           <Col xl={24} lg={24} md={24} sm={24} xs={24}>
               <Card title="按条件搜索" bordered={false}>
                 <SubSearch limit={this.handleLimit}/>
               </Card>
           </Col>
-        </Row>*/} 
+        </Row>*/}
         <Row gutter={24}>
           <Col xl={24} lg={24} md={24} sm={24} xs={24}>
             <Card bordered={false}>
@@ -32,12 +32,11 @@ class GroupInfo extends Component{
           </Col>
         </Row>
       </div>
-    )
+    );
   }
 }
 
 export default GroupInfo;
-
 
 // WEBPACK FOOTER //
 // ./src/components/admin/scheduleManage/GroupSchedule.js

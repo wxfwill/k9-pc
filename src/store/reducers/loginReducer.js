@@ -1,9 +1,9 @@
-import { USER_INFO, MENU_LIST, USER_TOKEN } from '../actionTypes';
+import {USER_INFO, MENU_LIST, USER_TOKEN} from '../actionTypes';
 
 const initialzeState = {
   menuList: [],
   userInfo: '',
-  token: null,
+  token: null
 };
 
 export default function accountReducer(state = initialzeState, action) {
@@ -11,17 +11,17 @@ export default function accountReducer(state = initialzeState, action) {
     case USER_INFO:
       return {
         ...state,
-        userInfo: action.userInfo,
+        userInfo: action.userInfo
       };
     case MENU_LIST:
       return {
         ...state,
-        menuList: action.list,
+        menuList: action.list
       };
     case USER_TOKEN:
       return {
         ...state,
-        token: action.token,
+        token: action.token
       };
     default:
       return state;

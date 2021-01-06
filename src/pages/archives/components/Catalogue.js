@@ -1,31 +1,31 @@
 //目录
-import React, { Component } from 'react';
-import { muluList } from '../localData';
+import React, {Component} from 'react';
+import {muluList} from '../localData';
 import 'style/pages/archives/components/Catalogue.less';
 class Catalogue extends Component {
   constructor(props) {
     super(props);
     this.state = {
       currentIndex: '',
-      jumpDirectory: null,
+      jumpDirectory: null
     };
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
       currentIndex: nextProps.currentIndex,
-      jumpDirectory: nextProps.jumpDirectory,
+      jumpDirectory: nextProps.jumpDirectory
     });
   }
   //从目录跳转
   jumpDirectory = (e, name) => {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
-    const { jumpDirectory } = this.state;
+    const {jumpDirectory} = this.state;
     jumpDirectory && jumpDirectory(name);
   };
 
   render() {
-    const { currentIndex } = this.state;
+    const {currentIndex} = this.state;
     return (
       <div className="book-box">
         <div className="catalogue-main">

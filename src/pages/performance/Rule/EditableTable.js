@@ -1,12 +1,12 @@
 import React from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Select, message, Badge } from 'antd';
+import {Table, Input, InputNumber, Popconfirm, Form, Select, message, Badge} from 'antd';
 import Immutable from 'immutable';
 //import EditableCell from './EditableCell'
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
-const EditableRow = ({ form, index, ...props }) => (
+const EditableRow = ({form, index, ...props}) => (
   <EditableContext.Provider value={form}>
     <tr {...props} />
   </EditableContext.Provider>
@@ -23,7 +23,7 @@ class EditableCell extends React.Component {
   };
   getSelect = () => {
     return (
-      <Select defaultValue="0" style={{ width: 80 }}>
+      <Select defaultValue="0" style={{width: 80}}>
         <Option value="0">时长</Option>
         <Option value="1">次数</Option>
       </Select>
@@ -31,18 +31,18 @@ class EditableCell extends React.Component {
   };
   getSelectOperate = () => {
     return (
-      <Select defaultValue="0" style={{ width: 70 }}>
+      <Select defaultValue="0" style={{width: 70}}>
         <Option value="0">{`>=`}</Option>
         <Option value="1">{`<`}</Option>
       </Select>
     );
   };
   render() {
-    const { editing, dataIndex, title, inputType, record, index, ...restProps } = this.props;
+    const {editing, dataIndex, title, inputType, record, index, ...restProps} = this.props;
     return (
       <EditableContext.Consumer>
         {(form) => {
-          const { getFieldDecorator } = form;
+          const {getFieldDecorator} = form;
           return (
             <td {...restProps}>
               {editing ? (
@@ -53,52 +53,52 @@ class EditableCell extends React.Component {
                 ((record.performanceId == 3 || record.performanceId == 4) && dataIndex == 'basisScore') ? (
                   record[dataIndex]
                 ) : dataIndex == 'rule' ? (
-                  <div style={{ display: '-webkit-inline-box' }}>
+                  <div style={{display: '-webkit-inline-box'}}>
                     {' '}
-                    <FormItem style={{ margin: 0 }}>
+                    <FormItem style={{margin: 0}}>
                       {getFieldDecorator('type', {
                         rules: [
                           {
                             required: true,
-                            message: `请输入类型!`,
-                          },
+                            message: `请输入类型!`
+                          }
                         ],
-                        initialValue: record['type'].toString(),
+                        initialValue: record.type.toString()
                       })(this.getSelect())}
                     </FormItem>
-                    <FormItem style={{ margin: 0 }}>
+                    <FormItem style={{margin: 0}}>
                       {getFieldDecorator('operate', {
                         rules: [
                           {
                             required: true,
-                            message: `请输入比较方式!`,
-                          },
+                            message: `请输入比较方式!`
+                          }
                         ],
-                        initialValue: record['operate'].toString(),
+                        initialValue: record.operate.toString()
                       })(this.getSelectOperate())}
                     </FormItem>
-                    <FormItem style={{ margin: 0 }}>
+                    <FormItem style={{margin: 0}}>
                       {getFieldDecorator('value', {
                         rules: [
                           {
                             required: true,
-                            message: `请输入具体对比数据!`,
-                          },
+                            message: `请输入具体对比数据!`
+                          }
                         ],
-                        initialValue: record['value'],
+                        initialValue: record.value
                       })(this.getInput())}
                     </FormItem>
                   </div>
                 ) : (
-                  <FormItem style={{ margin: 0 }}>
+                  <FormItem style={{margin: 0}}>
                     {getFieldDecorator(dataIndex, {
                       rules: [
                         {
                           required: true,
-                          message: `请输入${title}!`,
-                        },
+                          message: `请输入${title}!`
+                        }
                       ],
-                      initialValue: record[dataIndex],
+                      initialValue: record[dataIndex]
                     })(this.getInput())}
                   </FormItem>
                 )
@@ -119,13 +119,13 @@ class EditableTable extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       current: '',
       pageSize: 5,
       currPage: 1,
       dataSource: [],
-      editingKey: '',
+      editingKey: ''
     };
     this.columns = [
       {
@@ -142,46 +142,46 @@ class EditableTable extends React.Component {
                 fontSize: '12px',
                 height: '16px',
                 lineHeight: '16px',
-                backgroundColor: '#99a9bf',
+                backgroundColor: '#99a9bf'
               }}
             />
           );
-        },
+        }
       },
       {
         title: '科目',
         dataIndex: 'subjectName',
         key: 'subjectName',
         width: '20%',
-        editable: true,
+        editable: true
       },
       {
         title: '指标',
         dataIndex: 'item',
         key: 'item',
         width: '15%',
-        editable: true,
+        editable: true
       },
       {
         title: '基础分',
         dataIndex: 'basisScore',
         key: 'basisScore',
         width: '15%',
-        editable: true,
+        editable: true
       },
       {
         title: '分值',
         dataIndex: 'optScore',
         key: 'optScore',
         width: '15%',
-        editable: true,
+        editable: true
       },
       {
         title: '得分规则',
         dataIndex: 'rule',
         width: '20%',
         key: 'rule',
-        editable: true,
+        editable: true
       },
       {
         title: '操作',
@@ -196,7 +196,7 @@ class EditableTable extends React.Component {
                 <span>
                   <EditableContext.Consumer>
                     {(form) => (
-                      <a href="javascript:;" onClick={() => this.save(form, record.key)} style={{ marginRight: 8 }}>
+                      <a href="javascript:;" onClick={() => this.save(form, record.key)} style={{marginRight: 8}}>
                         保存
                       </a>
                     )}
@@ -210,51 +210,51 @@ class EditableTable extends React.Component {
               )}
             </div>
           );
-        },
-      },
+        }
+      }
     ];
   }
 
   componentDidMount() {
-    this.fetch({ pageSize: 5, currPage: 1, id: this.props.performanceId ? this.props.performanceId : 1 });
+    this.fetch({pageSize: 5, currPage: 1, id: this.props.performanceId ? this.props.performanceId : 1});
   }
   componentWillMount() {
-    this.fetch({ pageSize: 5, currPage: 1, id: 1 });
+    this.fetch({pageSize: 5, currPage: 1, id: 1});
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.performanceId == nextProps.performanceId) {
       return;
     }
-    let filter = nextProps.filter;
-    let _this = this;
-    this.setState({ filter: filter }, function () {
-      _this.fetch({ pageSize: 5, currPage: 1, id: this.props.performanceId ? this.props.performanceId : 1 });
+    const filter = nextProps.filter;
+    const _this = this;
+    this.setState({filter: filter}, function () {
+      _this.fetch({pageSize: 5, currPage: 1, id: this.props.performanceId ? this.props.performanceId : 1});
     });
   }
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+    this.setState({loading: true});
     React.$ajax
-      .postData('/api/performanceCheck/listSubjectItemByTypeId', { ...params })
+      .postData('/api/performanceCheck/listSubjectItemByTypeId', {...params})
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
-        let data = [];
-        let performanceId = this.props.performanceId ? this.props.performanceId : 1;
+        const data = [];
+        const performanceId = this.props.performanceId ? this.props.performanceId : 1;
         res.data.map((obj) => {
           console.log(obj.id);
           obj.performanceCheckItemVOList.map((item) => {
-            let newItem = item;
-            newItem['subjectName'] = obj.subjectName;
-            newItem['subjectId'] = obj.id;
-            newItem['performanceId'] = performanceId;
-            newItem['key'] = item.id.toString();
+            const newItem = item;
+            newItem.subjectName = obj.subjectName;
+            newItem.subjectId = obj.id;
+            newItem.performanceId = performanceId;
+            newItem.key = item.id.toString();
             data.push(newItem);
           });
         });
         console.log(data);
-        this.setState({ dataSource: data, loading: false, pagination });
+        this.setState({dataSource: data, loading: false, pagination});
       })
       .catch(function (error) {
         console.log(error);
@@ -265,7 +265,7 @@ class EditableTable extends React.Component {
   };
 
   edit(key) {
-    this.setState({ editingKey: key });
+    this.setState({editingKey: key});
   }
 
   save(form, key) {
@@ -275,7 +275,7 @@ class EditableTable extends React.Component {
       }
       row.id = key;
       React.$ajax
-        .postData('/api/performanceCheck/updatePerformanceCheckItem', { ...row })
+        .postData('/api/performanceCheck/updatePerformanceCheckItem', {...row})
         .then((res) => {
           const newData = [...this.state.dataSource];
           const index = newData.findIndex((item) => key === item.key);
@@ -284,12 +284,12 @@ class EditableTable extends React.Component {
             row.rule = (row.type == 0 ? '时长' : '次数') + (row.operate == 0 ? '>=' : '<') + row.value;
             newData.splice(index, 1, {
               ...item,
-              ...row,
+              ...row
             });
-            this.setState({ dataSource: newData, editingKey: '' });
+            this.setState({dataSource: newData, editingKey: ''});
           } else {
             newData.push(this.state.dataSource);
-            this.setState({ dataSource: newData, editingKey: '' });
+            this.setState({dataSource: newData, editingKey: ''});
           }
           message.success('保存成功！');
         })
@@ -300,15 +300,15 @@ class EditableTable extends React.Component {
   }
 
   cancel = () => {
-    this.setState({ editingKey: '' });
+    this.setState({editingKey: ''});
   };
 
   render() {
     const components = {
       body: {
         row: EditableFormRow,
-        cell: EditableCell,
-      },
+        cell: EditableCell
+      }
     };
 
     const columns = this.columns.map((col) => {
@@ -325,8 +325,8 @@ class EditableTable extends React.Component {
               : 'text',
           dataIndex: col.dataIndex,
           title: col.title,
-          editing: this.isEditing(record),
-        }),
+          editing: this.isEditing(record)
+        })
       };
     });
 

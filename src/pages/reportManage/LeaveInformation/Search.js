@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, TreeSelect, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, TreeSelect, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import GlobalName from 'components/searchForm/GlobalUserName';
-const { TreeNode } = TreeSelect;
+const {TreeNode} = TreeSelect;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -13,7 +13,7 @@ class SearchForm extends Component {
       expand: true,
       dutyList: [],
       teamData: [],
-      feedbalVal: null,
+      feedbalVal: null
     };
   }
   componentDidMount() {
@@ -31,7 +31,7 @@ class SearchForm extends Component {
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   componentWillReceiveProps(nextProps) {}
@@ -42,13 +42,13 @@ class SearchForm extends Component {
   queryAllTeam = () => {
     React.$ajax.common.queryAllGroups().then((res) => {
       if (res.code == 0) {
-        let resObj = res.data;
-        let newArr = [];
-        for (let key in resObj) {
-          let obj = { id: key, name: resObj[key] };
+        const resObj = res.data;
+        const newArr = [];
+        for (const key in resObj) {
+          const obj = {id: key, name: resObj[key]};
           newArr.push(obj);
         }
-        this.setState({ teamData: newArr });
+        this.setState({teamData: newArr});
       }
     });
   };
@@ -74,14 +74,13 @@ class SearchForm extends Component {
             value={item.name || item.id}
             title={item.name}
             key={item.name || item.id}
-            selectable={false}
-          ></TreeNode>
+            selectable={false}></TreeNode>
         );
       }
     });
   };
   render() {
-    const { getFieldDecorator, setFieldsValue } = this.props.form;
+    const {getFieldDecorator, setFieldsValue} = this.props.form;
     return (
       <Form onSubmit={this.handleSearch}>
         <Row gutter={24}>
@@ -106,16 +105,16 @@ class SearchForm extends Component {
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="开始时间" {...thirdLayout}>
               {getFieldDecorator('startDate', {
-                initialValue: null,
-              // })(<DatePicker showTime placeholder="请输入" onChange={this.onChangeStartTime} />)}
+                initialValue: null
+                // })(<DatePicker showTime placeholder="请输入" onChange={this.onChangeStartTime} />)}
               })(<DatePicker placeholder="请输入" onChange={this.onChangeStartTime} />)}
             </FormItem>
           </Col>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="结束时间" {...thirdLayout}>
               {getFieldDecorator('endDate', {
-                initialValue: null,
-              // })(<DatePicker showTime placeholder="请输入" onChange={this.onChangeEndTime} />)}
+                initialValue: null
+                // })(<DatePicker showTime placeholder="请输入" onChange={this.onChangeEndTime} />)}
               })(<DatePicker placeholder="请输入" onChange={this.onChangeEndTime} />)}
             </FormItem>
           </Col>
@@ -124,7 +123,7 @@ class SearchForm extends Component {
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="请假类型" {...thirdLayout} hasFeedback>
               {getFieldDecorator('leaveType')(
-                <Select placeholder="请选择" style={{ width: '100%' }} allowClear onChange={this.selectTaskType}>
+                <Select placeholder="请选择" style={{width: '100%'}} allowClear onChange={this.selectTaskType}>
                   {this.props.leaveType.map((item) => {
                     return (
                       <Option key={item.id} value={item.ruleName}>
@@ -154,18 +153,18 @@ class SearchForm extends Component {
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="目的地" {...thirdLayout}>
               {getFieldDecorator('destination', {
-                initialValue: undefined,
+                initialValue: undefined
               })(<Input placeholder="请输入" allowClear />)}
             </FormItem>
           </Col>
-          <Col xl={6} lg={6} md={8} sm={12} xs={12} style={{ textAlign: 'center' }}>
+          <Col xl={6} lg={6} md={8} sm={12} xs={12} style={{textAlign: 'center'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handlePrif}>
+            <Button style={{marginLeft: 8}} onClick={this.handlePrif}>
               导出
             </Button>
           </Col>

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import CustomTable from 'components/table/CustomTable';
-import { Card, message, Row, Col, Modal, Form, Input, Button } from 'antd';
-import { thirdLayout } from 'util/Layout';
-const FormItem = Form.Item;
+import {Card, message, Row, Col, Modal, Form, Input, Button} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import AddEditModel from './Model';
-import { menuOperate } from './operateData';
-const { confirm } = Modal;
+import {menuOperate} from './operateData';
+const FormItem = Form.Item;
+const {confirm} = Modal;
 class SysTree extends Component {
   constructor(props) {
     super(props);
@@ -16,67 +16,67 @@ class SysTree extends Component {
       iconType: 'add',
       tableData: [],
       param: {
-        pname: '',
+        pname: ''
       },
       pageinfo: {
         currPage: 1,
         pageSize: 10,
-        total: 0,
+        total: 0
       },
       sortFieldName: '',
-      sortType: 'desc',
+      sortType: 'desc'
     };
   }
   handleFormData = (data) => {
-    let { id, type } = this.state;
+    const {id, type} = this.state;
     if (type == '编辑参数') {
       // 编辑
-      let obj = Object.assign({}, data, { id });
+      const obj = Object.assign({}, data, {id});
       console.log(obj);
       this.addEditMenu(obj, '编辑成功');
     } else {
       // 新增
-      let obj = Object.assign({}, data);
+      const obj = Object.assign({}, data);
       console.log(obj);
       this.addEditMenu(obj, '新增成功');
     }
   };
   handleAdd = () => {
-    this.setState({ type: '新增参数', id: 0 }, () => {
+    this.setState({type: '新增参数', id: 0}, () => {
       this.childEle.openModel();
     });
   };
   componentDidMount() {
-    let { param, pageinfo, sortFieldName, sortType } = this.state;
+    const {param, pageinfo, sortFieldName, sortType} = this.state;
     this.getAppNavList(param, pageinfo, sortFieldName, sortType);
   }
   handleEdit = (row) => {
     // e.stopPropagation();
     console.log(row);
-    this.setState({ type: '编辑参数', id: row.id }, () => {
+    this.setState({type: '编辑参数', id: row.id}, () => {
       this.childEle.openModel(row);
     });
   };
   // app导航列表
   getAppNavList = (param, pageinfo, sortFieldName, sortType) => {
-    let obj = Object.assign({}, { param }, { ...pageinfo, sortFieldName, sortType });
+    const obj = Object.assign({}, {param}, {...pageinfo, sortFieldName, sortType});
     React.$ajax.postData('/api/sys-param-conf/page', obj).then((res) => {
       if (res && res.code == 0) {
         console.log(res);
-        let resData = res.data ? res.data : [];
-        let { pageinfo } = this.state;
+        const resData = res.data ? res.data : [];
+        const {pageinfo} = this.state;
         pageinfo.current = resData.currPage;
         pageinfo.pageSize = resData.pageSize;
         pageinfo.total = resData.totalCount;
-        this.setState({ tableData: resData.list ? resData.list : [], pageinfo });
+        this.setState({tableData: resData.list ? resData.list : [], pageinfo});
       }
     });
   };
   // 删除参数
   delteMenu = (id) => {
-    React.$ajax.getData('/api/sys-param-conf/deleteById', { id }).then((res) => {
+    React.$ajax.getData('/api/sys-param-conf/deleteById', {id}).then((res) => {
       if (res && res.code == 0) {
-        let { param, pageinfo, sortFieldName, sortType } = this.state;
+        const {param, pageinfo, sortFieldName, sortType} = this.state;
         this.getAppNavList(param, pageinfo, sortFieldName, sortType);
       }
     });
@@ -87,7 +87,7 @@ class SysTree extends Component {
       if (res && res.code == 0) {
         message.info(txt, 0.5, () => {
           this.childEle.handleCancel();
-          let { param, pageinfo, sortFieldName, sortType } = this.state;
+          const {param, pageinfo, sortFieldName, sortType} = this.state;
           this.getAppNavList(param, pageinfo, sortFieldName, sortType);
         });
       }
@@ -107,7 +107,7 @@ class SysTree extends Component {
       onOk: () => {
         this.delteMenu(row.id);
       },
-      onCancel() {},
+      onCancel() {}
     });
   };
   handleReset = () => {
@@ -116,32 +116,32 @@ class SysTree extends Component {
   handleSearch = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      let { pname } = values;
-      pname = pname ? pname : '';
-      let per = Object.assign({}, this.state.param, { pname });
-      let pageinfo = Object.assign({}, this.state.pageinfo, { currPage: 1, current: 1 });
-      this.setState({ param: per, pageinfo }, () => {
-        let { param, pageinfo, sortFieldName, sortType } = this.state;
+      let {pname} = values;
+      pname = pname || '';
+      const per = Object.assign({}, this.state.param, {pname});
+      const pageinfo = Object.assign({}, this.state.pageinfo, {currPage: 1, current: 1});
+      this.setState({param: per, pageinfo}, () => {
+        const {param, pageinfo, sortFieldName, sortType} = this.state;
         this.getAppNavList(param, pageinfo, sortFieldName, sortType);
       });
     });
   };
   handleChangeSize = (page) => {
-    let pageinfo = Object.assign({}, this.state.pageinfo, { currPage: page, current: page });
-    this.setState({ pageinfo }, () => {
-      let { param, pageinfo, sortFieldName, sortType } = this.state;
+    const pageinfo = Object.assign({}, this.state.pageinfo, {currPage: page, current: page});
+    this.setState({pageinfo}, () => {
+      const {param, pageinfo, sortFieldName, sortType} = this.state;
       this.getAppNavList(param, pageinfo, sortFieldName, sortType);
     });
   };
   handleShowSizeChange = (cur, size) => {
-    let pageinfo = Object.assign({}, this.state.pageinfo, { currPage: cur, current: cur, pageSize: size });
-    this.setState({ pageinfo }, () => {
-      let { param, pageinfo, sortFieldName, sortType } = this.state;
+    const pageinfo = Object.assign({}, this.state.pageinfo, {currPage: cur, current: cur, pageSize: size});
+    this.setState({pageinfo}, () => {
+      const {param, pageinfo, sortFieldName, sortType} = this.state;
       this.getAppNavList(param, pageinfo, sortFieldName, sortType);
     });
   };
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     return (
       <div>
         <Card title="查询条件" bordered={false}>
@@ -153,21 +153,21 @@ class SysTree extends Component {
               {/* <Col xl={6} lg={6} md={10} sm={24} xs={24}>
                 <FormItem label="别名">{getFieldDecorator('code')(<Input placeholder="别名" />)}</FormItem>
               </Col> */}
-              <Col xl={6} lg={6} md={10} sm={24} xs={24} style={{ textAlign: 'left' }}>
+              <Col xl={6} lg={6} md={10} sm={24} xs={24} style={{textAlign: 'left'}}>
                 <Button type="primary" htmlType="submit">
                   查询
                 </Button>
-                <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                <Button style={{marginLeft: 8}} onClick={this.handleReset}>
                   重置
                 </Button>
               </Col>
             </Row>
           </Form>
         </Card>
-        <Button type="primary" style={{ margin: '10px 0' }} onClick={this.handleAdd.bind(this)}>
+        <Button type="primary" style={{margin: '10px 0'}} onClick={this.handleAdd.bind(this)}>
           新增
         </Button>
-        <Button type="primary" style={{ margin: '10px 10px' }} onClick={this.clearSysCache.bind(this)}>
+        <Button type="primary" style={{margin: '10px 10px'}} onClick={this.clearSysCache.bind(this)}>
           清除系统缓存
         </Button>
         <Card title="" bordered={false}>
@@ -185,12 +185,11 @@ class SysTree extends Component {
             pagination={this.state.pageinfo}
             loading={this.state.loading}
             columns={menuOperate(this.handleEdit, this.handleDelteMenu)}
-            isBordered={true}
+            isBordered
             isRowSelects={false}
             isAllRows={false}
             handleChangeSize={this.handleChangeSize}
-            handleShowSizeChange={this.handleShowSizeChange}
-          ></CustomTable>
+            handleShowSizeChange={this.handleShowSizeChange}></CustomTable>
         </Card>
       </div>
     );

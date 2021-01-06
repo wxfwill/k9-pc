@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Radio, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Radio, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import moment from 'moment';
 import httpAjax from 'libs/httpAjax';
 const FormItem = Form.Item;
@@ -15,14 +15,14 @@ class SearchForm extends Component {
       typeData: [
         {
           id: 1,
-          name: '加班',
+          name: '加班'
         },
         {
           id: 2,
-          name: '夜班执勤',
-        },
+          name: '夜班执勤'
+        }
       ],
-      feedbalVal: null,
+      feedbalVal: null
     };
   }
   handleSearch = (e) => {
@@ -37,7 +37,7 @@ class SearchForm extends Component {
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   selectHouseId = () => {};
@@ -47,7 +47,7 @@ class SearchForm extends Component {
   hangdleFeedback = () => {};
   handlePrif = () => {};
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     return (
       <Form onSubmit={this.handleSearch}>
         <Row gutter={24}>
@@ -69,34 +69,34 @@ class SearchForm extends Component {
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="姓名:" {...thirdLayout}>
               {getFieldDecorator('userName', {
-                initialValue: '',
+                initialValue: ''
               })(<Input placeholder="请输入" allowClear />)}
             </FormItem>
           </Col>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="开始时间" {...thirdLayout}>
               {getFieldDecorator('repDateStart', {
-                initialValue: null,
+                initialValue: null
               })(<DatePicker placeholder="请输入" onChange={this.onChangeStartTime} />)}
             </FormItem>
           </Col>
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <FormItem label="结束时间" {...thirdLayout}>
               {getFieldDecorator('repDateEnd', {
-                initialValue: null,
+                initialValue: null
               })(<DatePicker placeholder="请输入" onChange={this.onChangeEndTime} />)}
             </FormItem>
           </Col>
         </Row>
         <Row>
-          <Col xl={6} lg={6} md={8} sm={12} xs={12} style={{ textAlign: 'center' }}>
+          <Col xl={6} lg={6} md={8} sm={12} xs={12} style={{textAlign: 'center'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handlePrif}>
+            <Button style={{marginLeft: 8}} onClick={this.handlePrif}>
               导出
             </Button>
           </Col>

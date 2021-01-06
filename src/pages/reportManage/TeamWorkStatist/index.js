@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Card, message } from 'antd';
+import React, {Component} from 'react';
+import {Card, message} from 'antd';
 import Search from 'pages/reportManage/Common/Search';
 import moment from 'moment';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import CustomTable from 'components/table/CustomTable';
-require('style/fourReport/reportList.less');
 import ExportFileHoc from 'components/exportFile/exportFileHoc';
+require('style/fourReport/reportList.less');
 
 class TeamWorkStatist extends Component {
   constructor(props) {
@@ -23,8 +23,8 @@ class TeamWorkStatist extends Component {
       pagination: {
         currPage: 1,
         pageSize: 10,
-        total: 0,
-      },
+        total: 0
+      }
     };
   }
   handleRowClick = (txt, record, index) => {
@@ -33,12 +33,12 @@ class TeamWorkStatist extends Component {
     // console.log(index);
     if (txt.groupId) {
       // 中队
-      this.props.history.push({ pathname: '/app/reportManage/OwnWorkStatise', search: `?groupId=${txt.groupId}` });
+      this.props.history.push({pathname: '/app/reportManage/OwnWorkStatise', search: `?groupId=${txt.groupId}`});
     } else {
       // 具体事项
       this.props.history.push({
         pathname: '/app/reportManage/TeamWorkStatistDetal',
-        search: `?groupId=${record.groupId}&id=${txt.id}`,
+        search: `?groupId=${record.groupId}&id=${txt.id}`
       });
     }
   };
@@ -54,14 +54,14 @@ class TeamWorkStatist extends Component {
   handleSearchData = (data, methods) => {
     // this.setState({ tableHeader: [] });
     if (data && data.year && !data.month) {
-      this.setState({ date: moment(data.year).format('YYYY'), dateType: 'year' }, () => {
+      this.setState({date: moment(data.year).format('YYYY'), dateType: 'year'}, () => {
         methods() || this.getListData();
       });
     } else if (data && data.year && data.month) {
       this.setState(
         {
           date: moment(data.year).format('YYYY') + '-' + moment(data.month).format('M'),
-          dateType: 'month',
+          dateType: 'month'
         },
         () => {
           methods() || this.getListData();
@@ -71,7 +71,7 @@ class TeamWorkStatist extends Component {
       this.setState(
         {
           date: '',
-          dateType: '',
+          dateType: ''
         },
         () => {
           methods() || this.getListData();
@@ -80,9 +80,9 @@ class TeamWorkStatist extends Component {
     }
   };
   getMontDateRange = (year, month) => {
-    let startDate = moment([year, month - 1]);
-    let endDate = moment(startDate).endOf('month');
-    return { start: startDate, end: endDate };
+    const startDate = moment([year, month - 1]);
+    const endDate = moment(startDate).endOf('month');
+    return {start: startDate, end: endDate};
   };
   handeExport = (data) => {
     this.handleSearchData(data, this.exportExcel);
@@ -95,18 +95,17 @@ class TeamWorkStatist extends Component {
       key: item.columnName + item.id + Math.random(),
       align: 'center',
       // fixed: this.state.num - 1 == index ? 'left' : null,
-      fixed: 0 == index ? 'left' : null,
+      fixed: index == 0 ? 'left' : null,
       render: (txt, record, index) => {
         return (
           <span
             className={record[item.columnName] != '总计' && this.state.lastIndex != index ? 'tabEleRow' : ''}
             key={'key-' + item.id + Math.random()}
-            onClick={this.state.lastIndex != index ? this.handleRowClick.bind(this, txt, record, index) : null}
-          >
+            onClick={this.state.lastIndex != index ? this.handleRowClick.bind(this, txt, record, index) : null}>
             {record[item.id] ? record[item.id].value : record[item.columnName]}
           </span>
         );
-      },
+      }
     };
   };
   recursion = (obj, item, index) => {
@@ -121,36 +120,36 @@ class TeamWorkStatist extends Component {
   };
   formatArrList = (list) => {
     let obj = {};
-    let newArr = [];
-    this.setState({ num: list.length });
+    const newArr = [];
+    this.setState({num: list.length});
     if (list && list.length > 0) {
       list.forEach((item, index) => {
         obj = this.recursion(obj, item, index);
         newArr.push(obj);
       });
     }
-    this.setState({ tableHeader: newArr });
+    this.setState({tableHeader: newArr});
     return newArr;
   };
   getListData = () => {
-    let { date, dateType } = this.state;
-    this.setState({ loading: true });
-    React.$ajax.fourManage.statisticGroup({ date, dateType }).then((res) => {
+    const {date, dateType} = this.state;
+    this.setState({loading: true});
+    React.$ajax.fourManage.statisticGroup({date, dateType}).then((res) => {
       if (res && res.code === 0) {
-        let resData = res.data;
-        let titleArr = resData ? resData.columns : [];
+        const resData = res.data;
+        const titleArr = resData ? resData.columns : [];
         let formatArr = [];
-        let resArr = resData.data && resData.data.length > 0 ? resData.data : [];
-        this.setState({ lastIndex: resArr.length - 1 });
+        const resArr = resData.data && resData.data.length > 0 ? resData.data : [];
+        this.setState({lastIndex: resArr.length - 1});
         formatArr = this.formatArrList(titleArr);
 
-        this.setState({ columns: formatArr, dataSource: resArr, loading: false });
+        this.setState({columns: formatArr, dataSource: resArr, loading: false});
       }
     });
   };
   exportExcel = () => {
-    let { date, dateType } = this.state;
-    this.props.exportExcel('/api/report/exportStatisticGroup', { date, dateType });
+    const {date, dateType} = this.state;
+    this.props.exportExcel('/api/report/exportStatisticGroup', {date, dateType});
     return true;
   };
   render() {
@@ -169,12 +168,11 @@ class TeamWorkStatist extends Component {
               return 'key-' + row.groupId + Math.random();
             }}
             dataSource={this.state.dataSource}
-            isScroll={{ x: 1366, y: 400 }}
+            isScroll={{x: 1366, y: 400}}
             loading={this.state.loading}
             columns={this.state.columns}
-            isBordered={true}
-            isRowSelects={false}
-          ></CustomTable>
+            isBordered
+            isRowSelects={false}></CustomTable>
         </Card>
       </div>
     );

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Row, Col, Card, Button, Table, Divider, message, Popconfirm } from 'antd';
+import React, {Component} from 'react';
+import {Row, Col, Card, Button, Table, Divider, message, Popconfirm} from 'antd';
 import NoData from 'components/NoData/index';
 import AddRule from './addRule';
 import 'style/pages/performance/AssessmentSetting/index.less';
@@ -9,20 +9,20 @@ class AssessmentSetting extends Component {
     this.columns = [
       {
         title: '小类',
-        dataIndex: 'ruleName',
+        dataIndex: 'ruleName'
       },
       {
         title: '周期',
-        dataIndex: 'ruleCycleNote',
+        dataIndex: 'ruleCycleNote'
       },
       {
         title: '周期内积分限制',
         dataIndex: 'integralLimit',
-        render: (text) => <span>{text ? text : '无'}</span>,
+        render: (text) => <span>{text || '无'}</span>
       },
       {
         title: '分数',
-        dataIndex: 'baseScore',
+        dataIndex: 'baseScore'
       },
       {
         title: '操作',
@@ -32,30 +32,29 @@ class AssessmentSetting extends Component {
               onClick={() => {
                 this.openAddRule('小类');
                 this.setState({
-                  redactData: record,
+                  redactData: record
                 });
-              }}
-            >
+              }}>
               编辑
             </a>
             <Divider type="vertical" />
             <Popconfirm title="确定删除?" onConfirm={() => this.deleteRule(record.id)}>
-              <a style={{ color: 'red' }}>删除</a>
+              <a style={{color: 'red'}}>删除</a>
             </Popconfirm>
           </span>
-        ),
-      },
+        )
+      }
     ];
     this.state = {
       ruleTreeList: [],
       visible: false,
       redactData: null,
       AddRuleTitle: '',
-      pid: undefined,
+      pid: undefined
     };
   }
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['绩效考核', '考核指标设置'] });
+    React.store.dispatch({type: 'NAV_DATA', nav: ['绩效考核', '考核指标设置']});
     this.getAllRule();
   }
   // 获取全部规则树
@@ -65,7 +64,7 @@ class AssessmentSetting extends Component {
       .then((res) => {
         if (res.code == 0) {
           this.setState({
-            ruleTreeList: res.data,
+            ruleTreeList: res.data
           });
         }
       })
@@ -77,7 +76,7 @@ class AssessmentSetting extends Component {
   //删除
   deleteRule(id) {
     React.$ajax
-      .getData('/api/integral-rule/delCascade', { id })
+      .getData('/api/integral-rule/delCascade', {id})
       .then((res) => {
         if (res.code == 0) {
           this.getAllRule();
@@ -96,7 +95,7 @@ class AssessmentSetting extends Component {
     this.setState({
       visible: true,
       AddRuleTitle: title,
-      pid: pid ? pid : undefined,
+      pid: pid || undefined
     });
   }
   //关闭表单窗口
@@ -104,7 +103,7 @@ class AssessmentSetting extends Component {
     this.setState(
       {
         visible: false,
-        redactData: null,
+        redactData: null
       },
       () => {
         this.getAllRule();
@@ -112,7 +111,7 @@ class AssessmentSetting extends Component {
     );
   };
   render() {
-    const { ruleTreeList, visible, redactData, pid, AddRuleTitle } = this.state;
+    const {ruleTreeList, visible, redactData, pid, AddRuleTitle} = this.state;
     return (
       <div className="AssessmentSetting">
         <Row>
@@ -134,24 +133,22 @@ class AssessmentSetting extends Component {
                               onClick={() => {
                                 this.openAddRule('大类');
                                 this.setState({
-                                  redactData: item,
+                                  redactData: item
                                 });
-                              }}
-                            >
+                              }}>
                               编辑
                             </a>
                             <Popconfirm title="确定删除?" onConfirm={() => this.deleteRule(item.id)}>
-                              <a style={{ color: 'red', marginLeft: 16 }}>删除</a>
+                              <a style={{color: 'red', marginLeft: 16}}>删除</a>
                             </Popconfirm>
                           </span>
                         }
-                        style={{ width: '49%' }}
+                        style={{width: '49%'}}
                         actions={[
                           <Button type="primary" icon="plus" onClick={() => this.openAddRule('小类', item.id)}>
                             添加小类
-                          </Button>,
-                        ]}
-                      >
+                          </Button>
+                        ]}>
                         <Table columns={this.columns} dataSource={item.children} pagination={false} rowKey="id" />
                       </Card>
                     );

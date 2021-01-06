@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import 'style/NoData/index.less';
 import CustomTable from 'components/table/CustomTable';
 const noImg = require('images/no-data.svg');
@@ -8,19 +8,19 @@ class NoData extends Component {
     super(props);
     this.state = {
       dataSource: [],
-      TableHeder: [],
+      TableHeder: []
     };
   }
   componentDidMount() {
     //如果没有数据返回，则默认显示10条空数据
     const tab = this.props.TableHeder;
-    let dataSource = [];
-    let TableHeder = [];
+    const dataSource = [];
+    const TableHeder = [];
     if (tab && tab.length > 0) {
-      let obj = {};
+      const obj = {};
       tab.map((item) => {
         obj[item.dataIndex] = '--';
-        TableHeder.push({ title: item.title, dataIndex: item.dataIndex });
+        TableHeder.push({title: item.title, dataIndex: item.dataIndex});
       });
       for (let i = 0; i < 10; i++) {
         dataSource.push(util.DeepClone(obj));
@@ -30,7 +30,7 @@ class NoData extends Component {
       });
       this.setState({
         dataSource: dataSource,
-        TableHeder: TableHeder,
+        TableHeder: TableHeder
       });
     }
   }
@@ -45,10 +45,9 @@ class NoData extends Component {
             dataSource={this.state.dataSource}
             loading={false}
             columns={this.state.TableHeder}
-            isBordered={true}
+            isBordered
             isRowSelects={false}
-            isScroll={this.props.isScroll}
-          ></CustomTable>
+            isScroll={this.props.isScroll}></CustomTable>
         ) : (
           <div className="no-data-wrap">
             <img className="no-logo" src={noImg} alt="无数据" />

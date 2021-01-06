@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Table, Button, Icon, message, Card, Tag, Tooltip, Collapse } from 'antd';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Table, Button, Icon, message, Card, Tag, Tooltip, Collapse} from 'antd';
+import {Link} from 'react-router-dom';
 import moment from 'moment';
 import GtableEdit from './GtableEdit';
 import httpAjax from 'libs/httpAjax';
@@ -17,7 +17,7 @@ class SubTable extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 10,
       currPage: 1,
@@ -26,7 +26,7 @@ class SubTable extends React.Component {
       loading: false,
       filter: null,
       changeLeft: false,
-      showDetail: false,
+      showDetail: false
     };
   }
   componentWillMount() {
@@ -36,29 +36,29 @@ class SubTable extends React.Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let filter = nextProps.filter;
-    let isReset = util.method.isObjectValueEqual(nextProps, this.props);
+    const filter = nextProps.filter;
+    const isReset = util.method.isObjectValueEqual(nextProps, this.props);
     if (!isReset) {
-      let _this = this;
-      this.setState({ filter, data: [] }, function () {
+      const _this = this;
+      this.setState({filter, data: []}, function () {
         _this.fetch({
           pageSize: _this.state.pageSize,
           currPage: 1,
           ...filter,
-          trainDate: filter.trainDate && filter.trainDate.format('x'),
+          trainDate: filter.trainDate && filter.trainDate.format('x')
         });
       });
     }
   }
 
   fetch(params) {
-    this.setState({ loading: true });
-    let _this = this;
-    httpAjax('post', config.apiUrl + '/api/onDuty/dutyUserGroup', { ...params })
+    this.setState({loading: true});
+    const _this = this;
+    httpAjax('post', config.apiUrl + '/api/onDuty/dutyUserGroup', {...params})
       .then((res) => {
-        let data = res.data.groups;
+        const data = res.data.groups;
         _this.handleData(data, function (data) {
-          _this.setState({ data, DutyUsers: res.data.onDutyUsers, loading: false });
+          _this.setState({data, DutyUsers: res.data.onDutyUsers, loading: false});
         });
       })
       .catch(function (error) {
@@ -66,33 +66,33 @@ class SubTable extends React.Component {
       });
   }
   handleData(data, callBack) {
-    let tableData = [];
+    const tableData = [];
     data.map((item) => {
-      let columnsHeader = [
+      const columnsHeader = [
         {
           userName: '队长',
-          userId: 2,
+          userId: 2
         },
         {
           userName: '雇员',
-          userId: 3,
+          userId: 3
         },
         {
           userName: '一班班长',
-          userId: 4,
+          userId: 4
         },
         {
           userName: '一班队员',
-          userId: 5,
+          userId: 5
         },
         {
           userName: '二班班长',
-          userId: 6,
+          userId: 6
         },
         {
           userName: '二班队员',
-          userId: 7,
-        },
+          userId: 7
+        }
       ];
       item.data = [];
       columnsHeader.forEach((i, index) => {
@@ -114,7 +114,7 @@ class SubTable extends React.Component {
                 name: '',
                 userId: '',
                 classId: 0,
-                groupId: item.groupId,
+                groupId: item.groupId
               });
             }
             break;
@@ -133,7 +133,7 @@ class SubTable extends React.Component {
                 name: '',
                 userId: '',
                 classId: item.classList[0].classId,
-                groupId: item.classList[0].groupId,
+                groupId: item.classList[0].groupId
               });
             }
             break;
@@ -151,7 +151,7 @@ class SubTable extends React.Component {
                 name: '',
                 userId: '',
                 classId: item.classList[1].classId,
-                groupId: item.classList[1].groupId,
+                groupId: item.classList[1].groupId
               });
             }
             break;
@@ -161,7 +161,7 @@ class SubTable extends React.Component {
         }
         item.data.push({
           columnsHeader: columnsHeader[index],
-          content: content,
+          content: content
         });
       });
       tableData.push(item);
@@ -181,7 +181,7 @@ class SubTable extends React.Component {
       value = content.name;
       userId = content.userId + '&' + content.groupId + '&' + content.classId;
     }
-    let obj = {
+    const obj = {
       children:
         typeof content !== 'undefined' ? (
           <GtableEdit
@@ -189,18 +189,17 @@ class SubTable extends React.Component {
             userId={userId}
             rowNumber={index + 1}
             onChange={this.handleDataChange}
-            udTime={colHeader}
-          ></GtableEdit>
+            udTime={colHeader}></GtableEdit>
         ) : (
           ''
         ),
-      props: {},
+      props: {}
     };
     return obj;
   }
 
   handleDataChange(options, hide) {
-    httpAjax('post', config.apiUrl + '/api/onDuty/updateUser', { ...options })
+    httpAjax('post', config.apiUrl + '/api/onDuty/updateUser', {...options})
       .then((res) => {
         if (res.code == 0) {
           hide();
@@ -227,9 +226,8 @@ class SubTable extends React.Component {
       <Card
         // extra={item.saveStatus ==0?<Tag color="#f50">未发布</Tag>:<Tag color="#108ee9">已发布</Tag>}
         key={item.groupId}
-        style={{ width: '48%', display: 'inline-block', margin: '0 2% 2% 0' }}
-        bodyStyle={{ padding: '15px 32px' }}
-      >
+        style={{width: '48%', display: 'inline-block', margin: '0 2% 2% 0'}}
+        bodyStyle={{padding: '15px 32px'}}>
         <div className="item_body">
           <Table
             rowKey={(row) => {
@@ -248,7 +246,7 @@ class SubTable extends React.Component {
   };
 
   getColumns(groupName) {
-    let _this = this;
+    const _this = this;
     const columns = [
       {
         title: '队名',
@@ -257,7 +255,7 @@ class SubTable extends React.Component {
         key: 'columnsHeader',
         render: (columnsHeader) => {
           return columnsHeader.userName;
-        },
+        }
       },
       {
         title: groupName,
@@ -266,8 +264,8 @@ class SubTable extends React.Component {
         key: 'content',
         render: (content, row, index) => {
           return _this.handleTableData(content, row, index, groupName);
-        },
-      },
+        }
+      }
     ];
     return columns;
   }
@@ -282,9 +280,9 @@ class SubTable extends React.Component {
   };
 
   render() {
-    let { DutyUsers } = this.state;
-    let value = [];
-    let userId = [];
+    const {DutyUsers} = this.state;
+    const value = [];
+    const userId = [];
     DutyUsers.map((item) => {
       value.push(item.name + '');
       userId.push(item.userId + '&' + item.groupId + '&' + item.classId);
@@ -293,17 +291,17 @@ class SubTable extends React.Component {
       <Collapse defaultActiveKey={['1', '2']}>
         <Panel showArrow={false} header={this.baseHeader('值班室人员')} key="1">
           <span>值班室人员: </span>
-          <div style={{ display: 'inline-table', width: '90%' }}>
+          <div style={{display: 'inline-table', width: '90%'}}>
             <GtableEdit value={value} userId={userId} rowNumber={0} onChange={this.handleDataChange}></GtableEdit>
           </div>
         </Panel>
         <Panel showArrow={false} header={this.baseHeader('排班人员')} key="2">
-          <div className="dogCureTable" style={{ paddingTop: '0' }}>
+          <div className="dogCureTable" style={{paddingTop: '0'}}>
             {this.state.data.map((item) => {
               return this.renderCardItem(item);
             })}
             {this.state.data.length == 0 ? (
-              <div style={{ textAlign: 'center', color: '#999', marginTop: 12, height: 32, lineHeight: '32px' }}>
+              <div style={{textAlign: 'center', color: '#999', marginTop: 12, height: 32, lineHeight: '32px'}}>
                 {' '}
                 暂无数据
               </div>

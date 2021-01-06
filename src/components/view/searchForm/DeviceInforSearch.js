@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import httpAjax from 'libs/httpAjax';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -13,10 +13,10 @@ class SearchForm extends React.Component {
   }
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
+    const {limit} = this.props;
     this.props.form.validateFields((err, values) => {
       Object.keys(values).forEach(function (item, index) {
-        typeof values[item] == 'undefined' ? (values[item] = '') : '';
+        typeof values[item] === 'undefined' ? (values[item] = '') : '';
       });
       limit(values);
     });
@@ -27,11 +27,11 @@ class SearchForm extends React.Component {
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     return (
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
         <Row gutter={24}>
@@ -42,11 +42,11 @@ class SearchForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
           </Col>

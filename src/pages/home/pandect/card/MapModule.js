@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import { Row, Col, Card, Progress } from 'antd';
-import { setMap } from './chartConfig';
-// const echarts = require('echarts')
-let echarts = require('echarts/lib/echarts');
+import React, {Component} from 'react';
+import {withRouter, Link} from 'react-router-dom';
+import {Row, Col, Card, Progress} from 'antd';
+import {setMap} from './chartConfig';
 import mapJson from '../../cityData/shenshen';
+// const echarts = require('echarts')
+const echarts = require('echarts/lib/echarts');
 require('style/view/home/mapModule.less');
 
 echarts.registerMap('深圳', mapJson); // 注册主题
@@ -26,7 +26,7 @@ class MapModule extends Component {
     _this.showChart();
   }
   showChart() {
-    const { history } = this.props;
+    const {history} = this.props;
     setMap(echarts, this.mapNode, history);
   }
   render() {
@@ -47,11 +47,10 @@ class MapModule extends Component {
           </Col>
         </Row>
         <div
-          style={{ width: '100%', height: '500px', margin: '0px', boxSizing: 'border-box' }}
+          style={{width: '100%', height: '500px', margin: '0px', boxSizing: 'border-box'}}
           ref={(mapNode) => {
             this.mapNode = mapNode;
-          }}
-        ></div>
+          }}></div>
         <Row type="flex" justify="space-around" className="area-num">
           <Col span={4}>
             <p>

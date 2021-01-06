@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Row, Col, Card } from 'antd';
+import React, {Component} from 'react';
+import {Row, Col, Card} from 'antd';
 import ScheduleManageSearch from 'components/admin/searchForm/ScheduleManage/ScheduleManageSearch';
 import ScheduleManageTable from 'components/admin/tables/ScheduleManage/ScheduleManageTable';
 
@@ -8,7 +8,7 @@ class ScheduleManage extends Component {
     super(props);
     this.state = {
       searchWeek: '',
-      options: '',
+      options: ''
     };
   }
   componentWillMount() {
@@ -20,16 +20,16 @@ class ScheduleManage extends Component {
     React.$ajax.postData('/api/onDuty/getWeekDuty', data).then((res) => {
       this.setState({
         searchWeek: res.data,
-        options: data,
+        options: data
       });
     });
   };
   handleSearch = (dateString) => {
     if (dateString) {
-      let ChangeWeek = dateString.replace(/周/, '');
-      let options = {
+      const ChangeWeek = dateString.replace(/周/, '');
+      const options = {
         year: ChangeWeek.split('-')[0],
-        week: ChangeWeek.split('-')[1],
+        week: ChangeWeek.split('-')[1]
       };
       this.getScheduleData(options);
       localStorage.setItem('getScheduleOption', JSON.stringify(options));

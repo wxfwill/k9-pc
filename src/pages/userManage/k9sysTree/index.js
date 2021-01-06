@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import CustomTable from 'components/table/CustomTable';
-import { Card, message, Row, Col, Modal, Form, Input, Button } from 'antd';
-import { thirdLayout } from 'util/Layout';
-const FormItem = Form.Item;
+import {Card, message, Row, Col, Modal, Form, Input, Button} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import AddEditModel from './Model';
-import { menuOperate } from './operateData';
-const { confirm } = Modal;
+import {menuOperate} from './operateData';
+const FormItem = Form.Item;
+const {confirm} = Modal;
 class SysTree extends Component {
   constructor(props) {
     super(props);
@@ -16,19 +16,19 @@ class SysTree extends Component {
       type: '新增树',
       tableData: [],
       code: '',
-      name: '',
+      name: ''
     };
   }
   handleFormData = (data) => {
-    let { id, pid, type } = this.state;
+    const {id, pid, type} = this.state;
     if (type == '编辑树') {
       // 编辑
-      let obj = Object.assign({}, data, { id, pid });
+      const obj = Object.assign({}, data, {id, pid});
       console.log(obj);
       this.addEditMenu(obj, '编辑成功');
     } else {
       // 新增
-      let obj = Object.assign({}, data, { pid: id });
+      const obj = Object.assign({}, data, {pid: id});
       console.log(obj);
       this.addEditMenu(obj, '新增成功');
     }
@@ -36,26 +36,26 @@ class SysTree extends Component {
   handleAdd = (row) => {
     if (row == 'root') {
       // 根节点新增
-      this.setState({ type: '新增树', id: 0 }, () => {
+      this.setState({type: '新增树', id: 0}, () => {
         this.childEle.openModel(row);
       });
     } else {
       // 子节点新增
-      this.setState({ type: '新增树', id: row.id }, () => {
+      this.setState({type: '新增树', id: row.id}, () => {
         this.childEle.openModel(row.id);
       });
     }
   };
   componentDidMount() {
-    let { name, code } = this.state;
-    this.getSysTree({ name, code });
+    const {name, code} = this.state;
+    this.getSysTree({name, code});
   }
   handleEdit = (row) => {
     // e.stopPropagation();
     console.log(row);
-    let { icon, level, moduleIndex } = row;
+    const {icon, level, moduleIndex} = row;
     console.log();
-    this.setState({ type: '编辑树', id: row.id, pid: row.pid, icon, level, moduleIndex }, () => {
+    this.setState({type: '编辑树', id: row.id, pid: row.pid, icon, level, moduleIndex}, () => {
       this.childEle.openModel(row);
     });
   };
@@ -64,17 +64,17 @@ class SysTree extends Component {
     React.$ajax.postData('/api/sys/sys-tree/queryAll', per).then((res) => {
       if (res && res.code == 0) {
         console.log(res);
-        let resData = res.data ? res.data : [];
-        this.setState({ tableData: resData });
+        const resData = res.data ? res.data : [];
+        this.setState({tableData: resData});
       }
     });
   };
   // 删除树
   delteMenu = (id) => {
-    React.$ajax.getData('/api/sys/sys-tree/delCascade', { id }).then((res) => {
+    React.$ajax.getData('/api/sys/sys-tree/delCascade', {id}).then((res) => {
       if (res && res.code == 0) {
-        let { name, code } = this.state;
-        this.getSysTree({ name, code });
+        const {name, code} = this.state;
+        this.getSysTree({name, code});
       }
     });
   };
@@ -84,8 +84,8 @@ class SysTree extends Component {
       if (res && res.code == 0) {
         message.info(txt, 0.5, () => {
           this.childEle.handleCancel();
-          let { name, code } = this.state;
-          this.getSysTree({ name, code });
+          const {name, code} = this.state;
+          this.getSysTree({name, code});
         });
       }
     });
@@ -98,7 +98,7 @@ class SysTree extends Component {
       onOk: () => {
         this.delteMenu(row.id);
       },
-      onCancel() {},
+      onCancel() {}
     });
   };
   handleReset = () => {
@@ -107,17 +107,17 @@ class SysTree extends Component {
   handleSearch = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      let { name, code } = values;
-      name = name ? name : '';
-      code = code ? code : '';
-      this.setState({ name, code }, () => {
-        let { name, code } = this.state;
-        this.getSysTree({ name, code });
+      let {name, code} = values;
+      name = name || '';
+      code = code || '';
+      this.setState({name, code}, () => {
+        const {name, code} = this.state;
+        this.getSysTree({name, code});
       });
     });
   };
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     return (
       <div>
         <Card title="查询条件" bordered={false}>
@@ -129,18 +129,18 @@ class SysTree extends Component {
               <Col xl={6} lg={6} md={10} sm={24} xs={24}>
                 <FormItem label="别名">{getFieldDecorator('code')(<Input placeholder="别名" />)}</FormItem>
               </Col>
-              <Col xl={6} lg={6} md={10} sm={24} xs={24} style={{ textAlign: 'left' }}>
+              <Col xl={6} lg={6} md={10} sm={24} xs={24} style={{textAlign: 'left'}}>
                 <Button type="primary" htmlType="submit">
                   查询
                 </Button>
-                <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                <Button style={{marginLeft: 8}} onClick={this.handleReset}>
                   重置
                 </Button>
               </Col>
             </Row>
           </Form>
         </Card>
-        <Button type="primary" style={{ margin: '10px 0' }} onClick={this.handleAdd.bind(this, 'root')}>
+        <Button type="primary" style={{margin: '10px 0'}} onClick={this.handleAdd.bind(this, 'root')}>
           新增
         </Button>
         <Card title="" bordered={false}>
@@ -156,10 +156,9 @@ class SysTree extends Component {
             dataSource={this.state.tableData}
             loading={this.state.loading}
             columns={menuOperate(this.handleAdd, this.handleEdit, this.handleDelteMenu)}
-            isBordered={true}
+            isBordered
             isRowSelects={false}
-            isAllRows={false}
-          ></CustomTable>
+            isAllRows={false}></CustomTable>
         </Card>
       </div>
     );

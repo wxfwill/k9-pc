@@ -6,7 +6,7 @@ export const cancelRank = (data) => {
   return axios({
     url: '/api/performanceCheck/cancelRank',
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -15,7 +15,7 @@ export const listPerformanceCheckRank = (data) => {
   return axios({
     url: '/api/performanceCheck/listPerformanceCheckRank',
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -24,7 +24,7 @@ export const performanceCheckInfo = (data) => {
   return axios({
     url: '/api/performanceCheck/performanceCheckInfo',
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -33,7 +33,7 @@ export const savePerformanceCheckRecord = (data) => {
   return axios({
     url: '/api/performanceCheck/savePerformanceCheckRecord',
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -42,7 +42,7 @@ export const deletePerformanceCheckRecord = (data) => {
   return axios({
     url: '/api/performanceCheck/deletePerformanceCheckRecord',
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -50,7 +50,7 @@ export const getSelectUrlData = (url, data) => {
   return axios({
     url: url,
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -59,6 +59,6 @@ export const performanceCheckType = (data) => {
   return axios({
     url: '/api/basicData/performanceCheckType',
     method: 'post',
-    data,
+    data
   });
 };

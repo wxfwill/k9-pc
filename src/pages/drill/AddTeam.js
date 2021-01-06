@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Table,
   Button,
@@ -14,11 +14,11 @@ import {
   DatePicker,
   Form,
   Input,
-  Tooltip,
+  Tooltip
 } from 'antd';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import httpAjax from 'libs/httpAjax';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {firstLayout, secondLayout} from 'util/Layout';
 import PeoModal from '../monitoring/Deploy/add/PeoModal';
 import moment from 'moment';
 import 'style/view/common/detailTable.less';
@@ -35,7 +35,7 @@ class AddPlan extends Component {
       places: [],
       peoples: [],
       peoValue: this.mapPeoples(),
-      targetKeys: this.mapPeoples('id'),
+      targetKeys: this.mapPeoples('id')
     };
   }
   componentDidMount() {
@@ -55,7 +55,7 @@ class AddPlan extends Component {
         console.log(values);
         const params = {
           ...values,
-          members: this.state.targetKeys,
+          members: this.state.targetKeys
         };
         if (id) {
           params.id = id;
@@ -72,14 +72,14 @@ class AddPlan extends Component {
     });
   };
   searchPeople = (name = '') => {
-    React.$ajax.postData('/api/userCenter/getTrainer', { name }).then((res) => {
+    React.$ajax.postData('/api/userCenter/getTrainer', {name}).then((res) => {
       if (res.code == 0) {
-        this.setState({ peoples: res.data });
+        this.setState({peoples: res.data});
       }
     });
   };
   addPeople() {
-    this.setState({ peoVisible: true });
+    this.setState({peoVisible: true});
   }
 
   checkName = (rule, value, callback) => {
@@ -103,8 +103,8 @@ class AddPlan extends Component {
 
   // 请求后台验证
   httpAjaxHadnle = (key, value, callback) => {
-    let param = new FormData(),
-      configs = { headers: { 'Content-Type': 'multipart/form-data' } };
+    const param = new FormData();
+    const configs = {headers: {'Content-Type': 'multipart/form-data'}};
     param.append(key, value);
     // httpAjax('post', config.apiUrl + '/api/train/isNotExistTeamName', param, configs).then(callback);
     React.$ajax.postData('/api/train/isNotExistTeamName', param).then(callback);
@@ -114,24 +114,24 @@ class AddPlan extends Component {
     this.setState({
       orgVisible: false,
       peoVisible: false,
-      changeLeft: false,
+      changeLeft: false
     });
   };
   handleAdd(peopleMsg) {
-    let values = [];
-    let targetKeys = [];
+    const values = [];
+    const targetKeys = [];
     peopleMsg.forEach((item, index) => {
       values.push(item.name);
       targetKeys.push(item.key);
     });
     this.props.form.setFieldsValue({
-      members: values.join(','),
+      members: values.join(',')
     });
     this.setState({
       peoValue: values.join(','),
-      targetKeys: targetKeys,
+      targetKeys: targetKeys
     });
-    this.setState({ peoVisible: false });
+    this.setState({peoVisible: false});
   }
   mapPeoples = (type) => {
     if (this.props.location.query && this.props.location.query.editItem) {
@@ -144,8 +144,8 @@ class AddPlan extends Component {
   };
   render() {
     console.log(this.state);
-    const { disabled, typeOption, places, peoples } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const {disabled, typeOption, places, peoples} = this.state;
+    const {getFieldDecorator} = this.props.form;
     let editItem;
     if (this.props.location.query) {
       editItem = this.props.location.query.editItem;
@@ -153,7 +153,7 @@ class AddPlan extends Component {
     return (
       <Row gutter={24}>
         <Col span={24}>
-          <Card title="创建分组" bordered={true}>
+          <Card title="创建分组" bordered>
             <Col xxl={16} xl={22} lg={24} md={24} sm={24} xs={24}>
               <Form className="ant-advanced-search-form">
                 <Row gutter={24}>
@@ -161,12 +161,12 @@ class AddPlan extends Component {
                     <FormItem label="队名" {...firstLayout}>
                       {getFieldDecorator('name', {
                         rules: [
-                          { required: true, message: '请输入队名' },
-                          { max: 20, message: '队名长度不超过20' },
-                          { validator: this.checkName },
+                          {required: true, message: '请输入队名'},
+                          {max: 20, message: '队名长度不超过20'},
+                          {validator: this.checkName}
                         ],
-                        initialValue: editItem ? editItem.name : '',
-                      })(<Input placeholder="请输入队名" autosize={{ minRows: 2, maxRows: 24 }} />)}
+                        initialValue: editItem ? editItem.name : ''
+                      })(<Input placeholder="请输入队名" autosize={{minRows: 2, maxRows: 24}} />)}
                     </FormItem>
                   </Col>
                 </Row>
@@ -175,19 +175,18 @@ class AddPlan extends Component {
                   <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                     <FormItem label="队长" {...firstLayout}>
                       {getFieldDecorator('leaderId', {
-                        rules: [{ required: true, message: '请选择队长' }],
-                        initialValue: editItem ? editItem.leader.userId + '' : '',
+                        rules: [{required: true, message: '请选择队长'}],
+                        initialValue: editItem ? editItem.leader.userId + '' : ''
                       })(
                         <Select
                           placeholder="请选择队长"
                           optionLabelProp="children"
                           showSearch
-                          autosize={{ minRows: 2, maxRows: 24 }}
+                          autosize={{minRows: 2, maxRows: 24}}
                           // onChange={(a,b,c) => {console.log(a,b,c)}}
                           filterOption={(input, option) =>
                             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                          }
-                        >
+                          }>
                           {peoples.map((item) => (
                             <Option value={item.id + ''} key={item.id + '_peo'}>
                               {item.name}
@@ -202,21 +201,20 @@ class AddPlan extends Component {
                   <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                     <FormItem label="队员" {...firstLayout}>
                       {getFieldDecorator('members', {
-                        rules: [{ required: true, message: '请选择队员' }],
-                        initialValue: this.state.peoValue || '',
+                        rules: [{required: true, message: '请选择队员'}],
+                        initialValue: this.state.peoValue || ''
                       })(
                         <Tooltip
                           trigger={['hover']}
                           title={this.state.peoValue}
                           placement="topLeft"
-                          overlayClassName="numeric-input"
-                        >
+                          overlayClassName="numeric-input">
                           <Input
                             placeholder="请选择队员"
                             value={this.state.peoValue}
-                            disabled={true}
+                            disabled
                             addonBefore={
-                              <Icon type="plus" style={{ cursor: 'pointer' }} onClick={this.addPeople.bind(this)} />
+                              <Icon type="plus" style={{cursor: 'pointer'}} onClick={this.addPeople.bind(this)} />
                             }
                           />
                         </Tooltip>
@@ -225,7 +223,7 @@ class AddPlan extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={24} style={{ textAlign: 'center', marginTop: '40px' }}>
+                  <Col span={24} style={{textAlign: 'center', marginTop: '40px'}}>
                     <Button type="primary" htmlType="submit" onClick={() => this.handleSubmit('publish')}>
                       保存
                     </Button>

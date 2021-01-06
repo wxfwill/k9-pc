@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Button, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Button, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import moment from 'moment';
 const FormItem = Form.Item;
 class SearchForm extends React.Component {
@@ -9,12 +9,12 @@ class SearchForm extends React.Component {
     this.state = {
       startValue: null,
       endValue: null,
-      endOpen: false,
+      endOpen: false
     };
   }
   onChange(field, value) {
     this.setState({
-      [field]: value,
+      [field]: value
     });
   }
   disabledStartDate = (startValue) => {
@@ -33,21 +33,21 @@ class SearchForm extends React.Component {
 
   handleStartOpenChange = (open) => {
     if (!open) {
-      this.setState({ endOpen: true });
+      this.setState({endOpen: true});
     }
   };
 
   handleEndOpenChange = (open) => {
-    this.setState({ endOpen: open });
+    this.setState({endOpen: open});
   };
 
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
+    const {limit} = this.props;
     this.props.form.validateFields((err, fieldsValue) => {
       if (fieldsValue.startTime != 'undefined' && fieldsValue.endTime != 'undefined') {
         Object.keys(fieldsValue).forEach(function (item, index) {
-          typeof fieldsValue[item] == 'undefined'
+          typeof fieldsValue[item] === 'undefined'
             ? (fieldsValue[item] = '')
             : (fieldsValue[item] = fieldsValue[item].format('YYYY-MM-DD'));
         });
@@ -56,8 +56,8 @@ class SearchForm extends React.Component {
     });
   };
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { startValue, endValue, endOpen } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {startValue, endValue, endOpen} = this.state;
     return (
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
         <Row gutter={24}>
@@ -75,7 +75,7 @@ class SearchForm extends React.Component {
                 )}
               </Col>
               <Col span={2}>
-                <span style={{ display: 'inline-block', width: '100%', textAlign: 'center' }}>至</span>
+                <span style={{display: 'inline-block', width: '100%', textAlign: 'center'}}>至</span>
               </Col>
               <Col span={11}>
                 <FormItem>

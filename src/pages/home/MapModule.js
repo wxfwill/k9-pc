@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
-import { setMap } from './chart/chartConfig';
+import {setMap} from './chart/chartConfig';
 // const echarts = require('echarts');
-let echarts = require('echarts/lib/echarts');
+const echarts = require('echarts/lib/echarts');
 
 require('./cityData/shenshen');
 
@@ -29,12 +29,11 @@ class MapModule extends Component {
   render() {
     return (
       <div
-        style={{ height: '400px', margin: '0px', boxSizing: 'border-box', paddingRight: '13%' }}
+        style={{height: '400px', margin: '0px', boxSizing: 'border-box', paddingRight: '13%'}}
         className="map-module"
         ref={(mapNode) => {
           this.mapNode = mapNode;
-        }}
-      ></div>
+        }}></div>
     );
   }
 }

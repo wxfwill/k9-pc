@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Table, Icon, Divider, Tag } from 'antd';
+import React, {Component} from 'react';
+import {Table, Icon, Divider, Tag} from 'antd';
 import httpAjax from 'libs/httpAjax';
 require('style/view/home/exeCard.less');
 const columns = [
@@ -7,18 +7,18 @@ const columns = [
     title: 'ID',
     dataIndex: 'name',
     className: 'id-number',
-    key: 'name',
+    key: 'name'
   },
   {
     title: '坐标',
     dataIndex: 'age',
-    key: 'age',
+    key: 'age'
   },
   {
     title: '时长',
     dataIndex: 'action',
-    key: 'action',
-  },
+    key: 'action'
+  }
 ];
 
 const data = [
@@ -26,20 +26,20 @@ const data = [
     key: '1',
     name: '1423',
     age: '12,131',
-    action: '02:21:20',
+    action: '02:21:20'
   },
   {
     key: '2',
     name: '2314',
     age: '11,131',
-    action: '02:21:20',
+    action: '02:21:20'
   },
   {
     key: '3',
     name: '2245',
     age: '13,116',
-    action: '02:21:20',
-  },
+    action: '02:21:20'
+  }
 ];
 class ExeCard extends Component {
   constructor(props) {
@@ -54,7 +54,7 @@ class ExeCard extends Component {
           dataSource={data}
           pagination={false}
           loading={false}
-          scroll={{ x: 306 }}
+          scroll={{x: 306}}
           className="status-table"
         />
       </div>

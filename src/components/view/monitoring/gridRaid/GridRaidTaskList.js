@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Row, Col, Card, Tag } from 'antd';
-import { Route } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Row, Col, Card, Tag} from 'antd';
+import {Route} from 'react-router-dom';
 import GRTaskTable from './GridRaidTaskTable';
 import GRTaskSearch from './GridRaidTaskSearch';
 
@@ -8,13 +8,13 @@ class GridRaidTaskList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      limit: null,
+      limit: null
     };
   }
   handleLimit = (limit) => {
     console.log(limit);
     console.log('filter');
-    this.setState({ limit });
+    this.setState({limit});
   };
   render() {
     return (

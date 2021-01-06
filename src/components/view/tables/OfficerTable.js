@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Table, Button, Tag, Badge, Icon } from 'antd';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Table, Button, Tag, Badge, Icon} from 'antd';
+import {Link} from 'react-router-dom';
 import httpAjax from 'libs/httpAjax';
 import Immutable from 'immutable';
 
@@ -10,37 +10,37 @@ const columns = [
   {
     title: '考核年月',
     dataIndex: 'yearMonth',
-    key: 'yearMonth',
+    key: 'yearMonth'
   },
   {
     title: '训导员',
     dataIndex: 'userName',
-    key: 'userName',
+    key: 'userName'
   },
   {
     title: '训犬成绩',
     dataIndex: 'trainScore',
-    key: 'trainScore',
+    key: 'trainScore'
   },
   {
     title: '警犬使用成绩',
     dataIndex: 'dogUseScore',
-    key: 'dogUseScore',
+    key: 'dogUseScore'
   },
   {
     title: '军事化管理成绩',
     dataIndex: 'dailyScore',
-    key: 'dailyScore',
+    key: 'dailyScore'
   },
   {
     title: '主考人',
     dataIndex: 'examinerName',
-    key: 'examinerName',
+    key: 'examinerName'
   },
   {
     title: '总成绩',
     dataIndex: 'totalScore',
-    key: 'totalScore',
+    key: 'totalScore'
   },
   {
     title: '审核状态',
@@ -48,7 +48,7 @@ const columns = [
     key: 'status',
     render: (status) => {
       return status == 0 ? <Tag color="#f50">未审核</Tag> : <Tag color="#2db7f5">通过</Tag>;
-    },
+    }
   },
   {
     title: '操作',
@@ -56,8 +56,8 @@ const columns = [
     key: 'key',
     render: function (data) {
       return <Link to="/roster">查看详情</Link>;
-    },
-  },
+    }
+  }
 ];
 class OfficerTable extends React.Component {
   constructor(props) {
@@ -66,14 +66,14 @@ class OfficerTable extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 7,
       currPage: 1,
       data: [],
       loading: false,
       filter: null,
-      yearMonth: '2018-03',
+      yearMonth: '2018-03'
     };
   }
   componentWillMount() {
@@ -84,43 +84,43 @@ class OfficerTable extends React.Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let filter = nextProps.filter;
-    let isReset = util.method.isObjectValueEqual(nextProps, this.props);
+    const filter = nextProps.filter;
+    const isReset = util.method.isObjectValueEqual(nextProps, this.props);
     if (!isReset) {
-      let _this = this;
-      this.setState({ filter }, function () {
+      const _this = this;
+      this.setState({filter}, function () {
         _this.fetch({
           pageSize: _this.state.pageSize,
           currPage: 1,
           yearMonth: this.state.yearMonth,
-          ...filter,
+          ...filter
         });
       });
     }
   }
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
       currPage: pagination.current,
       yearMonth: this.state.yearMonth,
-      ...this.state.filter,
+      ...this.state.filter
     });
   };
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+    this.setState({loading: true});
     console.log('qweqwe');
-    httpAjax('post', config.apiUrl + '/api/trainCheck/listData', { ...params })
+    httpAjax('post', config.apiUrl + '/api/trainCheck/listData', {...params})
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
-        this.setState({ data: res.list, loading: false, pagination }, function () {
+        this.setState({data: res.list, loading: false, pagination}, function () {
           res.list.forEach((item, index) => {
             console.log(res.list[0].yearMonth);
           });

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Table, Modal, Button, Carousel } from 'antd';
+import React, {Component} from 'react';
+import {Table, Modal, Button, Carousel} from 'antd';
 //import { Link } from 'react-router-dom';
 import Immutable from 'immutable';
 import moment from 'moment';
@@ -13,7 +13,7 @@ class CallTable extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 10,
       currPage: 1,
@@ -21,7 +21,7 @@ class CallTable extends React.Component {
       visible: false,
       photoNames: [],
       filter: null,
-      loading: false,
+      loading: false
       /*   queryId:'',
       changeLeft:false,
       showDetail:false,
@@ -35,40 +35,41 @@ class CallTable extends React.Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let filter = nextProps.filter;
-    let isReset = util.method.isObjectValueEqual(nextProps, this.props);
+    const filter = nextProps.filter;
+    const isReset = util.method.isObjectValueEqual(nextProps, this.props);
     if (!isReset) {
-      let _this = this;
-      this.setState({ filter }, function () {
+      const _this = this;
+      this.setState({filter}, function () {
         _this.fetch({
           pageSize: _this.state.pageSize,
           currPage: 1,
-          ...filter,
+          ...filter
         });
       });
     }
   }
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
       currPage: pagination.current,
-      ...this.state.filter,
+      ...this.state.filter
     });
   };
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
-    React.$ajax.postData('/api/attendance/listPage', { ...params })
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+    this.setState({loading: true});
+    React.$ajax
+      .postData('/api/attendance/listPage', {...params})
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.data.totalCount;
         pagination.current = res.data.currPage;
         pagination.pageSize = res.data.pageSize;
-        this.setState({ data: res.data.list, loading: false, pagination });
+        this.setState({data: res.data.list, loading: false, pagination});
       })
       .catch(function (error) {
         console.log(error);
@@ -95,12 +96,12 @@ class CallTable extends React.Component {
     })
   }*/
   getColumns() {
-    let _this = this;
+    const _this = this;
     const columns = [
       {
         title: '提交人',
         dataIndex: 'operatorName',
-        key: 'operatorName',
+        key: 'operatorName'
       },
       {
         title: '提交时间',
@@ -108,12 +109,12 @@ class CallTable extends React.Component {
         key: 'opTime',
         render: (opTime, record, index) => {
           return <span>{opTime ? moment(opTime).format('YYYY-MM-DD h:mm:ss') : '--'}</span>;
-        },
+        }
       },
       {
         title: '描述',
         dataIndex: 'content',
-        key: 'content',
+        key: 'content'
       },
       {
         title: '图片',
@@ -125,11 +126,11 @@ class CallTable extends React.Component {
               onClick={_this.showPhoto.bind(this, photoNames)}
               key={index}
               src={`${config.apiUrl}/api/attendance/img?fileName=${photoNames[0]}`}
-              style={{ height: '30px', width: '30px', marginRight: '8px' }}
+              style={{height: '30px', width: '30px', marginRight: '8px'}}
             />
           );
-        },
-      },
+        }
+      }
     ];
     return columns;
   }
@@ -137,25 +138,25 @@ class CallTable extends React.Component {
     console.log(photoNames, 'photoNames');
     console.log(photoNames && photoNames.length > 0, 'photoNamesss');
     this.setState({
-      photoNames,
+      photoNames
     });
     this.showModal();
   };
 
   showModal = () => {
     this.setState({
-      visible: true,
+      visible: true
     });
   };
 
   hideModal = () => {
     this.setState({
-      visible: false,
+      visible: false
     });
   };
   render() {
-    const { match } = this.props;
-    let { photoNames, visible } = this.state;
+    const {match} = this.props;
+    const {photoNames, visible} = this.state;
     return (
       <div>
         <Table
@@ -178,9 +179,8 @@ class CallTable extends React.Component {
           footer={[
             <Button key="submit" type="primary" onClick={this.hideModal}>
               确定
-            </Button>,
-          ]}
-        >
+            </Button>
+          ]}>
           <Carousel autoplay>
             {photoNames && photoNames.length > 0 ? (
               photoNames.map((file, index) => (

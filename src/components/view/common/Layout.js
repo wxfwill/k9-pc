@@ -1,4 +1,4 @@
-export const secondLayout={
+export const secondLayout = {
   labelCol: {
     xs: {span: 10},
     sm: {span: 8},
@@ -14,9 +14,9 @@ export const secondLayout={
     lg: {span: 16},
     xl: {span: 16},
     xxl: {span: 18}
-  },
+  }
 };
-export const firstLayout={
+export const firstLayout = {
   labelCol: {
     xs: {span: 10},
     sm: {span: 8},
@@ -32,9 +32,9 @@ export const firstLayout={
     lg: {span: 20},
     xl: {span: 20},
     xxl: {span: 21}
-  },
+  }
 };
-export const thirdLayout={
+export const thirdLayout = {
   labelCol: {
     xs: {span: 10},
     sm: {span: 6},
@@ -50,5 +50,5 @@ export const thirdLayout={
     lg: {span: 18},
     xl: {span: 16},
     xxl: {span: 16}
-},
+  }
 };

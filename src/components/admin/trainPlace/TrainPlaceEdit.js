@@ -1,15 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal } from 'antd';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {connect} from 'react-redux';
+import {Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal} from 'antd';
+import {firstLayout, secondLayout} from 'util/Layout';
 import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 require('style/app/dogInfo/addDogForm.less');
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-const { TextArea } = Input;
-const { MonthPicker } = DatePicker;
+const {TextArea} = Input;
+const {MonthPicker} = DatePicker;
 
 class TrainPlaceEdit extends React.Component {
   constructor(props) {
@@ -19,21 +19,21 @@ class TrainPlaceEdit extends React.Component {
       disabled: false,
       remark: '',
       name: '',
-      trainPlaceData: {},
+      trainPlaceData: {}
     };
   }
 
   handleSubmit = () => {
     this.props.form.validateFields((err, values) => {
-      let count = 0,
-        obj = {};
+      const count = 0;
+      const obj = {};
       if (!err) {
-        const { remark, name } = this.state;
+        const {remark, name} = this.state;
         const id = this.props.location.query && this.props.location.query.id;
 
         const successMess = id ? '修改成功' : '添加成功';
         const errorMess = id ? '修改失败' : '添加失败';
-        const parms = { remark, name };
+        const parms = {remark, name};
         if (id) {
           parms.id = id;
         }
@@ -61,10 +61,10 @@ class TrainPlaceEdit extends React.Component {
     const id = this.props.location.query && this.props.location.query.id;
     const pathname = this.props.location.pathname;
     if (id) {
-      httpAjax('post', config.apiUrl + '/api/train/trainPlaceDetail', { id: id })
+      httpAjax('post', config.apiUrl + '/api/train/trainPlaceDetail', {id: id})
         .then((res) => {
           if (res.code == 0) {
-            this.setState({ trainPlaceData: res.data, ...res.data });
+            this.setState({trainPlaceData: res.data, ...res.data});
           } else {
             message.error('请求失败');
           }
@@ -73,35 +73,35 @@ class TrainPlaceEdit extends React.Component {
           console.log(error);
         });
       if (pathname.indexOf('Detail') > -1) {
-        this.setState({ isInitialValue: true, disabled: true });
+        this.setState({isInitialValue: true, disabled: true});
       } else {
-        this.setState({ isInitialValue: true, disabled: false });
+        this.setState({isInitialValue: true, disabled: false});
       }
     }
   }
 
   render() {
     // console.log(this.props,this.state, 'asdasdq')
-    const { getFieldDecorator } = this.props.form;
-    const { isInitialValue, disabled, trainPlaceData } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {isInitialValue, disabled, trainPlaceData} = this.state;
     return (
       <div className="AddDogForm">
         <Row gutter={24}>
           <Col span={24}>
-            <Card title="场地信息" bordered={true}>
+            <Card title="场地信息" bordered>
               <Col xxl={16} xl={22} lg={24} md={24} sm={24} xs={24}>
                 <Form className="ant-advanced-search-form">
                   <Row gutter={24}>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="名称" {...secondLayout} hasFeedback>
                         {getFieldDecorator('name', {
-                          rules: [{ required: true, message: '请输入名称' }],
-                          initialValue: isInitialValue ? trainPlaceData.name : '',
+                          rules: [{required: true, message: '请输入名称'}],
+                          initialValue: isInitialValue ? trainPlaceData.name : ''
                         })(
                           <Input
                             placeholder="名称"
                             onChange={(e) => {
-                              this.setState({ name: e.target.value });
+                              this.setState({name: e.target.value});
                             }}
                             disabled={disabled}
                           />
@@ -114,16 +114,16 @@ class TrainPlaceEdit extends React.Component {
                       <FormItem label="备注" {...firstLayout}>
                         {getFieldDecorator('remark', {
                           // rules: [{ required: true, message: '请选择时间' }],
-                          rules: [{ max: 100, message: '备注长度不超过100' }],
-                          initialValue: isInitialValue ? trainPlaceData.remark : '',
+                          rules: [{max: 100, message: '备注长度不超过100'}],
+                          initialValue: isInitialValue ? trainPlaceData.remark : ''
                         })(
                           <Input.TextArea
                             placeholder=""
                             onChange={(e) => {
-                              this.setState({ remark: e.target.value });
+                              this.setState({remark: e.target.value});
                             }}
                             disabled={disabled}
-                            autosize={{ minRows: 2, maxRows: 24 }}
+                            autosize={{minRows: 2, maxRows: 24}}
                           />
                         )}
                       </FormItem>
@@ -132,11 +132,11 @@ class TrainPlaceEdit extends React.Component {
 
                   {!disabled ? (
                     <Row>
-                      <Col span={24} style={{ textAlign: 'center', marginTop: '40px' }}>
+                      <Col span={24} style={{textAlign: 'center', marginTop: '40px'}}>
                         <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>
                           提交
                         </Button>
-                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                        <Button style={{marginLeft: 8}} onClick={this.handleReset}>
                           清空
                         </Button>
                       </Col>
@@ -157,7 +157,7 @@ class TrainPlaceEdit extends React.Component {
 const AddViewForm = Form.create()(TrainPlaceEdit);
 
 const mapStateToProps = (state) => ({
-  loginState: state.login,
+  loginState: state.login
 });
 export default connect(mapStateToProps)(AddViewForm);
 

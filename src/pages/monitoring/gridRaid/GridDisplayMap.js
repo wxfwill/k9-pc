@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Menu, Dropdown, Icon, Input, Checkbox } from 'antd';
+import React, {Component} from 'react';
+import {Menu, Dropdown, Icon, Input, Checkbox} from 'antd';
 
 require('style/pages/GridDisplayMap.less');
 
@@ -15,26 +15,26 @@ class GridMap extends Component {
       indeterminate: true,
       checkAll: false,
       dropList: [
-        { key: null, name: '全部区域' },
-        { key: '1', name: '网格1' },
-        { key: '2', name: '网格2' },
-        { key: '3', name: '网格3' },
-        { key: '4', name: '网格4' },
-        { key: '5', name: '网格5' },
+        {key: null, name: '全部区域'},
+        {key: '1', name: '网格1'},
+        {key: '2', name: '网格2'},
+        {key: '3', name: '网格3'},
+        {key: '4', name: '网格4'},
+        {key: '5', name: '网格5'}
       ],
       selectName: '全部区域',
-      selecId: '',
+      selecId: ''
     };
     this.plainOptions = [
-      { label: this.getListTxt(), value: '1' },
-      { label: this.getListTxt(), value: '2' },
-      { label: this.getListTxt(), value: '3' },
+      {label: this.getListTxt(), value: '1'},
+      {label: this.getListTxt(), value: '2'},
+      {label: this.getListTxt(), value: '3'}
     ];
   }
   handleDrop = (item) => {
     console.log(item);
     console.log(item.key);
-    this.setState({ selectName: item.item.props.name, selecId: item.key });
+    this.setState({selectName: item.item.props.name, selecId: item.key});
   };
   dropMenu = () => {
     return this.state.dropList && this.state.dropList.length > 0 ? (
@@ -54,19 +54,19 @@ class GridMap extends Component {
     this.setState({
       checkedList,
       indeterminate: !!checkedList.length && checkedList.length < this.plainOptions.length,
-      checkAll: checkedList.length === this.plainOptions.length,
+      checkAll: checkedList.length === this.plainOptions.length
     });
   };
   onCheckAllChange = (e) => {
     console.log(e);
-    let arr = [];
+    const arr = [];
     this.plainOptions.map((item) => {
       arr.push(item.value);
     });
     this.setState({
       checkedList: e.target.checked ? arr : [],
       indeterminate: false,
-      checkAll: e.target.checked,
+      checkAll: e.target.checked
     });
   };
   getListTxt = () => {
@@ -92,19 +92,19 @@ class GridMap extends Component {
   };
   queryGroupUser = util.Debounce(
     (keyword) => {
-      React.$ajax.common.queryGroupUser({ keyword }).then((res) => {
+      React.$ajax.common.queryGroupUser({keyword}).then((res) => {
         if (res.code == 0) {
-          let resObj = res.data;
-          let arr = [];
-          for (let key in resObj) {
+          const resObj = res.data;
+          const arr = [];
+          for (const key in resObj) {
             if (resObj[key] && resObj[key].length > 0) {
               arr.push({
                 name: key,
-                children: resObj[key],
+                children: resObj[key]
               });
             }
           }
-          this.setState({ userNameArr: arr });
+          this.setState({userNameArr: arr});
         }
       });
     },
@@ -112,7 +112,7 @@ class GridMap extends Component {
     false
   );
   handleChangeInput = (event) => {
-    let val = event.target;
+    const val = event.target;
     console.log(val.value);
     this.queryGroupUser('');
   };
@@ -137,10 +137,9 @@ class GridMap extends Component {
             <Input
               className="input-wrap"
               placeholder="请输入姓名或警号搜索"
-              prefix={<Icon type="search" style={{ color: '#BBBCBD' }} />}
+              prefix={<Icon type="search" style={{color: '#BBBCBD'}} />}
               onChange={(event) => this.handleChangeNumber(event).then(this.handleChangeInput)}
-              allowClear
-            ></Input>
+              allowClear></Input>
           </div>
 
           <div className="all-checkout">
@@ -148,8 +147,7 @@ class GridMap extends Component {
               <Checkbox
                 indeterminate={this.state.indeterminate}
                 onChange={this.onCheckAllChange}
-                checked={this.state.checkAll}
-              >
+                checked={this.state.checkAll}>
                 显示轨迹(默认全部)
               </Checkbox>
             </div>

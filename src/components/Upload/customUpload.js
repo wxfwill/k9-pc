@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Upload, Icon, message } from 'antd';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {Upload, Icon, message} from 'antd';
+import {connect} from 'react-redux';
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -9,7 +9,7 @@ function getBase64(img, callback) {
 }
 
 @connect(
-  (state) => ({ token: state.loginReducer.token })
+  (state) => ({token: state.loginReducer.token})
   // (dispatch) => ({ changeNavData: (nav) => dispatch(changeNavName(nav)) })
 )
 class CustomUpload extends React.Component {
@@ -22,8 +22,11 @@ class CustomUpload extends React.Component {
       return null;
     })(),
     file: null,
-    icon: null,
+    icon: null
   };
+  componentDidMount() {
+    // ;
+  }
   beforeUpload = (file) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
@@ -34,26 +37,26 @@ class CustomUpload extends React.Component {
       message.error('图片最大不超过2M!');
     }
     window.File = false;
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('file', file);
     this.setState({
       formData,
-      file,
+      file
     });
     return isJpgOrPng && isLt2M;
   };
   handleCustomRequest = (option) => {
-    const { onSuccess, onError, file, onProgress } = option;
-    let param = new FormData();
+    const {onSuccess, onError, file, onProgress} = option;
+    const param = new FormData();
     param.append('file', file);
     React.$ajax.postData('/api/user/uploadImg', param).then((res) => {
-      this.setState({ loading: false });
+      this.setState({loading: false});
       if (res && res.code == 0) {
         onSuccess(res, file);
         message.success('上传成功');
-        let reader = new FileReader();
+        const reader = new FileReader();
         reader.addEventListener('load', () => {
-          this.setState({ imageUrl: reader.result });
+          this.setState({imageUrl: reader.result});
           this.props.parent.getchildmsg(res.data);
         });
         reader.readAsDataURL(file);
@@ -64,13 +67,9 @@ class CustomUpload extends React.Component {
   };
   handleChange = (info) => {
     if (info.file.status === 'uploading') {
-      this.setState({ loading: true });
-      return;
+      this.setState({loading: true});
     }
   };
-  componentDidMount() {
-    // ;
-  }
   setSvg = (url) => {};
   render() {
     const uploadButton = (
@@ -79,7 +78,7 @@ class CustomUpload extends React.Component {
         <div className="ant-upload-text">{this.state.loading ? '上传中' : '开始上传'}</div>
       </div>
     );
-    const { imageUrl } = this.state;
+    const {imageUrl} = this.state;
     return (
       <Upload
         name="file"
@@ -89,9 +88,8 @@ class CustomUpload extends React.Component {
         customRequest={this.handleCustomRequest}
         accept=".png, .jpg, .jpeg"
         beforeUpload={this.beforeUpload}
-        onChange={this.handleChange}
-      >
-        {imageUrl ? <img src={imageUrl} alt="icon" style={{ width: '100%', height: '88px' }} /> : uploadButton}
+        onChange={this.handleChange}>
+        {imageUrl ? <img src={imageUrl} alt="icon" style={{width: '100%', height: '88px'}} /> : uploadButton}
       </Upload>
     );
   }

@@ -1,34 +1,34 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import moment from 'moment';
 const FormItem = Form.Item;
 const Option = Select.Option;
-const { MonthPicker } = DatePicker;
+const {MonthPicker} = DatePicker;
 require('style/view/common/conduct.less');
 class SearchForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       searchValue: [],
-      weekDate: '',
+      weekDate: ''
     };
   }
   handleReset = () => {
     this.props.form.resetFields();
-    this.setState({ weekDate: '' });
+    this.setState({weekDate: ''});
   };
   ChangeMonth = (date, dateString) => {
-    this.setState({ weekDate: dateString });
+    this.setState({weekDate: dateString});
   };
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
-    const { weekDate } = this.state;
+    const {limit} = this.props;
+    const {weekDate} = this.state;
     limit(weekDate);
   };
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     return (
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
         <Row gutter={24}>
@@ -41,11 +41,11 @@ class SearchForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset.bind(this)}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset.bind(this)}>
               清空
             </Button>
           </Col>

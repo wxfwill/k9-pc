@@ -1,132 +1,132 @@
-.flex-table(){
-	display: flex;
-		span{
-			flex:1;
-			text-align: center;
-		}
+.flex-table() {
+  display: flex;
+  span {
+    flex: 1;
+    text-align: center;
+  }
 }
-.Pandect{
-	position: fixed;
-	top:0;
-	right:0;
-	bottom:0;
-	left:0;	
-	z-index:10;
-	width:100%;
-	height:100%;
-	background:url('../../../images/view/bg.jpg')no-repeat center;
-	background-size: 100% 100%;
-	overflow-y: auto;
-	/*此处后期要提取出来duty-status类*/
-	.duty-status{
-		background: url('../../../images/view/you2.png')no-repeat;
-		background-size: 100% 100%;
-		background-position:0px 8px ;
-		padding: 8px 10px 10px;
-		box-sizing: border-box;
-		.layout-card{
-			.card-title{
-				width:80%;
-				height:30px;
-				line-height: 30px;
-				display: inline-block;
-				text-indent: 10px;
-				background:url('../../../images/view/title_bg.png')no-repeat center;
-				background-size: 100% 100%;
-				color:#fff;
-			}
-			background: transparent;
-			.filter-wrapper{
-				.flex-table();
-				span{
-					color:#fff;
-					background:#284384;
-					padding:0 5px;
-					cursor: pointer;
-				}
-			}
-			.ant-card{
-				background:transparent;
-			}
-			.ant-card-head{
-				border-bottom:none;
-				height:20px!important;
-				min-height: 35px!important;
-				background: transparent;
-				padding: 5px!important;
-				padding-bottom: 10px;
-				.ant-card-head-wrapper{
-					min-height: 30px!important;
-					height: 30px!important;
-					margin-top:15px;
-					width: 80%;
-				}
-				.ant-card-head-title{
-					color:#eac43e;
-					font-size:18px;
-					padding-top: 0!important;
-					padding-bottom: 5px!important;
-					height:auto!important;
-					.title span{
-						float: right;
-						color:#eac43e;
-						font-weight:500;
-						font-size:18px;
-					}
-				}
-			}
-			.ant-card-body{
-				padding: 4px!important;
-				padding-top: 15px!important;
-				padding-left: 25px!important;
-				color:#40d8ff;
-			}
-		}
-	}
-	.exe-tab{
-		padding: 30px 15px 20px;
-		margin-top:9px;
-		.card-title{
-			width:65%!important;
-			font-size:16px;
-			margin-bottom:10px;
-		}
-	}
-	.panWapper{
-		width:100%;
-		height:100%;
-		header{
-			width:100%;
-			height:95px;
-			padding-top: 10px;
-			background:url('../../../images/view/title.png')no-repeat center;
-			background-origin: content-box;
-			background-size: 100% 100%;
-			cursor: pointer;
-		}
-		section{
-			padding:0 20px;
-			.duty-card{
-				p{
-					white-space:nowrap;
-					text-overflow:ellipsis;
-					overflow:hidden;
-				}
-			}
-			.gutter-example .ant-row > div {
-			  background: transparent;
-			  border: 0;
-			}
-			.gutter-box {
-			  background: #00A0E9;
-			  padding: 5px 0;
-			}
-		}
-	}
-	&.show{
-		display: block;
-	}
-	&.hide{
-		display: none;
-	}
+.Pandect {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  background: url('../../../images/view/bg.jpg') no-repeat center;
+  background-size: 100% 100%;
+  overflow-y: auto;
+  /*此处后期要提取出来duty-status类*/
+  .duty-status {
+    background: url('../../../images/view/you2.png') no-repeat;
+    background-size: 100% 100%;
+    background-position: 0px 8px;
+    padding: 8px 10px 10px;
+    box-sizing: border-box;
+    .layout-card {
+      .card-title {
+        width: 80%;
+        height: 30px;
+        line-height: 30px;
+        display: inline-block;
+        text-indent: 10px;
+        background: url('../../../images/view/title_bg.png') no-repeat center;
+        background-size: 100% 100%;
+        color: #fff;
+      }
+      background: transparent;
+      .filter-wrapper {
+        .flex-table();
+        span {
+          color: #fff;
+          background: #284384;
+          padding: 0 5px;
+          cursor: pointer;
+        }
+      }
+      .ant-card {
+        background: transparent;
+      }
+      .ant-card-head {
+        border-bottom: none;
+        height: 20px !important;
+        min-height: 35px !important;
+        background: transparent;
+        padding: 5px !important;
+        padding-bottom: 10px;
+        .ant-card-head-wrapper {
+          min-height: 30px !important;
+          height: 30px !important;
+          margin-top: 15px;
+          width: 80%;
+        }
+        .ant-card-head-title {
+          color: #eac43e;
+          font-size: 18px;
+          padding-top: 0 !important;
+          padding-bottom: 5px !important;
+          height: auto !important;
+          .title span {
+            float: right;
+            color: #eac43e;
+            font-weight: 500;
+            font-size: 18px;
+          }
+        }
+      }
+      .ant-card-body {
+        padding: 4px !important;
+        padding-top: 15px !important;
+        padding-left: 25px !important;
+        color: #40d8ff;
+      }
+    }
+  }
+  .exe-tab {
+    padding: 30px 15px 20px;
+    margin-top: 9px;
+    .card-title {
+      width: 65% !important;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+  }
+  .panWapper {
+    width: 100%;
+    height: 100%;
+    header {
+      width: 100%;
+      height: 95px;
+      padding-top: 10px;
+      background: url('../../../images/view/title.png') no-repeat center;
+      background-origin: content-box;
+      background-size: 100% 100%;
+      cursor: pointer;
+    }
+    section {
+      padding: 0 20px;
+      .duty-card {
+        p {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+      .gutter-example .ant-row > div {
+        background: transparent;
+        border: 0;
+      }
+      .gutter-box {
+        background: #00a0e9;
+        padding: 5px 0;
+      }
+    }
+  }
+  &.show {
+    display: block;
+  }
+  &.hide {
+    display: none;
+  }
 }

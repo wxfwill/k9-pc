@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select} from 'antd';
+import {thirdLayout} from 'util/Layout';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -10,14 +10,14 @@ class SearchForm extends React.Component {
     expand: true,
     taskValue: '',
     areaValue: '',
-    monthValue: '',
+    monthValue: ''
   };
 
   handleSearch = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       console.log('Received values of form: ', values);
-      this.props.limit({ location: values.location });
+      this.props.limit({location: values.location});
     });
   };
 
@@ -26,17 +26,17 @@ class SearchForm extends React.Component {
   };
 
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   render() {
-    let expand = this.state.expand;
-    const { getFieldDecorator } = this.props.form;
+    const expand = this.state.expand;
+    const {getFieldDecorator} = this.props.form;
     return (
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
         <Row gutter={24}>
@@ -47,11 +47,11 @@ class SearchForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
           </Col>

@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Radio, TreeSelect, Select, DatePicker } from 'antd';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Radio, TreeSelect, Select, DatePicker} from 'antd';
 import moment from 'moment';
 import GlobalName from 'components/searchForm/GlobalUserName';
 import GlobalTeam from 'components/searchForm/GlobalTeam';
 import GlobalTaskType from 'components/searchForm/GlobalTaskType';
 import GlobalSatrtEndTime from 'components/searchForm/GlobalSatrtEndTime';
 const FormItem = Form.Item;
-const { TreeNode } = TreeSelect;
+const {TreeNode} = TreeSelect;
 const Option = Select.Option;
 
 class SearchForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      feedbalVal: null,
+      feedbalVal: null
     };
   }
   componentDidMount() {}
@@ -29,7 +29,7 @@ class SearchForm extends Component {
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   onChangeStartTime = () => {};
@@ -54,14 +54,14 @@ class SearchForm extends Component {
           <Col xl={6} lg={6} md={8} sm={12} xs={12}>
             <GlobalTaskType form={this.props.form} taskCode="jxType" taskLabel="rewardType"></GlobalTaskType>
           </Col>
-          <Col xl={6} lg={6} md={8} sm={12} xs={12} style={{ textAlign: 'center' }}>
+          <Col xl={6} lg={6} md={8} sm={12} xs={12} style={{textAlign: 'center'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handlePrif}>
+            <Button style={{marginLeft: 8}} onClick={this.handlePrif}>
               导出
             </Button>
           </Col>

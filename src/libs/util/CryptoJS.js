@@ -1,7 +1,7 @@
 /** @format */
 
 import CryptoJS from 'crypto-js';
-import { JSEncrypt } from 'jsencrypt';
+import {JSEncrypt} from 'jsencrypt';
 let key = ''; // 前端生成key
 //随机生成32AES密钥
 export function desStrPro() {
@@ -68,7 +68,7 @@ export function desStrPro() {
     'W',
     'X',
     'Y',
-    'Z',
+    'Z'
   ];
   for (var i = 0; i < 32; i++) {
     var pos = Math.round(Math.random() * (arr.length - 1));
@@ -81,7 +81,7 @@ function encodeDes(data, key) {
   var keyHex = CryptoJS.enc.Utf8.parse(key);
   var encrypted = CryptoJS.DES.encrypt(data, keyHex, {
     mode: CryptoJS.mode.ECB,
-    padding: CryptoJS.pad.Pkcs7,
+    padding: CryptoJS.pad.Pkcs7
   });
   return encrypted.toString();
 }
@@ -91,7 +91,7 @@ export function decodeAesString(data, _key) {
   var key = CryptoJS.enc.Utf8.parse(_key);
   var decrypted = CryptoJS.AES.decrypt(data, key, {
     mode: CryptoJS.mode.ECB,
-    padding: CryptoJS.pad.Pkcs7,
+    padding: CryptoJS.pad.Pkcs7
   });
   return decrypted.toString(CryptoJS.enc.Utf8);
 }
@@ -129,6 +129,6 @@ export function decryptRAS(resData) {
   console.log(resData);
   var decrypt = new JSEncrypt();
   decrypt.setPrivateKey(PRIVATE_KEY);
-  let data = decrypt.decrypt(resData); // 解密
+  const data = decrypt.decrypt(resData); // 解密
   return data;
 }

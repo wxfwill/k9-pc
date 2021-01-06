@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import httpAjax from 'libs/httpAjax';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
@@ -12,22 +12,22 @@ class SearchForm extends React.Component {
     super(props);
     this.state = {
       expand: true,
-      dutyList: [],
+      dutyList: []
     };
   }
   componentWillMount() {
     //获取职务信息
     httpAjax('post', config.apiUrl + '/api/basicData/dutyList', {}).then((res) => {
       if (res.code == 0) {
-        this.setState({ dutyList: res.data });
+        this.setState({dutyList: res.data});
         sessionStorage.setItem('dutyList', JSON.stringify(res.data));
       }
     });
   }
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
-    let timeData = 'range-time-picker';
+    const {limit} = this.props;
+    const timeData = 'range-time-picker';
     this.props.form.validateFields((err, values) => {
       limit(values);
     });
@@ -36,17 +36,17 @@ class SearchForm extends React.Component {
     this.props.form.resetFields();
   };
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   render() {
-    const { getFieldDecorator } = this.props.form;
-    let { expand, dutyList } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {expand, dutyList} = this.state;
     const dutyListOption =
       dutyList &&
       dutyList.map((item, index) => {
@@ -74,7 +74,7 @@ class SearchForm extends React.Component {
               {getFieldDecorator('duty')(<Select placeholder="职务">{dutyListOption}</Select>)}
             </FormItem>
           </Col>
-          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ display: expand ? 'none' : 'block' }}>
+          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{display: expand ? 'none' : 'block'}}>
             <FormItem label="职称" {...thirdLayout}>
               {getFieldDecorator('title')(
                 <Select placeholder="职称">
@@ -87,14 +87,14 @@ class SearchForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
-            <a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>
+            <a style={{marginLeft: 8, fontSize: 12}} onClick={this.toggle}>
               {this.state.expand ? '展开' : '收起'} <Icon type={this.state.expand ? 'down' : 'up'} />
             </a>
           </Col>

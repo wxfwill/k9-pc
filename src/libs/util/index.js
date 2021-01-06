@@ -1,39 +1,39 @@
-import { message, Button, Alert } from 'antd';
+import {message, Button, Alert} from 'antd';
+import moment from 'moment';
 const LogoSrc = require('images/logo.png');
 const LogoPng = require('images/left-logo.png');
-import moment from 'moment';
 message.config({
-  duration: 3,
+  duration: 3
 });
 //---start---泛化this(函数反柯里化)---start
 Function.prototype.uncurrying = function () {
-  let self = this;
+  const self = this;
   return function () {
-    let obj = Array.prototype.shift.call(arguments); //原对象（数组，类数组）
+    const obj = Array.prototype.shift.call(arguments); //原对象（数组，类数组）
     return self.apply(obj, arguments);
   };
 };
 //泛化数组对象方法
-let ArrMethod = {};
+const ArrMethod = {};
 for (var i = 0, fn, ary = ['push', 'shift', 'forEach', 'concat']; (fn = ary[i++]); ) {
   ArrMethod[fn] = Array.prototype[fn].uncurrying();
 }
 //---end---泛化this(函数反柯里化)---end
-let constant = {
+const constant = {
   name: 'K9 警犬作战指挥系统',
   LogoSrc: LogoSrc,
   LogoPng: LogoPng,
   logoText: 'K9 警犬作战指挥系统',
-  footerText: 'K9 警犬作战指挥系统©2018 Created by 华云中盛',
+  footerText: 'K9 警犬作战指挥系统©2018 Created by 华云中盛'
 };
-let Msg = {
-  warning: (text) => message.warning(text),
+const Msg = {
+  warning: (text) => message.warning(text)
 };
-let cookieUtil = {
+const cookieUtil = {
   get: function (name) {
-    let cookieName = encodeURIComponent(name) + '=',
-      cookieStart = document.cookie.indexOf(cookieName),
-      cookieValue = null;
+    const cookieName = encodeURIComponent(name) + '=';
+    const cookieStart = document.cookie.indexOf(cookieName);
+    let cookieValue = null;
     if (cookieStart > -1) {
       let cookieEnd = document.cookie.indexOf(';', cookieStart);
       if (cookieEnd == -1) {
@@ -61,17 +61,17 @@ let cookieUtil = {
   },
   unset: function (name, path, domain, secure) {
     this.set(name, '', new Date(0), path, domain, secure);
-  },
+  }
 };
-let method = {
+const method = {
   isObjectValueEqual: function (a, b) {
-    let aProps = Object.getOwnPropertyNames(a);
-    let bProps = Object.getOwnPropertyNames(b);
+    const aProps = Object.getOwnPropertyNames(a);
+    const bProps = Object.getOwnPropertyNames(b);
     if (aProps.length != bProps.length) {
       return false;
     }
     for (let i = 0; i < aProps.length; i++) {
-      let propName = aProps[i];
+      const propName = aProps[i];
       if (a[propName] !== b[propName]) {
         return false;
       }
@@ -87,13 +87,13 @@ let method = {
     return {
       isString: isType('String'),
       isArray: isType('Array'),
-      isNumber: isType('Number'),
+      isNumber: isType('Number')
     };
   },
   subsection: function (data, fn, count, time) {
     let timmer = null;
     function start() {
-      let preCoord = data.slice(0, 1);
+      const preCoord = data.slice(0, 1);
       for (var i = 0; i < Math.min(count || 1, data.length); i++) {
         var obj = data.splice(0, 2);
         fn([...obj, data[0]]);
@@ -109,12 +109,12 @@ let method = {
     };
   },
   throttle: function (fn, interval) {
-    let _self = fn;
+    const _self = fn;
     var timmer;
     let isFirst = true;
     return function () {
-      let args = arguments;
-      let _me = this;
+      const args = arguments;
+      const _me = this;
       if (isFirst) {
         fn.apply(_me, args);
         return (isFirst = false);
@@ -129,11 +129,11 @@ let method = {
       }, 500 || interval);
     };
   },
-  ArrMetho: ArrMethod,
+  ArrMetho: ArrMethod
 };
 
 //打印
-export const jQPrintPartialHtml = (select, { title = document.title } = {}) => {
+export const jQPrintPartialHtml = (select, {title = document.title} = {}) => {
   window.Print(select, {
     title: title,
     onStart: () => {
@@ -141,7 +141,7 @@ export const jQPrintPartialHtml = (select, { title = document.title } = {}) => {
     },
     onEnd: () => {
       console.log('onEnd', new Date());
-    },
+    }
   });
 };
 
@@ -151,16 +151,16 @@ export function formatDate(date, fmt) {
   if (/(y+)/.test(fmt)) {
     fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
   }
-  let o = {
+  const o = {
     'M+': date.getMonth() + 1,
     'd+': date.getDate(),
     'h+': date.getHours(),
     'm+': date.getMinutes(),
-    's+': date.getSeconds(),
+    's+': date.getSeconds()
   };
-  for (let k in o) {
+  for (const k in o) {
     if (new RegExp(`(${k})`).test(fmt)) {
-      let str = o[k] + '';
+      const str = o[k] + '';
       fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? str : padLeftZero(str));
     }
   }
@@ -171,15 +171,15 @@ function padLeftZero(str) {
 }
 // 获取url参数
 export const urlParse = (src) => {
-  let url = decodeURIComponent(src) || null;
-  let obj = {};
-  let reg = /[?&][^?&]+=[^?&]+/g;
-  let arr = url && url.match(reg);
+  const url = decodeURIComponent(src) || null;
+  const obj = {};
+  const reg = /[?&][^?&]+=[^?&]+/g;
+  const arr = url && url.match(reg);
   if (arr) {
     arr.forEach((item) => {
-      let temArr = item.substring(1).split('=');
-      let key = temArr[0];
-      let val = temArr[1];
+      const temArr = item.substring(1).split('=');
+      const key = temArr[0];
+      const val = temArr[1];
       obj[key] = val;
     });
   }
@@ -194,12 +194,12 @@ export const urlParse = (src) => {
 export const Debounce = (func, wait = 500, immediate = true) => {
   let timeout;
   return function () {
-    let context = this;
-    let args = arguments;
+    const context = this;
+    const args = arguments;
 
     if (timeout) clearTimeout(timeout);
     if (immediate) {
-      let callNow = !timeout;
+      const callNow = !timeout;
       timeout = setTimeout(() => {
         timeout = null;
       }, wait);
@@ -253,15 +253,15 @@ export const isObject = (ele) => {
 
 // 根据年月计算出一个月的开始和结束日期
 export const getMontDateRange = (year, month) => {
-  let startDate = moment([Number(year), Number(month) - 1]);
-  let endDate = moment(startDate).endOf('month');
-  return { start: moment(startDate).format('YYYY-MM-DD'), end: moment(endDate).format('YYYY-MM-DD') };
+  const startDate = moment([Number(year), Number(month) - 1]);
+  const endDate = moment(startDate).endOf('month');
+  return {start: moment(startDate).format('YYYY-MM-DD'), end: moment(endDate).format('YYYY-MM-DD')};
 };
 
 // 开始时间和结束时间之间的小时
 export const getStartEndHours = (start, end) => {
-  let s = moment(start);
-  let e = moment(end);
+  const s = moment(start);
+  const e = moment(end);
   // let dura = e - s;
   return e.diff(s, 'hours', true);
 };
@@ -269,7 +269,7 @@ export const getStartEndHours = (start, end) => {
 // 密码的正则表达式（有数字、大写、小写字母组成）
 export const passeordReg = /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?![0-9a-z]+$)(?![0-9A-Z]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/g;
 
-export { constant, Msg, method, cookieUtil };
+export {constant, Msg, method, cookieUtil};
 
 //深拷贝
 export const DeepClone = (data) => {

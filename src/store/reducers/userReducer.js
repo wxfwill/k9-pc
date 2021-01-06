@@ -1,7 +1,7 @@
-import { USER_DUTY_LIST } from '../actionTypes';
+import {USER_DUTY_LIST} from '../actionTypes';
 
 const initialzeState = {
-  dutyList: [],
+  dutyList: []
 };
 
 export default function userReducer(state = initialzeState, action) {
@@ -9,7 +9,7 @@ export default function userReducer(state = initialzeState, action) {
     case USER_DUTY_LIST:
       return {
         ...state,
-        dutyList: action.list,
+        dutyList: action.list
       };
     default:
       return state;

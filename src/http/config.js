@@ -5,7 +5,7 @@ export default {
   baseUrl: process.env.BASE_URL,
   // 请求头信息
   headers: {
-    'Content-Type': 'application/json;charset=UTF-8',
+    'Content-Type': 'application/json;charset=UTF-8'
   },
   // 设置请求超时重新请求次数
   retry: 1,
@@ -16,5 +16,5 @@ export default {
   // 携带凭证
   withCredentials: true,
   // 返回数据类型
-  responseType: 'json',
+  responseType: 'json'
 };

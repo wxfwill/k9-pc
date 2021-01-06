@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
-import { Layout, Menu, Dropdown, Modal, Icon, Row, Col, Badge, Button, message } from 'antd';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Link, withRouter} from 'react-router-dom';
+import {Layout, Menu, Dropdown, Modal, Icon, Row, Col, Badge, Button, message} from 'antd';
 // import * as systomStatus from 'actions/systomStatus';
-import { showNavCollapsed } from 'store/actions/common';
-import { saveToken } from 'store/actions/loginAction';
+import {showNavCollapsed} from 'store/actions/common';
+import {saveToken} from 'store/actions/loginAction';
 
-import { constant } from 'libs/util/index';
-import { changeRoute, changeMapType } from 'store/actions/common';
+import {constant} from 'libs/util/index';
+import {changeRoute, changeMapType} from 'store/actions/common';
 import ScreenFull from '../Screenfull/index';
 
 import ChangePassword from 'components/ChangePassword';
-const { Header } = Layout;
+const {Header} = Layout;
 
 const newMsgObj = {
   ///app/monitoring/leaveCheck
-  1: { text: '请假审批', link: '/app/holiday/approve' },
-  2: { text: '犬病治疗', link: '/app/dog/cure' },
+  1: {text: '请假审批', link: '/app/holiday/approve'},
+  2: {text: '犬病治疗', link: '/app/dog/cure'}
   /*	3: {text: '训练任务', link: '/app/drill/pdogdrill'},
 	4: {text: '日常巡逻', link: '/app/monitoring/duty'},
 	5:{link:'/app/monitoring/deploy'},
@@ -35,19 +35,15 @@ class HeaderComponent extends Component {
     this.totalMsgNum = 0;
     this.timer = null;
     this.state = {
-      isShow: false,
+      isShow: false
     };
   }
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     // this.props.sysActions.newSocket();
     // this.timer = setInterval(this.openWebsocket, 30000);
   }
   componentDidMount() {}
-  componentWillUnmount() {
-    clearInterval(this.timer);
-    // systomStatus.closeSocket();
-  }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const socketMsg = nextProps.socketMsg;
     if (socketMsg && socketMsg.msgType == 'msgTips') {
       const data = socketMsg.data;
@@ -56,10 +52,10 @@ class HeaderComponent extends Component {
         if (item.type < 3) {
           this.totalMsgNum += item.number;
           return (
-            <Menu.Item key="logout" key={item.type}>
+            <Menu.Item key={item.type}>
               <Link to={newMsgObj[item.type].link}>
-                <span style={{ display: 'inlineBlock', marginRight: 55 }}>{item.title}</span>
-                <span style={{ color: 'red' }}>{item.number}</span>
+                <span style={{display: 'inlineBlock', marginRight: 55}}>{item.title}</span>
+                <span style={{color: 'red'}}>{item.number}</span>
               </Link>
             </Menu.Item>
           );
@@ -67,14 +63,18 @@ class HeaderComponent extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    // systomStatus.closeSocket();
+  }
   clearMsg = (typeId) => {
-    React.$ajax.postData('/api/msgTips/clearMsg', { type: typeId }).then(() => {});
+    React.$ajax.postData('/api/msgTips/clearMsg', {type: typeId}).then(() => {});
   };
   menuClick(data) {
-    let { history } = this.props;
-    let { item, key, keyPath } = data;
+    const {history} = this.props;
+    const {key} = data;
     if (key == 'logout') {
-      let hide = message.loading('正在退出系统...', 0);
+      const hide = message.loading('正在退出系统...', 0);
       React.$ajax
         .postData('/api/userCenter/logout')
         .then((res) => {
@@ -86,7 +86,7 @@ class HeaderComponent extends Component {
             history.push('/login');
           }
         })
-        .catch(function (err) {});
+        .catch(function () {});
     } else {
       this.clearMsg(key);
     }
@@ -107,8 +107,8 @@ class HeaderComponent extends Component {
         return (
           <Menu.Item key="logout">
             <Link to={newMsgObj[item.type].link}>
-              <span style={{ display: 'inlineBlock', marginRight: 55 }}>{item.title}</span>
-              <span style={{ color: 'red' }}>{item.number}</span>
+              <span style={{display: 'inlineBlock', marginRight: 55}}>{item.title}</span>
+              <span style={{color: 'red'}}>{item.number}</span>
             </Link>
           </Menu.Item>
         );
@@ -121,7 +121,7 @@ class HeaderComponent extends Component {
       title: '提示',
       content: '确认退出吗？',
       onOk: () => {
-        let hide = message.loading('正在退出系统...', 0);
+        const hide = message.loading('正在退出系统...', 0);
         React.$ajax.postData('/api/userCenter/logout').then((res) => {
           if (res.code == 0) {
             hide();
@@ -131,18 +131,18 @@ class HeaderComponent extends Component {
           }
         });
       },
-      onCancel: () => {},
+      onCancel: () => {}
     });
   };
 
-  downloadApp = (obj, type) => {
+  downloadApp = () => {
     React.$ajax.postData('/api/downLoad/getFileLocation?dlType=1').then((res) => {
       if (res.code == 0) {
         window.location.href = '' + res.data;
       }
     });
   };
-  downloadIM = (obj, type) => {
+  downloadIM = () => {
     React.$ajax.postData('/api/downLoad/getFileLocation?dlType=2').then((res) => {
       if (res.code == 0) {
         window.location.href = '' + res.data;
@@ -153,7 +153,7 @@ class HeaderComponent extends Component {
     this.props.changeMapType(false);
     this.props.isCollapsedAction();
   };
-  handleDrop = ({ key }) => {
+  handleDrop = ({key}) => {
     console.log(key);
     if (key == 'app') {
       this.downloadApp();
@@ -164,7 +164,7 @@ class HeaderComponent extends Component {
     } else if (key == 'changePassword') {
       //console.log('修改密码');
       this.setState({
-        isShow: !this.state.isShow,
+        isShow: !this.state.isShow
       });
     }
   };
@@ -172,22 +172,22 @@ class HeaderComponent extends Component {
     return (
       <Menu onClick={this.handleDrop}>
         <Menu.Item key="app">
-          <span style={{ cursor: 'pointer' }}>
+          <span style={{cursor: 'pointer'}}>
             <Icon type="download" /> app端
           </span>
         </Menu.Item>
         <Menu.Item key="IM">
-          <span style={{ cursor: 'pointer' }}>
+          <span style={{cursor: 'pointer'}}>
             <Icon type="download" /> IM
           </span>
         </Menu.Item>
         <Menu.Item key="changePassword">
-          <span style={{ cursor: 'pointer' }}>
+          <span style={{cursor: 'pointer'}}>
             <Icon type="edit" /> 修改密码
           </span>
         </Menu.Item>
         <Menu.Item key="loginOut">
-          <span style={{ cursor: 'pointer' }}>
+          <span style={{cursor: 'pointer'}}>
             <Icon type="poweroff" />
             退出系统
           </span>
@@ -199,7 +199,7 @@ class HeaderComponent extends Component {
   handleCancel = (isSuccess) => {
     this.setState(
       {
-        isShow: false,
+        isShow: false
       },
       () => {
         isSuccess && this.props.history.push('/login'); //修改密码成功，返回登录页
@@ -207,7 +207,7 @@ class HeaderComponent extends Component {
     );
   };
   render() {
-    const { name } = this.props.userinfo;
+    const {name} = this.props.userinfo;
     return (
       <Header className="header">
         <div className="logo">
@@ -227,9 +227,8 @@ class HeaderComponent extends Component {
               <Dropdown overlay={this.dropMenu()}>
                 <a
                   className="ant-dropdown-link"
-                  style={{ color: 'rgba(0, 0, 0, 0.65)' }}
-                  onClick={(e) => e.preventDefault()}
-                >
+                  style={{color: 'rgba(0, 0, 0, 0.65)'}}
+                  onClick={(e) => e.preventDefault()}>
                   {name}
                   <Icon type="down" />
                 </a>
@@ -247,14 +246,14 @@ const mapStateToProps = (state) => ({
   token: state.loginReducer.token,
   socketMsg: state.system && state.system.socketMsg,
   isCollapsed: state.commonReducer.collapsed,
-  userinfo: state.loginReducer.userInfo,
+  userinfo: state.loginReducer.userInfo
 });
 const mapDispatchToProps = (dispatch) => ({
   // sysActions: bindActionCreators(systomStatus, dispatch),
   tokenAction: (token) => dispatch(saveToken(token)),
   isCollapsedAction: () => dispatch(showNavCollapsed()),
   changeRouteAction: (url) => dispatch(changeRoute(url)),
-  changeMapType: (bool) => dispatch(changeMapType(bool)),
+  changeMapType: (bool) => dispatch(changeMapType(bool))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(HeaderComponent));

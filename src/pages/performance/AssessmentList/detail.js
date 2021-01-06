@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Row, Col, Card, Button, Table, Divider, message, Popconfirm, Typography, Form, Input } from 'antd';
-import { withRouter } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Row, Col, Card, Button, Table, Divider, message, Popconfirm, Typography, Form, Input} from 'antd';
+import {withRouter} from 'react-router-dom';
 import 'style/pages/performance/AssessmentSetting/detail.less';
-const { Title, Text } = Typography;
-const { TextArea } = Input;
+const {Title, Text} = Typography;
+const {TextArea} = Input;
 const defaltxt = '（系统自动带出信息）';
 
 class AssessmentDetail extends Component {
@@ -22,26 +22,26 @@ class AssessmentDetail extends Component {
         itemOneSquadronMark: null,
         itemTwoSquadronMark: null,
         itemThreeSquadronMark: null,
-        itemFourSquadronMark: null,
+        itemFourSquadronMark: null
       },
       attendanceStatisticsDTOS: [], // 考请
       fourWReportStatisticsDTOS: [], // 4w报备
       otherReasonsDTOS: [], // 其他
-      dogSkill: null, //警犬技能
+      dogSkill: null //警犬技能
     };
   }
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['绩效考核', '绩效考核详情'] });
+    React.store.dispatch({type: 'NAV_DATA', nav: ['绩效考核', '绩效考核详情']});
     if (util.urlParse(this.props.location.search).detalId) {
-      let id = util.urlParse(this.props.location.search).detalId;
+      const id = util.urlParse(this.props.location.search).detalId;
       this.getDetalData(id);
     } else {
       // this.props.history.goBack();
     }
     if (util.urlParse(this.props.location.search).type == 'detal') {
-      this.setState({ isable: true });
+      this.setState({isable: true});
     } else {
-      this.setState({ isable: false });
+      this.setState({isable: false});
     }
   }
   handleFormChange = (props, val, all) => {
@@ -49,17 +49,17 @@ class AssessmentDetail extends Component {
     console.log(all);
   };
   getDetalData = (assessmentId) => {
-    React.$ajax.postData('/api/performanceAssessment/getSelfEvaluation', { assessmentId }).then((res) => {
+    React.$ajax.postData('/api/performanceAssessment/getSelfEvaluation', {assessmentId}).then((res) => {
       if (res.code == 0) {
-        let rsData = res.data;
+        const rsData = res.data;
         // let {
         //   itemOneSquadronMark,
         //   itemTwoSquadronMark,
         //   itemThreeSquadronMark,
         //   itemFourSquadronMark,
         // } = rsData.assessmentValues;
-        let _id = Object.assign({}, this.state.assessmentValues, {
-          id: rsData.assessmentValues.id,
+        const _id = Object.assign({}, this.state.assessmentValues, {
+          id: rsData.assessmentValues.id
           // itemOneSquadronMark,
           // itemTwoSquadronMark,
           // itemThreeSquadronMark,
@@ -73,7 +73,7 @@ class AssessmentDetail extends Component {
           assessmentValues: _id,
           valueSquadronSumMark: rsData.valueSquadronSumMark,
           selfEvaluationSumMark: rsData.selfEvaluationSumMark,
-          businessSquadronSumMark: rsData.businessSquadronSumMark,
+          businessSquadronSumMark: rsData.businessSquadronSumMark
         });
         // this.setState({ assessmentValues: rsData.assessmentValues });
       }
@@ -87,39 +87,39 @@ class AssessmentDetail extends Component {
     util.jQPrintPartialHtml('.AssessmentDetail');
   };
   getAllGrade = () => {
-    let { setFieldsValue, getFieldValue } = this.props.form;
+    const {setFieldsValue, getFieldValue} = this.props.form;
     console.log(getFieldValue('valueSquadronSumMark'));
     console.log(getFieldValue('businessSquadronSumMark'));
-    let value = Number(getFieldValue('valueSquadronSumMark'));
-    let bussobj = Number(getFieldValue('businessSquadronSumMark'));
-    let dogGrade = Number(getFieldValue('dogSquadronSumMark1'));
-    let all = value + bussobj + dogGrade;
-    setFieldsValue({ selfEvaluationSumMark: all.toFixed(2) });
+    const value = Number(getFieldValue('valueSquadronSumMark'));
+    const bussobj = Number(getFieldValue('businessSquadronSumMark'));
+    const dogGrade = Number(getFieldValue('dogSquadronSumMark1'));
+    const all = value + bussobj + dogGrade;
+    setFieldsValue({selfEvaluationSumMark: all.toFixed(2)});
   };
   handleItemOne = (e, item) => {
     e.persist();
-    let val = e.target.value;
-    let { setFieldsValue, getFieldsValue } = this.props.form;
-    let obj = getFieldsValue();
+    const val = e.target.value;
+    const {setFieldsValue, getFieldsValue} = this.props.form;
+    const obj = getFieldsValue();
     console.log(obj);
     let num = 0;
-    for (let key in obj) {
+    for (const key in obj) {
       if (key.includes('item') && key != item) {
         console.log(Number(obj[key]));
         num += Number(obj[key]);
       }
     }
-    let allNum = (Number(val) + num).toFixed(2);
-    setFieldsValue({ valueSquadronSumMark: allNum });
+    const allNum = (Number(val) + num).toFixed(2);
+    setFieldsValue({valueSquadronSumMark: allNum});
     this.getAllGrade();
   };
   handle4wMark = (e, item) => {
     e.persist();
-    let val = e.target.value;
-    let { setFieldsValue, getFieldsValue } = this.props.form;
-    let obj = getFieldsValue();
+    const val = e.target.value;
+    const {setFieldsValue, getFieldsValue} = this.props.form;
+    const obj = getFieldsValue();
     let num = 0;
-    for (let key in obj) {
+    for (const key in obj) {
       if (key.includes('4wMark') && key != item) {
         num += Number(obj[key]);
       }
@@ -130,15 +130,15 @@ class AssessmentDetail extends Component {
         num += Number(obj[key]);
       }
     }
-    let allNum = (Number(val) + num).toFixed(2);
-    setFieldsValue({ businessSquadronSumMark: allNum });
+    const allNum = (Number(val) + num).toFixed(2);
+    setFieldsValue({businessSquadronSumMark: allNum});
     this.getAllGrade();
   };
   handleDogSkill = (e) => {
     e.persist();
-    let val = e.target.value;
-    let { setFieldsValue, getFieldsValue } = this.props.form;
-    setFieldsValue({ dogSquadronSumMark1: (Number(val) / 2).toFixed(2) });
+    const val = e.target.value;
+    const {setFieldsValue, getFieldsValue} = this.props.form;
+    setFieldsValue({dogSquadronSumMark1: (Number(val) / 2).toFixed(2)});
     this.getAllGrade();
   };
   handleSubmit = (e) => {
@@ -148,28 +148,28 @@ class AssessmentDetail extends Component {
       if (err) {
         return;
       }
-      let obj = values;
-      let fouer4w = [];
-      let kqArr = [];
-      let otherArr = [];
-      for (let key in obj) {
+      const obj = values;
+      const fouer4w = [];
+      const kqArr = [];
+      const otherArr = [];
+      for (const key in obj) {
         // 4w报备
         if (key.toString().indexOf('4wMark') > -1) {
-          let arr1 = key.split('-');
-          fouer4w.push({ id: Number(arr1[1]), squadronMark: Number(obj[key]) });
+          const arr1 = key.split('-');
+          fouer4w.push({id: Number(arr1[1]), squadronMark: Number(obj[key])});
         }
         // 考勤
         if (key.toString().indexOf('kqnMark') > -1) {
-          let arr2 = key.split('-');
-          kqArr.push({ id: Number(arr2[1]), squadronMark: Number(obj[key]) });
+          const arr2 = key.split('-');
+          kqArr.push({id: Number(arr2[1]), squadronMark: Number(obj[key])});
         }
         // 其他
         if (key.toString().indexOf('otherMark') > -1) {
-          let arr3 = key.split('-');
-          otherArr.push({ id: Number(arr3[1]), squadronMark: Number(obj[key]) });
+          const arr3 = key.split('-');
+          otherArr.push({id: Number(arr3[1]), squadronMark: Number(obj[key])});
         }
       }
-      let {
+      const {
         itemOneSquadronMark,
         itemTwoSquadronMark,
         itemThreeSquadronMark,
@@ -177,14 +177,14 @@ class AssessmentDetail extends Component {
         selfEvaluationSumMark,
         businessSquadronSumMark,
         valueSquadronSumMark,
-        dogSquadronSumMark,
+        dogSquadronSumMark
       } = values;
 
-      let _assessmentValues = Object.assign({}, this.state.assessmentValues, {
+      const _assessmentValues = Object.assign({}, this.state.assessmentValues, {
         itemOneSquadronMark: Number(itemOneSquadronMark),
         itemTwoSquadronMark: Number(itemTwoSquadronMark),
         itemThreeSquadronMark: Number(itemThreeSquadronMark),
-        itemFourSquadronMark: Number(itemFourSquadronMark),
+        itemFourSquadronMark: Number(itemFourSquadronMark)
       });
 
       this.setState(
@@ -196,10 +196,10 @@ class AssessmentDetail extends Component {
           selfEvaluationSumMark,
           businessSquadronSumMark,
           valueSquadronSumMark,
-          dogSquadronSumMark,
+          dogSquadronSumMark
         },
         () => {
-          let {
+          const {
             valueSquadronSumMark,
             selfEvaluationSumMark,
             businessSquadronSumMark,
@@ -208,7 +208,7 @@ class AssessmentDetail extends Component {
             dogSquadronSumMark,
             attendanceStatisticsDTOS,
             fourWReportStatisticsDTOS,
-            otherReasonsDTOS,
+            otherReasonsDTOS
           } = this.state;
 
           React.$ajax
@@ -221,7 +221,7 @@ class AssessmentDetail extends Component {
               dogSquadronSumMark: Number(dogSquadronSumMark),
               attendanceStatisticsDTOS,
               fourWReportStatisticsDTOS,
-              otherReasonsDTOS,
+              otherReasonsDTOS
             })
             .then((res) => {
               if (res.code == 0) {
@@ -243,16 +243,16 @@ class AssessmentDetail extends Component {
     callback();
   };
   render() {
-    const { form } = this.props;
-    const { getFieldDecorator } = form;
-    let { detalObj, assessmentValues } = this.state;
+    const {form} = this.props;
+    const {getFieldDecorator} = form;
+    const {detalObj, assessmentValues} = this.state;
     return (
       <div className="AssessmentDetail">
         {detalObj ? (
           <Row>
             <Col xl={24} lg={24} md={24} sm={24} xs={24}>
               <Card bordered={false}>
-                <Title level={4} style={{ textAlign: 'center' }}>
+                <Title level={4} style={{textAlign: 'center'}}>
                   自评表
                 </Title>
                 <div className="neck">
@@ -295,7 +295,7 @@ class AssessmentDetail extends Component {
                               initialValue: detalObj.assessmentValues
                                 ? detalObj.assessmentValues.itemOneSquadronMark
                                 : null,
-                              rules: [{ validator: this.handleCustomRules }],
+                              rules: [{validator: this.handleCustomRules}]
                             })(
                               <TextArea
                                 rows={1}
@@ -322,9 +322,9 @@ class AssessmentDetail extends Component {
                                 : null,
                               rules: [
                                 {
-                                  validator: this.handleCustomRules,
-                                },
-                              ],
+                                  validator: this.handleCustomRules
+                                }
+                              ]
                             })(
                               <TextArea
                                 rows={1}
@@ -349,7 +349,7 @@ class AssessmentDetail extends Component {
                               initialValue: detalObj.assessmentValues
                                 ? detalObj.assessmentValues.itemThreeSquadronMark
                                 : null,
-                              rules: [{ validator: this.handleCustomRules }],
+                              rules: [{validator: this.handleCustomRules}]
                             })(
                               <TextArea
                                 rows={1}
@@ -374,7 +374,7 @@ class AssessmentDetail extends Component {
                               initialValue: detalObj.assessmentValues
                                 ? detalObj.assessmentValues.itemFourSquadronMark
                                 : null,
-                              rules: [{ validator: this.handleCustomRules }],
+                              rules: [{validator: this.handleCustomRules}]
                             })(
                               <TextArea
                                 rows={1}
@@ -388,7 +388,7 @@ class AssessmentDetail extends Component {
                     </tbody>
                     <tbody>
                       <tr>
-                        <th rowSpan="2" colSpan="2" style={{ textAlign: 'center' }}>
+                        <th rowSpan="2" colSpan="2" style={{textAlign: 'center'}}>
                           价值观考核
                         </th>
                         <th>自评总分</th>
@@ -400,7 +400,7 @@ class AssessmentDetail extends Component {
                           <Form.Item>
                             {getFieldDecorator('valueSquadronSumMark', {
                               initialValue: detalObj.valueSquadronSumMark,
-                              rules: [{ validator: this.handleCustomRules }],
+                              rules: [{validator: this.handleCustomRules}]
                             })(<TextArea rows={1} disabled={this.state.isable} />)}
                           </Form.Item>
                         </td>
@@ -413,7 +413,7 @@ class AssessmentDetail extends Component {
                         </th>
                       </tr>
                       <tr>
-                        <th rowSpan="2" colSpan="2" style={{ textAlign: 'center' }}>
+                        <th rowSpan="2" colSpan="2" style={{textAlign: 'center'}}>
                           警犬技能考核
                         </th>
                         <th>分数</th>
@@ -424,7 +424,7 @@ class AssessmentDetail extends Component {
                           <Form.Item>
                             {getFieldDecorator('dogSquadronSumMark', {
                               initialValue: detalObj.dogSquadronSumMark ? detalObj.dogSquadronSumMark : undefined,
-                              rules: [{ validator: this.handleCustomRules }],
+                              rules: [{validator: this.handleCustomRules}]
                             })(
                               <TextArea
                                 rows={1}
@@ -439,9 +439,9 @@ class AssessmentDetail extends Component {
                             {getFieldDecorator('dogSquadronSumMark1', {
                               initialValue: detalObj.dogSquadronSumMark
                                 ? (Number(detalObj.dogSquadronSumMark) / 2).toFixed(2)
-                                : null,
+                                : null
                               // rules: [{ validator: this.handleCustomRules }],
-                            })(<TextArea rows={1} disabled={true} />)}
+                            })(<TextArea rows={1} disabled />)}
                           </Form.Item>
                         </td>
                       </tr>
@@ -474,7 +474,7 @@ class AssessmentDetail extends Component {
                                 <Form.Item>
                                   {getFieldDecorator(`4wMark-${item.id}`, {
                                     initialValue: item.squadronMark ? item.squadronMark : null,
-                                    rules: [{ validator: this.handleCustomRules }],
+                                    rules: [{validator: this.handleCustomRules}]
                                     // getValueFromEvent: (val) => {
                                     //   console.log(val);
                                     //   return val;
@@ -503,7 +503,7 @@ class AssessmentDetail extends Component {
                                 <Form.Item>
                                   {getFieldDecorator(`kqnMark-${item.id}`, {
                                     initialValue: item.squadronMark ? item.squadronMark : null,
-                                    rules: [{ validator: this.handleCustomRules }],
+                                    rules: [{validator: this.handleCustomRules}]
                                   })(
                                     <TextArea
                                       rows={1}
@@ -527,7 +527,7 @@ class AssessmentDetail extends Component {
                                 <Form.Item>
                                   {getFieldDecorator(`otherMark-${item.id}`, {
                                     initialValue: item.squadronMark ? item.squadronMark : null,
-                                    rules: [{ validator: this.handleCustomRules }],
+                                    rules: [{validator: this.handleCustomRules}]
                                   })(
                                     <TextArea
                                       rows={1}
@@ -541,7 +541,7 @@ class AssessmentDetail extends Component {
                           );
                         })}
                       <tr>
-                        <th colSpan="2" style={{ textAlign: 'center' }}>
+                        <th colSpan="2" style={{textAlign: 'center'}}>
                           合计
                         </th>
                         <td>{detalObj.businessSelfSumMark ? detalObj.businessSelfSumMark : defaltxt}</td>
@@ -549,13 +549,13 @@ class AssessmentDetail extends Component {
                           <Form.Item>
                             {getFieldDecorator('businessSquadronSumMark', {
                               initialValue: detalObj.businessSquadronSumMark ? detalObj.businessSquadronSumMark : null,
-                              rules: [{ validator: this.handleCustomRules }],
+                              rules: [{validator: this.handleCustomRules}]
                             })(<TextArea rows={1} disabled={this.state.isable} />)}
                           </Form.Item>
                         </td>
                       </tr>
                       <tr>
-                        <th colSpan="3" style={{ textAlign: 'center' }}>
+                        <th colSpan="3" style={{textAlign: 'center'}}>
                           <p>最终总得分</p>
                           <p>（价值观总分+50%警犬技能考核得分+业务和内务考核得分）</p>
                         </th>
@@ -563,7 +563,7 @@ class AssessmentDetail extends Component {
                           <Form.Item>
                             {getFieldDecorator('selfEvaluationSumMark', {
                               initialValue: detalObj.selfEvaluationSumMark ? detalObj.selfEvaluationSumMark : undefined,
-                              rules: [{ validator: this.handleCustomRules }],
+                              rules: [{validator: this.handleCustomRules}]
                             })(<TextArea rows={1} disabled={this.state.isable} />)}
                           </Form.Item>
                         </td>
@@ -574,19 +574,19 @@ class AssessmentDetail extends Component {
                   <div className="neck">
                     <Text>签名：</Text>
                     <Text>
-                      <span style={{ paddingRight: '200px' }}>日期：</span>
+                      <span style={{paddingRight: '200px'}}>日期：</span>
                     </Text>
                   </div>
-                  <div style={{ textAlign: 'center', marginTop: '20px' }} className="no-print">
+                  <div style={{textAlign: 'center', marginTop: '20px'}} className="no-print">
                     {util.urlParse(this.props.location.search).type == 'approval' ? (
                       <Button type="primary" htmlType="submit">
                         保存
                       </Button>
                     ) : null}
-                    <Button style={{ marginLeft: 16 }} type="primary" onClick={this.handlePrint}>
+                    <Button style={{marginLeft: 16}} type="primary" onClick={this.handlePrint}>
                       打印
                     </Button>
-                    <Button style={{ marginLeft: 16 }} onClick={this.handleCancel}>
+                    <Button style={{marginLeft: 16}} onClick={this.handleCancel}>
                       取消
                     </Button>
                   </div>
@@ -599,5 +599,5 @@ class AssessmentDetail extends Component {
     );
   }
 }
-const AssessmentDetailForm = Form.create({ name: 'AssessmentDetail' })(AssessmentDetail);
+const AssessmentDetailForm = Form.create({name: 'AssessmentDetail'})(AssessmentDetail);
 export default withRouter(AssessmentDetailForm);

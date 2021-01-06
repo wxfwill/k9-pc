@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
-import { BarConfig } from './chartConfig';
+import {BarConfig} from './chartConfig';
 // const echarts = require('echarts')
-let echarts = require('echarts/lib/echarts');
+const echarts = require('echarts/lib/echarts');
 
 class BarChart extends Component {
   constructor(props) {
@@ -27,12 +27,11 @@ class BarChart extends Component {
   render() {
     return (
       <div
-        style={{ width: '90%', height: '712px', margin: '0px' }}
+        style={{width: '90%', height: '712px', margin: '0px'}}
         className="bar-chart"
         ref={(chartNode) => {
           this.chartNode = chartNode;
-        }}
-      ></div>
+        }}></div>
     );
   }
 }

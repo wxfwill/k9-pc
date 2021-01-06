@@ -251,7 +251,6 @@ const ViewPrevention = asyncComponent(() =>
 
 // 视频管理
 const Video = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/admin/video/Video'));
-const VideoInfo = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/admin/video/VideoInfo'));
 const AddVideo = asyncComponent(() => import(/*webpackChunkName: 'components'*/ 'components/admin/video/addVideo'));
 
 // 场地管理
@@ -301,17 +300,17 @@ const routerArr = [
   {
     path: '/',
     exact: true,
-    component: LoginComponent,
+    component: LoginComponent
   },
   {
     path: '/login',
     component: LoginComponent,
-    requiresAuth: false,
+    requiresAuth: false
   },
   {
     path: '/archivew',
     component: Archivew,
-    requiresAuth: false,
+    requiresAuth: false
   },
   {
     path: '/app',
@@ -323,38 +322,38 @@ const routerArr = [
       //   exact: true,
       //   render: () => <Redirect to={'/app/home/index'} />,
       // },
-      { path: '/app/index', component: IndexComponent, name: '首页' },
+      {path: '/app/index', component: IndexComponent, name: '首页'},
       {
         path: '/app/monitoring',
         component: BearerRoute,
         name: '指挥作战',
         items: [
-          { path: '/app/monitoring/duty', component: DutyComponent, name: '日常巡逻' },
-          { path: '/app/monitoring/deploy', component: Deploy, name: '紧急调配' },
+          {path: '/app/monitoring/duty', component: DutyComponent, name: '日常巡逻'},
+          {path: '/app/monitoring/deploy', component: Deploy, name: '紧急调配'},
           {
             path: '/app/monitoring/assemble',
             component: Assemble,
-            name: '定点集合',
+            name: '定点集合'
           },
           {
             path: '/app/monitoring/assembleAdd',
             component: AssembleAdd,
-            name: '新增定点集合',
+            name: '新增定点集合'
           },
           {
             path: '/app/monitoring/itinerancy',
             component: EsayTask,
-            name: '外勤任务',
+            name: '外勤任务'
           },
           {
             path: '/app/monitoring/itinerancyAdd',
             component: EsayTaskAdd,
-            name: '创建任务',
+            name: '创建任务'
           },
           {
             path: '/app/monitoring/itinerancyEdit',
             component: EsayTaskAdd,
-            name: 'assemble',
+            name: 'assemble'
           },
           {
             path: '/app/monitoring/team',
@@ -364,61 +363,61 @@ const routerArr = [
               {
                 path: '/app/monitoring/team/list',
                 component: Team,
-                name: '列表',
+                name: '列表'
               },
               {
                 path: '/app/monitoring/team/add',
                 component: AddTeam,
-                name: '新增',
+                name: '新增'
               },
               {
                 path: '/app/monitoring/team/edit',
                 component: AddTeam,
-                name: '编辑',
-              },
-            ],
+                name: '编辑'
+              }
+            ]
           },
           // { path: '/app/monitoring/team', component: Team, name: '分组管理' },
           // { path: '/app/monitoring/teamAdd', component: AddTeam, name: '新增' },
           // { path: '/app/monitoring/teamEdit', component: AddTeam, name: '编辑' },
-          { path: '/app/monitoring/deployAdd', component: AddTask, name: 'assemble' },
+          {path: '/app/monitoring/deployAdd', component: AddTask, name: 'assemble'},
           {
             path: '/app/monitoring/dutyAdd', // 新增日常巡逻
             component: AddPatrols,
-            name: '日常巡逻',
+            name: '日常巡逻'
           },
           {
             path: '/app/monitoring/dutyEdit', // 编辑日常巡逻
             component: AddPatrols,
-            name: '编辑',
+            name: '编辑'
           },
           {
             path: '/app/monitoring/grid',
             component: BearerRoute,
             name: '网格化任务',
             items: [
-              { path: '/app/monitoring/grid/list', component: GridRaidTaskList, name: '列表' },
-              { path: '/app/monitoring/grid/addGrid', component: GridRaid, name: '新建' },
-              { path: '/app/monitoring/grid/viewMap', component: ViewGridMap, name: '查看轨迹' },
-            ],
+              {path: '/app/monitoring/grid/list', component: GridRaidTaskList, name: '列表'},
+              {path: '/app/monitoring/grid/addGrid', component: GridRaid, name: '新建'},
+              {path: '/app/monitoring/grid/viewMap', component: ViewGridMap, name: '查看轨迹'}
+            ]
           },
-          { path: '/app/monitoring/ViewGridRaidTask/:taskID', component: ViewGridRaidTask },
-          { path: '/app/monitoring/ViewGridRaidRealTime/:realID', component: ViewGridRaidRealTime },
-          { path: '/app/monitoring/RoundsTrack/:taskID', component: RoundsTrack },
-        ],
+          {path: '/app/monitoring/ViewGridRaidTask/:taskID', component: ViewGridRaidTask},
+          {path: '/app/monitoring/ViewGridRaidRealTime/:realID', component: ViewGridRaidRealTime},
+          {path: '/app/monitoring/RoundsTrack/:taskID', component: RoundsTrack}
+        ]
       },
 
       {
         path: '/app/statisticalQuery/leaveCheck',
         component: LeaveCheck,
-        name: 'assemble',
+        name: 'assemble'
       },
 
-      { path: '/app/drill/drillsub', component: Drillsub },
-      { path: '/app/assess/officer', component: Officer },
-      { path: '/app/dog/feed', component: DogFeed },
-      { path: '/app/config/message', component: DeviceInforList },
-      { path: '/app/test', component: TestMap },
+      {path: '/app/drill/drillsub', component: Drillsub},
+      {path: '/app/assess/officer', component: Officer},
+      {path: '/app/dog/feed', component: DogFeed},
+      {path: '/app/config/message', component: DeviceInforList},
+      {path: '/app/test', component: TestMap},
       {
         path: '/app/drill',
         name: '科学训练',
@@ -427,164 +426,164 @@ const routerArr = [
           {
             path: '/app/drill/plan',
             component: DrillPlan,
-            name: '训练计划',
+            name: '训练计划'
           },
-          { path: '/app/drill/pdogdrill', component: Pdogdrill, name: '警犬计划' },
-        ],
+          {path: '/app/drill/pdogdrill', component: Pdogdrill, name: '警犬计划'}
+        ]
       },
 
       {
         path: '/app/drill/planAdd',
-        component: AddPlan,
+        component: AddPlan
       },
       {
         path: '/app/drill/drillsubAdd',
-        component: AddDrillsub,
+        component: AddDrillsub
       },
       {
         path: '/app/drill/drillsubEdit',
-        component: AddDrillsub,
+        component: AddDrillsub
       },
       {
         path: '/app/drill/planEdit',
-        component: AddPlan,
+        component: AddPlan
       },
       {
         path: '/app/drill/planDetail',
-        component: AddPlan,
+        component: AddPlan
       },
       {
         path: '/app/equipment/materialInfo',
-        component: Goods,
+        component: Goods
       },
       {
         path: '/app/equipment/materialInfoAdd',
-        component: AddGoods,
+        component: AddGoods
       },
       {
         path: '/app/equipment/materialInfoEdit',
-        component: AddGoods,
+        component: AddGoods
       },
       {
         path: '/app/equipment/carInfoAdd',
-        component: AddCar,
+        component: AddCar
       },
       {
         path: '/app/equipment/carInfoEdit',
-        component: AddCar,
+        component: AddCar
       },
-      { path: '/app/dog/breed', component: BreedInfo },
+      {path: '/app/dog/breed', component: BreedInfo},
       {
         path: '/app/dog/reproduce',
-        component: BreedInfo,
+        component: BreedInfo
       },
       {
         path: '/app/dog/reproduceAdd',
-        component: BreedAdd,
+        component: BreedAdd
       },
       {
         path: '/app/dog/reproduceEdit/:id',
-        component: EditDogChildren,
+        component: EditDogChildren
       },
-      { path: '/app/dog/breedAdd', component: BreedAdd },
-      { path: '/app/dog/breedEdit', component: BreedAdd },
+      {path: '/app/dog/breedAdd', component: BreedAdd},
+      {path: '/app/dog/breedEdit', component: BreedAdd},
 
-      { path: '/app/duty/dutyWeek', component: ScheduleManage },
-      { path: '/app/duty/groupInfo', component: GroupSchedule },
-      { path: '/app/duty/groupInfoAdd', component: AddGropSchedule },
-      { path: '/app/duty/groupInfoEdit', component: AddGropSchedule },
-      { path: '/app/duty/groupInfoDetail', component: AddGropSchedule },
+      {path: '/app/duty/dutyWeek', component: ScheduleManage},
+      {path: '/app/duty/groupInfo', component: GroupSchedule},
+      {path: '/app/duty/groupInfoAdd', component: AddGropSchedule},
+      {path: '/app/duty/groupInfoEdit', component: AddGropSchedule},
+      {path: '/app/duty/groupInfoDetail', component: AddGropSchedule},
       {
         path: '/app/equipment/bracelet',
-        component: Bracelet,
+        component: Bracelet
       },
       {
         path: '/app/equipment/uwb',
-        component: Uwb,
+        component: Uwb
       },
       {
         path: '/app/equipment/uwbAdd',
-        component: UwbEdit,
+        component: UwbEdit
       },
       {
         path: '/app/equipment/uwbEdit',
-        component: UwbEdit,
+        component: UwbEdit
       },
       {
         path: '/app/equipment/uwbDetail',
-        component: UwbEdit,
+        component: UwbEdit
       },
       {
         path: '/app/equipment/braceletDetail',
-        component: BraceletEdit,
+        component: BraceletEdit
       },
       {
         path: '/app/equipment/braceletAdd',
-        component: BraceletEdit,
+        component: BraceletEdit
       },
       {
         path: '/app/equipment/braceletEdit',
-        component: BraceletEdit,
+        component: BraceletEdit
       },
       {
         path: '/app/basicData/trainPlace',
-        component: TrainPlace,
+        component: TrainPlace
       },
       {
         path: '/app/basicData/trainPlaceDetail',
-        component: TrainPlaceEdit,
+        component: TrainPlaceEdit
       },
       {
         path: '/app/basicData/trainPlaceAdd',
-        component: TrainPlaceEdit,
+        component: TrainPlaceEdit
       },
       {
         path: '/app/basicData/trainPlaceEdit',
-        component: TrainPlaceEdit,
+        component: TrainPlaceEdit
       },
       {
         path: '/app/room/info',
-        component: RoomInfo,
+        component: RoomInfo
       },
       {
         path: '/app/room/infoEdit',
-        component: RoomEdit,
+        component: RoomEdit
       },
       {
         path: '/app/room/infoAdd',
-        component: RoomEdit,
+        component: RoomEdit
       },
       {
         path: '/app/room/infoDetail',
-        component: RoomEdit,
+        component: RoomEdit
       },
       {
         path: '/app/equipment/video',
-        component: Video,
+        component: Video
       },
       {
         path: '/app/equipment/videoDetail',
-        component: AddVideo,
+        component: AddVideo
       },
       {
         path: '/app/equipment/videoAdd',
-        component: AddVideo,
+        component: AddVideo
       },
       {
         path: '/app/equipment/videoEdit',
-        component: AddVideo,
+        component: AddVideo
       },
       {
         path: '/app/duty/dutyWeekSchedule',
-        component: SmartSchedule,
+        component: SmartSchedule
       },
       {
         path: '/app/assess/performance',
-        component: PerformanceAppraisal,
+        component: PerformanceAppraisal
       },
       {
         path: '/app/assess/performanceDetail',
-        component: PerformanceDetailTable,
+        component: PerformanceDetailTable
       },
       {
         path: '/app/user',
@@ -594,27 +593,27 @@ const routerArr = [
           {
             path: '/app/user/menuList',
             component: MenuInfo,
-            name: '菜单列表',
+            name: '菜单列表'
           },
           {
             path: '/app/user/organList',
             component: OrganList,
-            name: '机构列表',
+            name: '机构列表'
           },
           {
             path: '/app/user/sysTree',
             component: SysTreeList,
-            name: '系统树',
+            name: '系统树'
           },
           {
             path: '/app/user/sysParam',
             component: SysParam,
-            name: '参数列表',
+            name: '参数列表'
           },
           {
             path: '/app/user/roleList',
             component: RoleInfo,
-            name: '角色列表',
+            name: '角色列表'
           },
           {
             path: '/app/user/info',
@@ -624,99 +623,99 @@ const routerArr = [
               {
                 path: '/app/user/info/list',
                 component: UserInfo,
-                name: '列表',
+                name: '列表'
               },
               {
                 path: '/app/user/info/add',
                 component: AddUser,
-                name: '新增',
+                name: '新增'
               },
               {
                 path: '/app/user/info/view',
                 component: AddUser,
-                name: '查看',
+                name: '查看'
               },
               {
                 path: '/app/user/info/edit',
                 component: AddUser,
-                name: '编辑',
-              },
-            ],
-          },
-        ],
+                name: '编辑'
+              }
+            ]
+          }
+        ]
       },
 
       {
         path: '/app/dog/info',
-        component: DogInfo,
+        component: DogInfo
       },
       {
         path: '/app/dog/infoAdd',
-        component: AddDog,
+        component: AddDog
       },
       {
         path: '/app/dog/infoView',
-        component: DogInfoView,
+        component: DogInfoView
       },
       {
         path: '/app/dog/infoEdit',
-        component: AddDog,
+        component: AddDog
       },
       {
         path: '/app/dog/prevention',
-        component: DogPrevention,
+        component: DogPrevention
       },
       {
         path: '/app/dog/preventionAdd',
-        component: AddPrevention,
+        component: AddPrevention
       },
       {
         path: '/app/dog/preventionTodo',
-        component: ExecutePlan,
+        component: ExecutePlan
       },
       {
         path: '/app/dog/preventionEdit',
-        component: AddPrevention,
+        component: AddPrevention
       },
       {
         path: '/app/dog/preventionView',
-        component: ViewPrevention,
+        component: ViewPrevention
       },
       {
         path: '/app/dog/cure',
-        component: DogCure,
+        component: DogCure
       },
       {
         path: '/app/dog/cureAdd',
-        component: AddCure,
+        component: AddCure
       },
       {
         path: '/app/dog/cureView',
-        component: AddCure,
+        component: AddCure
       },
       {
         path: '/app/dog/cureEdit',
-        component: AddCure,
+        component: AddCure
       },
       {
         path: '/app/dog/health',
-        component: Doghealth,
+        component: Doghealth
       },
       {
         path: '/app/monitor/dogHouse',
-        component: MonitorDogInfoList,
+        component: MonitorDogInfoList
       },
       {
         path: '/app/car/carList',
-        component: CarList,
+        component: CarList
       },
       {
         path: '/app/car/enterInfoList',
-        component: EnterInfoList,
+        component: EnterInfoList
       },
       {
         path: '/app/car/outList',
-        component: OutList,
+        component: OutList
       },
 
       {
@@ -727,46 +726,46 @@ const routerArr = [
           {
             path: '/app/holiday/attendanceInfor',
             component: AttendanceInfor,
-            name: '考勤信息查询',
+            name: '考勤信息查询'
           },
           {
             path: '/app/holiday/approve',
             component: Approval,
-            name: '请假审批',
+            name: '请假审批'
           },
           {
             path: '/app/holiday/LeaveInformation',
             component: LeaveInformation,
-            name: '请假列表',
+            name: '请假列表'
           },
           {
             path: '/app/holiday/approvalDetail',
-            component: ApprovalDetail,
+            component: ApprovalDetail
           },
           {
             path: '/app/holiday/attendance',
             component: Call,
-            name: '点名记录',
+            name: '点名记录'
           },
           {
             path: '/app/holiday/holidayList',
             component: HolidayList,
-            name: '假期配置',
+            name: '假期配置'
           },
-          { path: '/app/holiday/statistical', component: Attend, name: '考勤统计' },
+          {path: '/app/holiday/statistical', component: Attend, name: '考勤统计'},
           {
             path: '/app/holiday/holidayListAdd',
-            component: AddHolidayList,
+            component: AddHolidayList
           },
           {
             path: '/app/holiday/holidayListView',
-            component: AddHolidayList,
+            component: AddHolidayList
           },
           {
             path: '/app/holiday/holidayListEdit',
-            component: AddHolidayList,
-          },
-        ],
+            component: AddHolidayList
+          }
+        ]
       },
       {
         path: '/app/AppList',
@@ -776,9 +775,9 @@ const routerArr = [
           {
             path: '/app/AppList/list',
             component: AppList,
-            name: '列表',
-          },
-        ],
+            name: '列表'
+          }
+        ]
       },
       {
         path: '/app/reportManage',
@@ -788,64 +787,64 @@ const routerArr = [
           {
             path: '/app/reportManage/fourReport',
             component: FourReport,
-            name: '4w信息上报',
+            name: '4w信息上报'
           },
           {
             path: '/app/reportManage/FourReportListSearch',
             component: FourReportListSearch,
-            name: '工作用车列表',
+            name: '工作用车列表'
           },
           {
             path: '/app/reportManage/AttendanceCar',
             component: AttendanceCar,
-            name: '出勤用车列表',
+            name: '出勤用车列表'
           },
           {
             path: '/app/reportManage/otherThingsReport',
             component: OtherThingsReport,
-            name: '其他事物上报',
+            name: '其他事物上报'
           },
           {
             path: '/app/reportManage/TeamWorkStatist',
             component: TeamWorkStatist,
-            name: '中队工作统计',
+            name: '中队工作统计'
           },
           {
             path: '/app/reportManage/TeamWorkStatistDetal',
             component: TeamWorkStatistDetal,
-            name: '中队任务详细列表',
+            name: '中队任务详细列表'
           },
           {
             path: '/app/reportManage/OwnWorkStatiseDetal',
             component: OwnWorkStatiseDetal,
-            name: '个人任务详情列表',
+            name: '个人任务详情列表'
           },
           {
             path: '/app/reportManage/OwnWorkStatise',
             component: OwnWorkStatise,
-            name: '个人工作统计',
+            name: '个人工作统计'
           },
           {
             path: '/app/reportManage/ImportFile',
             component: ImportFile,
-            name: '导入4w报备',
+            name: '导入4w报备'
           },
           {
             path: '/app/reportManage/DailyInformation',
             component: DailyInformation,
-            name: '日报列表',
+            name: '日报列表'
           },
           {
             path: '/app/reportManage/OvertimeInformation',
             component: OvertimeInformation,
-            name: '加班列表',
+            name: '加班列表'
           },
           {
             path: '/app/reportManage/AwardInformation',
             component: AwardInformation,
-            name: '奖励列表',
-          },
-        ],
+            name: '奖励列表'
+          }
+        ]
       },
 
       {
@@ -860,15 +859,15 @@ const routerArr = [
             items: [
               {
                 path: '/app/performance/info/list',
-                component: PerformanceInfo,
+                component: PerformanceInfo
                 // name: '列表',
               },
               {
                 path: '/app/performance/info/view',
                 component: PerformanceDetail,
-                name: '查看',
-              },
-            ],
+                name: '查看'
+              }
+            ]
           },
 
           {
@@ -879,24 +878,24 @@ const routerArr = [
               {
                 path: '/app/performance/register/list',
                 component: PerformanceRegister,
-                name: '列表',
+                name: '列表'
               },
               {
                 path: '/app/performance/register/edit',
                 component: PerformanceEdit,
-                name: '编辑',
-              },
-            ],
+                name: '编辑'
+              }
+            ]
           },
           {
             path: '/app/performance/rule',
             component: PerformanceRule,
-            name: '绩效规则',
+            name: '绩效规则'
           },
           {
             path: '/app/performance/assessmentSetting',
             component: PerformanceAssessmentSetting,
-            name: '考核指标设置',
+            name: '考核指标设置'
           },
           {
             name: '考核列表',
@@ -908,21 +907,21 @@ const routerArr = [
                 path: '/app/performance/assessmentList/list',
                 // exact: true,
                 // name: '列表',
-                component: PerformanceAssessmentList,
+                component: PerformanceAssessmentList
               },
               {
                 name: '详情',
                 path: '/app/performance/assessmentList/detal',
-                component: PerformanceAssessmentDetail,
-              },
-            ],
+                component: PerformanceAssessmentDetail
+              }
+            ]
           },
           {
             path: '/app/performance/titleSetting',
             component: PerformanceTitleSetting,
-            name: '头衔设置',
-          },
-        ],
+            name: '头衔设置'
+          }
+        ]
       },
       {
         path: '/app/archivew',
@@ -932,12 +931,12 @@ const routerArr = [
           {
             path: '/app/archivew/list',
             component: ArchivewList,
-            name: '列表',
-          },
-        ],
-      },
-    ],
-  },
+            name: '列表'
+          }
+        ]
+      }
+    ]
+  }
 ];
 
 export default routerArr;

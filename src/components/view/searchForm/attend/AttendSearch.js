@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import httpAjax from 'libs/httpAjax';
-const { MonthPicker } = DatePicker;
+const {MonthPicker} = DatePicker;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -12,15 +12,15 @@ class SearchForm extends React.Component {
     expand: true,
     name: '',
     number: '',
-    statisticsTime: '',
+    statisticsTime: ''
   };
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
-    let timeData = 'statisticsTime';
+    const {limit} = this.props;
+    const timeData = 'statisticsTime';
     this.props.form.validateFields((err, fieldsValue) => {
       Object.keys(fieldsValue).forEach(function (item, index) {
-        typeof fieldsValue[item] == 'undefined' ? (fieldsValue[item] = '') : '';
+        typeof fieldsValue[item] === 'undefined' ? (fieldsValue[item] = '') : '';
       });
       if (fieldsValue.statisticsTime != '') {
         fieldsValue.statisticsTime = fieldsValue.statisticsTime.format('YYYY-MM');
@@ -32,17 +32,17 @@ class SearchForm extends React.Component {
     this.props.form.resetFields();
   };
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   render() {
-    let expand = this.state.expand;
-    const { getFieldDecorator } = this.props.form;
+    const expand = this.state.expand;
+    const {getFieldDecorator} = this.props.form;
     return (
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
         <Row gutter={24}>
@@ -58,16 +58,16 @@ class SearchForm extends React.Component {
           </Col>
           <Col xl={8} lg={24} md={24} sm={24} xs={24}>
             <FormItem label="统计年月" {...thirdLayout}>
-              {getFieldDecorator('statisticsTime')(<MonthPicker style={{ width: '220px' }} />)}
+              {getFieldDecorator('statisticsTime')(<MonthPicker style={{width: '220px'}} />)}
             </FormItem>
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
           </Col>

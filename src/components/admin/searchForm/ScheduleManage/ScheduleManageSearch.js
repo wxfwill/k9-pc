@@ -1,39 +1,39 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import moment from 'moment';
 const FormItem = Form.Item;
 const Option = Select.Option;
-const { WeekPicker } = DatePicker;
+const {WeekPicker} = DatePicker;
 require('style/view/common/conduct.less');
 class SearchForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       searchValue: [],
-      weekDate: '',
+      weekDate: ''
     };
   }
   handleReset = () => {
     this.props.form.resetFields();
-    this.setState({ weekDate: '' });
+    this.setState({weekDate: ''});
     localStorage.setItem('ChangeWeek', '');
     localStorage.setItem('getScheduleOption', '');
   };
   ChangeWeek = (date, dateString) => {
-    this.setState({ weekDate: dateString });
+    this.setState({weekDate: dateString});
     localStorage.setItem('ChangeWeek', dateString);
   };
   handleSearch = (e) => {
     e.preventDefault();
-    const { weekDate } = this.state;
+    const {weekDate} = this.state;
     this.props.handleSearch(weekDate);
   };
   render() {
-    let expand = this.state.expand;
-    const { getFieldDecorator } = this.props.form;
+    const expand = this.state.expand;
+    const {getFieldDecorator} = this.props.form;
     const dateFormat = 'YYYY/MM/DD';
-    const { defaultDate } = this.props.searchWeek;
+    const {defaultDate} = this.props.searchWeek;
     return (
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
         <Row gutter={24}>
@@ -46,11 +46,11 @@ class SearchForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset.bind(this)}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset.bind(this)}>
               清空
             </Button>
             {/*<a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>

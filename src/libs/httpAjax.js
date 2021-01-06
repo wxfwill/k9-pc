@@ -1,19 +1,19 @@
 import axios from 'axios';
 import React from 'react';
-import { message } from 'antd';
+import {message} from 'antd';
 // import jwtDecode from 'jwt-decode';
 // import createHashHistory  from require('history').createHashHistory';
 const history = require('history').createHashHistory();
 let timer = null;
 function httpAjax(method, url, data, config) {
-  let _this = this;
-  let promise = new Promise((resolve, reject) => {
+  const _this = this;
+  const promise = new Promise((resolve, reject) => {
     // 添加请求拦截器
     axios.interceptors.request.use(
       function (config) {
         // 在发送请求之前做些什么
-        let token = util.cookieUtil.get('token');
-        if (typeof token == 'string') {
+        const token = util.cookieUtil.get('token');
+        if (typeof token === 'string') {
           config.headers.Authorization = token;
         }
         return config;
@@ -43,7 +43,7 @@ function httpAjax(method, url, data, config) {
         if (result.data.code === 0 || !result.data.code) {
           // console.log(jwtDecode(result.data.data.token));
           if (result.data.data) {
-            typeof result.data.data.token == 'string' && util.cookieUtil.set('token', result.data.data.token);
+            typeof result.data.data.token === 'string' && util.cookieUtil.set('token', result.data.data.token);
           }
           resolve(result.data);
         } else if (result.data.code === 10001) {

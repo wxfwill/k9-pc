@@ -1,100 +1,100 @@
-.flex-table(){
-	display: flex;
-		span{
-			flex:1;
-			text-align: center;
-		}
+.flex-table() {
+  display: flex;
+  span {
+    flex: 1;
+    text-align: center;
+  }
 }
-.dog-lay{
-	margin-top:20px;
-	background: url('../../../images/view/dog_lay.png')no-repeat center;
-	background-size: 100% 100%;
-	padding: 20px 10px 81px;
-	box-sizing: border-box;
-	height:592px;
-	.layout-card{
-		.card-title{
-			width:80%;
-			height:30px;
-			line-height: 30px;
-			display: inline-block;
-			text-indent: 10px;
-			background:url('../../../images/view/title_bg.png')no-repeat center;
-			background-size: 100% 100%;
-			color:#fff;
-		}
-		background: transparent;
-		.filter-wrapper{
-			.flex-table();
-			span{
-				color:#fff;
-				background:#284384;
-				padding:0 5px;
-				cursor: pointer;
-				&.active{
-					background:#2b65b1;
-				}
-			}
-		}
-		.ant-card{
-			background:transparent;
-		}
-		.ant-card-head{
-			border-bottom:none;
-			height:20px!important;
-			min-height: 35px!important;
-			background: transparent;
-			padding: 5px!important;
-			padding-bottom: 10px;
-			.ant-card-head-wrapper{
-				min-height: 30px!important;
-				height: 30px!important;
-			}
-			.ant-card-head-title{
-				padding-top: 0!important;
-				padding-bottom: 5px!important;
-				height:auto!important;
-			}
-			.ant-card-extra{
-				padding-top: 5px!important;
-			}
-		}
-		.ant-card-body{
-			padding: 4px!important;
-		}
-		.thead{
-			margin-top:7px;
-			.flex-table();
-			background:#3458a6;
-			font-size:16px;
-			span{
-				height:40px;
-				line-height:40px;
-				color:#eca43e;
-			}
-		}
-		ul{
-			margin:0;
-			padding: 0;
-			border:2px solid rgba(255,255,255,.1);
-			border-top:none;
-			max-height: 400px;
-			overflow-y: auto;
-			li{
-				&.odd{
-					background:rgba(52,88,166,.2);
-				}
-				list-style: none;
-				display: flex;
-				text-align: center;
-				color:#fff;
-				font-size:16px;
-				height:40px;
-				span{
-					flex:1;
-					line-height:40px
-				}
-			}
-		}
-	}
+.dog-lay {
+  margin-top: 20px;
+  background: url('../../../images/view/dog_lay.png') no-repeat center;
+  background-size: 100% 100%;
+  padding: 20px 10px 81px;
+  box-sizing: border-box;
+  height: 592px;
+  .layout-card {
+    .card-title {
+      width: 80%;
+      height: 30px;
+      line-height: 30px;
+      display: inline-block;
+      text-indent: 10px;
+      background: url('../../../images/view/title_bg.png') no-repeat center;
+      background-size: 100% 100%;
+      color: #fff;
+    }
+    background: transparent;
+    .filter-wrapper {
+      .flex-table();
+      span {
+        color: #fff;
+        background: #284384;
+        padding: 0 5px;
+        cursor: pointer;
+        &.active {
+          background: #2b65b1;
+        }
+      }
+    }
+    .ant-card {
+      background: transparent;
+    }
+    .ant-card-head {
+      border-bottom: none;
+      height: 20px !important;
+      min-height: 35px !important;
+      background: transparent;
+      padding: 5px !important;
+      padding-bottom: 10px;
+      .ant-card-head-wrapper {
+        min-height: 30px !important;
+        height: 30px !important;
+      }
+      .ant-card-head-title {
+        padding-top: 0 !important;
+        padding-bottom: 5px !important;
+        height: auto !important;
+      }
+      .ant-card-extra {
+        padding-top: 5px !important;
+      }
+    }
+    .ant-card-body {
+      padding: 4px !important;
+    }
+    .thead {
+      margin-top: 7px;
+      .flex-table();
+      background: #3458a6;
+      font-size: 16px;
+      span {
+        height: 40px;
+        line-height: 40px;
+        color: #eca43e;
+      }
+    }
+    ul {
+      margin: 0;
+      padding: 0;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-top: none;
+      max-height: 400px;
+      overflow-y: auto;
+      li {
+        &.odd {
+          background: rgba(52, 88, 166, 0.2);
+        }
+        list-style: none;
+        display: flex;
+        text-align: center;
+        color: #fff;
+        font-size: 16px;
+        height: 40px;
+        span {
+          flex: 1;
+          line-height: 40px;
+        }
+      }
+    }
+  }
 }

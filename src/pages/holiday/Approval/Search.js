@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import moment from 'moment';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
@@ -15,7 +15,7 @@ class SearchForm extends React.Component {
       value: '',
       years: [],
       peoples: [],
-      holidayTypes: [],
+      holidayTypes: []
     };
   }
   componentWillMount() {
@@ -24,25 +24,25 @@ class SearchForm extends React.Component {
     //获取假期类型
     React.$ajax.postData('/api/leaveRecord/getLeaveTypeList', {}).then((res) => {
       if (res.code == 0) {
-        let currentYear = Number(moment(new Date()).format('YYYY'));
-        let { years } = this.state;
+        const currentYear = Number(moment(new Date()).format('YYYY'));
+        const {years} = this.state;
         for (let i = 0; i <= 100; i++) {
-          years.push({ id: currentYear + i, name: currentYear + i + '年' });
+          years.push({id: currentYear + i, name: currentYear + i + '年'});
         }
         for (let i = 0; i <= 50; i++) {
           if (i > 0) {
-            years.unshift({ id: currentYear - i, name: currentYear - i + '年' });
+            years.unshift({id: currentYear - i, name: currentYear - i + '年'});
           }
         }
-        this.setState({ holidayTypes: res.data, years: years });
+        this.setState({holidayTypes: res.data, years: years});
         sessionStorage.setItem('holidayTypes', JSON.stringify(res.data));
       }
     });
   }
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
-    let timeData = 'range-time-picker';
+    const {limit} = this.props;
+    const timeData = 'range-time-picker';
     this.props.form.validateFields((err, values) => {
       if (values[timeData]) {
         values.leaveStartTime = values[timeData][0].format('x');
@@ -54,9 +54,9 @@ class SearchForm extends React.Component {
   };
 
   searchPeople = (name = '') => {
-    React.$ajax.postData('/api/userCenter/getTrainer', { name }).then((res) => {
+    React.$ajax.postData('/api/userCenter/getTrainer', {name}).then((res) => {
       if (res.code == 0) {
-        this.setState({ peoples: res.data });
+        this.setState({peoples: res.data});
       }
     });
   };
@@ -65,22 +65,22 @@ class SearchForm extends React.Component {
     this.props.form.resetFields();
   };
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   handlePanelChange(date, dateString) {
     this.setState({
-      value: data,
+      value: data
     });
   }
   render() {
-    const { getFieldDecorator } = this.props.form;
-    let { expand, holidayTypes, peoples, years } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {expand, holidayTypes, peoples, years} = this.state;
     const holidayTypesOption =
       holidayTypes &&
       holidayTypes.map((item, index) => {
@@ -91,7 +91,7 @@ class SearchForm extends React.Component {
         );
       });
     const rangeConfig = {
-      rules: [{ type: 'array', message: '请选择时间!' }],
+      rules: [{type: 'array', message: '请选择时间!'}]
     };
     return (
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
@@ -108,11 +108,10 @@ class SearchForm extends React.Component {
                   placeholder="请假人员"
                   optionLabelProp="children"
                   showSearch
-                  autosize={{ minRows: 2, maxRows: 24 }}
+                  autosize={{minRows: 2, maxRows: 24}}
                   filterOption={(input, option) =>
                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                >
+                  }>
                   {peoples.map((item) => (
                     <Option value={item.id + ''} key={item.id + '_peo'}>
                       {item.name}
@@ -132,11 +131,11 @@ class SearchForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
           </Col>

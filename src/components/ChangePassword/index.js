@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { Form, Input, Modal, message } from 'antd';
+import React, {Component} from 'react';
+import {Form, Input, Modal, message} from 'antd';
 const FormItem = Form.Item;
 class ChangePassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false,
+      visible: false
     };
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      visible: nextProps.visible,
+      visible: nextProps.visible
     });
   }
 
@@ -26,7 +26,7 @@ class ChangePassword extends Component {
         React.$ajax
           .postData('/api/userCenter/updatePassword', {
             newPassWord: values.newPassWord,
-            oldPassWord: values.oldPassWord,
+            oldPassWord: values.oldPassWord
           })
           .then((res) => {
             if (res && res.code == 0) {
@@ -45,32 +45,32 @@ class ChangePassword extends Component {
   };
   onSubmit = () => {};
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     return (
       <Modal title="修改密码" visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel}>
         <Form onSubmit={this.onSubmit}>
           <FormItem label="原始密码">
             {getFieldDecorator('oldPassWord', {
-              rules: [{ required: true, message: '请输入原始密码!' }],
-              initialValue: undefined,
+              rules: [{required: true, message: '请输入原始密码!'}],
+              initialValue: undefined
             })(<Input type="password" placeholder="请输入原始密码" allowClear />)}
           </FormItem>
           <FormItem label="新密码">
             {getFieldDecorator('newPassWord', {
               rules: [
-                { required: true, message: '请输入新密码!' },
+                {required: true, message: '请输入新密码!'},
                 {
                   pattern: util.passeordReg,
-                  message: '密码是由数字和大小写字母6-18位组成',
-                },
+                  message: '密码是由数字和大小写字母6-18位组成'
+                }
               ],
-              initialValue: undefined,
+              initialValue: undefined
             })(<Input type="password" placeholder="请输入新密码" allowClear />)}
           </FormItem>
           <FormItem label="确认密码">
             {getFieldDecorator('newPassWords', {
-              rules: [{ required: true, message: '请确认新密码!' }],
-              initialValue: undefined,
+              rules: [{required: true, message: '请确认新密码!'}],
+              initialValue: undefined
             })(<Input type="password" placeholder="请确认新密码" allowClear />)}
           </FormItem>
         </Form>

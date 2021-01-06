@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Modal, Button, Card, Select, Row, Col, Form, Input } from 'antd';
+import React, {Component} from 'react';
+import {Modal, Button, Card, Select, Row, Col, Form, Input} from 'antd';
 import CustomTable from 'components/table/CustomTable';
-import { thirdLayout } from 'util/Layout';
+import {thirdLayout} from 'util/Layout';
 const FormItem = Form.Item;
 class ShowModel extends Component {
   constructor(props) {
@@ -14,26 +14,26 @@ class ShowModel extends Component {
         {
           id: 1,
           title: '姓名',
-          dataIndex: 'user',
+          dataIndex: 'user'
         },
         {
           id: 2,
           title: '账号',
-          dataIndex: 'account',
+          dataIndex: 'account'
         },
         {
           id: 3,
           title: '手机号',
-          dataIndex: 'roleNmae',
-        },
-      ],
+          dataIndex: 'roleNmae'
+        }
+      ]
     };
   }
   componentDidMount() {
     this.props.onRef(this);
   }
   openInnerModel = () => {
-    this.setState({ visible: true });
+    this.setState({visible: true});
   };
   handleOk = () => {
     console.log('ok');
@@ -43,12 +43,12 @@ class ShowModel extends Component {
     });
   };
   handleCancel = () => {
-    this.setState({ visible: false });
+    this.setState({visible: false});
     this.props.form.resetFields();
   };
   handleSearch = () => {};
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     return (
       <Modal
         wrapClassName="customModel"
@@ -61,8 +61,7 @@ class ShowModel extends Component {
         // getContainer={false}
         centered={false}
         destroyOnClose={false}
-        maskClosable={false}
-      >
+        maskClosable={false}>
         <Card title="查询条件" bordered={false}>
           <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
             <Row gutter={24}>
@@ -76,11 +75,11 @@ class ShowModel extends Component {
                   {getFieldDecorator('policeNumber')(<Input placeholder="账号" />)}
                 </FormItem>
               </Col>
-              <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ textAlign: 'center' }}>
+              <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{textAlign: 'center'}}>
                 <Button type="primary" htmlType="submit">
                   查询
                 </Button>
-                <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                <Button style={{marginLeft: 8}} onClick={this.handleReset}>
                   重置
                 </Button>
               </Col>
@@ -95,15 +94,14 @@ class ShowModel extends Component {
             dataSource={this.state.dataSource1}
             loading={this.state.loading1}
             columns={this.state.columns1}
-            isBordered={true}
-            isRowSelects={false}
-          ></CustomTable>
+            isBordered
+            isRowSelects={false}></CustomTable>
         </Card>
       </Modal>
     );
   }
 }
 
-const QuerUserForm = Form.create({ name: 'EditModel' })(ShowModel);
+const QuerUserForm = Form.create({name: 'EditModel'})(ShowModel);
 
 export default QuerUserForm;

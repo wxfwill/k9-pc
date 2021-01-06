@@ -1,7 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal } from 'antd';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {connect} from 'react-redux';
+import {Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal} from 'antd';
+import {firstLayout, secondLayout} from 'util/Layout';
 import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 require('style/app/dogInfo/addDogForm.less');

@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Table, Button, Icon, Popconfirm, message, Modal, Form, Row, Col, Input, Tag } from 'antd';
-import { Link, withRouter } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Table, Button, Icon, Popconfirm, message, Modal, Form, Row, Col, Input, Tag} from 'antd';
+import {Link, withRouter} from 'react-router-dom';
 import Immutable from 'immutable';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {firstLayout, secondLayout} from 'util/Layout';
 import moment from 'moment';
 const FormItem = Form.Item;
 class HolidayTable extends Component {
@@ -15,39 +15,39 @@ class HolidayTable extends Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 10,
       checkDate: this.getCheckDate(),
       currPage: 1,
       visible: false,
       selectedRowKeys: [],
-      selectedId: '',
+      selectedId: ''
     };
   }
 
   showModal = (id) => {
     this.setState({
       visible: true,
-      selectedId: id,
+      selectedId: id
     });
     this.props.form.resetFields();
   };
   hideModal = () => {
     this.setState({
-      visible: false,
+      visible: false
     });
   };
   //取消当月资格
   cancelRank = () => {
     this.props.form.validateFields((error, row) => {
       if (!error) {
-        this.setState({ modalLoading: true });
+        this.setState({modalLoading: true});
         row.id = this.state.selectedId;
         row.pageSize = this.state.pageSize;
         row.currPage = this.state.currPage;
         React.$ajax.performance
-          .cancelRank({ ...row })
+          .cancelRank({...row})
           .then((res) => {
             const newData = [...this.state.dataSource];
             const index = newData.findIndex((item) => this.state.selectedId === item.id);
@@ -56,12 +56,12 @@ class HolidayTable extends Component {
               item.valid = 1;
               newData.splice(index, 1, {
                 ...item,
-                ...row,
+                ...row
               });
-              this.setState({ dataSource: newData, visible: false, modalLoading: false });
+              this.setState({dataSource: newData, visible: false, modalLoading: false});
             } else {
               newData.push(this.state.dataSource);
-              this.setState({ dataSource: newData, visible: false, modalLoading: false });
+              this.setState({dataSource: newData, visible: false, modalLoading: false});
             }
             message.success('取消成功！');
           })
@@ -78,59 +78,59 @@ class HolidayTable extends Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let filter = nextProps.filter;
-    let _this = this;
-    this.setState({ filter: filter }, function () {
+    const filter = nextProps.filter;
+    const _this = this;
+    this.setState({filter: filter}, function () {
       _this.fetch({
         pageSize: _this.state.pageSize,
         currPage: 1,
-        ...filter,
+        ...filter
       });
     });
   }
   getCheckDate() {
-    let year = moment(new Date()).format('YYYY');
-    let month = moment(new Date()).format('M');
+    const year = moment(new Date()).format('YYYY');
+    const month = moment(new Date()).format('M');
     if (month > 9) {
       return year + '-' + month;
     } else {
       return year + '-0' + month;
     }
   }
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage, checkDate: this.state.checkDate }) {
-    this.setState({ loading: true });
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage, checkDate: this.state.checkDate}) {
+    this.setState({loading: true});
     React.$ajax.performance
       .listPerformanceCheckRank({
-        ...params,
+        ...params
       })
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
-        this.setState({ dataSource: res.list, loading: false, pagination, ...params });
+        this.setState({dataSource: res.list, loading: false, pagination, ...params});
       })
       .catch(function (error) {
         console.log(error);
       });
   }
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
-    let { filter } = this.state;
+    const {filter} = this.state;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
       currPage: pagination.current,
       ...filter,
-      checkDate: this.state.checkDate,
+      checkDate: this.state.checkDate
     });
   };
   onSelectChange = (selectedRowKeys) => {
     //console.log(selectedRowKeys)
-    this.setState({ selectedRowKeys });
+    this.setState({selectedRowKeys});
   };
 
   addInfo = () => {
@@ -147,59 +147,59 @@ class HolidayTable extends Component {
     sessionStorage.setItem('formStatus', 'edit');
   };
   render() {
-    const { dataSource, loading, pagination, selectedRowKeys, modalLoading, checkDate } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const {dataSource, loading, pagination, selectedRowKeys, modalLoading, checkDate} = this.state;
+    const {getFieldDecorator} = this.props.form;
     const rowSelection = {
       onChange: this.onSelectChange,
-      selectedRowKeys,
+      selectedRowKeys
     };
 
     const columns = [
       {
         title: '排名',
         dataIndex: 'rank',
-        key: 'rank',
+        key: 'rank'
       },
       {
         title: '姓名',
         dataIndex: 'name',
-        key: 'name',
+        key: 'name'
       },
       {
         title: '职务',
         dataIndex: 'duty',
-        key: 'duty',
+        key: 'duty'
       },
       {
         title: '绩效总分',
         dataIndex: 'totalScore',
-        key: 'totalScore',
+        key: 'totalScore'
       },
       {
         title: '警犬训练',
         dataIndex: 'dogTrainScore',
-        key: 'dogTrainScore',
+        key: 'dogTrainScore'
       },
       {
         title: '训练考核',
         dataIndex: 'trainCheckScore',
-        key: 'trainCheckScore',
+        key: 'trainCheckScore'
       },
       {
         title: '警犬使用及执勤值班',
         dataIndex: 'dogUseScore',
-        key: 'dogUseScore',
+        key: 'dogUseScore'
       },
       {
         title: '理化管理',
         dataIndex: 'dailyManageScore',
-        key: 'dailyManageScore',
+        key: 'dailyManageScore'
       },
       ,
       {
         title: '出勤考勤',
         dataIndex: 'outdoorScore',
-        key: 'outdoorScore',
+        key: 'outdoorScore'
       },
       {
         title: '绩效状态',
@@ -207,7 +207,7 @@ class HolidayTable extends Component {
         key: 'valid',
         render: (text, record, index) => {
           return record.valid == 0 ? <Tag color="#2db7f5">有效</Tag> : <Tag color="#f50">无效</Tag>;
-        },
+        }
       },
       {
         title: '操作',
@@ -219,16 +219,15 @@ class HolidayTable extends Component {
               {record.valid == 0 && moment(checkDate).format('YYYY-MM') == moment(new Date()).format('YYYY-MM') ? (
                 <div>
                   <Link
-                    to={{ pathname: '/app/performance/register/edit', query: { record: record, checkDate: checkDate } }}
-                  >
-                    <span style={{ cursor: 'pointer', color: '#1890ff' }}>
-                      <Icon type="edit" style={{ margin: '0 10px' }} />
+                    to={{pathname: '/app/performance/register/edit', query: {record: record, checkDate: checkDate}}}>
+                    <span style={{cursor: 'pointer', color: '#1890ff'}}>
+                      <Icon type="edit" style={{margin: '0 10px'}} />
                       编辑
                     </span>
                   </Link>
 
-                  <span onClick={() => this.showModal(record.id)} style={{ cursor: 'pointer', color: '#1890ff' }}>
-                    <Icon type="close-circle-o" style={{ margin: '0 10px' }} />
+                  <span onClick={() => this.showModal(record.id)} style={{cursor: 'pointer', color: '#1890ff'}}>
+                    <Icon type="close-circle-o" style={{margin: '0 10px'}} />
                     取消当月资格
                   </span>
                 </div>
@@ -237,11 +236,10 @@ class HolidayTable extends Component {
                   <Link
                     to={{
                       pathname: '/app/performance/registerDetail',
-                      query: { record: record, checkDate: checkDate },
-                    }}
-                  >
-                    <span style={{ cursor: 'pointer', color: '#1890ff' }}>
-                      <Icon type="eye" style={{ margin: '0 10px' }} />
+                      query: {record: record, checkDate: checkDate}
+                    }}>
+                    <span style={{cursor: 'pointer', color: '#1890ff'}}>
+                      <Icon type="eye" style={{margin: '0 10px'}} />
                       查看
                     </span>
                   </Link>
@@ -249,8 +247,8 @@ class HolidayTable extends Component {
               )}
             </div>
           );
-        },
-      },
+        }
+      }
     ];
     return (
       <div>
@@ -281,18 +279,17 @@ class HolidayTable extends Component {
             onCancel={this.hideModal}
             loading={modalLoading}
             okText="确认"
-            cancelText="取消"
-          >
+            cancelText="取消">
             <Row gutter={24}>
               <Col xl={24} lg={24} md={24} sm={24} xs={24}>
                 <FormItem label="原因：" {...firstLayout}>
                   {getFieldDecorator('cancelReason', {
                     rules: [
-                      { required: true, message: '请输入原因' },
-                      { max: 300, message: '原因不超过300' },
+                      {required: true, message: '请输入原因'},
+                      {max: 300, message: '原因不超过300'}
                     ],
-                    initialValue: '',
-                  })(<Input.TextArea placeholder="" autosize={{ minRows: 2, maxRows: 24 }} />)}
+                    initialValue: ''
+                  })(<Input.TextArea placeholder="" autosize={{minRows: 2, maxRows: 24}} />)}
                 </FormItem>
               </Col>
             </Row>

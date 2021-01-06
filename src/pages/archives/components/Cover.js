@@ -1,25 +1,25 @@
 //封面
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 class Cover extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userInfor: {},
+      userInfor: {}
     };
   }
   componentDidMount() {
     this.props.userId &&
-      React.$ajax.getData('/api/user/queryUserInfoByUserId', { userId: this.props.userId }).then((res) => {
+      React.$ajax.getData('/api/user/queryUserInfoByUserId', {userId: this.props.userId}).then((res) => {
         if (res.code == 0) {
           this.setState({
-            userInfor: res.data,
+            userInfor: res.data
           });
         }
       });
   }
   render() {
-    const { userInfor } = this.state;
+    const {userInfor} = this.state;
     return (
       <div className="cover-main">
         <div className="content">

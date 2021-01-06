@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Table,
   Button,
@@ -14,9 +14,9 @@ import {
   DatePicker,
   Form,
   Input,
-  Tooltip,
+  Tooltip
 } from 'antd';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {firstLayout, secondLayout} from 'util/Layout';
 import moment from 'moment';
 import 'style/view/common/detailTable.less';
 const Panel = Collapse.Panel;
@@ -28,16 +28,16 @@ class AddPlan extends Component {
     super(props);
     this.state = {
       maleDogs: [],
-      femaleDogs: [],
+      femaleDogs: []
     };
   }
   componentDidMount() {
-    const sexId0 = React.$ajax.postData('/api/dog/getAncestorInfo', { sexId: 0 }); // 母
-    const sexId1 = React.$ajax.postData('/api/dog/getAncestorInfo', { sexId: 1 });
+    const sexId0 = React.$ajax.postData('/api/dog/getAncestorInfo', {sexId: 0}); // 母
+    const sexId1 = React.$ajax.postData('/api/dog/getAncestorInfo', {sexId: 1});
     Promise.all([sexId0, sexId1]).then((res) => {
       this.setState({
         maleDogs: res[0].data,
-        femaleDogs: res[1].data,
+        femaleDogs: res[1].data
       });
     });
   }
@@ -77,12 +77,12 @@ class AddPlan extends Component {
           params = {
             ...values,
             breedTime: values.breedTime.format('x'),
-            estrusTime: values.estrusTime.format('x'),
+            estrusTime: values.estrusTime.format('x')
           };
         } else {
           params = {
             ...values,
-            birthday: values.birthday.format('x'),
+            birthday: values.birthday.format('x')
           };
         }
         if (id) {
@@ -105,8 +105,8 @@ class AddPlan extends Component {
     console.log(this.state);
     const breed = this.props.location.pathname.indexOf('breed') > 0;
 
-    const { maleDogs, femaleDogs } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const {maleDogs, femaleDogs} = this.state;
+    const {getFieldDecorator} = this.props.form;
     let editItem;
     if (this.props.location.query) {
       editItem = this.props.location.query.editItem;
@@ -114,26 +114,25 @@ class AddPlan extends Component {
     return (
       <Row gutter={24}>
         <Col span={24}>
-          <Card title={`${breed ? '新增配种信息' : '新增繁殖记录'}`} bordered={true}>
+          <Card title={`${breed ? '新增配种信息' : '新增繁殖记录'}`} bordered>
             <Col xxl={16} xl={22} lg={24} md={24} sm={24} xs={24}>
               <Form className="ant-advanced-search-form">
                 <Row gutter={24}>
                   <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                     <FormItem label="公犬" {...secondLayout}>
                       {getFieldDecorator('femaleDogId', {
-                        rules: [{ required: true, message: '请选择公犬' }],
-                        initialValue: editItem ? editItem.femaleDogId : '',
+                        rules: [{required: true, message: '请选择公犬'}],
+                        initialValue: editItem ? editItem.femaleDogId : ''
                       })(
                         <Select
                           placeholder="请选择公犬"
                           optionLabelProp="children"
                           showSearch
-                          autosize={{ minRows: 2, maxRows: 24 }}
+                          autosize={{minRows: 2, maxRows: 24}}
                           // onChange={(a,b,c) => {console.log(a,b,c)}}
                           filterOption={(input, option) =>
                             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                          }
-                        >
+                          }>
                           {femaleDogs.map((item) => (
                             <Option value={item.id} key={item.id + '_female'}>{`${item.name} ${
                               item.chipCode && `(${item.chipCode})`
@@ -146,19 +145,18 @@ class AddPlan extends Component {
                   <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                     <FormItem label="母犬" {...secondLayout}>
                       {getFieldDecorator('maleDogId', {
-                        rules: [{ required: true, message: '请选择母犬' }],
-                        initialValue: editItem ? editItem.maleDogId + '' : '',
+                        rules: [{required: true, message: '请选择母犬'}],
+                        initialValue: editItem ? editItem.maleDogId + '' : ''
                       })(
                         <Select
                           placeholder="请选择母犬"
                           optionLabelProp="children"
                           showSearch
-                          autosize={{ minRows: 2, maxRows: 24 }}
+                          autosize={{minRows: 2, maxRows: 24}}
                           // onChange={(a,b,c) => {console.log(a,b,c)}}
                           filterOption={(input, option) =>
                             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                          }
-                        >
+                          }>
                           {maleDogs.map((item) => (
                             <Option value={item.id + ''} key={item.id + '_male'}>{`${item.name} ${
                               item.chipCode && `(${item.chipCode})`
@@ -174,16 +172,16 @@ class AddPlan extends Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="配种时间" {...secondLayout}>
                         {getFieldDecorator('breedTime', {
-                          rules: [{ required: true, message: '请选择配种时间' }],
-                          initialValue: editItem ? moment(editItem.breedTime) : null,
+                          rules: [{required: true, message: '请选择配种时间'}],
+                          initialValue: editItem ? moment(editItem.breedTime) : null
                         })(<DatePicker />)}
                       </FormItem>
                     </Col>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="发情时间" {...secondLayout}>
                         {getFieldDecorator('estrusTime', {
-                          rules: [{ required: true, message: '请选择发情时间' }],
-                          initialValue: editItem ? moment(editItem.estrusTime) : null,
+                          rules: [{required: true, message: '请选择发情时间'}],
+                          initialValue: editItem ? moment(editItem.estrusTime) : null
                         })(<DatePicker />)}
                       </FormItem>
                     </Col>
@@ -193,16 +191,16 @@ class AddPlan extends Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="出生日期：" {...secondLayout}>
                         {getFieldDecorator('birthday', {
-                          rules: [{ required: true, message: '请选择出生日期' }],
-                          initialValue: editItem ? moment(editItem.birthday) : null,
+                          rules: [{required: true, message: '请选择出生日期'}],
+                          initialValue: editItem ? moment(editItem.birthday) : null
                         })(<DatePicker />)}
                       </FormItem>
                     </Col>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="繁衍期：" {...secondLayout}>
                         {getFieldDecorator('period', {
-                          rules: [{ required: true, message: '请填写繁衍期' }],
-                          initialValue: editItem ? editItem.period : null,
+                          rules: [{required: true, message: '请填写繁衍期'}],
+                          initialValue: editItem ? editItem.period : null
                         })(<Input placeholder="请填写繁衍期" />)}
                       </FormItem>
                     </Col>
@@ -215,11 +213,11 @@ class AddPlan extends Component {
                       <FormItem label="配种地点" {...secondLayout}>
                         {getFieldDecorator('place', {
                           rules: [
-                            { required: true, message: '请输入配种地点' },
-                            { message: '地点长度不超过20', max: 20 },
+                            {required: true, message: '请输入配种地点'},
+                            {message: '地点长度不超过20', max: 20}
                           ],
-                          initialValue: editItem ? editItem.place : '',
-                        })(<Input placeholder="请输入配种地点" autosize={{ minRows: 2, maxRows: 24 }} />)}
+                          initialValue: editItem ? editItem.place : ''
+                        })(<Input placeholder="请输入配种地点" autosize={{minRows: 2, maxRows: 24}} />)}
                       </FormItem>
                     </Col>
                   </Row>
@@ -228,30 +226,24 @@ class AddPlan extends Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="产仔母犬数：" {...secondLayout}>
                         {getFieldDecorator('maleChlNumber', {
-                          rules: [
-                            { required: true, message: '请输入产仔公犬数' },
-                            { validator: this.checkMaleChlNumber },
-                          ],
-                          initialValue: editItem ? editItem.maleChlNumber : '',
-                        })(<Input placeholder="请输入产仔公犬数" autosize={{ minRows: 2, maxRows: 24 }} />)}
+                          rules: [{required: true, message: '请输入产仔公犬数'}, {validator: this.checkMaleChlNumber}],
+                          initialValue: editItem ? editItem.maleChlNumber : ''
+                        })(<Input placeholder="请输入产仔公犬数" autosize={{minRows: 2, maxRows: 24}} />)}
                       </FormItem>
                     </Col>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="产仔公犬数：" {...secondLayout}>
                         {getFieldDecorator('femaleChlNumber', {
-                          rules: [
-                            { required: true, message: '请输入产仔母犬数' },
-                            { validator: this.checkMaleChlNumber },
-                          ],
-                          initialValue: editItem ? editItem.femaleChlNumber : '',
-                        })(<Input placeholder="请输入产仔母犬数" autosize={{ minRows: 2, maxRows: 24 }} />)}
+                          rules: [{required: true, message: '请输入产仔母犬数'}, {validator: this.checkMaleChlNumber}],
+                          initialValue: editItem ? editItem.femaleChlNumber : ''
+                        })(<Input placeholder="请输入产仔母犬数" autosize={{minRows: 2, maxRows: 24}} />)}
                       </FormItem>
                     </Col>
                   </Row>
                 )}
 
                 <Row>
-                  <Col span={24} style={{ textAlign: 'center', marginTop: '40px' }}>
+                  <Col span={24} style={{textAlign: 'center', marginTop: '40px'}}>
                     <Button type="primary" htmlType="submit" onClick={() => this.handleSubmit('publish')}>
                       保存
                     </Button>

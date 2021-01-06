@@ -1,3 +1,5 @@
+/** @format */
+
 // 在Node中不能使用ES6语法的模块化
 const gulpConfig = require('./gulpfile.config.js');
 
@@ -10,7 +12,7 @@ const config = gulpConfig.devServerSShConfig.sshConfig;
 
 const gulpSSH = new GulpSSH({
   ignoreErrors: false,
-  sshConfig: config.ssh,
+  sshConfig: config.ssh
 });
 
 /**
@@ -21,7 +23,7 @@ const gulpSSH = new GulpSSH({
  */
 gulp.task('execSSHBackup', () => {
   console.log('备份服务器上现有文件...');
-  return gulpSSH.shell(config.backups, { filePath: 'log/commands-backup.log' }).pipe(gulp.dest('logs'));
+  return gulpSSH.shell(config.backups, {filePath: 'log/commands-backup.log'}).pipe(gulp.dest('logs'));
 });
 
 /**
@@ -30,12 +32,12 @@ gulp.task('execSSHBackup', () => {
  */
 gulp.task('execSSHRollBack', () => {
   console.log('回滚上一个版本...');
-  return gulpSSH.shell(config.rollback, { filePath: 'log/commands-unZip.log' }).pipe(gulp.dest('logs')); // 会自动新建该目录
+  return gulpSSH.shell(config.rollback, {filePath: 'log/commands-unZip.log'}).pipe(gulp.dest('logs')); // 会自动新建该目录
 });
 
 gulp.task('reloadNginx', () => {
   console.log('重启服务器...');
-  return gulpSSH.shell(config.reload, { filePath: 'log/commands-reloadNginx.log' }).pipe(gulp.dest('logs'));
+  return gulpSSH.shell(config.reload, {filePath: 'log/commands-reloadNginx.log'}).pipe(gulp.dest('logs'));
 });
 
 /**
@@ -43,7 +45,7 @@ gulp.task('reloadNginx', () => {
  */
 gulp.task('execSSHDelete', () => {
   console.log('删除服务器上现有文件...');
-  return gulpSSH.shell(config.commands, { filePath: 'log/commands-delete.log' }).pipe(gulp.dest('logs'));
+  return gulpSSH.shell(config.commands, {filePath: 'log/commands-delete.log'}).pipe(gulp.dest('logs'));
 });
 
 /**

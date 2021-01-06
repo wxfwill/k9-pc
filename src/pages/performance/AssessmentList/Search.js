@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Radio, TreeSelect, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Radio, TreeSelect, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import RequestTeamProps from '../../reportManage/Common/RequestTeamProps';
 import GlobalName from 'components/searchForm/GlobalUserName';
 import moment from 'moment';
 const FormItem = Form.Item;
 const Option = Select.Option;
-const { TreeNode } = TreeSelect;
+const {TreeNode} = TreeSelect;
 
-const { MonthPicker } = DatePicker;
+const {MonthPicker} = DatePicker;
 
 class SearchForm extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class SearchForm extends Component {
       personnelTree: [],
       taskTypeList: [],
       feedbalVal: null,
-      successVal: null,
+      successVal: null
     };
   }
   componentDidMount() {
@@ -35,27 +35,27 @@ class SearchForm extends Component {
     console.log(val);
   };
   queryTaskType = (rootCode) => {
-    React.$ajax.common.queryRulesByRootCode({ rootCode }).then((res) => {
+    React.$ajax.common.queryRulesByRootCode({rootCode}).then((res) => {
       if (res.code == 0) {
-        this.setState({ taskTypeList: res.data });
+        this.setState({taskTypeList: res.data});
       }
     });
   };
   queryGroupUser = util.Debounce(
     (keyword) => {
-      React.$ajax.common.queryGroupUser({ keyword }).then((res) => {
+      React.$ajax.common.queryGroupUser({keyword}).then((res) => {
         if (res.code == 0) {
-          let resObj = res.data;
-          let arr = [];
-          for (let key in resObj) {
+          const resObj = res.data;
+          const arr = [];
+          for (const key in resObj) {
             if (resObj[key] && resObj[key].length > 0) {
               arr.push({
                 name: key,
-                children: resObj[key],
+                children: resObj[key]
               });
             }
           }
-          this.setState({ personnelTree: arr });
+          this.setState({personnelTree: arr});
         }
       });
     },
@@ -74,7 +74,7 @@ class SearchForm extends Component {
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   onChangeMonth = () => {};
@@ -93,11 +93,11 @@ class SearchForm extends Component {
     });
   };
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     return (
       <RequestTeamProps
         render={(data) => {
-          let allTeam = data && data.teamData;
+          const allTeam = data && data.teamData;
           return (
             <Form onSubmit={this.handleSearch}>
               <Row gutter={24}>
@@ -108,8 +108,7 @@ class SearchForm extends Component {
                         placeholder="请选择"
                         allowClear
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                        onChange={this.selectHouseId}
-                      >
+                        onChange={this.selectHouseId}>
                         {allTeam.map((item) => {
                           return (
                             <Option key={item.id} value={item.id}>
@@ -177,7 +176,7 @@ class SearchForm extends Component {
 
                   <FormItem label="考核时间" {...thirdLayout}>
                     {getFieldDecorator('month', {
-                      initialValue: null,
+                      initialValue: null
                     })(
                       <MonthPicker
                         placeholder="请选择"
@@ -191,10 +190,9 @@ class SearchForm extends Component {
                 <Col xl={6} lg={6} md={8} sm={12} xs={12}>
                   <FormItem
                     label="是否提交自评表"
-                    labelCol={{ xl: { span: 9 }, md: { span: 10 }, sm: { span: 12 }, xs: { span: 12 } }}
-                  >
+                    labelCol={{xl: {span: 9}, md: {span: 10}, sm: {span: 12}, xs: {span: 12}}}>
                     {getFieldDecorator('submitState', {
-                      initialValue: null,
+                      initialValue: null
                     })(
                       <Radio.Group onChange={this.hangdleFeedback}>
                         <Radio value={1}>是</Radio>
@@ -206,12 +204,9 @@ class SearchForm extends Component {
               </Row>
               <Row>
                 <Col xl={8} lg={8} md={10} sm={12} xs={12}>
-                  <FormItem
-                    label="审批状态"
-                    labelCol={{ xl: { span: 6 }, md: { span: 6 }, sm: { span: 12 }, xs: { span: 12 } }}
-                  >
+                  <FormItem label="审批状态" labelCol={{xl: {span: 6}, md: {span: 6}, sm: {span: 12}, xs: {span: 12}}}>
                     {getFieldDecorator('approvalState', {
-                      initialValue: null,
+                      initialValue: null
                     })(
                       <Radio.Group onChange={this.hangdleCatch}>
                         <Radio value={1}>未审批</Radio>
@@ -225,18 +220,17 @@ class SearchForm extends Component {
                   <Button type="primary" htmlType="submit">
                     查询
                   </Button>
-                  <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                  <Button style={{marginLeft: 8}} onClick={this.handleReset}>
                     清空
                   </Button>
-                  <Button style={{ marginLeft: 8 }} onClick={this.handlePrif}>
+                  <Button style={{marginLeft: 8}} onClick={this.handlePrif}>
                     导出
                   </Button>
                 </Col>
               </Row>
             </Form>
           );
-        }}
-      ></RequestTeamProps>
+        }}></RequestTeamProps>
     );
   }
 }

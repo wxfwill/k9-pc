@@ -1,6 +1,6 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { renderRoutes } from 'react-router-config';
+import {withRouter} from 'react-router-dom';
+import {renderRoutes} from 'react-router-config';
 
 class ListHome extends React.Component {
   constructor(props) {
@@ -8,8 +8,8 @@ class ListHome extends React.Component {
   }
 
   render() {
-    const { location, history, route } = this.props;
-    return <div style={{ height: '100%' }}>{renderRoutes(route.items)}</div>;
+    const {location, history, route} = this.props;
+    return <div style={{height: '100%'}}>{renderRoutes(route.items)}</div>;
   }
 }
 

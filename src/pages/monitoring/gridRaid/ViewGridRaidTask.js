@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 // import * as systomState from 'actions/systomStatus';
 import {
   Row,
@@ -17,14 +17,14 @@ import {
   Tabs,
   Affix,
   message,
-  Popconfirm,
+  Popconfirm
 } from 'antd';
-import { tMap } from 'components/view/common/createGridMap'; // map.js改为重写的createGridMap.js
+import {tMap} from 'components/view/common/createGridMap'; // map.js改为重写的createGridMap.js
 import GridTable from './GridTaskTrackGridTable';
 import TaskInfoListView from './GridTaskTaskInfoListView';
 const Panel = Collapse.Panel;
 const Search = Input.Search;
-const antIcon = <Icon type="loading" style={{ fontSize: 30 }} spin />;
+const antIcon = <Icon type="loading" style={{fontSize: 30}} spin />;
 const TabPane = Tabs.TabPane;
 
 require('style/view/monitoring/gridRaid.less');
@@ -41,28 +41,28 @@ class ViewGridRaidTask extends Component {
       loading: true,
       cardWidth: 560,
       users: [],
-      taskStatus: '',
+      taskStatus: ''
     };
   }
 
   componentWillMount() {
-    let { unfold } = this.props.systomActions;
+    const {unfold} = this.props.systomActions;
     unfold(true);
   }
 
   componentDidMount() {
-    let _this = this;
+    const _this = this;
     this.timmer = setTimeout(function () {
       _this.setState({
-        loading: false,
+        loading: false
       });
     }, 1000);
 
-    let options = {
-      labelText: '我的位置',
+    const options = {
+      labelText: '我的位置'
     };
 
-    let TMap = new tMap(options);
+    const TMap = new tMap(options);
     TMap.drawingManager(); //绘图功能
     TMap.setBeatMark();
     TMap.setPolyline();
@@ -70,15 +70,16 @@ class ViewGridRaidTask extends Component {
 
     (function () {
       var params = {
-        taskId: _this.props.match.params.taskID,
+        taskId: _this.props.match.params.taskID
       };
 
-      React.$ajax.postData('/api/cmdMonitor/getGridTaskById', { ...params })  
+      React.$ajax
+        .postData('/api/cmdMonitor/getGridTaskById', {...params})
         .then((res) => {
-          let users = [];
+          const users = [];
           // res.data.taskStatus = 2;
           _this.setState({
-            taskStatus: res.data.taskStatus,
+            taskStatus: res.data.taskStatus
           });
           res.data.details.forEach(function (item, index) {
             users.push({
@@ -93,21 +94,21 @@ class ViewGridRaidTask extends Component {
               endTime: item.endTime,
               startTime: item.startTime,
               status: item.status,
-              color: getRandomColor(),
+              color: getRandomColor()
             });
           });
           TMap.drawingPolygon(res.data.drawShapeDTO.latLngArr, false, res.data.drawShapeDTO.parts || 5); //绘制网格信息
           //    _this.refs["child"].setUserList(users); //在右侧展示用户列表信息
           _this.setState({
-            users: users,
+            users: users
           });
           //创建Marker,标识执勤人员的位置
-          let selectPeoples = res.data.details,
-            isHasAddmarker = {},
-            filter_markers = [];
+          const selectPeoples = res.data.details;
+          const isHasAddmarker = {};
+          const filter_markers = [];
           selectPeoples.forEach((item) => {
-            let index = item.area.index,
-              number = item.number;
+            const index = item.area.index;
+            const number = item.number;
             if (isHasAddmarker[index]) {
               filter_markers[index].push(item);
             } else {
@@ -125,13 +126,13 @@ class ViewGridRaidTask extends Component {
                 new qq.maps.LatLng(path.c.lat, path.c.lng),
                 new qq.maps.LatLng(path.d.lat, path.d.lng),
                 new qq.maps.LatLng(path.b.lat, path.b.lng),
-                new qq.maps.LatLng(path.a.lat, path.a.lng),
+                new qq.maps.LatLng(path.a.lat, path.a.lng)
               ],
-              visible: false,
+              visible: false
             });
             let labelName = '';
             item.forEach((cItem, index) => {
-              let theLabel =
+              const theLabel =
                 index > 3
                   ? ''
                   : index < 2
@@ -150,7 +151,7 @@ class ViewGridRaidTask extends Component {
               visible: true,
               // title:'警员',
               title: labelName,
-              icon: new qq.maps.MarkerImage(jc_path, new qq.maps.Size(64, 64)),
+              icon: new qq.maps.MarkerImage(jc_path, new qq.maps.Size(64, 64))
             });
 
             var label = new qq.maps.Label({
@@ -164,10 +165,10 @@ class ViewGridRaidTask extends Component {
                 fontSize: '10px',
                 background: ' transparent',
                 border: 'none',
-                wordWrap: 'break-word',
+                wordWrap: 'break-word'
               },
               visible: true,
-              zIndex: 1000,
+              zIndex: 1000
             });
           });
           // res.data.details.forEach(function(item,index){
@@ -209,7 +210,7 @@ class ViewGridRaidTask extends Component {
   }
 
   handleLimit = (limit) => {
-    this.setState({ limit: limit });
+    this.setState({limit: limit});
   };
 
   drawTrace = (gpsData, pageNo, strokeColor) => {
@@ -224,19 +225,19 @@ class ViewGridRaidTask extends Component {
         map: this.TMap.map,
         path: path,
         strokeColor: strokeColor,
-        strokeWeight: 4,
+        strokeWeight: 4
       });
       this.TMap.map.setCenter(new qq.maps.LatLng(path[0].lat, path[0].lng)); //根据指定的范围调整地图视野
-      if (typeof pageNo != undefined && pageNo == 1) {
+      if (typeof pageNo !== undefined && pageNo == 1) {
         //当是第一页的时候,将地图移动绘制轨迹的第一个点
         this.TMap.map.panTo(new qq.maps.LatLng(path[0].lat, path[0].lng));
       }
     }
   };
   handleShow() {
-    let { cardWidth } = this.state;
+    const {cardWidth} = this.state;
     this.setState({
-      cardWidth: cardWidth == 0 ? 560 : 0,
+      cardWidth: cardWidth == 0 ? 560 : 0
     });
   }
   /**开始/结束任务**/
@@ -247,11 +248,12 @@ class ViewGridRaidTask extends Component {
       method = '/api/cmdMonitor/stopGridSearch';
       msg = '任务已结束！';
     }
-    let status = type == 0 ? 1 : 2;
-    React.$ajax.postData(method, { id: this.props.match.params.taskID })
+    const status = type == 0 ? 1 : 2;
+    React.$ajax
+      .postData(method, {id: this.props.match.params.taskID})
       .then((res) => {
         this.setState({
-          taskStatus: status,
+          taskStatus: status
         });
         message.success(msg);
       })
@@ -264,19 +266,19 @@ class ViewGridRaidTask extends Component {
     this.TMap.searchService().search(value);
   };
   render() {
-    const { collapsed } = this.props.systomState;
-    const { cardWidth, taskStatus, users } = this.state;
+    const {collapsed} = this.props.systomState;
+    const {cardWidth, taskStatus, users} = this.state;
     const topStr = (
-      <div style={{ marginTop: 2 }}>
+      <div style={{marginTop: 2}}>
         {'网格化搜捕'}
         {taskStatus < 2 ? (
           taskStatus == 0 ? (
-            <Tag color="#108ee9" onClick={() => this.beginOrStopTask(0)} style={{ float: 'right' }}>
+            <Tag color="#108ee9" onClick={() => this.beginOrStopTask(0)} style={{float: 'right'}}>
               开始任务
             </Tag>
           ) : (
             <Popconfirm title="确认终止此任务信息?" onConfirm={() => this.beginOrStopTask(1)}>
-              <Tag color="#f50" style={{ float: 'right' }}>
+              <Tag color="#f50" style={{float: 'right'}}>
                 结束任务
               </Tag>
             </Popconfirm>
@@ -285,13 +287,13 @@ class ViewGridRaidTask extends Component {
       </div>
     );
     return (
-      <div className="GridRaid" style={{ left: collapsed ? '92px' : '212px' }}>
+      <div className="GridRaid" style={{left: collapsed ? '92px' : '212px'}}>
         <Spin
           indicator={antIcon}
           size="large"
           tip="数据加载中..."
           spinning={this.state.loading}
-          style={{ position: 'absolute', top: '50%', left: '50%', zIndex: '9999' }}
+          style={{position: 'absolute', top: '50%', left: '50%', zIndex: '9999'}}
         />
         <Row gutter={24} id="container">
           <Card
@@ -304,9 +306,8 @@ class ViewGridRaidTask extends Component {
             }
             bordered={false}
             bordered
-            style={{ width: cardWidth, position: 'absolute', top: '0', right: '0', zIndex: '9999' }}
-          >
-            <span className="p-icon" style={{ right: cardWidth }} onClick={this.handleShow.bind(this)}>
+            style={{width: cardWidth, position: 'absolute', top: '0', right: '0', zIndex: '9999'}}>
+            <span className="p-icon" style={{right: cardWidth}} onClick={this.handleShow.bind(this)}>
               <Icon type={cardWidth == 0 ? 'left' : 'right'} />
             </span>
             <Search placeholder="地点搜索" onSearch={(value) => this.onSearch(value)} enterButton />
@@ -326,7 +327,7 @@ class ViewGridRaidTask extends Component {
             </Tabs>
           </Card>
           {cardWidth == 0 ? (
-            <Affix style={{ position: 'absolute', top: 18, right: 10 }}>
+            <Affix style={{position: 'absolute', top: 18, right: 10}}>
               <Button type="primary" onClick={this.props.history.goBack}>
                 <Icon type="rollback" />
                 返回
@@ -340,7 +341,7 @@ class ViewGridRaidTask extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  systomState: state.system,
+  systomState: state.system
 });
 
 const mapDispatchToProps = (dispatch) => ({

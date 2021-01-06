@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Row, Col, Card, Tooltip, Icon, Radio, Button } from 'antd';
+import React, {Component} from 'react';
+import {Row, Col, Card, Tooltip, Icon, Radio, Button} from 'antd';
 
 import Pandect from './pandect';
 import MapModule from './MapModule';
@@ -14,14 +14,14 @@ class IndexComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showPic: false,
+      showPic: false
     };
   }
   showPandect() {
-    let _this = this;
+    const _this = this;
     this.setState(
       {
-        showPic: !this.state.showPic,
+        showPic: !this.state.showPic
       },
       function () {
         _this.state.showPic ? _this.requestFullScreen() : _this.exitFull();
@@ -30,8 +30,8 @@ class IndexComponent extends Component {
   }
   requestFullScreen() {
     // 判断各种浏览器，找到正确的方法
-    let element = document.documentElement;
-    let requestMethod =
+    const element = document.documentElement;
+    const requestMethod =
       element.requestFullScreen || //W3C
       element.webkitRequestFullScreen || //Chrome等
       element.mozRequestFullScreen || //FireFox
@@ -40,7 +40,7 @@ class IndexComponent extends Component {
       requestMethod.call(element);
     } else if (typeof window.ActiveXObject !== 'undefined') {
       //for Internet Explorer
-      let wscript = new ActiveXObject('WScript.Shell');
+      const wscript = new ActiveXObject('WScript.Shell');
       if (wscript !== null) {
         wscript.SendKeys('{F11}');
       }
@@ -71,32 +71,31 @@ class IndexComponent extends Component {
           size="large"
           shape="circle"
           type="primary"
-          style={{ position: 'absolute', top: '85px', right: '29px', zIndex: '9' }}
-        >
+          style={{position: 'absolute', top: '85px', right: '29px', zIndex: '9'}}>
           <Icon type="arrows-alt" />
         </Button>
         <Row gutter={24}>
-          <Col xl={16} lg={24} md={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
-            <Card title="犬只总数统计" bordered={true}>
+          <Col xl={16} lg={24} md={24} sm={24} xs={24} style={{marginBottom: 24}}>
+            <Card title="犬只总数统计" bordered>
               <Row justify="space-between" className="num-total">
-                <Col md={{ span: 6 }} sm={12} xs={24}>
+                <Col md={{span: 6}} sm={12} xs={24}>
                   <Card className="card-num sum" hoverable bordered={false} title={<div>犬只总数</div>}>
                     <p>
-                      <span style={{ fontSize: '35px' }}>297</span>头
+                      <span style={{fontSize: '35px'}}>297</span>头
                     </p>
                   </Card>
                 </Col>
-                <Col md={{ span: 6, offset: 3 }} sm={12} xs={24}>
+                <Col md={{span: 6, offset: 3}} sm={12} xs={24}>
                   <Card className="card-num go" hoverable bordered={false} title={<div>出勤犬只</div>}>
                     <p>
-                      <span style={{ fontSize: '35px' }}>126</span>头
+                      <span style={{fontSize: '35px'}}>126</span>头
                     </p>
                   </Card>
                 </Col>
-                <Col md={{ span: 6, offset: 3 }} sm={12} xs={24}>
+                <Col md={{span: 6, offset: 3}} sm={12} xs={24}>
                   <Card className="card-num serve" hoverable bordered={false} title={<div>服役犬只</div>}>
                     <p>
-                      <span style={{ fontSize: '35px' }}>26</span>头
+                      <span style={{fontSize: '35px'}}>26</span>头
                     </p>
                   </Card>
                 </Col>
@@ -108,17 +107,16 @@ class IndexComponent extends Component {
                   <RadioGroup
                     defaultValue="a"
                     size="large"
-                    style={{ width: '100%', display: 'flex', justifyContent: 'space-around' }}
-                  >
-                    <RadioButton style={{ flex: 1 }} value="a">
+                    style={{width: '100%', display: 'flex', justifyContent: 'space-around'}}>
+                    <RadioButton style={{flex: 1}} value="a">
                       <Icon type="pie-chart" />
                       犬只分布
                     </RadioButton>
-                    <RadioButton style={{ flex: 1 }} value="b">
+                    <RadioButton style={{flex: 1}} value="b">
                       <Icon type="wifi" />
                       外勤巡逻
                     </RadioButton>
-                    <RadioButton style={{ flex: 1 }} value="c">
+                    <RadioButton style={{flex: 1}} value="c">
                       <Icon type="global" />
                       网格化搜捕
                     </RadioButton>
@@ -148,7 +146,7 @@ class IndexComponent extends Component {
             </Row>
           </Col>
           <Col xl={8} lg={24} md={24} sm={24} xs={24}>
-            <Card bordered={true}>
+            <Card bordered>
               <BarChart />
             </Card>
           </Col>

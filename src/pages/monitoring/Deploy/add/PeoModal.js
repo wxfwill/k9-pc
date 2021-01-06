@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Row, Col, Radio, Form, Input, Modal, Transfer, Button, notification, Tag, Switch, Icon, Select } from 'antd';
-import { firstLayout, secondLayout, thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Row, Col, Radio, Form, Input, Modal, Transfer, Button, notification, Tag, Switch, Icon, Select} from 'antd';
+import {firstLayout, secondLayout, thirdLayout} from 'util/Layout';
 const FormItem = Form.Item;
 const Option = Select.Option;
 require('style/view/monitoring/peoModal.less');
@@ -15,7 +15,7 @@ class PeoModal extends Component {
       BranchArr: [], //分局数组
       TeamArr: [],
       recardTags: [], //记录当前点击项是否点过
-      limitBranch: true,
+      limitBranch: true
     };
   }
   componentWillMount() {
@@ -25,14 +25,14 @@ class PeoModal extends Component {
     this.getData();
   }
   getSelectData() {
-    let _this = this;
-    let typeOption = React.$ajax.postData('/api/userCenter/getAllAgency');
-    let LevelOption = React.$ajax.postData('/api/userCenter/getAllPatrolsTeam');
+    const _this = this;
+    const typeOption = React.$ajax.postData('/api/userCenter/getAllAgency');
+    const LevelOption = React.$ajax.postData('/api/userCenter/getAllPatrolsTeam');
     Promise.all([typeOption, LevelOption])
       .then((resArr) => {
         _this.setState({
           BranchArr: resArr[0].data,
-          TeamArr: resArr[1].data,
+          TeamArr: resArr[1].data
         });
       })
       .catch((error) => {
@@ -41,8 +41,9 @@ class PeoModal extends Component {
   }
   //取数据
   getData(address = '/api/userCenter/getCombatStaff') {
-    this.setState({ userData: [] });
-    React.$ajax.postData(address)
+    this.setState({userData: []});
+    React.$ajax
+      .postData(address)
       .then((res) => {
         this.changeUserData(res);
       })
@@ -51,31 +52,31 @@ class PeoModal extends Component {
       });
   }
   changeUserData(res) {
-    let userData = [];
-    let keyMark = 0;
+    const userData = [];
+    const keyMark = 0;
     res.data.length > 0 &&
       res.data.forEach((item, index) => {
         Array.prototype.push.call(userData, {
           key: keyMark + item.id,
           name: item.name,
           description:
-            typeof item.remark == 'undefined' || item.remark == '' || typeof item.remark == 'object'
+            typeof item.remark === 'undefined' || item.remark == '' || typeof item.remark === 'object'
               ? ''
               : `(${item.remark})`,
-          chosen: Math.random() * 2 > 1,
+          chosen: Math.random() * 2 > 1
         });
       });
-    this.setState({ userData });
+    this.setState({userData});
   }
   //确认按钮
   onOk() {
-    const { onCreate } = this.props;
-    let _this = this;
-    let peopleMsg = [];
+    const {onCreate} = this.props;
+    const _this = this;
+    const peopleMsg = [];
     this.state.userData.forEach((item, index) => {
       _this.state.targetKeys.forEach((items, indexs) => {
         if (items == item.key) {
-          Array.prototype.push.call(peopleMsg, { name: item.name, key: item.key });
+          Array.prototype.push.call(peopleMsg, {name: item.name, key: item.key});
         }
       });
     });
@@ -83,13 +84,13 @@ class PeoModal extends Component {
   }
   //穿梭框中间按按钮
   handleChange = (targetKeys, direction, moveKeys) => {
-    this.setState({ targetKeys });
+    this.setState({targetKeys});
   };
   //重置按钮
   handleReset() {
     this.setState(
       {
-        targetKeys: [],
+        targetKeys: []
       },
       function () {
         this.getData('/api/userCenter/getCombatStaff');
@@ -99,30 +100,30 @@ class PeoModal extends Component {
   //底部渲染按钮
   renderFooter = () => {
     return (
-      <Button size="small" style={{ float: 'right', margin: 5 }} onClick={this.handleReset.bind(this)}>
+      <Button size="small" style={{float: 'right', margin: 5}} onClick={this.handleReset.bind(this)}>
         重置
       </Button>
     );
   };
   //是否可点
   isDisabled(boolean) {
-    let userData = [];
+    const userData = [];
     this.state.userData.forEach((item, index) => {
-      Array.prototype.push.call(userData, { ...item, disabled: boolean });
+      Array.prototype.push.call(userData, {...item, disabled: boolean});
     });
-    this.setState({ userData });
+    this.setState({userData});
   }
   closePsrsonMsg(key, personArr) {
-    let _this = this;
+    const _this = this;
     this.setState(
       {
-        isclose: true,
+        isclose: true
       },
       function () {
-        typeof key == 'undefined' ? '' : notification.close(key);
-        if (typeof personArr != 'undefined') {
+        typeof key === 'undefined' ? '' : notification.close(key);
+        if (typeof personArr !== 'undefined') {
           _this.setState({
-            targetKeys: Array.from(new Set(_this.state.targetKeys.concat(personArr))),
+            targetKeys: Array.from(new Set(_this.state.targetKeys.concat(personArr)))
           });
         }
         _this.isDisabled(false);
@@ -138,22 +139,23 @@ class PeoModal extends Component {
   renderItem(item) {
     return {
       label: `${item.name}${item.description}`, // for displayed item
-      value: item.description, // for title and filter matching
+      value: item.description // for title and filter matching
     };
   }
   handleSwitchChange(checked) {
     this.setState({
-      limitBranch: checked,
+      limitBranch: checked
     });
   }
   SelectBranch(value, option) {
-    this.selectChangeData({ address: '/api/userCenter/getUserByAgency', paramsKey: 'agencyId', paramsValue: value });
+    this.selectChangeData({address: '/api/userCenter/getUserByAgency', paramsKey: 'agencyId', paramsValue: value});
   }
   SelectTeam(value, option) {
-    this.selectChangeData({ address: '/api/userCenter/getUserByPatrolsTeam', paramsKey: 'teamId', paramsValue: value });
+    this.selectChangeData({address: '/api/userCenter/getUserByPatrolsTeam', paramsKey: 'teamId', paramsValue: value});
   }
   selectChangeData(params) {
-    React.$ajax.postData(params.address, { [params.paramsKey]: params.paramsValue })
+    React.$ajax
+      .postData(params.address, {[params.paramsKey]: params.paramsValue})
       .then((res) => {
         this.changeUserData(res);
       })
@@ -166,19 +168,18 @@ class PeoModal extends Component {
   };
 
   render() {
-    const { visible, onCancel, form, defaultUserIds } = this.props;
+    const {visible, onCancel, form, defaultUserIds} = this.props;
     return (
       <Modal
         visible={visible}
         title="添加作战人员"
-        style={{ top: 200 }}
+        style={{top: 200}}
         okText="确定"
         onCancel={onCancel}
         onOk={this.onOk.bind(this)}
         width={658}
         maskClosable={false}
-        className="PeoModal"
-      >
+        className="PeoModal">
         <Form layout="vertical">
           <Row gutter={24}>
             <Col xxl={10} xl={10} lg={10} md={24} sm={24} xs={24}>
@@ -186,8 +187,7 @@ class PeoModal extends Component {
                 <Select
                   placeholder="选择分局"
                   disabled={!this.state.limitBranch}
-                  onSelect={this.SelectBranch.bind(this)}
-                >
+                  onSelect={this.SelectBranch.bind(this)}>
                   {this.state.BranchArr.length > 0 &&
                     this.state.BranchArr.map((item, index) => {
                       return (
@@ -232,7 +232,7 @@ class PeoModal extends Component {
           filterOption={this.filterOption}
           listStyle={{
             width: 250,
-            height: 300,
+            height: 300
           }}
           operations={['确 认', '排 除']}
           targetKeys={this.state.targetKeys}

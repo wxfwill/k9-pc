@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Table, Button, Tag, Badge, Icon } from 'antd';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Table, Button, Tag, Badge, Icon} from 'antd';
+import {Link} from 'react-router-dom';
 import httpAjax from 'libs/httpAjax';
 import Immutable from 'immutable';
 
@@ -14,7 +14,7 @@ class PrevTable extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 3,
       currPage: 1,
@@ -22,7 +22,7 @@ class PrevTable extends React.Component {
       loading: false,
       filter: null,
       changeLeft: false,
-      showDetail: false,
+      showDetail: false
     };
   }
   componentWillMount() {
@@ -32,41 +32,41 @@ class PrevTable extends React.Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let filter = nextProps.filter;
-    let isReset = util.method.isObjectValueEqual(nextProps, this.props);
+    const filter = nextProps.filter;
+    const isReset = util.method.isObjectValueEqual(nextProps, this.props);
     if (!isReset) {
-      let _this = this;
-      this.setState({ filter }, function () {
+      const _this = this;
+      this.setState({filter}, function () {
         _this.fetch({
           pageSize: _this.state.pageSize,
           currPage: 1,
-          ...filter,
+          ...filter
         });
       });
     }
   }
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
-    let { filter } = this.state;
+    const {filter} = this.state;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
       currPage: pagination.current,
-      ...filter,
+      ...filter
     });
   };
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/vaccineRecord/list', { ...params })
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+    this.setState({loading: true});
+    httpAjax('post', config.apiUrl + '/api/vaccineRecord/list', {...params})
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
-        this.setState({ data: res.list, loading: false, pagination });
+        this.setState({data: res.list, loading: false, pagination});
       })
       .catch(function (error) {
         console.log(error);
@@ -76,19 +76,19 @@ class PrevTable extends React.Component {
     this.setState({
       detailTitle: data,
       showDetail: true,
-      changeLeft: true,
+      changeLeft: true
     });
   };
   handleShow() {
-    let _this = this;
+    const _this = this;
     this.setState(
       {
-        changeLeft: false,
+        changeLeft: false
       },
       function () {
         setTimeout(() => {
           _this.setState({
-            showDetail: false,
+            showDetail: false
           });
         }, 600);
       }
@@ -109,50 +109,50 @@ class PrevTable extends React.Component {
                 fontSize: '12px',
                 height: '16px',
                 lineHeight: '16px',
-                backgroundColor: '#99a9bf',
+                backgroundColor: '#99a9bf'
               }}
             />
           );
-        },
+        }
       },
       {
         title: '疫苗接种时间',
         dataIndex: 'vaccineTime',
         key: 'vaccineTime',
         render: (time) => {
-          let date = new Date(time);
-          let YMD = date.toLocaleString().split(' ')[0];
-          let HMS = date.toString().split(' ')[4];
-          let vaccineTime = YMD + ' ' + HMS;
+          const date = new Date(time);
+          const YMD = date.toLocaleString().split(' ')[0];
+          const HMS = date.toString().split(' ')[4];
+          const vaccineTime = YMD + ' ' + HMS;
           return vaccineTime;
-        },
+        }
       },
       {
         title: '犬名',
         dataIndex: 'dogName',
-        key: 'dogName',
+        key: 'dogName'
       },
       {
         title: '疫苗名称',
         dataIndex: 'vaccineName',
-        key: 'vaccineName',
+        key: 'vaccineName'
       },
       {
         title: '兽医',
         dataIndex: 'veterinaryName',
-        key: 'veterinaryName',
+        key: 'veterinaryName'
       },
       {
         title: '疫苗提醒时间',
         dataIndex: 'nextVaccineRemindingTime',
         key: 'nextVaccineRemindingTime',
         render: (time) => {
-          let date = new Date(time);
-          let YMD = date.toLocaleString().split(' ')[0];
-          let HMS = date.toString().split(' ')[4];
-          let nextVaccineRemindingTime = YMD + ' ' + HMS;
+          const date = new Date(time);
+          const YMD = date.toLocaleString().split(' ')[0];
+          const HMS = date.toString().split(' ')[4];
+          const nextVaccineRemindingTime = YMD + ' ' + HMS;
           return nextVaccineRemindingTime;
-        },
+        }
       },
       {
         title: '操作',
@@ -160,12 +160,12 @@ class PrevTable extends React.Component {
         key: 'dogId',
         render: (data) => {
           return (
-            <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.queryDetail(data)}>
+            <span style={{color: '#1890ff', cursor: 'pointer'}} onClick={() => this.queryDetail(data)}>
               查看详情
             </span>
           );
-        },
-      },
+        }
+      }
     ];
     return (
       <div>

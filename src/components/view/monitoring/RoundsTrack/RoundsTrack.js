@@ -1,30 +1,15 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 // import * as systomState from 'actions/systomStatus';
-import {
-  Row,
-  Col,
-  Icon,
-  Spin,
-  Button,
-  Table,
-  Card,
-  Input,
-  Collapse,
-  Tag,
-  Tabs,
-  Affix,
-  message,
-  Popconfirm,
-} from 'antd';
+import {Row, Col, Icon, Spin, Button, Table, Card, Input, Collapse, Tag, Tabs, Affix, message, Popconfirm} from 'antd';
 import GridTable from './RoundsTrackGridTable';
 import TaskInfoListView from './TaskInfoListView';
-import { tMap } from 'components/view/common/map';
+import {tMap} from 'components/view/common/map';
 import httpAjax from 'libs/httpAjax';
 const Panel = Collapse.Panel;
 const Search = Input.Search;
-const antIcon = <Icon type="loading" style={{ fontSize: 30 }} spin />;
+const antIcon = <Icon type="loading" style={{fontSize: 30}} spin />;
 const TabPane = Tabs.TabPane;
 
 require('style/view/monitoring/gridRaid.less');
@@ -38,7 +23,7 @@ class RoundsTrack extends Component {
       cardWidth: 560,
       taskStatus: '',
       display: 'block',
-      UAVdisplay: 'block',
+      UAVdisplay: 'block'
     };
     this.playUrl = ''; //视频路径
     this.player = null; //视频播放器
@@ -48,23 +33,23 @@ class RoundsTrack extends Component {
   }
 
   componentWillMount() {
-    let { unfold } = this.props.systomActions;
+    const {unfold} = this.props.systomActions;
     unfold(true);
   }
 
   componentDidMount() {
-    let _this = this;
+    const _this = this;
     this.timmer = setTimeout(function () {
       _this.setState({
-        loading: false,
+        loading: false
       });
     }, 1000);
 
-    let options = {
-      labelText: '我的位置',
+    const options = {
+      labelText: '我的位置'
     };
 
-    let TMap = new tMap(options);
+    const TMap = new tMap(options);
     TMap.setBeatMark();
     TMap.setPolyline();
     _this.TMap = TMap;
@@ -82,27 +67,27 @@ class RoundsTrack extends Component {
   }
 
   handleLimit = (limit) => {
-    this.setState({ limit: limit });
+    this.setState({limit: limit});
   };
 
-  fetch(params = { id: this.props.match.params.taskID }) {
+  fetch(params = {id: this.props.match.params.taskID}) {
     // /api/dailyPatrols/getDailyPatrolsById
-    let url = '/api/cmdMonitor/emergencyDeploymentPlanInfo',
-      type = '';
+    let url = '/api/cmdMonitor/emergencyDeploymentPlanInfo';
+    let type = '';
     if (this.props.location.query && this.props.location.query.type == 'duty') {
       url = '/api/dailyPatrols/getDailyPatrolsById';
       type = this.props.location.query.type;
     }
 
     var me = this;
-    this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + url, { ...params, ...this.state.filter })
+    this.setState({loading: true});
+    httpAjax('post', config.apiUrl + url, {...params, ...this.state.filter})
       .then((res) => {
         //var gmtCreate = new Date(ti.gmtCreate);
         //ti.gmtCreate=gmtCreate.Format("yyyy-MM-dd hh:mm:ss");
         me._taskInfo = res.data;
         me.setState({
-          taskStatus: res.data.taskStatus,
+          taskStatus: res.data.taskStatus
         });
         if (!type) {
           var circle = new qq.maps.Circle({
@@ -112,7 +97,7 @@ class RoundsTrack extends Component {
             center: new qq.maps.LatLng(me._taskInfo.drawShapeDTO.coord.lat, me._taskInfo.drawShapeDTO.coord.lng),
             zIndex: 0,
             visible: true,
-            strokeWeight: 2,
+            strokeWeight: 2
           });
           //根据指定的范围调整地图视野
           me.TMap.map.setCenter(
@@ -127,7 +112,7 @@ class RoundsTrack extends Component {
         }
       })
       .catch(function (error) {
-        me.setState({ loading: false });
+        me.setState({loading: false});
       });
   }
 
@@ -144,19 +129,19 @@ class RoundsTrack extends Component {
         map: this.TMap.map,
         path: path,
         strokeColor: strokeColor,
-        strokeWeight: 4,
+        strokeWeight: 4
       });
 
-      if (typeof pageNo != undefined && pageNo == 1) {
+      if (typeof pageNo !== undefined && pageNo == 1) {
         //当是第一页的时候,将地图移动绘制轨迹的第一个点
         this.TMap.map.panTo(new qq.maps.LatLng(path[0].lat, path[0].lng));
       }
     }
   };
   handleShow() {
-    let { cardWidth } = this.state;
+    const {cardWidth} = this.state;
     this.setState({
-      cardWidth: cardWidth == 0 ? 560 : 0,
+      cardWidth: cardWidth == 0 ? 560 : 0
     });
   }
 
@@ -170,11 +155,11 @@ class RoundsTrack extends Component {
     if (this.props.location.query && this.props.location.query.type == 'duty') {
       url = type == 1 ? '/api/cmdMonitor/stopPatrols' : '/api/cmdMonitor/beginPatrols';
     }
-    let status = type == 0 ? 1 : 2;
-    httpAjax('post', config.apiUrl + url, { id: this.props.match.params.taskID })
+    const status = type == 0 ? 1 : 2;
+    httpAjax('post', config.apiUrl + url, {id: this.props.match.params.taskID})
       .then((res) => {
         this.setState({
-          taskStatus: status,
+          taskStatus: status
         });
         message.success(msg);
       })
@@ -189,7 +174,7 @@ class RoundsTrack extends Component {
 
   //开启视频设备
   startVideo = (id) => {
-    httpAjax('post', config.apiUrl + '/api/sdjw/startVideo', { id: id })
+    httpAjax('post', config.apiUrl + '/api/sdjw/startVideo', {id: id})
       .then((res) => {
         if (res.code == 0) {
           this.getPlayUrl(id);
@@ -202,8 +187,8 @@ class RoundsTrack extends Component {
 
   //获取视频路径
   getPlayUrl = (id) => {
-    let { display } = this.state;
-    httpAjax('post', config.apiUrl + '/api/sdjw/getPlayUrl', { id: id })
+    const {display} = this.state;
+    httpAjax('post', config.apiUrl + '/api/sdjw/getPlayUrl', {id: id})
       .then((res) => {
         if (res.code == 0) {
           if (res.data.url == '') {
@@ -217,15 +202,15 @@ class RoundsTrack extends Component {
             this.player = null;
             if (this.player) {
               this.player.load({
-                sources: [{ type: 'video/flash', src: res.data.url }],
+                sources: [{type: 'video/flash', src: res.data.url}]
               });
             } else {
               this.player = new flowplayer('#player', {
                 autoplay: true,
                 clip: {
                   provider: 'rtmp',
-                  sources: [{ type: 'video/flash', src: res.data.url }],
-                },
+                  sources: [{type: 'video/flash', src: res.data.url}]
+                }
               });
             }
             clearInterval(this.playUrl);
@@ -243,7 +228,7 @@ class RoundsTrack extends Component {
 
   //判断视频路径是否过期
   heartbeat = (id) => {
-    httpAjax('post', config.apiUrl + '/api/sdjw/heartbeat', { id: id })
+    httpAjax('post', config.apiUrl + '/api/sdjw/heartbeat', {id: id})
       .then((res) => {})
       .catch(function (error) {});
   };
@@ -253,7 +238,7 @@ class RoundsTrack extends Component {
     //   debugger
     e.stopPropagation();
     this.setState({
-      display: 'block',
+      display: 'block'
     });
     this.startVideo(id);
   };
@@ -262,7 +247,7 @@ class RoundsTrack extends Component {
   closeVideo = () => {
     this.setState({
       display: 'none',
-      UAVdisplay: 'none',
+      UAVdisplay: 'none'
     });
   };
   //无人机视频
@@ -275,8 +260,8 @@ class RoundsTrack extends Component {
               autoplay: true,
               clip: {
                 provider: 'rtmp',
-                sources: [{ type: 'video/flash', src: res.data }],
-              },
+                sources: [{type: 'video/flash', src: res.data}]
+              }
             });
           }
         })
@@ -285,26 +270,26 @@ class RoundsTrack extends Component {
         });
     } else {
       this.setState({
-        UAVdisplay: 'block',
+        UAVdisplay: 'block'
       });
     }
   };
   render() {
-    const { collapsed } = this.props.systomState;
-    const { cardWidth, taskStatus, display, UAVdisplay } = this.state;
-    let type = '',
-      title = <span>紧急调配</span>;
+    const {collapsed} = this.props.systomState;
+    const {cardWidth, taskStatus, display, UAVdisplay} = this.state;
+    let type = '';
+    let title = <span>紧急调配</span>;
     let videoStr = '';
     let UAVStr = '';
-    let stopStr =
+    const stopStr =
       taskStatus < 2 ? (
         taskStatus == 0 ? (
-          <Tag color="#108ee9" onClick={() => this.beginOrStopTask(0)} style={{ float: 'right' }}>
+          <Tag color="#108ee9" onClick={() => this.beginOrStopTask(0)} style={{float: 'right'}}>
             开始任务
           </Tag>
         ) : (
           <Popconfirm title="确认终止此任务信息?" onConfirm={() => this.beginOrStopTask(1)}>
-            <Tag color="#f50" style={{ float: 'right' }}>
+            <Tag color="#f50" style={{float: 'right'}}>
               结束任务
             </Tag>
           </Popconfirm>
@@ -314,14 +299,14 @@ class RoundsTrack extends Component {
       type = this.props.location.query.type;
       type == 'duty'
         ? (UAVStr = (
-            <Tag color="#108ee9" onClick={() => this.showUAV()} style={{ float: 'right' }}>
+            <Tag color="#108ee9" onClick={() => this.showUAV()} style={{float: 'right'}}>
               无人机视频
             </Tag>
           ))
         : null;
       type == 'duty'
         ? (videoStr = (
-            <Tag color="" onClick={() => this.closeVideo()} style={{ float: 'right' }}>
+            <Tag color="" onClick={() => this.closeVideo()} style={{float: 'right'}}>
               关闭视频
             </Tag>
           ))
@@ -329,7 +314,7 @@ class RoundsTrack extends Component {
       type == 'duty' ? (title = <span>日常巡逻</span>) : (title = <span>紧急调配</span>);
     }
     const topStr = (
-      <div style={{ marginTop: 2 }}>
+      <div style={{marginTop: 2}}>
         {title}
         {stopStr}
         {videoStr}
@@ -338,16 +323,16 @@ class RoundsTrack extends Component {
     );
     return (
       <div>
-        <div className="GridRaid" style={{ left: collapsed ? '92px' : '212px' }}>
+        <div className="GridRaid" style={{left: collapsed ? '92px' : '212px'}}>
           <Spin
             indicator={antIcon}
             size="large"
             tip="数据加载中..."
             spinning={this.state.loading}
-            style={{ position: 'absolute', top: '50%', left: '50%', zIndex: '9999' }}
+            style={{position: 'absolute', top: '50%', left: '50%', zIndex: '9999'}}
           />
           <Row gutter={24} id="container">
-            <span className="p-icon" style={{ right: cardWidth }} onClick={this.handleShow.bind(this)}>
+            <span className="p-icon" style={{right: cardWidth}} onClick={this.handleShow.bind(this)}>
               <Icon type={cardWidth == 0 ? 'left' : 'right'} />
             </span>
             <Card
@@ -367,9 +352,8 @@ class RoundsTrack extends Component {
                 right: '0',
                 bottom: 10,
                 zIndex: '9999',
-                height: '100%',
-              }}
-            >
+                height: '100%'
+              }}>
               <Search placeholder="地点搜索" onSearch={(value) => this.onSearch(value)} enterButton />
               <Tabs defaultActiveKey="1">
                 <TabPane tab="查询轨迹" key="1">
@@ -387,7 +371,7 @@ class RoundsTrack extends Component {
               </Tabs>
             </Card>
             {cardWidth == 0 ? (
-              <Affix style={{ position: 'absolute', top: 18, right: 10 }}>
+              <Affix style={{position: 'absolute', top: 18, right: 10}}>
                 <Button type="primary" onClick={this.props.history.goBack}>
                   <Icon type="rollback" />
                   返回
@@ -398,16 +382,14 @@ class RoundsTrack extends Component {
         </div>
         <div
           id="playerDiv"
-          style={{ left: collapsed ? '92px' : '212px', position: 'absolute', top: 81, display: display }}
-        >
-          <div style={{ display: 'block', width: '450px', height: '320px', marginBottom: '100' }} id="player"></div>
+          style={{left: collapsed ? '92px' : '212px', position: 'absolute', top: 81, display: display}}>
+          <div style={{display: 'block', width: '450px', height: '320px', marginBottom: '100'}} id="player"></div>
         </div>
 
         <div
           id="UAVDiv"
-          style={{ left: collapsed ? '92px' : '212px', position: 'absolute', bottom: 20, display: UAVdisplay }}
-        >
-          <div style={{ display: 'block', width: '450px', height: '320px', marginBottom: '100' }} id="UAVDplayer"></div>
+          style={{left: collapsed ? '92px' : '212px', position: 'absolute', bottom: 20, display: UAVdisplay}}>
+          <div style={{display: 'block', width: '450px', height: '320px', marginBottom: '100'}} id="UAVDplayer"></div>
         </div>
       </div>
     );
@@ -415,7 +397,7 @@ class RoundsTrack extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  systomState: state.system,
+  systomState: state.system
 });
 
 const mapDispatchToProps = (dispatch) => ({

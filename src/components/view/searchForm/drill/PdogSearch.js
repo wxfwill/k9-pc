@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import httpAjax from 'libs/httpAjax';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
@@ -11,63 +11,63 @@ class SearchForm extends React.Component {
     expand: true,
     subjectId: '',
     dogName: '',
-    typeOption: [],
+    typeOption: []
   };
   componentWillMount() {
-    let _this = this;
-    let typeOption = React.$ajax.postData('/api/trainingSubject/getAllTrainSubjectName');
+    const _this = this;
+    const typeOption = React.$ajax.postData('/api/trainingSubject/getAllTrainSubjectName');
     Promise.all([typeOption]).then((resArr) => {
       _this.setState({
-        typeOption: resArr[0].data,
+        typeOption: resArr[0].data
       });
     });
   }
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
-    let timeData = 'range-time-picker';
+    const {limit} = this.props;
+    const timeData = 'range-time-picker';
     this.props.form.validateFields((err, fieldsValue) => {
       const rangeTimeValue = fieldsValue['range-time-picker'];
       let rangeValueArr = ['', ''];
-      if (!(typeof rangeTimeValue == 'undefined' || rangeTimeValue.length == 0)) {
+      if (!(typeof rangeTimeValue === 'undefined' || rangeTimeValue.length == 0)) {
         rangeValueArr = [
           rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss'),
-          rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss'),
+          rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss')
         ];
       }
       const values = {
         ...fieldsValue,
-        'range-time-picker': rangeValueArr,
+        'range-time-picker': rangeValueArr
       };
-      let subData = {
+      const subData = {
         startTime: values[timeData][0],
         endTime: values[timeData][1],
         subjectId: values.subjectId,
-        dogName: values.dogName,
+        dogName: values.dogName
       };
       Object.keys(subData).forEach(function (item, index) {
-        typeof subData[item] == 'undefined' ? (subData[item] = '') : '';
+        typeof subData[item] === 'undefined' ? (subData[item] = '') : '';
       });
       limit(subData);
     });
   };
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   };
   handleReset = () => {
     this.props.form.resetFields();
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   render() {
-    let expand = this.state.expand;
-    const { getFieldDecorator } = this.props.form;
+    const expand = this.state.expand;
+    const {getFieldDecorator} = this.props.form;
     const rangeConfig = {
-      rules: [{ type: 'array', message: 'Please select time!' }],
+      rules: [{type: 'array', message: 'Please select time!'}]
     };
     return (
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
@@ -97,16 +97,16 @@ class SearchForm extends React.Component {
               {getFieldDecorator(
                 'range-time-picker',
                 rangeConfig
-              )(<RangePicker showTime format="YYYY-MM-DD HH:mm:ss" style={{ width: '220px' }} />)}
+              )(<RangePicker showTime format="YYYY-MM-DD HH:mm:ss" style={{width: '220px'}} />)}
             </FormItem>
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
             {/*<a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>

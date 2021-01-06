@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from 'react';
 
 export default function asyncComponent(importComponent) {
   class AsyncComponent extends Component {
@@ -9,7 +9,7 @@ export default function asyncComponent(importComponent) {
       };
     }
     async componentDidMount() {
-      const { default: component } = await importComponent();
+      const {default: component} = await importComponent();
       this.setState({
         component: component
       });

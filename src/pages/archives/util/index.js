@@ -14,8 +14,8 @@ export const getSingle = (arr, name) => {
       {
         bookName: name,
         noData: true,
-        $indexes: true,
-      },
+        $indexes: true
+      }
     ];
   }
   return newArr;

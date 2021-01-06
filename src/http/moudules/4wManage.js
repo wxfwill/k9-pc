@@ -6,7 +6,7 @@ export const getCombatStaff = (data) => {
   return axios({
     url: '/api/userCenter/getCombatStaff',
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -16,7 +16,7 @@ export const create4wReport = (data) => {
     //url: '/api/report/create4wReport',
     url: '/api/report/createCarUseReport',
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -26,7 +26,7 @@ export const export4wReportInfo = (data) => {
     url: '/api/report/exportCarUseReportInfo',
     method: 'post',
     data,
-    responseType: 'blob',
+    responseType: 'blob'
   });
 };
 
@@ -35,7 +35,7 @@ export const page4wReportInfo = (data) => {
   return axios({
     url: '/api/report/pageCarUseReportInfo',
     method: 'post',
-    data,
+    data
   });
 };
 // 中队统计工作列表
@@ -43,7 +43,7 @@ export const statisticGroup = (data) => {
   return axios({
     url: '/api/report/statisticGroup',
     method: 'post',
-    data,
+    data
   });
 };
 // 中队统计工作列表-导出
@@ -52,7 +52,7 @@ export const exportStatisticGroup = (data) => {
     url: '/api/report/exportStatisticGroup',
     method: 'post',
     data,
-    responseType: 'blob',
+    responseType: 'blob'
   });
 };
 // 中队工作统计明细
@@ -60,7 +60,7 @@ export const pageStatisticGroupDetail = (data) => {
   return axios({
     url: '/api/report/pageStatisticGroupDetail',
     method: 'post',
-    data,
+    data
   });
 };
 // 中队统计工作列表明细详情-导出
@@ -69,7 +69,7 @@ export const exportStatisticGroupDetail = (data) => {
     url: '/api/report/exportStatisticGroupDetail',
     method: 'post',
     data,
-    responseType: 'blob',
+    responseType: 'blob'
   });
 };
 // 个人统计工作列表
@@ -77,7 +77,7 @@ export const pageStatisticPersonal = (data) => {
   return axios({
     url: '/api/report/pageStatisticPersonal',
     method: 'post',
-    data,
+    data
   });
 };
 // 个人统计工作列表-导出
@@ -86,7 +86,7 @@ export const exportStatisticPersonal = (data) => {
     url: '/api/report/exportStatisticPersonal',
     method: 'post',
     data,
-    responseType: 'blob',
+    responseType: 'blob'
   });
 };
 
@@ -95,7 +95,7 @@ export const pageStatisticPersonalDetail = (data) => {
   return axios({
     url: '/api/report/pageStatisticPersonalDetail',
     method: 'post',
-    data,
+    data
   });
 };
 // 个人统计工作列表明细-导出
@@ -104,6 +104,6 @@ export const exportStatisticPersonalDetail = (data) => {
     url: '/api/report/exportStatisticPersonalDetail',
     method: 'post',
     data,
-    responseType: 'blob',
+    responseType: 'blob'
   });
 };

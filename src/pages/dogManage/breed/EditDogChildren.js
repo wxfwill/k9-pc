@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Table,
   Button,
@@ -14,11 +14,11 @@ import {
   DatePicker,
   Form,
   Input,
-  Tooltip,
+  Tooltip
 } from 'antd';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import httpAjax from 'libs/httpAjax';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {firstLayout, secondLayout} from 'util/Layout';
 import moment from 'moment';
 
 import 'style/app/dogManage/editChildren.less';
@@ -31,7 +31,7 @@ class EditDogChildren extends Component {
       edit: false,
       editDate: '',
       canSubmit: true,
-      stdWeight: '',
+      stdWeight: ''
     };
     this.changeEvent = '';
     this.stdWeight = '';
@@ -41,9 +41,9 @@ class EditDogChildren extends Component {
   }
   getDogChildren = () => {
     const id = this.props.match.params.id;
-    React.$ajax.postData('/api/breed/reproduceDetail', { id }).then((res) => {
+    React.$ajax.postData('/api/breed/reproduceDetail', {id}).then((res) => {
       if (res.code == 0) {
-        const { pupInfos, details, diffs } = res.data;
+        const {pupInfos, details, diffs} = res.data;
         const pupInfosIds = pupInfos.map((t) => t.id);
         const dataSource = details.map((item) => {
           let average = 0;
@@ -52,7 +52,7 @@ class EditDogChildren extends Component {
             date: item.opDate,
             stdWeight: item.stdWeight,
             event: item.event,
-            days: item.days,
+            days: item.days
           };
           item.pupWeightList.forEach((pupItem) => {
             average += pupItem.weight;
@@ -63,7 +63,7 @@ class EditDogChildren extends Component {
           ArrItem.average = (average / item.pupWeightList.length).toFixed(2);
           return ArrItem;
         });
-        const item = { average: '', diffs: true, date: 'ACKS', days: '', event: '', key: '', stdWeight: '' };
+        const item = {average: '', diffs: true, date: 'ACKS', days: '', event: '', key: '', stdWeight: ''};
 
         const newDiffs =
           diffs &&
@@ -73,12 +73,12 @@ class EditDogChildren extends Component {
             t.pupWeightList.forEach((j) => {
               item[j.pupId] = j.weight;
             });
-            return { ...item };
+            return {...item};
           });
         const newDataSource = [];
         const allLength = dataSource.length + newDiffs.length;
-        let i = 0,
-          z = 0;
+        let i = 0;
+        let z = 0;
         for (let x = 0; x < allLength; x++) {
           if (x % 2) {
             newDataSource[x] = newDiffs[z];
@@ -88,7 +88,7 @@ class EditDogChildren extends Component {
             i++;
           }
         }
-        this.setState({ ...res.data, dataSource: newDataSource });
+        this.setState({...res.data, dataSource: newDataSource});
       }
     });
   };
@@ -96,7 +96,7 @@ class EditDogChildren extends Component {
     this.props.form.validateFields((err, values) => {
       httpAjax('post', config.apiUrl + '/api/breed/updatePupName', {
         pupId: item.id,
-        pupName: values[item.id + 'name'],
+        pupName: values[item.id + 'name']
       }).then((res) => {
         if (res.code == 0) {
           message.info('修改成功！');
@@ -108,7 +108,7 @@ class EditDogChildren extends Component {
   };
 
   saveMeasureRecord = (item) => {
-    const { details, pupInfos } = this.state;
+    const {details, pupInfos} = this.state;
     let pupWeightList;
 
     details.forEach((t, i) => {
@@ -118,9 +118,9 @@ class EditDogChildren extends Component {
     });
 
     this.props.form.validateFields((err, values) => {
-      let newWeightList,
-        successMsg = '',
-        errorMsg = '';
+      let newWeightList;
+      let successMsg = '';
+      const errorMsg = '';
       if (pupWeightList) {
         successMsg = '修改成功！';
         newWeightList = pupWeightList.map((t, i) => {
@@ -130,7 +130,7 @@ class EditDogChildren extends Component {
             stdWeight: this.stdWeight ? this.stdWeight : t.stdWeight,
             opDate: values.opDate.format('x'),
             pupId: t.pupId,
-            id: t.id,
+            id: t.id
           };
         });
       } else {
@@ -147,15 +147,15 @@ class EditDogChildren extends Component {
             stdWeight: this.stdWeight || '',
             opDate: values.opDate.format('x'),
             pupId: t.id,
-            rId,
+            rId
           };
         });
       }
-      httpAjax('post', config.apiUrl + '/api/breed/saveMeasureRecord', { list: newWeightList })
+      httpAjax('post', config.apiUrl + '/api/breed/saveMeasureRecord', {list: newWeightList})
         .then((res) => {
           if (res.code == 0) {
             message.success(successMsg);
-            this.setState({ edit: false, editDate: '' }, this.getDogChildren());
+            this.setState({edit: false, editDate: ''}, this.getDogChildren());
           } else {
             message.error('修改失败！');
           }
@@ -174,26 +174,26 @@ class EditDogChildren extends Component {
   };
   clickEdit = (item) => {
     console.log(item);
-    this.setState({ edit: true, editDate: item.date });
+    this.setState({edit: true, editDate: item.date});
     this.changeEvent = item.event;
     this.stdWeight = item.stdWeight;
-    for (let key in item) {
+    for (const key in item) {
       if (Number(key)) {
         this[key + 'weight'] = item[key];
       }
     }
   };
   addRow = () => {
-    const { dataSource, pupInfos } = this.state;
-    const item = { average: '', date: '', days: '', event: '', key: '', stdWeight: '' };
+    const {dataSource, pupInfos} = this.state;
+    const item = {average: '', date: '', days: '', event: '', key: '', stdWeight: ''};
     pupInfos.forEach((t) => {
       item[t.id] = '';
     });
     dataSource.push(item);
-    this.setState({ dataSource });
+    this.setState({dataSource});
   };
   renderOperation = (record, index) => {
-    const { edit, editDate } = this.state;
+    const {edit, editDate} = this.state;
     if (index.diffs) {
       return '';
     } else {
@@ -202,8 +202,7 @@ class EditDogChildren extends Component {
           type="primary"
           onClick={() => {
             this.saveMeasureRecord(index);
-          }}
-        >
+          }}>
           保存
         </Button>
       ) : (
@@ -214,15 +213,15 @@ class EditDogChildren extends Component {
     }
   };
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { pupInfos, details, dataSource, edit, editDate } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {pupInfos, details, dataSource, edit, editDate} = this.state;
     console.log(this.state);
 
     const addColumns = pupInfos.map((item) => {
       return {
         title: getFieldDecorator(item.id + 'name', {
-          rules: [{ required: true, message: '请输入' }],
-          initialValue: item ? item.name : '',
+          rules: [{required: true, message: '请输入'}],
+          initialValue: item ? item.name : ''
         })(<Input onBlur={() => this.updatePupName(item)} />),
         dataIndex: item.id,
         key: item.id,
@@ -236,7 +235,7 @@ class EditDogChildren extends Component {
             />
           ) : (
             record
-          ),
+          )
       };
     });
 
@@ -248,23 +247,23 @@ class EditDogChildren extends Component {
         render: (record, index) =>
           edit && editDate == index.date
             ? getFieldDecorator('opDate', {
-                rules: [{ required: true, message: '请输入' }],
-                initialValue: record && record != 'ACKS' ? moment(record) : '',
+                rules: [{required: true, message: '请输入'}],
+                initialValue: record && record != 'ACKS' ? moment(record) : ''
               })(<DatePicker />)
             : record && record != 'ACKS'
             ? moment(record).format('YYYY-MM-DD')
-            : '',
+            : ''
       },
       ...addColumns,
       {
         title: '平均增重(kg)',
         dataIndex: 'avgAddWeight',
-        key: Math.random(),
+        key: Math.random()
       },
       {
         title: '平均体重(kg)',
         dataIndex: 'average',
-        key: Math.random(),
+        key: Math.random()
       },
       {
         title: '标准体重(kg)',
@@ -275,12 +274,12 @@ class EditDogChildren extends Component {
             <Input defaultValue={this.stdWeight} onChange={(e) => (this.stdWeight = e.target.value)} />
           ) : (
             record
-          ),
+          )
       },
       {
         title: '日龄',
         dataIndex: 'days',
-        key: Math.random(),
+        key: Math.random()
       },
       {
         title: '事件',
@@ -296,14 +295,14 @@ class EditDogChildren extends Component {
             />
           ) : (
             record
-          ),
+          )
       },
       {
         title: '操作',
         dataIndex: 'address',
         key: Math.random(),
-        render: (record, index) => this.renderOperation(record, index),
-      },
+        render: (record, index) => this.renderOperation(record, index)
+      }
     ];
     return (
       <div className="edit_dog_child">
@@ -316,14 +315,13 @@ class EditDogChildren extends Component {
             rowClassName={(record, index) => this.setRowClassName(record, index)}
           />
         </Form>
-        <Button onClick={this.addRow} type="primary" style={{ position: 'absolute', right: '51px', top: '-40px' }}>
+        <Button onClick={this.addRow} type="primary" style={{position: 'absolute', right: '51px', top: '-40px'}}>
           添加
         </Button>
         <Tag
           color="#2db7f5"
-          style={{ left: '0px', position: 'absolute', top: '-37px' }}
-          onClick={this.props.history.goBack}
-        >
+          style={{left: '0px', position: 'absolute', top: '-37px'}}
+          onClick={this.props.history.goBack}>
           <Icon type="rollback" />
           返回
         </Tag>

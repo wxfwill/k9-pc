@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker, Divider } from 'antd';
-import { thirdLayout } from 'util/Layout';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker, Divider} from 'antd';
+import {thirdLayout} from 'util/Layout';
+import {connect} from 'react-redux';
 import * as formData from 'pages/userManage/user/userData';
 import GlobalTeam from 'components/searchForm/GlobalTeam';
 const RangePicker = DatePicker.RangePicker;
@@ -10,26 +10,26 @@ const Option = Select.Option;
 
 require('style/view/common/conduct.less');
 
-@connect((state) => ({ navData: state.commonReducer.navData }))
+@connect((state) => ({navData: state.commonReducer.navData}))
 class SearchForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       expand: false,
-      dutyList: [], //职务信息
+      dutyList: [] //职务信息
     };
   }
   componentDidMount() {
     //获取职务信息
     React.$ajax.postData('/api/basicData/dutyList').then((res) => {
       if (res.code == 0) {
-        this.setState({ dutyList: res.data });
+        this.setState({dutyList: res.data});
       }
     });
   }
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
+    const {limit} = this.props;
     this.props.form.validateFields((err, values) => {
       limit(values);
     });
@@ -38,17 +38,17 @@ class SearchForm extends React.Component {
     this.props.form.resetFields();
   };
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   render() {
-    const { getFieldDecorator } = this.props.form;
-    let { expand, dutyList } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {expand, dutyList} = this.state;
     return (
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
         <Row gutter={24}>
@@ -97,11 +97,11 @@ class SearchForm extends React.Component {
             <GlobalTeam form={this.props.form} teamLabel="groupIds"></GlobalTeam>
           </Col>
 
-          <Col xl={8} lg={12} md={12} sm={24} xs={24} style={{ textAlign: 'center' }}>
+          <Col xl={8} lg={12} md={12} sm={24} xs={24} style={{textAlign: 'center'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
           </Col>

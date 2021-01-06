@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Card } from 'antd';
+import React, {Component} from 'react';
+import {Card} from 'antd';
 import Search from './Search';
-import { OvertimeInformationDetal } from 'localData/reportManage/tableHeader';
+import {OvertimeInformationDetal} from 'localData/reportManage/tableHeader';
 import CustomTable from 'components/table/CustomTable';
-require('style/fourReport/reportList.less');
 import moment from 'moment';
+require('style/fourReport/reportList.less');
 
 class OvertimeInformation extends Component {
   constructor(props) {
@@ -16,28 +16,28 @@ class OvertimeInformation extends Component {
       pagination: {
         currPage: 1,
         pageSize: 10,
-        total: 0,
-      },
+        total: 0
+      }
     };
   }
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '加班/夜班信息查询'] });
+    React.store.dispatch({type: 'NAV_DATA', nav: ['上报管理', '加班/夜班信息查询']});
   }
   handleChangeSize = (page) => {
-    this.tableChange({ currPage: page, current: page });
+    this.tableChange({currPage: page, current: page});
   };
   handleShowSizeChange = (cur, size) => {
-    this.tableChange({ currPage: cur, pageSize: size, current: cur });
+    this.tableChange({currPage: cur, pageSize: size, current: cur});
   };
   handleSearchData = (data) => {
-    let per = data;
+    const per = data;
     per.categoryIds = per.categoryIds != null ? [per.categoryIds] : [];
     per.groupId = per.groupId != null ? [per.groupId] : [];
     per.repDateEnd = per.repDateEnd && moment(per.repDateEnd).format('YYYY-MM-DD');
     per.repDateStart = per.repDateStart && moment(per.repDateStart).format('YYYY-MM-DD');
-    let newObj = Object.assign({}, this.state.param, per);
-    this.setState({ param: newObj }, () => {
-      let { param, sortFieldName, sortType, pagination } = this.state;
+    const newObj = Object.assign({}, this.state.param, per);
+    this.setState({param: newObj}, () => {
+      const {param, sortFieldName, sortType, pagination} = this.state;
       this.getListData(param, sortFieldName, sortType, pagination);
     });
   };
@@ -45,15 +45,15 @@ class OvertimeInformation extends Component {
     if (!util.isObject(obj)) {
       throw new Error(`${obj} must is an object`);
     }
-    let per = Object.assign({}, this.state.pagination, obj);
-    this.setState({ pagination: per }, () => {
-      let { param, sortFieldName, sortType, pagination } = this.state;
+    const per = Object.assign({}, this.state.pagination, obj);
+    this.setState({pagination: per}, () => {
+      const {param, sortFieldName, sortType, pagination} = this.state;
       this.getListData(param, sortFieldName, sortType, pagination);
     });
   };
   getListData = (param, sortFieldName, sortType, pagination) => {
-    let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
-    this.setState({ loading: true });
+    const newObj = Object.assign({}, {param, sortFieldName, sortType}, pagination);
+    this.setState({loading: true});
     // React.httpAjax('post', config.apiUrl + '/api/report/page4wReportInfo', { ...newObj }).then((res) => {
     //   if (res && res.code === 0) {
     //     let resData = res.data;
@@ -66,7 +66,7 @@ class OvertimeInformation extends Component {
   };
 
   render() {
-    const { dataSource, pagination, loading, columns } = this.state;
+    const {dataSource, pagination, loading, columns} = this.state;
     return (
       <div className="four-wrap">
         <Card title="按条件搜索" bordered={false}>
@@ -81,11 +81,10 @@ class OvertimeInformation extends Component {
             pagination={pagination}
             loading={loading}
             columns={columns}
-            isBordered={true}
+            isBordered
             isRowSelects={false}
             handleChangeSize={this.handleChangeSize}
-            handleShowSizeChange={this.handleShowSizeChange}
-          ></CustomTable>
+            handleShowSizeChange={this.handleShowSizeChange}></CustomTable>
         </Card>
       </div>
     );

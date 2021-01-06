@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Table,
   Button,
@@ -14,11 +14,11 @@ import {
   DatePicker,
   Form,
   Input,
-  Tooltip,
+  Tooltip
 } from 'antd';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import httpAjax from 'libs/httpAjax';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {firstLayout, secondLayout} from 'util/Layout';
 import PeoModal from '../monitoring/Deploy/add/PeoModal';
 import moment from 'moment';
 import 'style/view/common/detailTable.less';
@@ -43,7 +43,7 @@ class AddGropSchedule extends Component {
       groupId: groupId,
       groupName: groupName,
       peoValue: this.mapGroups(),
-      targetKeys: this.mapGroups('id'),
+      targetKeys: this.mapGroups('id')
     };
   }
   componentDidMount() {
@@ -63,7 +63,7 @@ class AddGropSchedule extends Component {
         console.log(values);
         const params = {
           ...values,
-          userIds: this.state.targetKeys,
+          userIds: this.state.targetKeys
         };
         if (id) {
           params.groupId = id;
@@ -80,37 +80,37 @@ class AddGropSchedule extends Component {
     });
   };
   searchPeople = (name = '') => {
-    React.$ajax.postData('/api/basicData/dutyGroup', { name }).then((res) => {
+    React.$ajax.postData('/api/basicData/dutyGroup', {name}).then((res) => {
       if (res.code == 0) {
-        this.setState({ groups: res.data });
+        this.setState({groups: res.data});
       }
     });
   };
   addPeople() {
-    this.setState({ peoVisible: true });
+    this.setState({peoVisible: true});
   }
   handleCancel = (e) => {
     this.setState({
       orgVisible: false,
       peoVisible: false,
-      changeLeft: false,
+      changeLeft: false
     });
   };
   handleAdd(peopleMsg) {
-    let values = [];
-    let targetKeys = [];
+    const values = [];
+    const targetKeys = [];
     peopleMsg.forEach((item, index) => {
       values.push(item.name);
       targetKeys.push(item.key);
     });
     this.props.form.setFieldsValue({
-      dutyUserVOList: values.join(','),
+      dutyUserVOList: values.join(',')
     });
     this.setState({
       peoValue: values.join(','),
-      targetKeys: targetKeys,
+      targetKeys: targetKeys
     });
-    this.setState({ peoVisible: false });
+    this.setState({peoVisible: false});
   }
   mapGroups = (type) => {
     if (this.props.location.query && this.props.location.query.editItem) {
@@ -123,8 +123,8 @@ class AddGropSchedule extends Component {
   };
   render() {
     console.log(this.state);
-    const { disabled, typeOption, places, groups } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const {disabled, typeOption, places, groups} = this.state;
+    const {getFieldDecorator} = this.props.form;
     let editItem;
     if (this.props.location.query) {
       editItem = this.props.location.query.editItem;
@@ -132,7 +132,7 @@ class AddGropSchedule extends Component {
     return (
       <Row gutter={24}>
         <Col span={24}>
-          <Card title="创建分组" bordered={true}>
+          <Card title="创建分组" bordered>
             <Col xxl={16} xl={22} lg={24} md={24} sm={24} xs={24}>
               <Form className="ant-advanced-search-form">
                 <Row gutter={24}>
@@ -140,9 +140,9 @@ class AddGropSchedule extends Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="组名" {...firstLayout}>
                         {getFieldDecorator('groupName', {
-                          rules: [{ required: true, message: '请输入组名' }],
-                          initialValue: this.state.groupName ? this.state.groupName : '',
-                        })(<Input placeholder="请输入组名" disabled={true} autosize={{ minRows: 2, maxRows: 24 }} />)}
+                          rules: [{required: true, message: '请输入组名'}],
+                          initialValue: this.state.groupName ? this.state.groupName : ''
+                        })(<Input placeholder="请输入组名" disabled autosize={{minRows: 2, maxRows: 24}} />)}
                       </FormItem>
                     </Col>
                   </Row>
@@ -151,21 +151,20 @@ class AddGropSchedule extends Component {
                   <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                     <FormItem label="组员" {...firstLayout}>
                       {getFieldDecorator('userIds', {
-                        rules: [{ required: true, message: '请选择组员' }],
-                        initialValue: this.state.peoValue || '',
+                        rules: [{required: true, message: '请选择组员'}],
+                        initialValue: this.state.peoValue || ''
                       })(
                         <Tooltip
                           trigger={['hover']}
                           title={this.state.peoValue}
                           placement="topLeft"
-                          overlayClassName="numeric-input"
-                        >
+                          overlayClassName="numeric-input">
                           <Input
                             placeholder="请选择组员"
                             value={this.state.peoValue}
-                            disabled={true}
+                            disabled
                             addonBefore={
-                              <Icon type="plus" style={{ cursor: 'pointer' }} onClick={this.addPeople.bind(this)} />
+                              <Icon type="plus" style={{cursor: 'pointer'}} onClick={this.addPeople.bind(this)} />
                             }
                           />
                         </Tooltip>
@@ -174,7 +173,7 @@ class AddGropSchedule extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={24} style={{ textAlign: 'center', marginTop: '40px' }}>
+                  <Col span={24} style={{textAlign: 'center', marginTop: '40px'}}>
                     <Button type="primary" htmlType="submit" onClick={() => this.handleSubmit()}>
                       保存
                     </Button>

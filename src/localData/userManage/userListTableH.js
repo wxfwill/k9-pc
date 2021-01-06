@@ -1,37 +1,37 @@
 import React from 'react';
-import { formatDate } from 'util/index.js';
-import { Button, Popconfirm } from 'antd';
+import {formatDate} from 'util/index.js';
+import {Button, Popconfirm} from 'antd';
 
 export const userHeaderLabel = (callbackView, callbackEdit, callbackDel) => {
-  let data = [
+  const data = [
     {
       title: '姓名',
       dataIndex: 'name',
-      key: 'name',
+      key: 'name'
     },
     {
       title: '性别',
-      dataIndex: 'sexStr',
+      dataIndex: 'sexStr'
     },
     {
       title: '警员编号',
-      dataIndex: 'number',
+      dataIndex: 'number'
     },
     {
       title: '职务',
-      dataIndex: 'dutyStr',
+      dataIndex: 'dutyStr'
     },
     {
       title: '职称',
-      dataIndex: 'titleStr',
+      dataIndex: 'titleStr'
     },
     {
       title: '工作单位',
-      dataIndex: 'workUnit',
+      dataIndex: 'workUnit'
     },
     {
       title: '电话',
-      dataIndex: 'telPhone',
+      dataIndex: 'telPhone'
     },
     {
       title: '操作',
@@ -47,9 +47,8 @@ export const userHeaderLabel = (callbackView, callbackEdit, callbackDel) => {
             <Button
               type="primary"
               size="small"
-              style={{ margin: '0 10px' }}
-              onClick={() => callbackEdit && callbackEdit(record)}
-            >
+              style={{margin: '0 10px'}}
+              onClick={() => callbackEdit && callbackEdit(record)}>
               编辑
             </Button>
 
@@ -64,18 +63,18 @@ export const userHeaderLabel = (callbackView, callbackEdit, callbackDel) => {
             </Popconfirm>
           </div>
         );
-      },
-    },
+      }
+    }
   ];
   return data;
 };
 
 export const archivesHeaderLabel = (callbackViewArchive) => {
-  let data = [
+  const data = [
     {
       title: '姓名',
       dataIndex: 'name',
-      key: 'name',
+      key: 'name'
     },
     // {
     //   title: '性别',
@@ -83,23 +82,23 @@ export const archivesHeaderLabel = (callbackViewArchive) => {
     // },
     {
       title: '警员编号',
-      dataIndex: 'number',
+      dataIndex: 'number'
     },
     {
       title: '职务',
-      dataIndex: 'dutyStr',
+      dataIndex: 'dutyStr'
     },
     {
       title: '职称',
-      dataIndex: 'titleStr',
+      dataIndex: 'titleStr'
     },
     {
       title: '工作单位',
-      dataIndex: 'workUnit',
+      dataIndex: 'workUnit'
     },
     {
       title: '电话',
-      dataIndex: 'telphone',
+      dataIndex: 'telphone'
     },
     {
       title: '操作',
@@ -114,8 +113,8 @@ export const archivesHeaderLabel = (callbackViewArchive) => {
             </Button>
           </div>
         );
-      },
-    },
+      }
+    }
   ];
   return data;
 };

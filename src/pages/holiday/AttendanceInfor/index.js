@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Card, message } from 'antd';
+import React, {Component} from 'react';
+import {Card, message} from 'antd';
 import ExportFileHoc from 'components/exportFile/exportFileHoc';
 import CustomTable from 'components/table/CustomTable';
 import Search from './components/Search';
@@ -14,37 +14,37 @@ class AttendanceInfor extends Component {
         clockType: null,
         endDate: null,
         startDate: null,
-        userIds: null,
+        userIds: null
       },
       loading: false,
       pagination: {
         currPage: 1,
         pageSize: 10,
-        total: 0,
+        total: 0
       },
       personnelTree: [],
-      taskTypeList: [],
+      taskTypeList: []
     };
   }
   componentDidMount() {
-    let { param, sortFieldName, sortType, pagination } = this.state;
+    const {param, sortFieldName, sortType, pagination} = this.state;
     this.getListData(param, sortFieldName, sortType, pagination);
     // 查询用户
     this.queryGroupUser('', 'all');
   }
   handleChangeSize = (page) => {
-    this.tableChange({ currPage: page, current: page });
+    this.tableChange({currPage: page, current: page});
   };
   handleShowSizeChange = (cur, size) => {
-    this.tableChange({ currPage: cur, pageSize: size, current: cur });
+    this.tableChange({currPage: cur, pageSize: size, current: cur});
   };
   tableChange = (obj) => {
     if (!util.isObject(obj)) {
       throw new Error(`${obj} must is an object`);
     }
-    let per = Object.assign({}, this.state.pagination, obj);
-    this.setState({ pagination: per }, () => {
-      let { param, sortFieldName, sortType, pagination } = this.state;
+    const per = Object.assign({}, this.state.pagination, obj);
+    this.setState({pagination: per}, () => {
+      const {param, sortFieldName, sortType, pagination} = this.state;
       this.getListData(param, sortFieldName, sortType, pagination);
     });
   };
@@ -52,63 +52,63 @@ class AttendanceInfor extends Component {
     this.handleSearchData(data, this.handleExport);
   };
   handleExport = (param, sortFieldName, sortType, pagination) => {
-    let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
+    const newObj = Object.assign({}, {param, sortFieldName, sortType}, pagination);
     this.props.exportExcel('/api/clock/exportPageCommuting', newObj);
     return true;
   };
   handleSearchData = (data, methods) => {
-    let { pagination } = this.state;
-    let per = data || {};
+    const {pagination} = this.state;
+    const per = data || {};
     let _pagination;
     per.clockType = per.clockType ? per.clockType : null;
     per.userIds = per.userIds ? per.userIds : null;
     per.endDate = per.endDate ? moment(per.endDate).format('x') : null;
     per.startDate = per.startDate ? moment(per.startDate).format('x') : null;
 
-    let newObj = Object.assign({}, this.state.param, per);
-    _pagination = Object.assign({}, pagination, { current: 1, currPage: 1, pageSize: 10 });
-    this.setState({ param: newObj, pagination: _pagination }, () => {
-      let { param, sortFieldName, sortType, pagination } = this.state;
+    const newObj = Object.assign({}, this.state.param, per);
+    _pagination = Object.assign({}, pagination, {current: 1, currPage: 1, pageSize: 10});
+    this.setState({param: newObj, pagination: _pagination}, () => {
+      const {param, sortFieldName, sortType, pagination} = this.state;
       methods(param, sortFieldName, sortType, pagination) ||
         this.getListData(param, sortFieldName, sortType, pagination);
     });
   };
   getListData = (param, sortFieldName, sortType, pagination) => {
-    let newObj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
-    this.setState({ loading: true });
+    const newObj = Object.assign({}, {param, sortFieldName, sortType}, pagination);
+    this.setState({loading: true});
     React.$ajax.postData('/api/clock/pageCommuting', newObj).then((res) => {
       if (res && res.code === 0) {
-        let resData = res.data;
-        let newList = resData.list ? resData.list : [];
-        const pagination = { ...this.state.pagination };
+        const resData = res.data;
+        const newList = resData.list ? resData.list : [];
+        const pagination = {...this.state.pagination};
         pagination.total = resData.totalCount;
         pagination.current = resData.currPage;
-        this.setState({ dataSource: newList, loading: false, pagination });
+        this.setState({dataSource: newList, loading: false, pagination});
       }
     });
   };
   queryGroupUser = util.Debounce(
     (keyword, title) => {
-      React.$ajax.common.queryGroupUser({ keyword }).then((res) => {
+      React.$ajax.common.queryGroupUser({keyword}).then((res) => {
         if (res.code == 0) {
-          let resObj = res.data;
-          let arr = [];
-          for (let key in resObj) {
+          const resObj = res.data;
+          const arr = [];
+          for (const key in resObj) {
             if (resObj[key] && resObj[key].length > 0) {
               arr.push({
                 name: key,
-                children: resObj[key],
+                children: resObj[key]
               });
             }
           }
           if (title == 'leader') {
-            this.setState({ personnelTree1: arr });
+            this.setState({personnelTree1: arr});
           } else if (title == 'name') {
-            this.setState({ personnelTree: arr });
+            this.setState({personnelTree: arr});
           } else if (title == 'collage') {
-            this.setState({ personnelTree2: arr });
+            this.setState({personnelTree2: arr});
           } else {
-            this.setState({ personnelTree: arr, personnelTree1: arr, personnelTree2: arr });
+            this.setState({personnelTree: arr, personnelTree1: arr, personnelTree2: arr});
           }
         }
       });
@@ -137,11 +137,10 @@ class AttendanceInfor extends Component {
             pagination={this.state.pagination}
             loading={this.state.loading}
             columns={tableHeader.AttendanceInfor}
-            isBordered={true}
+            isBordered
             isRowSelects={false}
             handleChangeSize={this.handleChangeSize}
-            handleShowSizeChange={this.handleShowSizeChange}
-          ></CustomTable>
+            handleShowSizeChange={this.handleShowSizeChange}></CustomTable>
         </Card>
       </div>
     );

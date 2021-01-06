@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Modal, Button, Card, Select, Row, Col, Form, Input } from 'antd';
+import React, {Component} from 'react';
+import {Modal, Button, Card, Select, Row, Col, Form, Input} from 'antd';
 import CustomTable from 'components/table/CustomTable';
-import { thirdLayout } from 'util/Layout';
+import {thirdLayout} from 'util/Layout';
 import QuerUserForm from './QueryAllModel';
 const FormItem = Form.Item;
 class ShowModel extends Component {
@@ -16,22 +16,22 @@ class ShowModel extends Component {
         {
           id: 1,
           title: '用户名',
-          dataIndex: 'user',
+          dataIndex: 'user'
         },
         {
           id: 2,
           title: '账号',
-          dataIndex: 'account',
+          dataIndex: 'account'
         },
         {
           id: 3,
           title: '角色名',
-          dataIndex: 'roleNmae',
+          dataIndex: 'roleNmae'
         },
         {
           id: 4,
           title: '创建时间',
-          dataIndex: 'time',
+          dataIndex: 'time'
         },
         {
           id: 5,
@@ -39,19 +39,19 @@ class ShowModel extends Component {
           dataIndex: 'option',
           render: (txt, record) => {
             return <Button>删除</Button>;
-          },
-        },
-      ],
+          }
+        }
+      ]
     };
   }
   componentDidMount() {
     this.props.onRef(this);
   }
   openModel = () => {
-    this.setState({ visible: true });
+    this.setState({visible: true});
   };
   handleCancel = () => {
-    this.setState({ visible: false });
+    this.setState({visible: false});
     this.props.form.resetFields();
   };
   addUser = () => {
@@ -60,7 +60,7 @@ class ShowModel extends Component {
   };
   handleSearch = () => {};
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     return (
       <Modal
         wrapClassName="customModel"
@@ -71,8 +71,7 @@ class ShowModel extends Component {
         centered={false}
         destroyOnClose={false}
         maskClosable={false}
-        footer={null}
-      >
+        footer={null}>
         <Card title="查询条件" bordered={false}>
           <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
             <Row gutter={24}>
@@ -86,11 +85,11 @@ class ShowModel extends Component {
                   {getFieldDecorator('policeNumber')(<Input placeholder="警名编号" />)}
                 </FormItem>
               </Col>
-              <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ textAlign: 'center' }}>
+              <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{textAlign: 'center'}}>
                 <Button type="primary" htmlType="submit">
                   查询
                 </Button>
-                <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                <Button style={{marginLeft: 8}} onClick={this.handleReset}>
                   重置
                 </Button>
               </Col>
@@ -99,8 +98,8 @@ class ShowModel extends Component {
         </Card>
         <QuerUserForm onRef={(ref) => (this.innerChild = ref)}></QuerUserForm>
         <Card bordered={false}>
-          <div style={{ marginBottom: '20px' }}>
-            <Button type="primary" style={{ marginRight: '20px' }} onClick={this.addUser}>
+          <div style={{marginBottom: '20px'}}>
+            <Button type="primary" style={{marginRight: '20px'}} onClick={this.addUser}>
               新增
             </Button>
           </div>
@@ -111,15 +110,14 @@ class ShowModel extends Component {
             dataSource={this.state.dataSource}
             loading={this.state.loading}
             columns={this.state.columns}
-            isBordered={true}
-            isRowSelects={false}
-          ></CustomTable>
+            isBordered
+            isRowSelects={false}></CustomTable>
         </Card>
       </Modal>
     );
   }
 }
 
-const EditForm = Form.create({ name: 'EditModel' })(ShowModel);
+const EditForm = Form.create({name: 'EditModel'})(ShowModel);
 
 export default EditForm;

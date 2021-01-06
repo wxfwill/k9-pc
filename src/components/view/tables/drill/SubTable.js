@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Table, Button, Tag, Badge, fileList, Icon, Popconfirm, message } from 'antd';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Table, Button, Tag, Badge, fileList, Icon, Popconfirm, message} from 'antd';
+import {Link} from 'react-router-dom';
 import SubDetailTabe from './SubDetailTabe';
 import Immutable from 'immutable';
 
@@ -14,7 +14,7 @@ class SubTable extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 3,
       currPage: 1,
@@ -22,7 +22,7 @@ class SubTable extends React.Component {
       loading: false,
       filter: null,
       changeLeft: false,
-      showDetail: false,
+      showDetail: false
     };
   }
   componentWillMount() {
@@ -32,56 +32,56 @@ class SubTable extends React.Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let filter = nextProps.filter;
-    let isReset = util.method.isObjectValueEqual(nextProps, this.props);
+    const filter = nextProps.filter;
+    const isReset = util.method.isObjectValueEqual(nextProps, this.props);
     if (!isReset) {
-      let _this = this;
-      this.setState({ filter }, function () {
+      const _this = this;
+      this.setState({filter}, function () {
         _this.fetch({
           pageSize: _this.state.pageSize,
           currPage: 1,
-          ...filter,
+          ...filter
         });
       });
     }
   }
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
       currPage: pagination.current,
-      ...this.props.filter,
+      ...this.props.filter
     });
   };
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+    this.setState({loading: true});
     React.$ajax
-      .postData('/api/trainingSubject/getAllTrainingSubject', { ...params })
+      .postData('/api/trainingSubject/getAllTrainingSubject', {...params})
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
-        this.setState({ data: res.list, loading: false, pagination });
+        this.setState({data: res.list, loading: false, pagination});
       })
       .catch(function (error) {
         console.log(error);
       });
   }
   handleShow() {
-    let _this = this;
+    const _this = this;
     this.setState(
       {
-        changeLeft: false,
+        changeLeft: false
       },
       function () {
         setTimeout(() => {
           _this.setState({
-            showDetail: false,
+            showDetail: false
           });
         }, 600);
       }
@@ -91,13 +91,13 @@ class SubTable extends React.Component {
     this.setState({
       detailTitle: data,
       showDetail: true,
-      changeLeft: true,
+      changeLeft: true
     });
   };
   queryEdit = (data) => {};
   delData = (data) => {
     message.success('删除成功');
-    React.$ajax.postData('/api/trainingSubject/deleteByIds', { id: data }).then((res) => {
+    React.$ajax.postData('/api/trainingSubject/deleteByIds', {id: data}).then((res) => {
       if (res.code == 0) {
         this.fetch();
       }
@@ -118,26 +118,26 @@ class SubTable extends React.Component {
                 fontSize: '12px',
                 height: '16px',
                 lineHeight: '16px',
-                backgroundColor: '#99a9bf',
+                backgroundColor: '#99a9bf'
               }}
             />
           );
-        },
+        }
       },
       {
         title: '训练科目',
         dataIndex: 'trainSubjectName',
-        key: 'trainSubjectName',
+        key: 'trainSubjectName'
       },
       {
         title: '训练阶段',
         dataIndex: 'trainLevel',
         key: 'trainLevel',
         render: (level) => {
-          let levelNum = parseInt(level) - 1;
-          let levelArr = ['初级', '中级', '高级'];
+          const levelNum = parseInt(level) - 1;
+          const levelArr = ['初级', '中级', '高级'];
           return levelArr[levelNum];
-        },
+        }
       },
       {
         title: '操作',
@@ -150,21 +150,21 @@ class SubTable extends React.Component {
                 查看详情
               </span>
               <span className="s-table-edit s-table-mar30">
-                <Link to={{ pathname: `/app/drill/drillsubAdd`, query: { id: data } }}>编辑</Link>
+                <Link to={{pathname: `/app/drill/drillsubAdd`, query: {id: data}}}>编辑</Link>
               </span>
               <Popconfirm title="确认删除此条信息?" onConfirm={() => this.delData(data)}>
                 <span className="s-table-del">删除</span>
               </Popconfirm>
             </div>
           );
-        },
-      },
+        }
+      }
     ];
     return (
       <div>
         <div className="table-operations">
           <Button type="primary">
-            <Link to={{ pathname: `/app/drill/drillsubAdd`, query: { targetText: '新增' } }}>新建科目</Link>
+            <Link to={{pathname: `/app/drill/drillsubAdd`, query: {targetText: '新增'}}}>新建科目</Link>
           </Button>
         </div>
         <Table

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Table, Button, Tag, Badge, Icon, Divider } from 'antd';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Table, Button, Tag, Badge, Icon, Divider} from 'antd';
+import {Link} from 'react-router-dom';
 import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 import Immutable from 'immutable';
@@ -15,15 +15,15 @@ const columns = [
       return (
         <Badge
           count={id}
-          style={{ minWidth: '50px', fontSize: '12px', height: '16px', lineHeight: '16px', backgroundColor: '#99a9bf' }}
+          style={{minWidth: '50px', fontSize: '12px', height: '16px', lineHeight: '16px', backgroundColor: '#99a9bf'}}
         />
       );
-    },
+    }
   },
   {
     title: '任务名称',
     dataIndex: 'taskName',
-    key: 'taskName',
+    key: 'taskName'
   },
   {
     title: '执行日期',
@@ -31,7 +31,7 @@ const columns = [
     key: 'taskDate',
     render: (text) => {
       return text ? moment(text).format('YYYY-MM-DD') : '--';
-    },
+    }
   },
   {
     title: '发布日期',
@@ -39,7 +39,7 @@ const columns = [
     key: 'publishDate',
     render: (text) => {
       return text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--';
-    },
+    }
   },
   ,
   {
@@ -47,8 +47,8 @@ const columns = [
     dataIndex: 'operator',
     key: 'operator',
     render: (text) => {
-      return text ? text : '--';
-    },
+      return text || '--';
+    }
   },
   {
     title: '查看',
@@ -59,23 +59,21 @@ const columns = [
         <span>
           <Link
             to={{
-              pathname: '/app/monitoring/ViewGridRaidTask/' + record.id,
-            }}
-          >
+              pathname: '/app/monitoring/ViewGridRaidTask/' + record.id
+            }}>
             巡逻轨迹
           </Link>
           <Divider type="vertical" />
           <Link
             to={{
-              pathname: '/app/monitoring/ViewGridRaidRealTime/' + record.id,
-            }}
-          >
+              pathname: '/app/monitoring/ViewGridRaidRealTime/' + record.id
+            }}>
             实时轨迹
           </Link>
         </span>
       );
-    },
-  },
+    }
+  }
 ];
 
 class GridRaidTaskTable extends React.Component {
@@ -85,14 +83,14 @@ class GridRaidTaskTable extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       filter: null,
       firstLoad: true,
       pageSize: 5,
       currPage: 1,
       data: [],
-      loading: false,
+      loading: false
     };
   }
 
@@ -103,44 +101,44 @@ class GridRaidTaskTable extends React.Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let isReset = util.method.isObjectValueEqual(nextProps, this.props);
+    const isReset = util.method.isObjectValueEqual(nextProps, this.props);
     if (!isReset) {
-      let filter = nextProps.filter;
-      let _this = this;
-      this.setState({ firstLoad: true });
-      this.setState({ filter }, function () {
+      const filter = nextProps.filter;
+      const _this = this;
+      this.setState({firstLoad: true});
+      this.setState({filter}, function () {
         _this.fetch({
           pageSize: _this.state.pageSize,
           currPage: 1,
-          ...filter,
+          ...filter
         });
       });
     }
   }
 
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
-    let { filter } = this.state;
+    const {filter} = this.state;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
       currPage: pagination.current,
-      ...filter,
+      ...filter
     });
   };
 
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/cmdMonitor/listGridTask', { ...params })
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+    this.setState({loading: true});
+    httpAjax('post', config.apiUrl + '/api/cmdMonitor/listGridTask', {...params})
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
-        this.setState({ data: res.list, loading: false, pagination });
+        this.setState({data: res.list, loading: false, pagination});
       })
       .catch(function (error) {
         console.log(error);

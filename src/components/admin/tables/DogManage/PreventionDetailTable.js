@@ -1,25 +1,11 @@
-import React, { Component } from 'react';
-import {
-  Table,
-  Button,
-  Icon,
-  Popconfirm,
-  message,
-  Tag,
-  Card,
-  Collapse,
-  Row,
-  Col,
-  Select,
-  DatePicker,
-  Form,
-} from 'antd';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Table, Button, Icon, Popconfirm, message, Tag, Card, Collapse, Row, Col, Select, DatePicker, Form} from 'antd';
+import {Link} from 'react-router-dom';
 import moment from 'moment';
+import 'style/view/common/detailTable.less';
 const Panel = Collapse.Panel;
 const Option = Select.Option;
 const FormItem = Form.Item;
-import 'style/view/common/detailTable.less';
 class DogTable extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +18,7 @@ class DogTable extends Component {
       vaccineType: '',
       vaccineTime: '',
       nextVaccineRemindingTime: '',
-      detailData: {},
+      detailData: {}
     };
   }
   componentDidMount() {
@@ -40,17 +26,17 @@ class DogTable extends Component {
 
     // console.log(id)
     const formStatus = sessionStorage.getItem('formStatus');
-    this.setState({ loading: true });
-    React.$ajax.postData('/api/vaccineRecord/planInfo', { id }).then((res) => {
+    this.setState({loading: true});
+    React.$ajax.postData('/api/vaccineRecord/planInfo', {id}).then((res) => {
       if (res.code == 0) {
         this.setState({
           detailData: res.data,
-          loading: false,
+          loading: false
         });
       }
     });
     if (formStatus == 'edit') {
-      this.setState({ isEdit: true });
+      this.setState({isEdit: true});
     }
   }
   baseHeader = () => {
@@ -63,7 +49,7 @@ class DogTable extends Component {
     );
   };
   checkHeader() {
-    const { title } = this.state;
+    const {title} = this.state;
     return (
       <div>
         <Icon type="bars" />
@@ -76,7 +62,7 @@ class DogTable extends Component {
     this.setState({
       vaccineType: record.vaccineTime,
       vaccineType: record.vaccineType,
-      nextVaccineRemindingTime: record.nextVaccineRemindingTime,
+      nextVaccineRemindingTime: record.nextVaccineRemindingTime
     });
     const newData = [...this.state.dataSource];
     newData.map((item, index) => {
@@ -87,7 +73,7 @@ class DogTable extends Component {
     const target = newData.filter((item) => key === item.id)[0];
     if (target) {
       target.editable = true;
-      this.setState({ dataSource: newData });
+      this.setState({dataSource: newData});
     }
   };
   mapVaccineType = (type) => {
@@ -107,7 +93,7 @@ class DogTable extends Component {
     }
   };
   renderVaccineName = (text, record) => {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     const vaccineType = JSON.parse(sessionStorage.getItem('vaccineType'));
     const vaccineOption =
       vaccineType &&
@@ -123,10 +109,10 @@ class DogTable extends Component {
         <Form>
           <FormItem>
             {getFieldDecorator('vaccineType', {
-              rules: [{ required: true, message: '请选择疫苗类型' }],
-              initialValue: this.mapVaccineType(record.vaccineType),
+              rules: [{required: true, message: '请选择疫苗类型'}],
+              initialValue: this.mapVaccineType(record.vaccineType)
             })(
-              <Select onChange={(value) => this.onSelectChange(value, record.id)} style={{ width: '100%' }}>
+              <Select onChange={(value) => this.onSelectChange(value, record.id)} style={{width: '100%'}}>
                 {vaccineOption}
               </Select>
             )}
@@ -138,12 +124,12 @@ class DogTable extends Component {
     }
   };
   onSelectChange = (value, key) => {
-    this.setState({ vaccineType: value });
+    this.setState({vaccineType: value});
     const newData = [...this.state.dataSource];
     const target = newData.filter((item) => key === item.id)[0];
     if (target) {
-      target['vaccineName'] = value;
-      this.setState({ dataSource: newData });
+      target.vaccineName = value;
+      this.setState({dataSource: newData});
     }
   };
   //不可选日期
@@ -151,15 +137,15 @@ class DogTable extends Component {
     return current && current < moment().endOf('day');
   };
   renderTimer(text, record, column) {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     if (record.editable) {
       if (column == 'vaccineTime') {
         return (
           <Form>
             <FormItem>
               {getFieldDecorator('vaccineTime', {
-                rules: [{ required: true, message: '请选择疫苗注射时间' }],
-                initialValue: moment(new Date(text)),
+                rules: [{required: true, message: '请选择疫苗注射时间'}],
+                initialValue: moment(new Date(text))
               })(<DatePicker format="YYYY-MM-DD" disabledDate={this.disabledDate} />)}
             </FormItem>
           </Form>
@@ -169,8 +155,8 @@ class DogTable extends Component {
           <Form>
             <FormItem>
               {getFieldDecorator('nextVaccineRemindingTime', {
-                rules: [{ required: true, message: '请选择下次疫苗注射时间' }],
-                initialValue: moment(new Date(text)),
+                rules: [{required: true, message: '请选择下次疫苗注射时间'}],
+                initialValue: moment(new Date(text))
               })(<DatePicker format="YYYY-MM-DD" disabledDate={this.disabledDate} />)}
             </FormItem>
           </Form>
@@ -187,22 +173,22 @@ class DogTable extends Component {
       //Object.assign(target, this.cacheData.filter(item => key === item.id)[0]);
       target.vaccineName = record.vaccineName;
       delete target.editable;
-      this.setState({ dataSource: newData });
+      this.setState({dataSource: newData});
     }
   };
   //保存编辑内容
   save = (key) => {
     const newData = [...this.state.dataSource];
-    const { id } = JSON.parse(sessionStorage.getItem('user'));
+    const {id} = JSON.parse(sessionStorage.getItem('user'));
     const dogId = sessionStorage.getItem('dogId');
     const target = newData.filter((item) => key === item.id)[0];
-    let configs = {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    const configs = {
+      headers: {'Content-Type': 'multipart/form-data'}
     };
     if (target) {
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          let param = new FormData(); // 创建form对象
+          const param = new FormData(); // 创建form对象
           if (values.vaccineTime) {
             values.vaccineTime = moment(new Date(values.vaccineTime)).format('YYYY-MM-DD');
           }
@@ -226,33 +212,33 @@ class DogTable extends Component {
     }
   };
   render() {
-    const { dataSource, loading, dogInfo, isEdit, detailData } = this.state;
+    const {dataSource, loading, dogInfo, isEdit, detailData} = this.state;
     //console.log(this.state);
     const recordsColumns = [
       {
         title: '序号',
         dataIndex: 'planId',
-        key: Math.random(),
+        key: Math.random()
         // render:(text,record)=>this.renderVaccineName(text,record)
       },
       {
         title: '注射时间',
         dataIndex: 'vaccineTime',
         key: Math.random(),
-        render: (text, record) => moment(text).format('YYYY-MM-DD'),
+        render: (text, record) => moment(text).format('YYYY-MM-DD')
       },
       {
         title: '犬名',
         dataIndex: 'dogName',
-        key: Math.random(),
+        key: Math.random()
         // render:(text, record) => this.renderTimer(text, record,"nextVaccineRemindingTime")
       },
       {
         title: '药物',
         dataIndex: 'veterinaryName',
         key: Math.random(),
-        render: () => detailData.vaccineTypeNames,
-      },
+        render: () => detailData.vaccineTypeNames
+      }
     ];
     // if(isEdit){
     //     recordsColumns.push(

@@ -1,21 +1,6 @@
-import React, { Component } from 'react';
-import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Input,
-  Icon,
-  Radio,
-  DatePicker,
-  Button,
-  Select,
-  Upload,
-  message,
-  Table,
-  Tag,
-} from 'antd';
-import { firstLayout, secondLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Table, Tag} from 'antd';
+import {firstLayout, secondLayout} from 'util/Layout';
 import moment from 'moment';
 import httpAjax from 'libs/httpAjax';
 
@@ -24,7 +9,7 @@ class ExecutePlan extends Component {
     super(props);
     this.state = {
       dogsData: [],
-      selectedRowKeys: [],
+      selectedRowKeys: []
     };
   }
   getDogs = () => {
@@ -32,10 +17,10 @@ class ExecutePlan extends Component {
       if (!err) {
         httpAjax('post', config.apiUrl + '/api/dog/queryByCreateTime', {
           startTime: values.startTime.format('x'),
-          endTime: values.endTime.format('x'),
+          endTime: values.endTime.format('x')
         }).then((res) => {
           if (res.code == 0) {
-            this.setState({ dogsData: res.data });
+            this.setState({dogsData: res.data});
           } else {
             message.error('查询犬只失败！');
           }
@@ -44,7 +29,7 @@ class ExecutePlan extends Component {
     });
   };
   submint = () => {
-    const { selectedRowKeys } = this.state;
+    const {selectedRowKeys} = this.state;
     if (selectedRowKeys.length > 0) {
       // const dogIds = selectedRowKeys.map((item) => {
       //     return item.id;
@@ -57,7 +42,7 @@ class ExecutePlan extends Component {
       httpAjax('post', config.apiUrl + '/api/vaccineRecord/excPlan', {
         dogIds: selectedRowKeys.join(','),
         excuteDate: excuteDate,
-        id: this.props.location.query && this.props.location.query.record.id,
+        id: this.props.location.query && this.props.location.query.record.id
       }).then((res) => {
         if (res.code == 0) {
           message.info('提交成功！');
@@ -72,7 +57,7 @@ class ExecutePlan extends Component {
   };
   onSelectChange = (selectedRowKeys) => {
     //console.log(selectedRowKeys)
-    this.setState({ selectedRowKeys });
+    this.setState({selectedRowKeys});
   };
   handleTableChange = (a, b, c) => {
     console.log(a, b, c);
@@ -80,11 +65,11 @@ class ExecutePlan extends Component {
 
   render() {
     console.log(this.state);
-    const { getFieldDecorator } = this.props.form;
-    const { selectedRowKeys } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {selectedRowKeys} = this.state;
     const rowSelection = {
       onChange: this.onSelectChange,
-      selectedRowKeys,
+      selectedRowKeys
     };
     const columns = [
       {
@@ -93,12 +78,12 @@ class ExecutePlan extends Component {
         key: 'id',
         render: (id) => {
           return <Tag color="blue">{id}</Tag>;
-        },
+        }
       },
       {
         title: '名称',
-        dataIndex: 'name',
-      },
+        dataIndex: 'name'
+      }
     ];
     const record = this.props.location.query && this.props.location.query.record;
     if (!record) {
@@ -108,23 +93,23 @@ class ExecutePlan extends Component {
       <div className="ExecutePlan">
         <Row gutter={30}>
           <Col span={30}>
-            <Card title="犬病防治" bordered={true}>
+            <Card title="犬病防治" bordered>
               <Col xxl={16} xl={22} lg={24} md={24} sm={24} xs={24}>
                 <Form className="ant-advanced-search-form">
                   <Row gutter={30}>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <Form.Item label="计划名称" {...secondLayout}>
                         {getFieldDecorator('name', {
-                          rules: [{ required: true, message: '请填写计划名称' }],
-                          initialValue: record.name,
+                          rules: [{required: true, message: '请填写计划名称'}],
+                          initialValue: record.name
                         })(<Input disabled />)}
                       </Form.Item>
                     </Col>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <Form.Item label="注射时间" {...secondLayout}>
                         {getFieldDecorator('excuteDate', {
-                          rules: [{ required: true, message: '请选择计划时间' }],
-                          initialValue: moment(),
+                          rules: [{required: true, message: '请选择计划时间'}],
+                          initialValue: moment()
                         })(<DatePicker format="YYYY-MM-DD" />)}
                       </Form.Item>
                     </Col>
@@ -133,46 +118,46 @@ class ExecutePlan extends Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <Form.Item label="计划时间" {...secondLayout}>
                         {getFieldDecorator('name', {
-                          initialValue: moment(record.planDate).format('YYYY-MM-DD'),
+                          initialValue: moment(record.planDate).format('YYYY-MM-DD')
                         })(<Input disabled />)}
                       </Form.Item>
                     </Col>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <Form.Item label="药物名称" {...secondLayout}>
                         {getFieldDecorator('vaccineTypeNames', {
-                          initialValue: record.vaccineTypeNames,
+                          initialValue: record.vaccineTypeNames
                         })(<Input disabled />)}
                       </Form.Item>
                     </Col>
                   </Row>
                   <Row gutter={24}>
-                    <Col xl={12} lg={24} md={12} sm={24} xs={24} style={{ width: '100%' }}>
+                    <Col xl={12} lg={24} md={12} sm={24} xs={24} style={{width: '100%'}}>
                       <Form.Item label="选择犬只" {...secondLayout}>
                         {getFieldDecorator('startTime', {
-                          rules: [{ required: true, message: '请选择计划时间' }],
+                          rules: [{required: true, message: '请选择计划时间'}]
                           // initialValue:isInitialValue?moment(new Date(planDate)) :""
                         })(
                           <DatePicker
                             format="YYYY-MM-DD"
                             // disabled={disabled} disabledDate={this.disabledDate}
                             placeholder="选择开始时间"
-                            style={{ display: 'inline-block', marginRight: 20 }}
+                            style={{display: 'inline-block', marginRight: 20}}
                           />
                         )}
                         <span>至</span>
                         {getFieldDecorator('endTime', {
-                          rules: [{ required: true, message: '请选择计划时间' }],
+                          rules: [{required: true, message: '请选择计划时间'}]
                           // initialValue:isInitialValue?moment(new Date(planDate)) :""
                         })(
                           <DatePicker
                             format="YYYY-MM-DD"
                             placeholder="选择结束时间"
-                            style={{ display: 'inline-block', marginLeft: 20 }}
+                            style={{display: 'inline-block', marginLeft: 20}}
 
                             // disabled={disabled} disabledDate={this.disabledDate}
                           />
                         )}
-                        <Button style={{ margin: '0 25px' }} type="primary" onClick={this.getDogs}>
+                        <Button style={{margin: '0 25px'}} type="primary" onClick={this.getDogs}>
                           查询犬只
                         </Button>
                       </Form.Item>
@@ -189,11 +174,11 @@ class ExecutePlan extends Component {
                     rowSelection={rowSelection}
                   />
                   <Row>
-                    <Col span={24} style={{ textAlign: 'center', marginTop: '40px' }}>
+                    <Col span={24} style={{textAlign: 'center', marginTop: '40px'}}>
                       <Button type="primary" htmlType="submit" onClick={this.submint}>
                         提交
                       </Button>
-                      <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                      <Button style={{marginLeft: 8}} onClick={this.handleReset}>
                         清空
                       </Button>
                     </Col>

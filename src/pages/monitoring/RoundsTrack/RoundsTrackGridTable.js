@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Table, Button, Tag, Badge, Form, Row, Col, Input, Icon, DatePicker } from 'antd';
-import { Link } from 'react-router-dom';
-import { thirdLayout } from 'util/Layout';
-import { firstLayout, secondLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Table, Button, Tag, Badge, Form, Row, Col, Input, Icon, DatePicker} from 'antd';
+import {Link} from 'react-router-dom';
+import {thirdLayout, firstLayout, secondLayout} from 'util/Layout';
+
 import moment from 'moment';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 // import * as systomStatus from 'actions/systomStatus';
 // import { userInfo } from 'os';
 const localSVG = require('images/banglocation.svg');
@@ -32,7 +32,7 @@ class SearchForm extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 5,
       currPage: 1,
@@ -42,7 +42,7 @@ class SearchForm extends React.Component {
       filter: null,
       taskID: _t,
       timers: [],
-      trochoiInfos: [],
+      trochoiInfos: []
     };
   }
 
@@ -56,8 +56,8 @@ class SearchForm extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const socketMsg = nextProps.socketMsg;
-    let { taskID, data } = this.state;
-    let { type } = this.props;
+    const {taskID, data} = this.state;
+    const {type} = this.props;
     //信息类型2：紧急调配 3：日常巡逻
     let taskType = 3;
     if (type == 'duty') {
@@ -77,48 +77,48 @@ class SearchForm extends React.Component {
         });
       });
       this.setState({
-        data,
+        data
       });
     }
   }
 
   fetchTaskInfo(params) {
     var me = this;
-    this.setState({ loading: true });
+    this.setState({loading: true});
     React.$ajax
-      .postData('/api/dailyPatrols/getDailyPatrolsById', { id: params })
+      .postData('/api/dailyPatrols/getDailyPatrolsById', {id: params})
       .then((res) => {
         me._taskInfo = res.data;
         this.setState({
-          ...res.data,
+          ...res.data
         });
         this.fetch();
       })
       .catch(function (error) {
-        me.setState({ loading: false });
+        me.setState({loading: false});
       });
   }
 
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
-      currPage: pagination.current,
+      currPage: pagination.current
     });
   };
 
   fetchTrochoid = (params) => {
     var me = this;
-    me.setState({ loading: true });
+    me.setState({loading: true});
 
     React.$ajax
-      .postData('/api/cmdMonitor/showAppTrochoidHis', { ...params, ...this.state.filter })
+      .postData('/api/cmdMonitor/showAppTrochoidHis', {...params, ...this.state.filter})
       .then((res) => {
-        me.setState({ loading: false });
+        me.setState({loading: false});
         const pathsHis = res.data.pathsHis;
         pathsHis.forEach((item, index) => {
           if (index == pathsHis.length - 1) {
@@ -129,22 +129,22 @@ class SearchForm extends React.Component {
         });
         //任务未结束设置定时器获取实时数据
         if (res.data.isEnd == 0) {
-          let { timers, data, trochoiInfos } = me.state;
+          const {timers, data, trochoiInfos} = me.state;
           me.state.data.map((item, index) => {
             if (item.taskDetailId == params.taskDetailId) {
-              let trochoiInfo = {
+              const trochoiInfo = {
                 color: data[index].color,
                 taskType: data[index].taskType,
                 taskDetailId: data[index].taskDetailId,
-                lastPointTime: '',
+                lastPointTime: ''
               };
               trochoiInfos.push(trochoiInfo);
               timers.push({
                 timerId: setInterval(me.getNowTrochoid, 5000, trochoiInfo),
-                taskDetailId: data[index].taskDetailId,
+                taskDetailId: data[index].taskDetailId
               });
               me.setState({
-                timers: timers,
+                timers: timers
               });
             }
           });
@@ -152,11 +152,11 @@ class SearchForm extends React.Component {
       })
       .catch(function (error) {
         console.log(error);
-        me.setState({ loading: false });
+        me.setState({loading: false});
       });
   };
   componentWillUnmount() {
-    let { timers } = this.state;
+    const {timers} = this.state;
     //清除所有定时器
     timers.map((item) => {
       clearInterval(item.timerId);
@@ -165,7 +165,7 @@ class SearchForm extends React.Component {
   //获取实时数据
   getNowTrochoid = (data) => {
     let trochoiInfo = data;
-    let { trochoiInfos, timers } = this.state;
+    const {trochoiInfos, timers} = this.state;
     trochoiInfos.map((item) => {
       if (item.taskDetailId == data.taskDetailId) {
         trochoiInfo = item;
@@ -175,7 +175,7 @@ class SearchForm extends React.Component {
       .postData('/api/cmdMonitor/showAppTrochoid', {
         lastPointTime: trochoiInfo.lastPointTime,
         taskType: trochoiInfo ? trochoiInfo.taskType : '',
-        taskDetailId: trochoiInfo ? trochoiInfo.taskDetailId : '',
+        taskDetailId: trochoiInfo ? trochoiInfo.taskDetailId : ''
       })
       .then((res) => {
         const pathsCurr = res.data.pathsCurr;
@@ -186,7 +186,7 @@ class SearchForm extends React.Component {
             }
           });
           this.setState({
-            trochoiInfos: trochoiInfos,
+            trochoiInfos: trochoiInfos
           });
           //任务已经结束
           if (res.data.isEnd == 1) {
@@ -212,9 +212,9 @@ class SearchForm extends React.Component {
       taskDetailId: userTask.taskDetailId,
       taskType: userTask.taskType,
       rid: Math.random(),
-      color: userTask.color,
+      color: userTask.color
     };
-    let { taskStatus } = this.props;
+    const {taskStatus} = this.props;
     //任务未开始不执行轨迹数据请求
     if (taskStatus != 0) {
       this.fetchTrochoid(params);
@@ -223,7 +223,7 @@ class SearchForm extends React.Component {
 
   handleReset = () => {
     this.setState({
-      queryTime: '',
+      queryTime: ''
     });
     this.props.form.resetFields();
   };
@@ -235,25 +235,25 @@ class SearchForm extends React.Component {
       url = '/api/dailyPatrols/getUserByTaskId';
     }
     if (params) {
-      params = { pageSize: this.state.pageSize, currPage: this.state.currPage, taskId: this.state.taskID };
+      params = {pageSize: this.state.pageSize, currPage: this.state.currPage, taskId: this.state.taskID};
     } else {
-      params = { pageSize: this.state.pageSize, currPage: this.state.currPage, taskId: this.state.taskID };
+      params = {pageSize: this.state.pageSize, currPage: this.state.currPage, taskId: this.state.taskID};
     }
-    this.setState({ loading: true });
+    this.setState({loading: true});
     React.$ajax
-      .postData(url, { ...params, ...this.state.filter })
+      .postData(url, {...params, ...this.state.filter})
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = parseInt(res.pageSize) * parseInt(res.totalPage);
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
         res.data.map((item) => {
           item.color = getRandomColor();
         });
-        this.setState({ data: res.data, loading: false, pagination });
+        this.setState({data: res.data, loading: false, pagination});
       })
       .catch(function (error) {
-        me.setState({ loading: false });
+        me.setState({loading: false});
       });
   }
 
@@ -264,28 +264,28 @@ class SearchForm extends React.Component {
         dataIndex: 'color',
         key: 'color',
         width: '10%',
-        render: (color) => <Tag color={color} style={{ cursor: 'pointer', height: '12px', width: '12px' }}></Tag>,
+        render: (color) => <Tag color={color} style={{cursor: 'pointer', height: '12px', width: '12px'}}></Tag>
       },
       {
         title: '警号',
         width: '15%',
         dataIndex: 'userNumber',
         key: 'userNumber',
-        render: (text) => <span style={{ cursor: 'pointer' }}>{text}</span>,
+        render: (text) => <span style={{cursor: 'pointer'}}>{text}</span>
       },
       {
         title: '姓名',
         width: '15%',
         dataIndex: 'userName',
         key: 'userName',
-        render: (text) => <span style={{ cursor: 'pointer' }}>{text}</span>,
+        render: (text) => <span style={{cursor: 'pointer'}}>{text}</span>
       },
       {
         title: '犬只',
         width: '15%',
         dataIndex: 'dogName',
         key: 'dogName',
-        render: (text) => <span style={{ cursor: 'pointer' }}>{text}</span>,
+        render: (text) => <span style={{cursor: 'pointer'}}>{text}</span>
       },
       {
         title: '开始时间',
@@ -296,12 +296,12 @@ class SearchForm extends React.Component {
           if (text == '') {
             return '--';
           }
-          let date = new Date(text);
-          let YMD = date.toLocaleString().split(' ')[0];
-          let HMS = date.toString().split(' ')[4];
-          let startTime = YMD + ' ' + HMS;
+          const date = new Date(text);
+          const YMD = date.toLocaleString().split(' ')[0];
+          const HMS = date.toString().split(' ')[4];
+          const startTime = YMD + ' ' + HMS;
           return startTime;
-        },
+        }
       },
       {
         title: '结束时间',
@@ -312,12 +312,12 @@ class SearchForm extends React.Component {
           if (text == '') {
             return '--';
           }
-          let date = new Date(text);
-          let YMD = date.toLocaleString().split(' ')[0];
-          let HMS = date.toString().split(' ')[4];
-          let endTime = YMD + ' ' + HMS;
+          const date = new Date(text);
+          const YMD = date.toLocaleString().split(' ')[0];
+          const HMS = date.toString().split(' ')[4];
+          const endTime = YMD + ' ' + HMS;
           return endTime;
-        },
+        }
       },
       {
         title: '状态',
@@ -334,7 +334,7 @@ class SearchForm extends React.Component {
           } else {
             return '--';
           }
-        },
+        }
       },
       {
         title: '视频',
@@ -344,20 +344,19 @@ class SearchForm extends React.Component {
         render: (state, record) => {
           return this.props.type == 'duty' ? (
             <span
-              style={{ cursor: 'pointer', color: '#1890ff' }}
-              onClick={(e) => this.props.showVideo(e, record.taskDetailId)}
-            >
-              <Icon type="video-camera" style={{ margin: '0 10px' }} />
+              style={{cursor: 'pointer', color: '#1890ff'}}
+              onClick={(e) => this.props.showVideo(e, record.taskDetailId)}>
+              <Icon type="video-camera" style={{margin: '0 10px'}} />
             </span>
           ) : (
             '--'
           );
-        },
-      },
+        }
+      }
     ];
 
-    const { getFieldDecorator } = this.props.form;
-    const { startTime, endTime } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {startTime, endTime} = this.state;
     const disabledDate = function (current) {
       return (current && current < moment(startTime)) || (current && current > moment(endTime));
     };
@@ -381,7 +380,7 @@ class SearchForm extends React.Component {
         </Row>
       </Form> : null*/}
         <Table
-          style={{ maxHeight: visibleHeight - 250, overflowY: 'scroll' }}
+          style={{maxHeight: visibleHeight - 250, overflowY: 'scroll'}}
           loading={this.state.loading}
           columns={columns}
           dataSource={this.state.data}
@@ -396,7 +395,7 @@ class SearchForm extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  socketMsg: state.system && state.system.socketMsg,
+  socketMsg: state.system && state.system.socketMsg
 });
 const mapDispatchToProps = (dispatch) => ({
   // sysActions: bindActionCreators(systomStatus, dispatch),

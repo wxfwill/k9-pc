@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Table,
   Button,
@@ -13,11 +13,11 @@ import {
   Select,
   DatePicker,
   Form,
-  Input,
+  Input
 } from 'antd';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import httpAjax from 'libs/httpAjax';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {firstLayout, secondLayout} from 'util/Layout';
 import MapModal from './MapModal';
 import moment from 'moment';
 import 'style/view/common/detailTable.less';
@@ -45,10 +45,10 @@ class AddPlan extends Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 10,
-      currPage: 1,
+      currPage: 1
     };
     this.isRequest = false;
     this.reportUserId = '';
@@ -59,15 +59,15 @@ class AddPlan extends Component {
     const typeOption = React.$ajax.postData('/api/trainingSubject/getAllTrainSubjectName');
     //const trainPlace = httpAjax('post', config.apiUrl+'/api/basicData/trainPlace');
     // /api/userCenter/getTrainer
-    const Trainers = httpAjax('post', config.apiUrl + '/api/userCenter/getTrainer', { name: '' });
+    const Trainers = httpAjax('post', config.apiUrl + '/api/userCenter/getTrainer', {name: ''});
     const pathname = this.props.location.pathname;
     if (pathname.indexOf('Detail') > -1) {
-      this.setState({ disabled: true, isDetail: true });
+      this.setState({disabled: true, isDetail: true});
     } else {
-      this.setState({ disabled: false });
+      this.setState({disabled: false});
     }
     Promise.all([typeOption, Trainers]).then((resArr) => {
-      let disabledVal = false;
+      const disabledVal = false;
       /*  if(pathname.indexOf('Detail')>-1) {
                 disabledVal=true;
              } else {
@@ -76,35 +76,35 @@ class AddPlan extends Component {
       this.setState({
         typeOption: resArr[0].data,
         //places: resArr[1].data,
-        peoples: resArr[1].data,
+        peoples: resArr[1].data
         //      disabled:disabledVal
       });
       resArr[1].data.map((item) => {
         this.peoplesMap[item.id] = item;
       });
       if (this.props.location.query && this.props.location.query.editItem) {
-        let editItem = this.props.location.query.editItem;
-        let reportArr = [];
+        const editItem = this.props.location.query.editItem;
+        const reportArr = [];
         editItem.userIds.split(',').map((item) => {
           reportArr.push(this.peoplesMap[item]);
         });
         this.setState({
           reportArr: reportArr,
           planId: editItem.id,
-          placeType: editItem.placeType,
+          placeType: editItem.placeType
         });
         this.getPlanInfo();
       }
     });
     if (this.props.location.query && this.props.location.query.editItem) {
-      let drawShapeDTO = this.props.location.query.editItem.drawShapeDTO;
+      const drawShapeDTO = this.props.location.query.editItem.drawShapeDTO;
       this.reportUserId = this.props.location.query.editItem.reportUserId || '';
       if (drawShapeDTO.latLngArr) {
         sessionStorage.setItem('tempPolygonCoords', JSON.stringify(drawShapeDTO));
         //    drawShapeDTO.coord = JSON.stringify(drawShapeDTO.latLngArr);
         this.setState({
           //  subCoord: subCoord,
-          drawShapeDTO: drawShapeDTO,
+          drawShapeDTO: drawShapeDTO
         });
       }
     } else {
@@ -114,18 +114,18 @@ class AddPlan extends Component {
     //基地内场地信息
     httpAjax('post', config.apiUrl + '/api/train/listAllTrainPlace', {}).then((res) => {
       if (res.code == 0) {
-        this.setState({ trainList: res.data });
+        this.setState({trainList: res.data});
       }
     });
   }
   //获取训练人员详情
   getPlanInfo = (
-    params = { pageSize: this.state.pageSize, currPage: this.state.currPage, planId: this.state.planId }
+    params = {pageSize: this.state.pageSize, currPage: this.state.currPage, planId: this.state.planId}
   ) => {
     httpAjax('post', config.apiUrl + '/api/train/getTrainRecord', params)
       .then((res) => {
         const data = res.data;
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.data.totalCount;
         pagination.current = res.data.currPage;
         pagination.pageSize = res.data.pageSize;
@@ -133,7 +133,7 @@ class AddPlan extends Component {
           this.setState({
             loading: false,
             dataSource: res.data.list,
-            pagination: pagination,
+            pagination: pagination
           });
         }
       })
@@ -142,41 +142,41 @@ class AddPlan extends Component {
       });
   };
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
     this.setState({
       pagination: pager,
-      loading: true,
+      loading: true
     });
     this.getPlanInfo({
       pageSize: pagination.pageSize,
       currPage: pagination.current,
-      planId: this.state.planId,
+      planId: this.state.planId
     });
   };
   disabledDate = (current) => {
     return current && current < moment().startOf('day');
   };
   addCoord() {
-    this.setState({ changeLeft: true });
+    this.setState({changeLeft: true});
   }
   handleShow(addressMsg) {
-    let _this = this;
+    const _this = this;
     this.setState(
       {
-        changeLeft: false,
+        changeLeft: false
       },
       function () {
-        if (typeof addressMsg != 'undefined') {
-          let { address, drawShapeDTO } = addressMsg;
+        if (typeof addressMsg !== 'undefined') {
+          const {address, drawShapeDTO} = addressMsg;
           _this.setState(
             {
               //  subCoord: subCoord,
-              drawShapeDTO: drawShapeDTO,
+              drawShapeDTO: drawShapeDTO
             },
             function () {
               _this.props.form.setFieldsValue({
-                location: address,
+                location: address
               });
             }
           );
@@ -192,14 +192,14 @@ class AddPlan extends Component {
       }
       console.log('Received values of form: ', values);
       form.resetFields();
-      this.setState({ changeLeft: false });
+      this.setState({changeLeft: false});
     });
   };
   handleCancel = (e) => {
     this.setState({
       orgVisible: false,
       peoVisible: false,
-      changeLeft: false,
+      changeLeft: false
     });
   };
   handleSubmit = (type) => {
@@ -212,9 +212,9 @@ class AddPlan extends Component {
     }
     console.log(id);
 
-    let drawShapeDTO = this.state.drawShapeDTO;
+    const drawShapeDTO = this.state.drawShapeDTO;
     if (this.state.placeType == 2) {
-      if (typeof drawShapeDTO.latLngArr == 'string' || typeof drawShapeDTO.coord == 'string') {
+      if (typeof drawShapeDTO.latLngArr === 'string' || typeof drawShapeDTO.coord === 'string') {
         try {
           drawShapeDTO.latLngArr = JSON.parse(drawShapeDTO.latLngArr);
           drawShapeDTO.coord = JSON.parse(drawShapeDTO.coord);
@@ -231,7 +231,7 @@ class AddPlan extends Component {
           ...values,
           trainDate: values.trainDate.format('x'),
           userIds: values.userIds.join(','),
-          drawShapeDTO: drawShapeDTO,
+          drawShapeDTO: drawShapeDTO
         };
         if (id) {
           params.id = id;
@@ -245,7 +245,7 @@ class AddPlan extends Component {
             if (type == 'save') {
               message.success('保存成功！');
               this.setState({
-                saveId: res.data,
+                saveId: res.data
               });
             } else {
               message.success('发布成功！');
@@ -262,14 +262,14 @@ class AddPlan extends Component {
     });
   };
   sendReport(val, backCall) {
-    let user = JSON.parse(sessionStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem('user'));
     console.log('user', user);
-    let data = {
+    const data = {
       type: 1, //任务类型1训练2巡逻3紧急调配4网格搜捕5定点集合6外勤任务
       dataId: val.id,
       taskName: val.taskName,
       userId: this.reportUserId,
-      approveUserId: user.id,
+      approveUserId: user.id
     };
     httpAjax('post', config.apiUrl + '/api/taskReport/saveInfo', data).then((result) => {
       if (result.code == 0) {
@@ -278,12 +278,12 @@ class AddPlan extends Component {
     });
   }
   selectPeoples = (data) => {
-    let arr = [];
+    const arr = [];
     data.map((item) => {
       arr.push(this.peoplesMap[item]);
     });
     this.setState({
-      reportArr: arr,
+      reportArr: arr
     });
     if (!arr.some((item) => item.id == this.reportUserId)) {
       this.props.form.resetFields(['reportUserId', '']);
@@ -291,13 +291,13 @@ class AddPlan extends Component {
   };
   changePlaceId = (data) => {
     this.setState({
-      placeId: data,
+      placeId: data
     });
   };
 
   changePlace = (data) => {
     this.setState({
-      placeType: data,
+      placeType: data
     });
   };
   render() {
@@ -313,9 +313,9 @@ class AddPlan extends Component {
       dataSource,
       pagination,
       placeType,
-      trainList,
+      trainList
     } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     let editItem = '';
     if (this.props.location.query) {
       editItem = this.props.location.query.editItem;
@@ -324,7 +324,7 @@ class AddPlan extends Component {
       {
         title: '序号',
         dataIndex: 'id',
-        key: 'id',
+        key: 'id'
         /* render:id=>{
               return <Badge overflowCount={10000} count={id} style={{minWidth: '50px',fontSize:'12px',height:'16px',lineHeight:'16px', backgroundColor: '#99a9bf' }} /> 
             }*/
@@ -332,12 +332,12 @@ class AddPlan extends Component {
       {
         title: '犬只',
         dataIndex: 'dogName',
-        key: 'dogName',
+        key: 'dogName'
       },
       {
         title: '训导员',
         dataIndex: 'trainerName',
-        key: 'trainerName',
+        key: 'trainerName'
       },
       {
         title: '开始时间',
@@ -347,12 +347,12 @@ class AddPlan extends Component {
           if (text == '') {
             return '--';
           }
-          let date = new Date(text);
-          let YMD = date.toLocaleString().split(' ')[0];
-          let HMS = date.toString().split(' ')[4];
-          let startTime = YMD + ' ' + HMS;
+          const date = new Date(text);
+          const YMD = date.toLocaleString().split(' ')[0];
+          const HMS = date.toString().split(' ')[4];
+          const startTime = YMD + ' ' + HMS;
           return startTime;
-        },
+        }
       },
       {
         title: '结束时间',
@@ -362,12 +362,12 @@ class AddPlan extends Component {
           if (text == '') {
             return '--';
           }
-          let date = new Date(text);
-          let YMD = date.toLocaleString().split(' ')[0];
-          let HMS = date.toString().split(' ')[4];
-          let endTime = YMD + ' ' + HMS;
+          const date = new Date(text);
+          const YMD = date.toLocaleString().split(' ')[0];
+          const HMS = date.toString().split(' ')[4];
+          const endTime = YMD + ' ' + HMS;
           return endTime;
-        },
+        }
       },
       {
         title: '训练状态',
@@ -383,22 +383,22 @@ class AddPlan extends Component {
           } else {
             return '--';
           }
-        },
-      },
+        }
+      }
     ];
     return (
       <div>
         <Row gutter={24}>
           <Col span={24}>
-            <Card title="训练计划" bordered={true}>
+            <Card title="训练计划" bordered>
               <Col xxl={16} xl={22} lg={24} md={24} sm={24} xs={24}>
                 <Form className="ant-advanced-search-form">
                   <Row gutter={24}>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="训练科目：" {...secondLayout}>
                         {getFieldDecorator('subjectId', {
-                          rules: [{ required: true, message: '请选择训练科目' }],
-                          initialValue: editItem ? editItem.subjectId : '',
+                          rules: [{required: true, message: '请选择训练科目'}],
+                          initialValue: editItem ? editItem.subjectId : ''
                         })(
                           <Select disabled={disabled}>
                             {typeOption.map((item) => (
@@ -413,8 +413,8 @@ class AddPlan extends Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="时间" {...secondLayout}>
                         {getFieldDecorator('trainDate', {
-                          rules: [{ required: true, message: '请选择时间' }],
-                          initialValue: editItem && editItem.trainDate ? moment(editItem.trainDate) : null,
+                          rules: [{required: true, message: '请选择时间'}],
+                          initialValue: editItem && editItem.trainDate ? moment(editItem.trainDate) : null
                         })(<DatePicker format="YYYY-MM-DD" disabled={disabled} disabledDate={this.disabledDate} />)}
                       </FormItem>
                     </Col>
@@ -423,8 +423,8 @@ class AddPlan extends Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="训犬人员：" {...secondLayout}>
                         {getFieldDecorator('userIds', {
-                          rules: [{ required: true, message: '请选择训犬人员' }],
-                          initialValue: editItem ? editItem.userIds.split(',') : [],
+                          rules: [{required: true, message: '请选择训犬人员'}],
+                          initialValue: editItem ? editItem.userIds.split(',') : []
                         })(
                           <Select disabled={disabled} mode="multiple" onChange={this.selectPeoples}>
                             {peoples.map((item) => (
@@ -439,8 +439,8 @@ class AddPlan extends Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="场地类型：" {...secondLayout}>
                         {getFieldDecorator('placeType', {
-                          rules: [{ required: true, message: '请选择场地类型' }],
-                          initialValue: editItem ? editItem.placeType : '',
+                          rules: [{required: true, message: '请选择场地类型'}],
+                          initialValue: editItem ? editItem.placeType : ''
                         })(
                           <Select disabled={disabled} mode="single" onChange={this.changePlace}>
                             <Option value={''} key={1}>
@@ -476,14 +476,14 @@ class AddPlan extends Component {
                       <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                         <FormItem label={'训练场地'} {...secondLayout} hasFeedback>
                           {getFieldDecorator('location', {
-                            rules: [{ required: true, message: '请选择训练场地' }],
-                            initialValue: editItem ? editItem.location : '',
+                            rules: [{required: true, message: '请选择训练场地'}],
+                            initialValue: editItem ? editItem.location : ''
                           })(
                             <Input
                               placeholder="训练场地"
-                              disabled={true}
+                              disabled
                               addonBefore={
-                                <Icon type="plus" style={{ cursor: 'pointer' }} onClick={this.addCoord.bind(this)} />
+                                <Icon type="plus" style={{cursor: 'pointer'}} onClick={this.addCoord.bind(this)} />
                               }
                             />
                           )}
@@ -494,8 +494,8 @@ class AddPlan extends Component {
                       <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                         <FormItem label="训练场地：" {...secondLayout}>
                           {getFieldDecorator('placeId', {
-                            rules: [{ required: true, message: '请选择训练场地' }],
-                            initialValue: editItem ? editItem.placeId + '' : '',
+                            rules: [{required: true, message: '请选择训练场地'}],
+                            initialValue: editItem ? editItem.placeId + '' : ''
                           })(
                             <Select disabled={disabled} mode="single" onChange={this.changePlaceId}>
                               {trainList.map((item) => (
@@ -514,7 +514,7 @@ class AddPlan extends Component {
                       <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                         <FormItem label="发布时间" {...secondLayout}>
                           <Input
-                            disabled={true}
+                            disabled
                             value={
                               editItem && editItem.publishDate
                                 ? moment(editItem.publishDate).format('YYYY-MM-DD HH:mm:ss')
@@ -525,7 +525,7 @@ class AddPlan extends Component {
                       </Col>
                       <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                         <FormItem label="发布人员" {...secondLayout}>
-                          <Input disabled={true} value={editItem && editItem.operator ? editItem.operator : '----'} />
+                          <Input disabled value={editItem && editItem.operator ? editItem.operator : '----'} />
                         </FormItem>
                       </Col>
                     </Row>
@@ -538,21 +538,19 @@ class AddPlan extends Component {
                       <FormItem label="训练说明" {...firstLayout}>
                         {getFieldDecorator('remark', {
                           // rules: [{ required: true, message: '请选择时间' }],
-                          rules: [{ max: 100, message: '训练说明长度不超过100' }],
-                          initialValue: editItem ? editItem.remark : '',
-                        })(
-                          <Input.TextArea placeholder="" disabled={disabled} autosize={{ minRows: 2, maxRows: 24 }} />
-                        )}
+                          rules: [{max: 100, message: '训练说明长度不超过100'}],
+                          initialValue: editItem ? editItem.remark : ''
+                        })(<Input.TextArea placeholder="" disabled={disabled} autosize={{minRows: 2, maxRows: 24}} />)}
                       </FormItem>
                     </Col>
                   </Row>
                   {!disabled ? (
                     <Row>
-                      <Col span={24} style={{ textAlign: 'center', marginTop: '40px' }}>
+                      <Col span={24} style={{textAlign: 'center', marginTop: '40px'}}>
                         <Button type="primary" htmlType="submit" onClick={() => this.handleSubmit('publish')}>
                           发布
                         </Button>
-                        <Button style={{ marginLeft: 8 }} onClick={() => this.handleSubmit('save')}>
+                        <Button style={{marginLeft: 8}} onClick={() => this.handleSubmit('save')}>
                           保存
                         </Button>
                       </Col>
@@ -562,7 +560,7 @@ class AddPlan extends Component {
               </Col>
             </Card>
             {!disabled ? null : (
-              <Card title="训练详情" bordered={true}>
+              <Card title="训练详情" bordered>
                 <Table
                   rowKey="id"
                   loading={loading}

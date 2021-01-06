@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 class RequestMinxinData extends Component {
   constructor(props) {
     super(props);
-    this.state = { teamData: [], userNameArr: [] };
+    this.state = {teamData: [], userNameArr: []};
   }
   componentDidMount() {
     // 查询中队信息
@@ -23,19 +23,19 @@ class RequestMinxinData extends Component {
   }
   queryGroupUser = util.Debounce(
     (keyword) => {
-      React.$ajax.common.queryGroupUser({ keyword }).then((res) => {
+      React.$ajax.common.queryGroupUser({keyword}).then((res) => {
         if (res.code == 0) {
-          let resObj = res.data;
-          let arr = [];
-          for (let key in resObj) {
+          const resObj = res.data;
+          const arr = [];
+          for (const key in resObj) {
             if (resObj[key] && resObj[key].length > 0) {
               arr.push({
                 name: key,
-                children: resObj[key],
+                children: resObj[key]
               });
             }
           }
-          this.setState({ userNameArr: arr });
+          this.setState({userNameArr: arr});
         }
       });
     },
@@ -45,13 +45,13 @@ class RequestMinxinData extends Component {
   queryAllTeam = () => {
     React.$ajax.common.queryAllGroups().then((res) => {
       if (res.code == 0) {
-        let resObj = res.data;
-        let newArr = [];
-        for (let key in resObj) {
-          let obj = { id: key, name: resObj[key] };
+        const resObj = res.data;
+        const newArr = [];
+        for (const key in resObj) {
+          const obj = {id: key, name: resObj[key]};
           newArr.push(obj);
         }
-        this.setState({ teamData: newArr });
+        this.setState({teamData: newArr});
       }
     });
   };

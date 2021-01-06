@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Table,
   Button,
@@ -15,11 +15,11 @@ import {
   Form,
   Input,
   Tooltip,
-  Calendar,
+  Calendar
 } from 'antd';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import httpAjax from 'libs/httpAjax';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {firstLayout, secondLayout} from 'util/Layout';
 import moment from 'moment';
 const Panel = Collapse.Panel;
 const Option = Select.Option;
@@ -29,7 +29,7 @@ class ApprovalDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      disabled: false,
+      disabled: false
     };
   }
   componentDidMount() {}

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -12,29 +12,29 @@ class SearchForm extends React.Component {
     this.state = {
       expand: true,
       dogBreed: [],
-      workUnitList: [],
+      workUnitList: []
     };
   }
   componentWillMount() {
     //获取犬只品种下拉项
     React.$ajax.postData('/api/basicData/dogBreed', {}).then((res) => {
       if (res.code == 0) {
-        this.setState({ dogBreed: res.data });
+        this.setState({dogBreed: res.data});
         sessionStorage.setItem('dogBreeds', JSON.stringify(res.data));
       }
     });
     //获取服役单位下拉项
     React.$ajax.postData('/api/basicData/workUnitList', {}).then((res) => {
       if (res.code == 0) {
-        this.setState({ workUnitList: res.data });
+        this.setState({workUnitList: res.data});
         sessionStorage.setItem('workUnitList', JSON.stringify(res.data));
       }
     });
   }
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
-    let timeData = 'range-time-picker';
+    const {limit} = this.props;
+    const timeData = 'range-time-picker';
     this.props.form.validateFields((err, values) => {
       limit(values);
     });
@@ -43,17 +43,17 @@ class SearchForm extends React.Component {
     this.props.form.resetFields();
   };
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   render() {
-    let { expand, dogBreed, workUnitList } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const {expand, dogBreed, workUnitList} = this.state;
+    const {getFieldDecorator} = this.props.form;
     const dogBreedOption =
       dogBreed &&
       dogBreed.map((item, index) => {
@@ -102,11 +102,11 @@ class SearchForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
             {/*<a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>

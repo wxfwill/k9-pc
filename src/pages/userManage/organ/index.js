@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import CustomTable from 'components/table/CustomTable';
 
-import { Card, message, Modal, Popconfirm } from 'antd';
+import {Card, message, Modal, Popconfirm} from 'antd';
 import AddEditModel from './AddEditModel';
-import { menuOperate } from './operateData';
-const { confirm } = Modal;
+import {menuOperate} from './operateData';
+const {confirm} = Modal;
 class OrganList extends Component {
   constructor(props) {
     super(props);
@@ -13,27 +13,27 @@ class OrganList extends Component {
       id: 0,
       pid: 0,
       type: '新增机构',
-      tableData: [],
+      tableData: []
     };
   }
   handleFormData = (data) => {
     data.orgType = data.orgType ? data.orgType[1] : null;
-    let { id, pid, type, level, orgIndex } = this.state;
+    const {id, pid, type, level, orgIndex} = this.state;
     if (type == '编辑机构') {
       // 编辑
-      let obj = Object.assign({}, data, { id: id.toString(), pid: pid.toString(), level, orgIndex });
+      const obj = Object.assign({}, data, {id: id.toString(), pid: pid.toString(), level, orgIndex});
       console.log(obj);
       this.addEditMenu(obj, '编辑成功');
     } else {
       // 新增
-      let obj = Object.assign({}, data, { pid: id.toString(), level, orgIndex });
+      const obj = Object.assign({}, data, {pid: id.toString(), level, orgIndex});
       console.log(obj);
       this.addEditMenu(obj, '新增成功');
     }
   };
   handleAdd = (row) => {
-    let { level, orgIndex } = row;
-    this.setState({ type: '新增机构', id: row.id, level, orgIndex }, () => {
+    const {level, orgIndex} = row;
+    this.setState({type: '新增机构', id: row.id, level, orgIndex}, () => {
       this.childEle.openModel();
     });
   };
@@ -43,8 +43,8 @@ class OrganList extends Component {
   handleEdit = (row) => {
     // e.stopPropagation();
     console.log(row);
-    let { level, orgIndex } = row;
-    this.setState({ type: '编辑机构', id: row.id, pid: row.pid, level, orgIndex }, () => {
+    const {level, orgIndex} = row;
+    this.setState({type: '编辑机构', id: row.id, pid: row.pid, level, orgIndex}, () => {
       this.childEle.openModel(row);
     });
   };
@@ -52,14 +52,14 @@ class OrganList extends Component {
   getOrganTree = () => {
     React.$ajax.getData('/api/sys/sys-org/queryOrgTree', {}).then((res) => {
       if (res && res.code == 0) {
-        let resData = res.data ? res.data : [];
-        this.setState({ tableData: resData });
+        const resData = res.data ? res.data : [];
+        this.setState({tableData: resData});
       }
     });
   };
   // 删除机构
   delteMenu = (id) => {
-    React.$ajax.getData('/api/sys/sys-org/delCascade', { id }).then((res) => {
+    React.$ajax.getData('/api/sys/sys-org/delCascade', {id}).then((res) => {
       if (res && res.code == 0) {
         console.log(res);
         message.success('删除成功', 0.5, () => {
@@ -86,7 +86,7 @@ class OrganList extends Component {
       onOk: () => {
         this.delteMenu(row.id);
       },
-      onCancel() {},
+      onCancel() {}
     });
   };
   render() {
@@ -106,10 +106,9 @@ class OrganList extends Component {
               dataSource={this.state.tableData}
               loading={this.state.loading}
               columns={menuOperate(this.handleAdd, this.handleEdit, this.handleDelteMenu)}
-              isBordered={true}
+              isBordered
               isRowSelects={false}
-              isAllRows={false}
-            ></CustomTable>
+              isAllRows={false}></CustomTable>
           ) : null}
         </Card>
       </div>

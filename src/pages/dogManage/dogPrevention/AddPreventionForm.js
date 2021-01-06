@@ -1,13 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message } from 'antd';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {connect} from 'react-redux';
+import {Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message} from 'antd';
+import {firstLayout, secondLayout} from 'util/Layout';
 import httpAjax from 'libs/httpAjax';
 import moment from 'moment';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-const { TextArea } = Input;
+const {TextArea} = Input;
 require('style/app/dogInfo/addDogForm.less');
 class FormCompomnent extends React.Component {
   constructor(props) {
@@ -17,26 +17,26 @@ class FormCompomnent extends React.Component {
       disabled: false,
       isInitialValue: true,
       dogInfor: '',
-      vaccineType: [],
+      vaccineType: []
     };
   }
   componentWillMount() {
     //获取疫苗种类
     httpAjax('post', config.apiUrl + '/api/basicData/vaccineType', {}).then((res) => {
       if (res.code == 0) {
-        this.setState({ vaccineType: res.data });
+        this.setState({vaccineType: res.data});
       }
     });
     const formStatus = sessionStorage.getItem('formStatus'); //this.props.location.query&&this.props.location.query.targetText;
     // const dogId=sessionStorage.getItem("dogId");
     const vaccineType = JSON.parse(sessionStorage.getItem('vaccineType'));
-    this.setState({ vaccineType });
+    this.setState({vaccineType});
     if (formStatus == 'view') {
-      this.setState({ disabled: true, isInitialValue: true });
+      this.setState({disabled: true, isInitialValue: true});
     } else if (formStatus == 'edit') {
-      this.setState({ isInitialValue: true });
+      this.setState({isInitialValue: true});
     } else if (formStatus == 'add') {
-      this.setState({ isInitialValue: false });
+      this.setState({isInitialValue: false});
     }
     //根据id获取单个犬只数据
     // if(dogId){
@@ -53,7 +53,7 @@ class FormCompomnent extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     // const { dogId ,dogInfor}=this.state;
-    const { id } = JSON.parse(sessionStorage.getItem('user'));
+    const {id} = JSON.parse(sessionStorage.getItem('user'));
     const formStatus = sessionStorage.getItem('formStatus');
     const successMess = formStatus == 'edit' ? '修改成功' : '添加成功';
     const errorMess = formStatus == 'edit' ? '修改失败' : '添加失败';
@@ -83,7 +83,7 @@ class FormCompomnent extends React.Component {
         const params = {
           name: values.name,
           planDate: values.planDate.format('x'),
-          vaccineType: values.vaccineType.join(','),
+          vaccineType: values.vaccineType.join(',')
         };
         if (this.props.location.query) {
           params.id = this.props.location.query.record.id;
@@ -105,8 +105,8 @@ class FormCompomnent extends React.Component {
   };
   selectChange = () => {};
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { disabled, isInitialValue, dogInfor, vaccineType } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {disabled, isInitialValue, dogInfor, vaccineType} = this.state;
     // console.log(this.state);
     const uploadButton = (
       <div>
@@ -123,9 +123,9 @@ class FormCompomnent extends React.Component {
           </Option>
         );
       });
-    let name = '',
-      planDate = '',
-      vaccineTypename = '';
+    let name = '';
+    let planDate = '';
+    let vaccineTypename = '';
     if (this.props.location.query) {
       name = this.props.location.query.record.name;
       planDate = this.props.location.query.record.planDate;
@@ -136,7 +136,7 @@ class FormCompomnent extends React.Component {
       <div className="AddDogForm">
         <Row gutter={24}>
           <Col span={24}>
-            <Card title="犬病防治" bordered={true}>
+            <Card title="犬病防治" bordered>
               <Col xxl={16} xl={22} lg={24} md={24} sm={24} xs={24}>
                 <Form className="ant-advanced-search-form">
                   <Row gutter={24}>
@@ -144,18 +144,18 @@ class FormCompomnent extends React.Component {
                       <FormItem label="计划名称" {...secondLayout}>
                         {getFieldDecorator('name', {
                           rules: [
-                            { required: true, message: '请填写计划名称' },
-                            { max: 50, message: '计划名称长度不超过50' },
+                            {required: true, message: '请填写计划名称'},
+                            {max: 50, message: '计划名称长度不超过50'}
                           ],
-                          initialValue: isInitialValue ? name : '',
+                          initialValue: isInitialValue ? name : ''
                         })(<Input />)}
                       </FormItem>
                     </Col>
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="药物名称" {...secondLayout}>
                         {getFieldDecorator('vaccineType', {
-                          rules: [{ required: true, message: '请选择药物名称' }],
-                          initialValue: isInitialValue ? vaccineTypename.split(',') : [],
+                          rules: [{required: true, message: '请选择药物名称'}],
+                          initialValue: isInitialValue ? vaccineTypename.split(',') : []
                         })(
                           <Select disabled={disabled} mode="multiple">
                             {vaccineOption}
@@ -168,8 +168,8 @@ class FormCompomnent extends React.Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="计划时间" {...secondLayout}>
                         {getFieldDecorator('planDate', {
-                          rules: [{ required: true, message: '请选择计划时间' }],
-                          initialValue: isInitialValue ? moment(new Date(planDate)) : '',
+                          rules: [{required: true, message: '请选择计划时间'}],
+                          initialValue: isInitialValue ? moment(new Date(planDate)) : ''
                         })(<DatePicker format="YYYY-MM-DD" disabled={disabled} disabledDate={this.disabledDate} />)}
                       </FormItem>
                     </Col>
@@ -186,11 +186,11 @@ class FormCompomnent extends React.Component {
                   </Row>
                   {!disabled ? (
                     <Row>
-                      <Col span={24} style={{ textAlign: 'center', marginTop: '40px' }}>
+                      <Col span={24} style={{textAlign: 'center', marginTop: '40px'}}>
                         <Button type="primary" htmlType="submit" onClick={this.handleSubmit.bind(this)}>
                           提交
                         </Button>
-                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                        <Button style={{marginLeft: 8}} onClick={this.handleReset}>
                           清空
                         </Button>
                       </Col>
@@ -210,7 +210,7 @@ class FormCompomnent extends React.Component {
 const AddPreventionForm = Form.create()(FormCompomnent);
 
 const mapStateToProps = (state) => ({
-  loginState: state.login,
+  loginState: state.login
 });
 export default connect(mapStateToProps)(AddPreventionForm);
 

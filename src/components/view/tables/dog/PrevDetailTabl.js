@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import classnames from 'classnames';
 import httpAjax from 'libs/httpAjax';
-import { Collapse, Icon, Tag, Row, Col, Table, Card } from 'antd';
+import {Collapse, Icon, Tag, Row, Col, Table, Card} from 'antd';
 import moment from 'moment';
 import 'style/view/common/detailTable.less';
 const Panel = Collapse.Panel;
@@ -13,11 +13,11 @@ class PrevDetailTable extends Component {
       loading: true,
       baseData: '',
       medicalrecords: [],
-      title: '病历记录',
+      title: '病历记录'
     };
   }
   componentWillMount() {
-    const { caption } = this.props;
+    const {caption} = this.props;
     this.fetch(caption);
   }
   componentWillReceiveProps(nextProps) {
@@ -27,12 +27,12 @@ class PrevDetailTable extends Component {
     this.props.handleShow();
   }
   fetch(params) {
-    httpAjax('post', config.apiUrl + '/api/vaccineRecord/info', { dogId: params })
+    httpAjax('post', config.apiUrl + '/api/vaccineRecord/info', {dogId: params})
       .then((res) => {
         this.setState({
           loading: false,
           baseData: res.data && res.data.dogInfo,
-          medicalrecords: res.data && res.data.vaccineRecordList,
+          medicalrecords: res.data && res.data.vaccineRecordList
         });
       })
       .catch(function (error) {
@@ -41,7 +41,7 @@ class PrevDetailTable extends Component {
   }
   renderhead(caption) {
     if (caption.length > 0) {
-      let MonthYear = caption.split('_')[1];
+      const MonthYear = caption.split('_')[1];
       return (
         <div>
           <Icon type="calendar" />
@@ -52,7 +52,7 @@ class PrevDetailTable extends Component {
     }
   }
   checkHeader() {
-    const { title } = this.state;
+    const {title} = this.state;
     return (
       <div>
         <Icon type="bars" />
@@ -72,46 +72,46 @@ class PrevDetailTable extends Component {
   }
 
   render() {
-    const { changeLeft, caption } = this.props;
-    const { baseData, medicalrecords, loading } = this.state;
-    let date = new Date(baseData.dogBirthday);
-    let YMD = date.toLocaleString().split(' ')[0];
+    const {changeLeft, caption} = this.props;
+    const {baseData, medicalrecords, loading} = this.state;
+    const date = new Date(baseData.dogBirthday);
+    const YMD = date.toLocaleString().split(' ')[0];
     //let HMS = date.toString().split(' ')[4];
-    let morbidityTime = YMD; //+' '+HMS;
+    const morbidityTime = YMD; //+' '+HMS;
     const recordsColumns = [
       {
         title: '疫苗名称',
-        dataIndex: 'vaccineName',
+        dataIndex: 'vaccineName'
       },
       {
         title: '注射疫苗时间',
         dataIndex: 'vaccineTime',
         render: (time) => {
-          let date = new Date(time);
-          let YMD = date.toLocaleString().split(' ')[0];
-          let HMS = date.toString().split(' ')[4];
-          let vaccineTime = YMD + ' ' + HMS;
+          const date = new Date(time);
+          const YMD = date.toLocaleString().split(' ')[0];
+          const HMS = date.toString().split(' ')[4];
+          const vaccineTime = YMD + ' ' + HMS;
           return vaccineTime;
-        },
+        }
       },
       {
         title: '下次注射疫苗提醒时间',
         dataIndex: 'nextVaccineRemindingTime',
         render: (time) => {
-          let date = new Date(time);
-          let YMD = date.toLocaleString().split(' ')[0];
-          let HMS = date.toString().split(' ')[4];
-          let nextVaccineRemindingTime = YMD + ' ' + HMS;
+          const date = new Date(time);
+          const YMD = date.toLocaleString().split(' ')[0];
+          const HMS = date.toString().split(' ')[4];
+          const nextVaccineRemindingTime = YMD + ' ' + HMS;
           return nextVaccineRemindingTime;
-        },
+        }
       },
       {
         title: '兽医',
-        dataIndex: 'veterinaryName',
-      },
+        dataIndex: 'veterinaryName'
+      }
     ];
     return (
-      <div className={classnames('off-detail')} style={{ left: changeLeft ? '360px' : '100%' }}>
+      <div className={classnames('off-detail')} style={{left: changeLeft ? '360px' : '100%'}}>
         <div className="detail-table">
           <Card title={this.state.title}>
             {/*<span>创建时间:20180201</span>*/}

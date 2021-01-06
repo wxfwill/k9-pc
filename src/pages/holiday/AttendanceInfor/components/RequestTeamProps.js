@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 class RequestTeamProps extends Component {
   constructor(props) {
@@ -7,21 +7,21 @@ class RequestTeamProps extends Component {
       teamData: [
         {
           name: '迟到',
-          value: '迟到',
+          value: '迟到'
         },
         {
           name: '早退',
-          value: '早退',
+          value: '早退'
         },
         {
           name: '旷工',
-          value: '旷工',
+          value: '旷工'
         },
         {
           name: '正常',
-          value: '正常',
-        },
-      ],
+          value: '正常'
+        }
+      ]
     };
   }
   render() {

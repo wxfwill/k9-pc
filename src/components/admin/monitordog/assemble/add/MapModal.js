@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Radio, Form, Input, Button, Modal, Icon, Card, Spin, Tag, message } from 'antd';
-import { tMap } from 'components/view/common/map';
+import React, {Component} from 'react';
+import {Radio, Form, Input, Button, Modal, Icon, Card, Spin, Tag, message} from 'antd';
+import {tMap} from 'components/view/common/map';
 require('style/view/monitoring/mapModal.less');
 
 class MapModal extends Component {
@@ -10,20 +10,20 @@ class MapModal extends Component {
       loading: true,
       coordMsg: null,
       drawShapeDTO: null,
-      point: {},
+      point: {}
     };
     this.mapObj = null;
     this.marker = '';
   }
   componentDidMount() {
-    let options = {
-      labelText: '我的位置',
+    const options = {
+      labelText: '我的位置'
     };
-    let _this = this;
+    const _this = this;
     this.mapObj = new tMap(options);
     this.mapObj.createMakers(
       (e) => {
-        this.setState({ point: e.latLng });
+        this.setState({point: e.latLng});
       },
       (marker) => {
         this.marker && this.marker.setMap(null);
@@ -34,19 +34,17 @@ class MapModal extends Component {
     this.hideLoading();
   }
   componentWillUnmount() {
-    this.setState = (state, callback) => {
-      return;
-    };
+    this.setState = (state, callback) => {};
   }
   handleReset() {
     this.marker && this.marker.setMap(null);
-    this.setState({ point: {} });
+    this.setState({point: {}});
   }
   hideLoading() {
-    let _this = this;
+    const _this = this;
     setTimeout(() => {
       _this.setState({
-        loading: false,
+        loading: false
       });
     }, 2000);
   }
@@ -55,18 +53,18 @@ class MapModal extends Component {
     this.props.handleShow();
   }
   handleSure() {
-    let { point } = this.state;
-    let _this = this;
+    const {point} = this.state;
+    const _this = this;
     if (point && this.marker) {
-      let address = this.mapObj.resolveLatLng(point, function (address) {
-        _this.props.handleShow({ address, point });
+      const address = this.mapObj.resolveLatLng(point, function (address) {
+        _this.props.handleShow({address, point});
       });
     } else {
       message.warning('请选择目标区域！');
     }
   }
   searchLocation = () => {
-    const { searchVal } = this.state;
+    const {searchVal} = this.state;
     const self = this;
     const geocoder = new qq.maps.Geocoder();
     geocoder.getLocation(searchVal);
@@ -75,17 +73,17 @@ class MapModal extends Component {
     });
   };
   render() {
-    const { changeLeft } = this.props;
+    const {changeLeft} = this.props;
     return (
-      <div className="MapModal" style={{ left: changeLeft ? '360px' : '100%' }}>
+      <div className="MapModal" style={{left: changeLeft ? '360px' : '100%'}}>
         <div className="map-container">
           <Spin spinning={this.state.loading}>
             <Card title={'添加集合点'}>
-              <div style={{ position: 'absolute', top: 10, right: 10 }}>
+              <div style={{position: 'absolute', top: 10, right: 10}}>
                 <Input
-                  style={{ width: 300, margin: '0 10px 0 0' }}
+                  style={{width: 300, margin: '0 10px 0 0'}}
                   onChange={(e) => {
-                    this.setState({ searchVal: e.target.value });
+                    this.setState({searchVal: e.target.value});
                   }}
                 />
                 <Button type="primary" onClick={this.searchLocation}>
@@ -98,8 +96,7 @@ class MapModal extends Component {
                   title={'控制中心'}
                   bordered={false}
                   bordered
-                  style={{ width: 150, position: 'absolute', top: '0', right: '0', zIndex: '9999' }}
-                >
+                  style={{width: 150, position: 'absolute', top: '0', right: '0', zIndex: '9999'}}>
                   <Tag onClick={this.handleReset.bind(this)} color="#f50">
                     重新选择
                   </Tag>

@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Table, Button, Icon, Popconfirm, message, Modal, Form, Row, Col, Input } from 'antd';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Table, Button, Icon, Popconfirm, message, Modal, Form, Row, Col, Input} from 'antd';
+import {Link} from 'react-router-dom';
 import Immutable from 'immutable';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {firstLayout, secondLayout} from 'util/Layout';
 import moment from 'moment';
 const FormItem = Form.Item;
 class HolidayTable extends Component {
@@ -14,12 +14,12 @@ class HolidayTable extends Component {
       pagination: {
         showSizeChanger: true,
         //      showQuickJumper :true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 10,
       currPage: 1,
       visible: false,
-      selectedRowKeys: [],
+      selectedRowKeys: []
     };
     this.id = '';
   }
@@ -27,43 +27,43 @@ class HolidayTable extends Component {
   showModal = (id) => {
     this.id = id;
     this.setState({
-      visible: true,
+      visible: true
     });
   };
   hideModal = (isOk) => {
-    let verify = isOk ? 1 : 2;
+    const verify = isOk ? 1 : 2;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        let data = {
+        const data = {
           id: this.id,
           verify: verify,
-          opinion: values.remark,
+          opinion: values.remark
         };
 
-        let _this = this;
-        let { dataSource } = this.state;
+        const _this = this;
+        const {dataSource} = this.state;
         let newData = [];
         React.$ajax.postData('/api/leaveRecord/verifyLeaveApply', data).then((res) => {
           console.log(res);
-          let { history } = _this.props;
+          const {history} = _this.props;
           if (res.code == 0) {
             message.success('操作成功！');
             newData = dataSource.filter((item) => data.id !== item.id);
             //  history.push({ pathname: '/app/holiday/approve' });
             _this.setState({
-              dataSource: newData,
+              dataSource: newData
             });
           }
         });
       }
     });
     this.setState({
-      visible: false,
+      visible: false
     });
   };
   closeModal = () => {
     this.setState({
-      visible: false,
+      visible: false
     });
   };
   handleCancel = () => {
@@ -79,45 +79,46 @@ class HolidayTable extends Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let filter = nextProps.filter;
-    let _this = this;
-    this.setState({ filter: filter }, function () {
+    const filter = nextProps.filter;
+    const _this = this;
+    this.setState({filter: filter}, function () {
       _this.fetch({
         pageSize: _this.state.pageSize,
         currPage: 1,
-        ...filter,
+        ...filter
       });
     });
   }
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
-    React.$ajax.postData('/api/leaveRecord/leaveListPage', { ...params })
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+    this.setState({loading: true});
+    React.$ajax
+      .postData('/api/leaveRecord/leaveListPage', {...params})
       .then((obj) => {
-        let res = obj.data;
-        const pagination = { ...this.state.pagination };
+        const res = obj.data;
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
-        this.setState({ dataSource: res.list, loading: false, pagination });
+        this.setState({dataSource: res.list, loading: false, pagination});
       })
       .catch(function (error) {
         console.log(error);
       });
   }
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
-      currPage: pagination.current,
+      currPage: pagination.current
     });
   };
   onSelectChange = (selectedRowKeys) => {
     //console.log(selectedRowKeys)
-    this.setState({ selectedRowKeys });
+    this.setState({selectedRowKeys});
   };
 
   addInfo = () => {
@@ -152,17 +153,17 @@ class HolidayTable extends Component {
     }
   };
   render() {
-    const { dataSource, loading, pagination, selectedRowKeys } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const {dataSource, loading, pagination, selectedRowKeys} = this.state;
+    const {getFieldDecorator} = this.props.form;
     const rowSelection = {
       onChange: this.onSelectChange,
-      selectedRowKeys,
+      selectedRowKeys
     };
     const columns = [
       {
         title: '警员姓名',
         dataIndex: 'name',
-        key: 'name',
+        key: 'name'
       },
       {
         title: '所属中队',
@@ -170,12 +171,12 @@ class HolidayTable extends Component {
         key: 'groupId',
         render: (text, record, index) => {
           return <span>{this.getGroupName(record.groupId)}</span>;
-        },
+        }
       },
       {
         title: '请假类型',
         dataIndex: 'typeName',
-        key: 'typeName',
+        key: 'typeName'
       },
       {
         title: '开始时间',
@@ -185,7 +186,7 @@ class HolidayTable extends Component {
           return (
             <span>{record.leaveStartTime ? moment(record.leaveStartTime).format('YYYY-MM-DD h:mm:ss') : '--'}</span>
           );
-        },
+        }
       },
       {
         title: '结束时间',
@@ -193,17 +194,17 @@ class HolidayTable extends Component {
         key: 'leaveEndTime',
         render: (text, record, index) => {
           return <span>{record.leaveEndTime ? moment(record.leaveEndTime).format('YYYY-MM-DD h:mm:ss') : '--'}</span>;
-        },
+        }
       },
       {
         title: '请假时长',
         dataIndex: 'duration',
-        key: 'duration',
+        key: 'duration'
       },
       {
         title: '请假事由',
         dataIndex: 'remark',
-        key: 'remark',
+        key: 'remark'
       },
       {
         title: '状态',
@@ -211,7 +212,7 @@ class HolidayTable extends Component {
         key: 'status',
         render: (text, record, index) => {
           return <span>{record.status == 0 ? '待审批' : '已审批'}</span>;
-        },
+        }
       },
       {
         title: '操作',
@@ -224,14 +225,14 @@ class HolidayTable extends Component {
               <span  style={{cursor: "pointer",color:'#1890ff'}} ><Icon type='eye' style={{margin:'0 10px', }} />查看</span>
               </Link>*/}
 
-              <span onClick={() => this.showModal(record.id)} style={{ cursor: 'pointer', color: '#1890ff' }}>
-                <Icon type="edit" style={{ margin: '0 10px' }} />
+              <span onClick={() => this.showModal(record.id)} style={{cursor: 'pointer', color: '#1890ff'}}>
+                <Icon type="edit" style={{margin: '0 10px'}} />
                 审批
               </span>
             </div>
           );
-        },
-      },
+        }
+      }
     ];
     return (
       <div>
@@ -257,16 +258,15 @@ class HolidayTable extends Component {
               </Button>,
               <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
                 同意
-              </Button>,
-            ]}
-          >
+              </Button>
+            ]}>
             <Row gutter={24}>
               <Col xl={24} lg={24} md={24} sm={24} xs={24}>
                 <FormItem label="审批意见：" {...firstLayout}>
                   {getFieldDecorator('remark', {
-                    rules: [{ max: 300, message: '审批意见不超过300' }],
-                    initialValue: '',
-                  })(<Input.TextArea placeholder="" autosize={{ minRows: 2, maxRows: 24 }} />)}
+                    rules: [{max: 300, message: '审批意见不超过300'}],
+                    initialValue: ''
+                  })(<Input.TextArea placeholder="" autosize={{minRows: 2, maxRows: 24}} />)}
                 </FormItem>
               </Col>
             </Row>

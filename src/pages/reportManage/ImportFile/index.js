@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { Row, Col, Card, Button, Input, Select, message, Typography, Upload, Spin } from 'antd';
+import React, {Component} from 'react';
+import {Row, Col, Card, Button, Input, Select, message, Typography, Upload, Spin} from 'antd';
 import 'style/pages/reportManage/ImportFile/index.less';
 
-const { Title } = Typography;
+const {Title} = Typography;
 const InputGroup = Input.Group;
-const { Option } = Select;
+const {Option} = Select;
 
 //文件类型列表
 const fileTypeList = [
   {
     label: '日报',
-    value: '日报',
-  },
+    value: '日报'
+  }
   // {
   //   label: '考勤',
   //   value: '考勤',
@@ -28,15 +28,15 @@ class ImportFile extends Component {
       file: null,
       fileName: '',
       isImport: false,
-      isSpinning: false, //文件是否上传中
+      isSpinning: false //文件是否上传中
     };
   }
   componentDidMount() {
-    React.store.dispatch({ type: 'NAV_DATA', nav: ['上报管理', '导入4w报备'] });
+    React.store.dispatch({type: 'NAV_DATA', nav: ['上报管理', '导入4w报备']});
   }
   handleChange = (value) => {
     this.setState({
-      fileType: value,
+      fileType: value
     });
   };
   // 选择文件
@@ -44,11 +44,11 @@ class ImportFile extends Component {
     this.setState(
       {
         fileName: file.name,
-        file: file,
+        file: file
       },
       () => {
         this.setState({
-          isImport: true,
+          isImport: true
         });
       }
     );
@@ -59,7 +59,7 @@ class ImportFile extends Component {
     this.setState({
       file: null,
       fileName: '',
-      isImport: false,
+      isImport: false
     });
   };
   handleFileChange = (file) => {
@@ -67,7 +67,7 @@ class ImportFile extends Component {
   };
   //导入
   onSubmit = () => {
-    const { file, fileType } = this.state;
+    const {file, fileType} = this.state;
     if (!file) {
       message.error('请选择需要导入的文件！');
       return;
@@ -76,14 +76,14 @@ class ImportFile extends Component {
     if (fileType == '日报') {
       $url = '/api/report/dailyWorkImport';
     }
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('file', file);
     this.setState({
-      isSpinning: true,
+      isSpinning: true
     });
-    React.$ajax.postData($url, formData, { timeout: 30000 }).then((res) => {
+    React.$ajax.postData($url, formData, {timeout: 30000}).then((res) => {
       this.setState({
-        isSpinning: false,
+        isSpinning: false
       });
       if (res && res.code === 0) {
         if (Number(res.data) > 0) {
@@ -97,7 +97,7 @@ class ImportFile extends Component {
   };
 
   render() {
-    const { fileType, fileName, isImport, isSpinning } = this.state;
+    const {fileType, fileName, isImport, isSpinning} = this.state;
     return (
       <Row className="import-file">
         <Col xl={24} lg={24} md={24} sm={24} xs={24}>
@@ -107,7 +107,7 @@ class ImportFile extends Component {
                 企业微信文件导入
               </Title>
               <InputGroup compact className="txt-c">
-                <Select value={fileType} onChange={this.handleChange} style={{ width: 108 }}>
+                <Select value={fileType} onChange={this.handleChange} style={{width: 108}}>
                   {fileTypeList && fileTypeList.length > 0
                     ? fileTypeList.map((item) => {
                         return (
@@ -118,15 +118,14 @@ class ImportFile extends Component {
                       })
                     : null}
                 </Select>
-                <Input style={{ width: '40%' }} value={fileName} placeholder="请选择文件" />
+                <Input style={{width: '40%'}} value={fileName} placeholder="请选择文件" />
                 <Upload
                   // multiple
                   name="file"
                   showUploadList={false}
                   beforeUpload={this.beforeUpload}
                   onChange={this.handleFileChange}
-                  accept={accept}
-                >
+                  accept={accept}>
                   <Button type="primary">选择文件</Button>
                 </Upload>
               </InputGroup>
@@ -134,7 +133,7 @@ class ImportFile extends Component {
                 <Button type="primary" disabled={!isImport} onClick={this.onSubmit}>
                   导入
                 </Button>
-                <Button style={{ marginLeft: 16 }} onClick={this.onCancel}>
+                <Button style={{marginLeft: 16}} onClick={this.onCancel}>
                   取消
                 </Button>
               </div>

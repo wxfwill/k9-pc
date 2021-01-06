@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Table, message, Tag, Badge, Button, Icon, Menu, Dropdown } from 'antd';
+import {Link} from 'react-router-dom';
+import {Table, message, Tag, Badge, Button, Icon, Menu, Dropdown} from 'antd';
 import EditableTable from './EditableTable';
 import Immutable from 'immutable';
 require('style/view/common/deployTable.less');
@@ -14,7 +14,7 @@ class PerformanceRuleTable extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       current: '',
       pageSize: 5,
@@ -23,25 +23,25 @@ class PerformanceRuleTable extends React.Component {
       loading: false,
       filter: '',
       menuList: [],
-      performanceId: '',
+      performanceId: ''
     };
   }
   handleClick = (e) => {
     this.setState({
       current: e.key,
-      performanceId: e.key.split('_')[1],
+      performanceId: e.key.split('_')[1]
     });
   };
   componentWillMount() {
-    this.fetch({ pageSize: 5, currPage: 1, yearMonth: '' });
+    this.fetch({pageSize: 5, currPage: 1, yearMonth: ''});
   }
 
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+    this.setState({loading: true});
     React.$ajax.performance
-      .performanceCheckType({ ...params, id: 1 })
+      .performanceCheckType({...params, id: 1})
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
@@ -50,7 +50,7 @@ class PerformanceRuleTable extends React.Component {
           current: 'id_' + res.data[0].id,
           performanceId: res.data[0].id,
           loading: false,
-          pagination,
+          pagination
         });
       })
       .catch(function (error) {
@@ -59,7 +59,7 @@ class PerformanceRuleTable extends React.Component {
   }
 
   render() {
-    const { menuList, current, performanceId } = this.state;
+    const {menuList, current, performanceId} = this.state;
     return (
       <div>
         <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal">
@@ -67,7 +67,7 @@ class PerformanceRuleTable extends React.Component {
             ? menuList.map((item) => <Menu.Item key={'id_' + item.id}>{item.name}</Menu.Item>)
             : null}
         </Menu>
-        <div style={{ marginTop: '16px' }}>
+        <div style={{marginTop: '16px'}}>
           <EditableTable performanceId={performanceId} />
         </div>
       </div>

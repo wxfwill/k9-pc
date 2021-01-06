@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select, DatePicker } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select, DatePicker} from 'antd';
+import {thirdLayout} from 'util/Layout';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -10,7 +10,7 @@ class SearchForm extends React.Component {
     super(props);
     this.state = {
       expand: true,
-      vaccineType: [],
+      vaccineType: []
     };
   }
   componentWillMount() {
@@ -24,7 +24,7 @@ class SearchForm extends React.Component {
   }
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
+    const {limit} = this.props;
     this.props.form.validateFields((err, values) => {
       limit(values);
     });
@@ -33,17 +33,17 @@ class SearchForm extends React.Component {
     this.props.form.resetFields();
   };
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   render() {
-    let { expand, vaccineType } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const {expand, vaccineType} = this.state;
+    const {getFieldDecorator} = this.props.form;
     const vaccineOption =
       vaccineType &&
       vaccineType.map((item, index) => {
@@ -87,11 +87,11 @@ class SearchForm extends React.Component {
             */}
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
             {/*<a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>

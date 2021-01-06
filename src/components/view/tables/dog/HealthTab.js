@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Table, Button, Tag, Badge, Icon, Spin } from 'antd';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Table, Button, Tag, Badge, Icon, Spin} from 'antd';
+import {Link} from 'react-router-dom';
 import PrevDetailTable from './PrevDetailTabl';
-import { tMap } from 'components/view/common/map';
+import {tMap} from 'components/view/common/map';
 import moment from 'moment';
 import Immutable from 'immutable';
 
@@ -16,7 +16,7 @@ class HealthTable extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 10,
       currPage: 1,
@@ -24,10 +24,10 @@ class HealthTable extends React.Component {
       loading: false,
       filter: null,
       changeLeft: false,
-      showDetail: false,
+      showDetail: false
     };
     this.TMap = null;
-    this.center = { lat: 22.557140481350014, lng: 114.08466517925262 };
+    this.center = {lat: 22.557140481350014, lng: 114.08466517925262};
   }
   componentWillMount() {
     this.fetch();
@@ -36,57 +36,57 @@ class HealthTable extends React.Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let filter = nextProps.filter;
-    let isReset = util.method.isObjectValueEqual(nextProps, this.props);
+    const filter = nextProps.filter;
+    const isReset = util.method.isObjectValueEqual(nextProps, this.props);
     if (!isReset) {
-      let _this = this;
-      this.setState({ filter, data: [] }, function () {
+      const _this = this;
+      this.setState({filter, data: []}, function () {
         _this.fetch({
           pageSize: _this.state.pageSize,
           currPage: 1,
-          ...filter,
+          ...filter
         });
       });
     }
   }
   componentDidMount() {}
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
-    let { filter } = this.state;
+    const {filter} = this.state;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
       currPage: pagination.current,
-      ...filter,
+      ...filter
     });
   };
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+    this.setState({loading: true});
     React.$ajax
-      .postData('/api/braceletInfo/sportDataPage', { ...params },{timeout:20000})
+      .postData('/api/braceletInfo/sportDataPage', {...params}, {timeout: 20000})
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
-        let { lat, lng } = this.center;
+        let {lat, lng} = this.center;
 
         this.setState(
-          { totalPage: res.totalPage, data: [...this.state.data, ...res.list], loading: false, pagination },
+          {totalPage: res.totalPage, data: [...this.state.data, ...res.list], loading: false, pagination},
           () => {
             res.list.forEach((item) => {
               if (item.gpsLocation.length > 0) {
                 lat = item.gpsLocation[0].lat;
                 lng = item.gpsLocation[0].lng;
               }
-              this.TMap = new tMap({ labelText: '', lat, lng, zoom: 13, id: `card_map_${item.id}` });
+              this.TMap = new tMap({labelText: '', lat, lng, zoom: 13, id: `card_map_${item.id}`});
               const path = item.gpsLocation.map((t) => {
                 return new qq.maps.LatLng(t.lat, t.lng);
               });
-              this.TMap.drawPolyline({ path, strokeWeight: 9, strokeColor: '#ff0000' });
+              this.TMap.drawPolyline({path, strokeWeight: 9, strokeColor: '#ff0000'});
             });
           }
         );
@@ -99,32 +99,32 @@ class HealthTable extends React.Component {
     this.setState({
       detailTitle: data,
       showDetail: true,
-      changeLeft: true,
+      changeLeft: true
     });
   };
   handleShow() {
-    let _this = this;
+    const _this = this;
     this.setState(
       {
-        changeLeft: false,
+        changeLeft: false
       },
       function () {
         setTimeout(() => {
           _this.setState({
-            showDetail: false,
+            showDetail: false
           });
         }, 600);
       }
     );
   }
   loadMore = () => {
-    const { currPage, pageSize, filter } = this.state;
+    const {currPage, pageSize, filter} = this.state;
     this.setState(
-      { currPage: currPage + 1 },
+      {currPage: currPage + 1},
       this.fetch({
         currPage: currPage + 1,
         pageSize,
-        ...filter,
+        ...filter
       })
     );
   };
@@ -144,44 +144,44 @@ class HealthTable extends React.Component {
                 fontSize: '12px',
                 height: '16px',
                 lineHeight: '16px',
-                backgroundColor: '#99a9bf',
+                backgroundColor: '#99a9bf'
               }}
             />
           );
-        },
+        }
       },
       {
         title: '记录日期',
         dataIndex: 'uploadDate',
         key: 'uploadDate',
         render: (time) => {
-          let date = new Date(time);
-          let YMD = date.toLocaleString().split(' ')[0];
+          const date = new Date(time);
+          const YMD = date.toLocaleString().split(' ')[0];
           // let HMS = date.toString().split(' ')[4];
-          let vaccineTime = YMD;
+          const vaccineTime = YMD;
           return vaccineTime;
-        },
+        }
       },
       {
         title: '犬名',
         dataIndex: 'dogName',
-        key: 'dogName',
+        key: 'dogName'
       },
       {
         title: '设备ID',
         dataIndex: 'macAddress',
-        key: 'macAddress',
+        key: 'macAddress'
       },
       {
         title: '能量',
         dataIndex: 'consumeEnergy',
-        key: 'consumeEnergy',
+        key: 'consumeEnergy'
       },
       {
         title: '步数',
         dataIndex: 'steps',
-        key: 'steps',
-      },
+        key: 'steps'
+      }
     ];
     return (
       <div className="HealthTab">
@@ -208,12 +208,12 @@ class HealthTable extends React.Component {
         {this.state.totalPage <= this.state.currPage ? (
           ''
         ) : (
-          <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
+          <div style={{textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px'}}>
             {this.state.loading && <Spin />} <Button onClick={this.loadMore}>加载更多</Button>{' '}
           </div>
         )}
         {this.state.data.length == 0 ? (
-          <div style={{ textAlign: 'center', color: '#999', marginTop: 12, height: 32, lineHeight: '32px' }}>
+          <div style={{textAlign: 'center', color: '#999', marginTop: 12, height: 32, lineHeight: '32px'}}>
             {' '}
             暂无数据
           </div>

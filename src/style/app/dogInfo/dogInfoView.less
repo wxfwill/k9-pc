@@ -1,134 +1,134 @@
-.dog_info_view　{
-    position: relative;
-    height: 260px;
-    
-    img {
-        position: absolute;
-        width: 80px;
-        height: 80px;
-        left: 10px;
-        top: 10px;
+.dog_info_view　 {
+  position: relative;
+  height: 260px;
+
+  img {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    left: 10px;
+    top: 10px;
+  }
+  .dec_label {
+    font-size: 12px;
+    color: #989898;
+    line-height: 21px;
+    display: inline-block;
+    // margin-right: 50px;
+  }
+  .fold_info {
+    width: 100%;
+    position: absolute;
+    left: 110px;
+    top: 10px;
+    .fold_h1 {
+      font-weight: 650;
+      font-style: normal;
+      font-size: 16px;
+      color: #666666;
+      line-height: 30px;
     }
-    .dec_label {
-        font-size: 12px;
-        color: #989898;
-        line-height: 21px;
-        display: inline-block;
-        // margin-right: 50px;
+    .dec_content {
+      width: 100%;
+      display: flex;
+      align-content: center;
+      span {
+        flex: 1;
+        line-height: 30px;
+      }
     }
-    .fold_info {
-        width: 100%;
-        position: absolute;
-        left: 110px;
-        top: 10px;
-        .fold_h1 {
-            font-weight: 650;
-            font-style: normal;
-            font-size: 16px;
-            color: #666666;
-            line-height: 30px;
-        }
-        .dec_content {
-            width: 100%;
-            display: flex;
-            align-content: center;
-            span {
-                flex: 1;
-                line-height: 30px;
-            }
-        }
-        .fold_dec {
-            width: 100%;
-            
-        }
+    .fold_dec {
+      width: 100%;
     }
+  }
 }
 .family_tree {
-    .spanOverflow {
-        width: 78px;
-        height: 150px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        display: inline-block;
-    }
-    .second_overflow {
-        width: 91px;
+  .spanOverflow {
+    width: 78px;
+    height: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+  }
+  .second_overflow {
+    width: 91px;
     height: 20px;
     overflow: hidden;
     display: inline-block;
     text-overflow: ellipsis;
     white-space: nowrap;
-    }
+  }
+  width: 100%;
+  .father_tree {
     width: 100%;
-    .father_tree {
-        width: 100%;
-        position: relative;
-        height: 300px;
+    position: relative;
+    height: 300px;
+  }
+  .father_tree {
+    height: 150px;
+    .fParent {
+      line-height: 150px;
+      font-size: 12px;
+      color: #666666;
     }
-    .father_tree {
-        height: 150px;
-        .fParent {
-            line-height: 150px;
-            font-size: 12px;
-            color: #666666;
-        }
+  }
+
+  .tree_bg {
+    top: 40px;
+    left: 100px;
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border: 1px solid #666666;
+    border-right: none;
+    font-size: 12px;
+    color: #666666;
+    .tree_bg_top {
+      position: absolute;
+      left: 75px;
+      //    width: max-content;
+      overflow: hidden;
+      top: -10px;
     }
-    
-    .tree_bg {
-        top: 40px;
-        left: 100px;
-        position: absolute;
-        width: 70px;
-        height: 70px;
-        border: 1px solid #666666;
-        border-right: none;
-        font-size: 12px;
-        color: #666666;
-       .tree_bg_top {
-           position: absolute;
-           left: 75px;
-        //    width: max-content;
-           overflow: hidden;
-           top: -10px
-       }
-       .tree_bg_bot {
-            position: absolute;
-            left: 75px;
-            // width: max-content;
-            overflow: hidden;
-            bottom: -10px
-       }
+    .tree_bg_bot {
+      position: absolute;
+      left: 75px;
+      // width: max-content;
+      overflow: hidden;
+      bottom: -10px;
     }
-    .tree_bg:after {
-        content: '';
-        position: absolute;
-        top: 35px;
-        width: 30px;
-        height: 1px;
-        left: -30px;
-        background:  #666666;
+  }
+  .tree_bg:after {
+    content: '';
+    position: absolute;
+    top: 35px;
+    width: 30px;
+    height: 1px;
+    left: -30px;
+    background: #666666;
+  }
+  .second_tree,
+  .three_tree {
+    top: 24px;
+    left: 274px;
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    .second_tree_inner {
+      left: 37px;
+      width: max-content;
     }
-    .second_tree, .three_tree {
-        top: 24px;
-        left: 274px;
-        position: absolute;
-        width: 35px;
-        height: 35px;
-        .second_tree_inner {
-            left: 37px;
-            width: max-content;
-            
-        }
-    }
-   
-    .second_tree::after,.three_tree::after  {
-        top: 17px;
-        width: 15px;
-        height: 1px;
-        left: -15px;
-    }
-    .three_tree {
-        top: 94px;
-    }
+  }
+
+  .second_tree::after,
+  .three_tree::after {
+    top: 17px;
+    width: 15px;
+    height: 1px;
+    left: -15px;
+  }
+  .three_tree {
+    top: 94px;
+  }
 }

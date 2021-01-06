@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import { Row, Col, Card, Button, message } from 'antd';
+import React, {Component} from 'react';
+import {Row, Col, Card, Button, message} from 'antd';
 import CustomTable from 'components/table/CustomTable';
-import { Link, withRouter } from 'react-router-dom';
-import { RoleHeaderLabel } from './TableHeader';
+import {withRouter} from 'react-router-dom';
+import {RoleHeaderLabel} from './TableHeader';
 import RoleSearch from './RoleSearch';
 import AddEditModel from './AddEditModel';
 import ResourceModel from './ResourceModel';
 import AllotUserModel from './AllotUserModel';
+
 class RoleList extends Component {
   constructor(props) {
     super(props);
@@ -19,46 +20,47 @@ class RoleList extends Component {
       param: {
         roleCode: '',
         roleName: '',
-        roleType: '',
+        roleType: ''
       },
       pagination: {
         pageSize: 10,
         currPage: 1,
-        total: 0,
+        total: 0
       },
       ignorePageRequest: false, // 是否忽略分页
       sortFieldName: '',
       sortType: 'desc',
-      selectedRowKeys: [],
+      selectedRowKeys: []
     };
+  }
+  componentDidMount() {
+    let {param, pagination, sortFieldName, sortType} = this.state;
+    this.fetch(param, pagination, sortFieldName, sortType);
   }
   handleLimit = (data) => {
     console.log(data);
     data.roleName = data.roleName ? data.roleName : '';
     data.roleCode = data.roleCode ? data.roleCode : '';
-    let obj = Object.assign({}, this.state.param, data);
-    this.setState({ param: obj }, () => {
-      let { param, pagination, sortFieldName, sortType } = this.state;
+    const obj = Object.assign({}, this.state.param, data);
+    this.setState({param: obj}, () => {
+      const {param, pagination, sortFieldName, sortType} = this.state;
       this.fetch(param, pagination, sortFieldName, sortType);
     });
   };
-  componentDidMount() {
-    let { param, pagination, sortFieldName, sortType } = this.state;
-    this.fetch(param, pagination, sortFieldName, sortType);
-  }
+
   fetch(param, pagination, sortFieldName, sortType) {
-    this.setState({ loading: true });
-    let obj = Object.assign({}, { param, sortFieldName, sortType }, pagination);
+    this.setState({loading: true});
+    const obj = Object.assign({}, {param, sortFieldName, sortType}, pagination);
     React.$ajax
       .postData('/api/sys/sys-role/page', obj)
       .then((res) => {
-        let resData = res.data;
-        const pagination = { ...this.state.pagination };
+        const resData = res.data;
+        const pagination = {...this.state.pagination};
         pagination.total = resData.totalCount;
         pagination.current = resData.currPage;
         pagination.pageSize = resData.pageSize;
-        let tableArr = resData.list ? resData.list : [];
-        this.setState({ dataSource: tableArr, loading: false, pagination });
+        const tableArr = resData.list ? resData.list : [];
+        this.setState({dataSource: tableArr, loading: false, pagination});
       })
       .catch(function (error) {
         console.log(error);
@@ -68,36 +70,36 @@ class RoleList extends Component {
   handleSelectChange = (arrs) => {
     console.log(arrs);
     console.log('多选==');
-    this.setState({ selectedRowKeys: arrs });
+    this.setState({selectedRowKeys: arrs});
   };
   // 每页条数
   handleShowSizeChange = (cur, size) => {
-    let per = Object.assign({}, this.state.pagination, { currPage: cur, pageSize: size, current: cur });
-    this.setState({ pagination: per }, () => {
+    const per = Object.assign({}, this.state.pagination, {currPage: cur, pageSize: size, current: cur});
+    this.setState({pagination: per}, () => {
       this.fetch(this.state.pagination);
     });
   };
   // 页码
   handleChangeSize = (page, size) => {
     //   let per = Object.assign({}, this.state.pagination, { currPage: pages.current, pageSize: pages.pageSize });
-    let per = Object.assign({}, this.state.pagination, { currPage: page, current: page });
-    this.setState({ pagination: per }, () => {
+    const per = Object.assign({}, this.state.pagination, {currPage: page, current: page});
+    this.setState({pagination: per}, () => {
       this.fetch(this.state.pagination);
     });
   };
   //批量删除
   deleteMore = () => {
-    const { selectedRowKeys, pagination } = this.state;
+    const {selectedRowKeys, pagination} = this.state;
     if (selectedRowKeys.length < 1) {
       message.info('请选择要删除的警员');
     } else {
-      React.$ajax.postData('/api/user/deleteUserByIds', { ids: selectedRowKeys }).then((res) => {
+      React.$ajax.postData('/api/user/deleteUserByIds', {ids: selectedRowKeys}).then((res) => {
         if (res.code == 0) {
           message.success('删除成功');
-          this.setState({ selectedRowKeys: [] }, () => {
+          this.setState({selectedRowKeys: []}, () => {
             this.fetch({
               pageSize: pagination.pageSize,
-              currPage: 1,
+              currPage: 1
             });
           });
         } else {
@@ -108,7 +110,7 @@ class RoleList extends Component {
   };
   // 新增
   addInfo = () => {
-    this.setState({ title: '新增角色' }, () => {
+    this.setState({title: '新增角色'}, () => {
       this.child.openModel();
     });
   };
@@ -116,7 +118,7 @@ class RoleList extends Component {
   viewEdit = (record) => {
     console.log('编辑角色');
     console.log(record);
-    this.setState({ title: '编辑角色', id: record.id }, () => {
+    this.setState({title: '编辑角色', id: record.id}, () => {
       this.child.openModel(record);
     });
     // this.props.history.push({ pathname: '/app/user/infoEditUser', search: `?userId=${record.id}&formStatus=edit` });
@@ -124,10 +126,10 @@ class RoleList extends Component {
   handleFromData = (data) => {
     data.roleType = data.roleType ? data.roleType[1] : null;
     if (this.state.title == '新增角色') {
-      let per = Object.assign({}, data, { id: null });
+      const per = Object.assign({}, data, {id: null});
       this.addAndEitdData(per, '新增角色成功');
     } else {
-      let per = Object.assign({}, data, { id: this.state.id });
+      const per = Object.assign({}, data, {id: this.state.id});
       this.addAndEitdData(per, '编辑角色成功');
     }
   };
@@ -137,7 +139,7 @@ class RoleList extends Component {
       if (res && res.code == 0) {
         message.info(txt, 0.5, () => {
           this.child.handleCancel();
-          let { param, pagination, sortFieldName, sortType } = this.state;
+          const {param, pagination, sortFieldName, sortType} = this.state;
           this.fetch(param, pagination, sortFieldName, sortType);
         });
       }
@@ -150,15 +152,16 @@ class RoleList extends Component {
   };
   // 分配用户
   handleUser = (record) => {
+    console.log(record);
     this.allotUser.openModel();
     // this.props.history.push({ pathname: '/app/user/infoUserData', search: `?userId=${record.id}&formStatus=view` });
   };
   //删除
-  deleteRole = (record, index) => {
-    React.$ajax.postData('/api/sys/sys-role/delBatch', { id: [record.id] }).then((res) => {
+  deleteRole = (record) => {
+    React.$ajax.postData('/api/sys/sys-role/delBatch', {id: [record.id]}).then((res) => {
       if (res.code == 0) {
         message.success('删除成功', 0.5, () => {
-          let { param, pagination, sortFieldName, sortType } = this.state;
+          const {param, pagination, sortFieldName, sortType} = this.state;
           this.fetch(param, pagination, sortFieldName, sortType);
         });
       }
@@ -177,15 +180,14 @@ class RoleList extends Component {
         <AddEditModel
           onRef={(ref) => (this.child = ref)}
           title={this.state.title}
-          handleFromData={this.handleFromData}
-        ></AddEditModel>
+          handleFromData={this.handleFromData}></AddEditModel>
         <ResourceModel onRef={(ref) => (this.resource = ref)}></ResourceModel>
         <AllotUserModel onRef={(ref) => (this.allotUser = ref)}></AllotUserModel>
         <Row gutter={24}>
           <Col xl={24} lg={24} md={24} sm={24} xs={24}>
             <Card bordered={false}>
-              <div style={{ marginBottom: '20px' }}>
-                <Button type="primary" style={{ marginRight: '20px' }} onClick={this.addInfo}>
+              <div style={{marginBottom: '20px'}}>
+                <Button type="primary" style={{marginRight: '20px'}} onClick={this.addInfo}>
                   新增
                 </Button>
                 {/* <Button onClick={this.deleteMore}>批量删除</Button> */}
@@ -198,13 +200,12 @@ class RoleList extends Component {
                 pagination={this.state.pagination}
                 loading={this.state.loading}
                 columns={RoleHeaderLabel(this.viewEdit, this.handleResours, this.deleteRole)}
-                isBordered={true}
+                isBordered
                 isRowSelects={false}
                 rowSelectKeys={this.state.selectedRowKeys}
                 handleChangeSize={this.handleChangeSize}
                 handleShowSizeChange={this.handleShowSizeChange}
-                handleSelectChange={this.handleSelectChange}
-              ></CustomTable>
+                handleSelectChange={this.handleSelectChange}></CustomTable>
             </Card>
           </Col>
         </Row>

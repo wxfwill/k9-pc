@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Form, Table, Button, Icon, Popconfirm, message, Modal, Row, Col, Input, Spin, Card, Tooltip } from 'antd';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Form, Table, Button, Icon, Popconfirm, message, Modal, Row, Col, Input, Spin, Card, Tooltip} from 'antd';
+import {Link} from 'react-router-dom';
 import Immutable from 'immutable';
 import moment from 'moment';
-import { firstLayout } from 'util/Layout';
-const { Meta } = Card;
+import {firstLayout} from 'util/Layout';
+const {Meta} = Card;
 class DogTable extends Component {
   constructor(props) {
     super(props);
@@ -14,25 +14,25 @@ class DogTable extends Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       visible: false,
       pageSize: 10,
       currPage: 1,
       totalPage: 1,
-      selectedRowKeys: [],
+      selectedRowKeys: []
     };
   }
   componentWillMount() {
     this.fetch();
   }
-  fetch = (params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) => {
-    this.setState({ loading: true });
+  fetch = (params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) => {
+    this.setState({loading: true});
     React.$ajax.postData('/api/outdoorTask/listPlanData', params).then((res) => {
       this.setState({
         dataSource: [...this.state.dataSource, ...res.data.list],
         loading: false,
-        totalPage: res.data.totalPage,
+        totalPage: res.data.totalPage
       });
     });
   };
@@ -41,47 +41,47 @@ class DogTable extends Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let filter = nextProps.filter;
-    let _this = this;
-    this.setState({ filter: filter, pageSize: 10, currPage: 1, dataSource: [] }, function () {
-      this.fetch({ pageSize: 10, currPage: 1, ...filter });
+    const filter = nextProps.filter;
+    const _this = this;
+    this.setState({filter: filter, pageSize: 10, currPage: 1, dataSource: []}, function () {
+      this.fetch({pageSize: 10, currPage: 1, ...filter});
     });
   }
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
-      currPage: pagination.current,
+      currPage: pagination.current
     });
   };
   loadMore = () => {
-    const { pageSize, currPage, filter } = this.state;
+    const {pageSize, currPage, filter} = this.state;
     this.setState(
       {
-        currPage: currPage + 1,
+        currPage: currPage + 1
       },
-      this.fetch({ currPage: currPage + 1, pageSize, ...filter })
+      this.fetch({currPage: currPage + 1, pageSize, ...filter})
     );
   };
   deleteOne = (id) => {
-    React.$ajax.postData('/api/outdoorTask/deletePlanByIds', { ids: [id] }).then((res) => {
+    React.$ajax.postData('/api/outdoorTask/deletePlanByIds', {ids: [id]}).then((res) => {
       if (res.code == 0) {
         message.success('删除成功！');
-        this.setState({ dataSource: [], currPage: 1 }, this.fetch({ currPage: 1, pageSize: 10 }));
+        this.setState({dataSource: [], currPage: 1}, this.fetch({currPage: 1, pageSize: 10}));
       }
     });
   };
   render() {
-    const { dataSource, loading, pagination, selectedRowKeys } = this.state;
+    const {dataSource, loading, pagination, selectedRowKeys} = this.state;
 
     return (
       <div>
-        <div style={{ marginBottom: '20px' }}>
-          <Link to={{ pathname: '/app/monitoring/itinerancyAdd', query: { targetText: '新增' } }}>
+        <div style={{marginBottom: '20px'}}>
+          <Link to={{pathname: '/app/monitoring/itinerancyAdd', query: {targetText: '新增'}}}>
             <Button type="primary">新增任务</Button>
           </Link>
         </div>
@@ -89,18 +89,17 @@ class DogTable extends Component {
           {dataSource.map((item) => (
             <Card
               key={item.id}
-              style={{ display: 'inline-block', width: 300, margin: '0 10px 10px 0' }}
+              style={{display: 'inline-block', width: 300, margin: '0 10px 10px 0'}}
               actions={[
                 // <Link to={{pathname:'/app/monitoring/itinerancyEdit', query: {editItem: item}}}>
                 // <span><Icon type="edit" style={{marginRight: 7}} />修改</span></Link>,
                 <span>
                   <Popconfirm title="确认删除此外勤任务信息?" onConfirm={() => this.deleteOne(item.id)}>
-                    <Icon type="delete" style={{ marginRight: 7 }} />
+                    <Icon type="delete" style={{marginRight: 7}} />
                     删除
                   </Popconfirm>
-                </span>,
-              ]}
-            >
+                </span>
+              ]}>
               <Meta
                 // avatar={}
                 title={`任务名称: ${item.name}`}
@@ -111,9 +110,8 @@ class DogTable extends Component {
                       wordBreak: 'keep-all',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
-                  >
+                      textOverflow: 'ellipsis'
+                    }}>
                     <Tooltip autoAdjustOverflow="false" placement="topLeft" title={item.userNames.join(',')}>
                       {' '}
                       人员：{item.userNames.join(',')}
@@ -129,11 +127,10 @@ class DogTable extends Component {
                         wordBreak: 'keep-all',
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                      }}
-                    >
+                        textOverflow: 'ellipsis'
+                      }}>
                       勤务说明：
-                      <p style={{ marginBottom: 0 }}>{item.content}</p>
+                      <p style={{marginBottom: 0}}>{item.content}</p>
                     </div>
                   </Tooltip>,
                   <div key={item.id + '04'} className="item">
@@ -143,7 +140,7 @@ class DogTable extends Component {
                   <div key={item.id + '05'} className="item">
                     <span>发布人员：</span>
                     <span>{item.operator ? item.operator : '--'}</span>
-                  </div>,
+                  </div>
                 ]}
               />
             </Card>
@@ -151,12 +148,12 @@ class DogTable extends Component {
           {this.state.totalPage <= this.state.currPage ? (
             ''
           ) : (
-            <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
+            <div style={{textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px'}}>
               {this.state.loading && <Spin />} <Button onClick={this.loadMore}>加载更多</Button>{' '}
             </div>
           )}
           {this.state.dataSource.length == 0 ? (
-            <div style={{ textAlign: 'center', color: '#999', marginTop: 12, height: 32, lineHeight: '32px' }}>
+            <div style={{textAlign: 'center', color: '#999', marginTop: 12, height: 32, lineHeight: '32px'}}>
               {' '}
               暂无数据
             </div>

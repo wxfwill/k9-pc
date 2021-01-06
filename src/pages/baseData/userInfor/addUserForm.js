@@ -1,15 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal } from 'antd';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {connect} from 'react-redux';
+import {Row, Col, Card, Form, Input, Icon, Radio, DatePicker, Button, Select, Upload, message, Modal} from 'antd';
+import {firstLayout, secondLayout} from 'util/Layout';
 import httpAjax from 'libs/httpAjax';
-import { regExp } from 'libs/util/index';
+import {regExp} from 'libs/util/index';
 import moment from 'moment';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-const { TextArea } = Input;
-const { MonthPicker } = DatePicker;
+const {TextArea} = Input;
+const {MonthPicker} = DatePicker;
 require('style/app/dogInfo/addDogForm.less');
 class FormCompomnent extends React.Component {
   constructor(props) {
@@ -23,73 +23,73 @@ class FormCompomnent extends React.Component {
       userInfor: '',
       previewVisible: false,
       previewImage: '',
-      showImgUrl: '',
+      showImgUrl: ''
     };
   }
   componentWillMount() {
     //工作单位
     httpAjax('post', config.apiUrl + '/api/basicData/workUnitList', {}).then((res) => {
       if (res.code == 0) {
-        this.setState({ workUnitList: res.data });
+        this.setState({workUnitList: res.data});
       }
     });
     //角色
     httpAjax('post', config.apiUrl + '/api/userCenter/roles', {}).then((res) => {
       if (res.code == 0) {
-        this.setState({ roleList: res.data });
+        this.setState({roleList: res.data});
       }
     });
     //所属中队
     httpAjax('post', config.apiUrl + '/api/basicData/userGroup', {}).then((res) => {
       if (res.code == 0) {
-        this.setState({ groupList: res.data });
+        this.setState({groupList: res.data});
       }
     });
     const formStatus = sessionStorage.getItem('formStatus'); //this.props.location.query&&this.props.location.query.targetText;
     const userId = sessionStorage.getItem('singleUserId'); //this.props.location.query&&this.props.location.query.dogId;
     const dutyList = JSON.parse(sessionStorage.getItem('dutyList'));
-    this.setState({ userId, dutyList });
-    this.setState({ userId, dutyList });
+    this.setState({userId, dutyList});
+    this.setState({userId, dutyList});
     if (formStatus == 'view') {
-      this.setState({ disabled: true, isInitialValue: true });
+      this.setState({disabled: true, isInitialValue: true});
     } else if (formStatus == 'edit') {
-      this.setState({ isInitialValue: true });
+      this.setState({isInitialValue: true});
     } else if (formStatus == 'add') {
-      this.setState({ isInitialValue: false });
+      this.setState({isInitialValue: false});
     }
     //根据id获取单个警员数据
     if (userId) {
-      httpAjax('post', config.apiUrl + '/api/user/info', { id: userId }).then((res) => {
+      httpAjax('post', config.apiUrl + '/api/user/info', {id: userId}).then((res) => {
         if (res.code == 0) {
-          this.setState({ userInfor: res.data });
+          this.setState({userInfor: res.data});
         }
       });
     }
   }
-  handleCancel = () => this.setState({ previewVisible: false });
+  handleCancel = () => this.setState({previewVisible: false});
   handlePreview = (params) => {
     this.setState({
-      previewVisible: true,
+      previewVisible: true
     });
   };
   handleChange = (fileList) => {
-    this.setState({ fileList });
+    this.setState({fileList});
   };
   beforeUpload(file) {
-    let _this = this;
-    let url = window.URL.createObjectURL(file);
+    const _this = this;
+    const url = window.URL.createObjectURL(file);
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
       message.error('Image must smaller than 2MB!');
       return false;
     }
     if (isLt2M) {
-      this.setState(({ fileList }) => ({
+      this.setState(({fileList}) => ({
         fileList: [...fileList, file],
-        previewImage: url,
+        previewImage: url
       }));
     }
-    let promise = new Promise(function (resolve, reject) {
+    const promise = new Promise(function (resolve, reject) {
       if (isLt2M) {
         // resolve(_this.state.fileList);
       } else {
@@ -99,16 +99,16 @@ class FormCompomnent extends React.Component {
     return promise;
   }
   handleClear = () => {
-    this.setState({ fileList: [], previewImage: '' });
+    this.setState({fileList: [], previewImage: ''});
   };
   //检查警员编号是否重复
   checkNumber = (rule, value, callback) => {
     const numberValue = this.props.form.getFieldValue('number');
-    const { userInfor, isInitialValue } = this.state;
-    let param = new FormData();
+    const {userInfor, isInitialValue} = this.state;
+    const param = new FormData();
     const userNumber = userInfor && userInfor.number;
-    let configs = {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    const configs = {
+      headers: {'Content-Type': 'multipart/form-data'}
     };
     param.append('number', value);
     const re = /^[A-Za-z\d]{1,20}$/;
@@ -130,14 +130,14 @@ class FormCompomnent extends React.Component {
   };
   handleSubmit = (e) => {
     e.preventDefault();
-    const { userId, fileList, userInfor } = this.state;
-    const { id } = JSON.parse(sessionStorage.getItem('user'));
+    const {userId, fileList, userInfor} = this.state;
+    const {id} = JSON.parse(sessionStorage.getItem('user'));
     const successMess = userId ? '修改成功' : '添加成功';
     const errorMess = userId ? '修改失败' : '添加失败';
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const options = values;
-        let param = new FormData(); // 创建form对象
+        const param = new FormData(); // 创建form对象
         if (options.birthday) {
           options.birthday = moment(new Date(values.birthday)).format('YYYY-MM-DD');
         }
@@ -153,8 +153,8 @@ class FormCompomnent extends React.Component {
           param.append('photoFile', fileList.pop());
           param.append('imgOperation', 0);
         }
-        let configs = {
-          headers: { 'Content-Type': 'multipart/form-data' },
+        const configs = {
+          headers: {'Content-Type': 'multipart/form-data'}
         };
         if (userId) {
           param.append('id', userId);
@@ -177,7 +177,7 @@ class FormCompomnent extends React.Component {
     });
   };
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     const {
       showImgUrl,
       previewVisible,
@@ -191,7 +191,7 @@ class FormCompomnent extends React.Component {
       dutyList,
       userId,
       roleList,
-      groupList,
+      groupList
     } = this.state;
     const uploadButton = (
       <div>
@@ -239,7 +239,7 @@ class FormCompomnent extends React.Component {
       <div className="AddDogForm">
         <Row gutter={24}>
           <Col span={24}>
-            <Card title="警员信息" bordered={true}>
+            <Card title="警员信息" bordered>
               <Col xxl={16} xl={22} lg={24} md={24} sm={24} xs={24}>
                 <Form className="ant-advanced-search-form">
                   <Row gutter={24}>
@@ -247,10 +247,10 @@ class FormCompomnent extends React.Component {
                       <FormItem label="姓名" {...secondLayout}>
                         {getFieldDecorator('name', {
                           rules: [
-                            { required: true, message: '请输入姓名' },
-                            { max: 10, message: '姓名长度不超过10' },
+                            {required: true, message: '请输入姓名'},
+                            {max: 10, message: '姓名长度不超过10'}
                           ],
-                          initialValue: isInitialValue ? (userInfor.name ? userInfor.name : '') : '',
+                          initialValue: isInitialValue ? (userInfor.name ? userInfor.name : '') : ''
                         })(<Input placeholder="警员姓名" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -261,10 +261,10 @@ class FormCompomnent extends React.Component {
                           rules: [
                             {
                               pattern: '(^[0-9]{15}$)|(^[0-9]{18}$)|(^[0-9]{17}([0-9]|X|x)$)',
-                              message: '身份证输入不合法',
-                            },
+                              message: '身份证输入不合法'
+                            }
                           ],
-                          initialValue: isInitialValue ? (userInfor.identityNo ? userInfor.identityNo : '') : '',
+                          initialValue: isInitialValue ? (userInfor.identityNo ? userInfor.identityNo : '') : ''
                         })(<Input placeholder="身份证" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -278,7 +278,7 @@ class FormCompomnent extends React.Component {
                             ? userInfor.sex == 1 || userInfor.sex == 0
                               ? userInfor.sex
                               : ''
-                            : 1,
+                            : 1
                         })(
                           <RadioGroup disabled={disabled}>
                             <Radio value={1}>男</Radio>
@@ -295,7 +295,7 @@ class FormCompomnent extends React.Component {
                             ? userInfor.birthday
                               ? userInfor.birthday && moment(new Date(userInfor.birthday))
                               : ''
-                            : '',
+                            : ''
                         })(<DatePicker disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -305,8 +305,8 @@ class FormCompomnent extends React.Component {
                       <FormItem label="民族" {...secondLayout}>
                         {getFieldDecorator('nation', {
                           //rules: [{ required: true, message: '请输入民族' }],
-                          rules: [{ max: 10, message: '民族长度不超过10' }],
-                          initialValue: isInitialValue ? (userInfor.nation ? userInfor.nation : '') : '',
+                          rules: [{max: 10, message: '民族长度不超过10'}],
+                          initialValue: isInitialValue ? (userInfor.nation ? userInfor.nation : '') : ''
                         })(<Input placeholder="民族" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -314,8 +314,8 @@ class FormCompomnent extends React.Component {
                       <FormItem label="籍贯" {...secondLayout}>
                         {getFieldDecorator('birthplace', {
                           //rules:[{required:true,message:'请输入籍贯'}],
-                          rules: [{ max: 25, message: '籍贯长度不超过25' }],
-                          initialValue: isInitialValue ? (userInfor.birthplace ? userInfor.birthplace : '') : '',
+                          rules: [{max: 25, message: '籍贯长度不超过25'}],
+                          initialValue: isInitialValue ? (userInfor.birthplace ? userInfor.birthplace : '') : ''
                         })(<Input placeholder="籍贯" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -325,11 +325,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="政治面貌" {...secondLayout}>
                         {getFieldDecorator('politicsStatus', {
                           //rules: [{ required: true, message: '请选择政治面貌' }],
-                          initialValue: isInitialValue
-                            ? userInfor.politicsStatus
-                              ? userInfor.politicsStatus
-                              : ''
-                            : '',
+                          initialValue: isInitialValue ? (userInfor.politicsStatus ? userInfor.politicsStatus : '') : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择政治面貌</Option>
@@ -344,8 +340,8 @@ class FormCompomnent extends React.Component {
                       <FormItem label="毕业院校" {...secondLayout}>
                         {getFieldDecorator('university', {
                           //rules:[{required:true,message:'请输入毕业院校'}],
-                          rules: [{ max: 25, message: '籍贯长度不超过25' }],
-                          initialValue: isInitialValue ? (userInfor.university ? userInfor.university : '') : '',
+                          rules: [{max: 25, message: '籍贯长度不超过25'}],
+                          initialValue: isInitialValue ? (userInfor.university ? userInfor.university : '') : ''
                         })(<Input placeholder="毕业院校" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -355,7 +351,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="身份类别" {...secondLayout}>
                         {getFieldDecorator('dutyType', {
                           //rules: [{ required: true, message: '请选择身份类别' }],
-                          initialValue: isInitialValue ? (userInfor.dutyType ? userInfor.dutyType : '') : '',
+                          initialValue: isInitialValue ? (userInfor.dutyType ? userInfor.dutyType : '') : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择身份类别</Option>
@@ -371,7 +367,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="学历" {...secondLayout}>
                         {getFieldDecorator('degree', {
                           //rules:[{required:true,message:'请选择学历'}],
-                          initialValue: isInitialValue ? (userInfor.degree ? userInfor.degree : '') : '',
+                          initialValue: isInitialValue ? (userInfor.degree ? userInfor.degree : '') : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择学历</Option>
@@ -393,7 +389,7 @@ class FormCompomnent extends React.Component {
                             ? userInfor.incumbent == 1 || userInfor.incumbent == 0
                               ? userInfor.incumbent
                               : ''
-                            : 1,
+                            : 1
                         })(
                           <RadioGroup disabled={disabled}>
                             <Radio value={0}>离职</Radio>
@@ -406,7 +402,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="专业" {...secondLayout}>
                         {getFieldDecorator('major', {
                           //rules:[{required:true,message:'请选择专业'}],
-                          initialValue: isInitialValue ? (userInfor.major ? userInfor.major : '') : '',
+                          initialValue: isInitialValue ? (userInfor.major ? userInfor.major : '') : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择专业</Option>
@@ -425,7 +421,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="职务" {...secondLayout}>
                         {getFieldDecorator('duty', {
                           //rules: [{ required: true, message: '请选择职务' }],
-                          initialValue: isInitialValue ? (userInfor.duty ? userInfor.duty : '') : '',
+                          initialValue: isInitialValue ? (userInfor.duty ? userInfor.duty : '') : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择职务</Option>
@@ -438,7 +434,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="资格证书" {...secondLayout}>
                         {getFieldDecorator('credentials', {
                           //rules: [{ required: true, message: '请选择资格证书' }],
-                          initialValue: isInitialValue ? (userInfor.credentials ? userInfor.credentials : '') : '',
+                          initialValue: isInitialValue ? (userInfor.credentials ? userInfor.credentials : '') : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择资格证书</Option>
@@ -456,7 +452,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="职称" {...secondLayout}>
                         {getFieldDecorator('title', {
                           //rules: [{ required: true, message: '请选择职称' }],
-                          initialValue: isInitialValue ? (userInfor.title ? userInfor.title : '') : '',
+                          initialValue: isInitialValue ? (userInfor.title ? userInfor.title : '') : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择职称</Option>
@@ -471,8 +467,8 @@ class FormCompomnent extends React.Component {
                       <FormItem label="证书编号" {...secondLayout}>
                         {getFieldDecorator('certificateNo', {
                           //rules: [{ required: true, message: '请填写证书编号' }],
-                          rules: [{ pattern: '^[A-Za-z0-9]{1,20}$', message: '证书编号长度不超过20的数字或字母' }],
-                          initialValue: isInitialValue ? (userInfor.certificateNo ? userInfor.certificateNo : '') : '',
+                          rules: [{pattern: '^[A-Za-z0-9]{1,20}$', message: '证书编号长度不超过20的数字或字母'}],
+                          initialValue: isInitialValue ? (userInfor.certificateNo ? userInfor.certificateNo : '') : ''
                         })(<Input placeholder="证书编号" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -482,7 +478,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="工作单位" {...secondLayout}>
                         {getFieldDecorator('unitId', {
                           //rules: [{ required: true, message: '请选择工作单位' }],
-                          initialValue: isInitialValue ? (userInfor.unitId ? userInfor.unitId : '') : '',
+                          initialValue: isInitialValue ? (userInfor.unitId ? userInfor.unitId : '') : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择工作单位</Option>
@@ -499,10 +495,10 @@ class FormCompomnent extends React.Component {
                             {
                               pattern:
                                 '(([0-9]{11})|^(([0-9]{7,8})|([0-9]{4}|[0-9]{3})-([0-9]{7,8})|([0-9]{4}|[0-9]{3})-([0-9]{7,8})-([0-9]{4}|[0-9]{3}|[0-9]{2}|[0-9]{1})|([0-9]{7,8})-([0-9]{4}|[0-9]{3}|[0-9]{2}|[0-9]{1}))$)',
-                              message: '请输入正确的手机号码格式',
-                            },
+                              message: '请输入正确的手机号码格式'
+                            }
                           ],
-                          initialValue: isInitialValue ? (userInfor.telphone ? userInfor.telphone : '') : '',
+                          initialValue: isInitialValue ? (userInfor.telphone ? userInfor.telphone : '') : ''
                         })(<Input placeholder="电话号码" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -512,10 +508,10 @@ class FormCompomnent extends React.Component {
                       <FormItem label="警员编号" {...secondLayout}>
                         {getFieldDecorator('number', {
                           rules: [
-                            { required: true, whitespace: true, message: '请填写警员编号' },
-                            { validator: this.checkNumber },
+                            {required: true, whitespace: true, message: '请填写警员编号'},
+                            {validator: this.checkNumber}
                           ],
-                          initialValue: isInitialValue ? (userInfor.number ? userInfor.number : '') : '',
+                          initialValue: isInitialValue ? (userInfor.number ? userInfor.number : '') : ''
                         })(<Input placeholder="警员编号" disabled={disabled} />)}
                       </FormItem>
                     </Col>
@@ -523,7 +519,7 @@ class FormCompomnent extends React.Component {
                       <FormItem label="所属中队" {...secondLayout}>
                         {getFieldDecorator('groupId', {
                           //rules: [{ required: true, message: '请选择所属中队' }],
-                          initialValue: isInitialValue ? (userInfor.groupId ? userInfor.groupId : '') : '',
+                          initialValue: isInitialValue ? (userInfor.groupId ? userInfor.groupId : '') : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择所属中队</Option>
@@ -537,8 +533,8 @@ class FormCompomnent extends React.Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="角色" {...secondLayout}>
                         {getFieldDecorator('role', {
-                          rules: [{ required: true, message: '请选择角色' }],
-                          initialValue: isInitialValue ? (userInfor.role ? userInfor.role : '') : '',
+                          rules: [{required: true, message: '请选择角色'}],
+                          initialValue: isInitialValue ? (userInfor.role ? userInfor.role : '') : ''
                         })(
                           <Select disabled={disabled}>
                             <Option value={''}>请选择角色</Option>
@@ -551,9 +547,9 @@ class FormCompomnent extends React.Component {
                   <FormItem label="个人履历" {...firstLayout}>
                     {getFieldDecorator('remark', {
                       //rules: [{ required: true, message: '请输入个人履历' }],
-                      rules: [{ max: 500, message: '个人履历长度不超过500' }],
-                      initialValue: isInitialValue ? (userInfor.remark ? userInfor.remark : '') : '',
-                    })(<TextArea placeholder="个人履历" autosize={{ minRows: 3, maxRows: 6 }} disabled={disabled} />)}
+                      rules: [{max: 500, message: '个人履历长度不超过500'}],
+                      initialValue: isInitialValue ? (userInfor.remark ? userInfor.remark : '') : ''
+                    })(<TextArea placeholder="个人履历" autosize={{minRows: 3, maxRows: 6}} disabled={disabled} />)}
                   </FormItem>
                   <FormItem label="警员图片" {...firstLayout}>
                     <Upload
@@ -564,13 +560,12 @@ class FormCompomnent extends React.Component {
                       accept="image/*"
                       listType="picture-card"
                       onChange={this.handleChange.bind(this)}
-                      beforeUpload={this.beforeUpload.bind(this)}
-                    >
+                      beforeUpload={this.beforeUpload.bind(this)}>
                       {isInitialValue && userInfor.photo ? (
                         fileList.length == 0 ? (
                           <img
                             src={config.apiUrl + `/api/user/img?id=${userId}&t=${new Date().getTime()}`}
-                            style={{ width: '100px', height: '100px' }}
+                            style={{width: '100px', height: '100px'}}
                             alt=""
                           />
                         ) : (
@@ -586,7 +581,7 @@ class FormCompomnent extends React.Component {
                       <div className="pre-container">
                         <img
                           src={previewImage}
-                          style={{ width: '100px', height: '100px' }}
+                          style={{width: '100px', height: '100px'}}
                           alt=""
                           onClick={() => this.handlePreview()}
                         />
@@ -594,17 +589,17 @@ class FormCompomnent extends React.Component {
                       </div>
                     ) : null}
                     <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                      <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                      <img alt="example" style={{width: '100%'}} src={previewImage} />
                     </Modal>
                   </FormItem>
 
                   {!disabled ? (
                     <Row>
-                      <Col span={24} style={{ textAlign: 'center', marginTop: '40px' }}>
+                      <Col span={24} style={{textAlign: 'center', marginTop: '40px'}}>
                         <Button type="primary" htmlType="submit" onClick={this.handleSubmit.bind(this)}>
                           提交
                         </Button>
-                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                        <Button style={{marginLeft: 8}} onClick={this.handleReset}>
                           清空
                         </Button>
                       </Col>
@@ -624,7 +619,7 @@ class FormCompomnent extends React.Component {
 const AddUserForm = Form.create()(FormCompomnent);
 
 const mapStateToProps = (state) => ({
-  loginState: state.login,
+  loginState: state.login
 });
 export default connect(mapStateToProps)(AddUserForm);
 

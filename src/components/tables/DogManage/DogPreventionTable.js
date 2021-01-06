@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Table, Button, Icon, Popconfirm, message, Tag } from 'antd';
+import React, {Component} from 'react';
+import {Table, Button, Icon, Popconfirm, message, Tag} from 'antd';
 import moment from 'moment';
 import Immutable from 'immutable';
-import { Link, withRouter } from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 class DogTable extends Component {
   constructor(props) {
     super(props);
@@ -12,11 +12,11 @@ class DogTable extends Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 10,
       currPage: 1,
-      selectedRowKeys: [],
+      selectedRowKeys: []
     };
   }
   componentWillMount() {
@@ -26,48 +26,48 @@ class DogTable extends Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let filter = nextProps.filter;
-    let _this = this;
-    this.setState({ filter: filter }, function () {
+    const filter = nextProps.filter;
+    const _this = this;
+    this.setState({filter: filter}, function () {
       _this.fetch({
         pageSize: _this.state.pageSize,
         currPage: 1,
         name: filter && filter.name,
-        status: filter && filter.status,
+        status: filter && filter.status
       });
     });
   }
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+    this.setState({loading: true});
     React.$ajax
-      .postData('/api/vaccineRecord/listVaccinePlan', { ...params })
+      .postData('/api/vaccineRecord/listVaccinePlan', {...params})
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
-        this.setState({ dataSource: res.list, loading: false, pagination });
+        this.setState({dataSource: res.list, loading: false, pagination});
       })
       .catch(function (error) {
         console.log(error);
       });
   }
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
-    let { filter } = this.state;
+    const {filter} = this.state;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
       currPage: pagination.current,
-      ...filter,
+      ...filter
     });
   };
   onSelectChange = (selectedRowKeys) => {
     //console.log(selectedRowKeys)
-    this.setState({ selectedRowKeys });
+    this.setState({selectedRowKeys});
   };
   renderVaccineType = (type) => {
     switch (type) {
@@ -87,13 +87,13 @@ class DogTable extends Component {
   };
   //删除犬只
   deleteDogs = (record, index) => {
-    let { pagination } = this.state;
-    React.$ajax.postData('/api/vaccineRecord/deletePlanByIds', { ids: [record.id] }).then((res) => {
+    const {pagination} = this.state;
+    React.$ajax.postData('/api/vaccineRecord/deletePlanByIds', {ids: [record.id]}).then((res) => {
       if (res.code == 0) {
         message.success('删除成功');
         this.fetch({
           pageSize: pagination.pageSize,
-          currPage: pagination.current,
+          currPage: pagination.current
         });
       } else {
         message.serror('删除失败');
@@ -102,17 +102,17 @@ class DogTable extends Component {
   };
   //批量删除
   deleteMore = () => {
-    const { selectedRowKeys, pagination } = this.state;
+    const {selectedRowKeys, pagination} = this.state;
     if (selectedRowKeys.length < 1) {
       message.warn('请选择要删除的犬只');
     } else {
-      React.$ajax.postData('/api/vaccineRecord/deletePlanByIds', { ids: selectedRowKeys }).then((res) => {
+      React.$ajax.postData('/api/vaccineRecord/deletePlanByIds', {ids: selectedRowKeys}).then((res) => {
         if (res.code == 0) {
           message.success('删除成功');
-          this.setState({ selectedRowKeys: [] });
+          this.setState({selectedRowKeys: []});
           this.fetch({
             pageSize: pagination.pageSize,
-            currPage: pagination.current,
+            currPage: pagination.current
           });
         } else {
           message.error('删除失败');
@@ -126,14 +126,14 @@ class DogTable extends Component {
   };
   //查看
   viewDetail = (record) => {
-    const { history } = this.props;
+    const {history} = this.props;
     const role = this.props.location.pathname.indexOf('app') > 0 ? 'app' : 'view';
     history.push({
       pathname: `/${role}/dog/preventionView`,
       query: {
         id: record.id,
-        targetText: '查看',
-      },
+        targetText: '查看'
+      }
     });
   };
   editInfo = (record) => {
@@ -141,11 +141,11 @@ class DogTable extends Component {
     sessionStorage.setItem('formStatus', 'edit');
   };
   render() {
-    const { dataSource, loading, pagination, selectedRowKeys } = this.state;
+    const {dataSource, loading, pagination, selectedRowKeys} = this.state;
     const role = this.props.location.pathname.indexOf('app') > 0 ? 'app' : 'view';
     const rowSelection = {
       onChange: this.onSelectChange,
-      selectedRowKeys,
+      selectedRowKeys
     };
     const columns = [
       {
@@ -154,15 +154,15 @@ class DogTable extends Component {
         key: 'id',
         render: (id) => {
           return <Tag color="blue">{id}</Tag>;
-        },
+        }
       },
       {
         title: '计划名称',
-        dataIndex: 'name',
+        dataIndex: 'name'
       },
       {
         title: '药物名称',
-        dataIndex: 'vaccineTypeNames',
+        dataIndex: 'vaccineTypeNames'
         // render:(text)=>{
         //   return this.renderVaccineType(text)
         // }
@@ -172,7 +172,7 @@ class DogTable extends Component {
         dataIndex: 'planDate',
         render: (text, record, index) => {
           return moment(text).format('YYYY-MM-DD');
-        },
+        }
       },
       {
         title: '执行日期',
@@ -182,14 +182,14 @@ class DogTable extends Component {
             return moment(text).format('YYYY-MM-DD');
           }
           return '--';
-        },
+        }
       },
       {
         title: '状态',
         dataIndex: 'status',
         render: (text, record, index) => {
           return text == 0 ? '未执行' : '已执行';
-        },
+        }
       },
       // {
       //   title:'下次疫苗提醒时间',
@@ -206,46 +206,45 @@ class DogTable extends Component {
             <div>
               {record.status == 1 ? (
                 <span
-                  style={{ cursor: 'auto', color: 'rgb(208, 215, 222)', display: 'inline-block', marginRight: '10px' }}
-                >
+                  style={{cursor: 'auto', color: 'rgb(208, 215, 222)', display: 'inline-block', marginRight: '10px'}}>
                   执行
                 </span>
               ) : (
-                <Link to={{ pathname: `/${role}/dog/preventionTodo`, query: { record: record, targetText: '编辑' } }}>
-                  <span style={{ cursor: 'pointer', color: '#1890ff', display: 'inline-block', marginRight: '10px' }}>
+                <Link to={{pathname: `/${role}/dog/preventionTodo`, query: {record: record, targetText: '编辑'}}}>
+                  <span style={{cursor: 'pointer', color: '#1890ff', display: 'inline-block', marginRight: '10px'}}>
                     执行
                   </span>
                 </Link>
               )}
 
-              <span style={{ cursor: 'pointer', color: '#1890ff' }} onClick={() => this.viewDetail(record)}>
+              <span style={{cursor: 'pointer', color: '#1890ff'}} onClick={() => this.viewDetail(record)}>
                 查看
               </span>
               {record.status == 1 ? (
-                <Icon type="edit" style={{ cursor: 'auto', color: 'rgb(208, 215, 222)', margin: '0 10px' }} />
+                <Icon type="edit" style={{cursor: 'auto', color: 'rgb(208, 215, 222)', margin: '0 10px'}} />
               ) : (
-                <Link to={{ pathname: `/${role}/dog/preventionEdit`, query: { record: record, targetText: '编辑' } }}>
+                <Link to={{pathname: `/${role}/dog/preventionEdit`, query: {record: record, targetText: '编辑'}}}>
                   <Icon
                     type="edit"
-                    style={{ cursor: 'pointer', color: '#1890ff', margin: '0 10px' }}
+                    style={{cursor: 'pointer', color: '#1890ff', margin: '0 10px'}}
                     onClick={() => this.editInfo(record)}
                   />
                 </Link>
               )}
 
               <Popconfirm title="确认删除此计划信息?" onConfirm={() => this.deleteDogs(record)}>
-                <Icon type="delete" style={{ cursor: 'pointer', color: '#1890ff' }} />
+                <Icon type="delete" style={{cursor: 'pointer', color: '#1890ff'}} />
               </Popconfirm>
             </div>
           );
-        },
-      },
+        }
+      }
     ];
     return (
       <div>
-        <div style={{ marginBottom: '20px' }}>
-          <Button type="primary" style={{ marginRight: '20px' }} onClick={this.addInfo}>
-            <Link to={{ pathname: '/app/dog/preventionAdd' }}>新增防治记录</Link>
+        <div style={{marginBottom: '20px'}}>
+          <Button type="primary" style={{marginRight: '20px'}} onClick={this.addInfo}>
+            <Link to={{pathname: '/app/dog/preventionAdd'}}>新增防治记录</Link>
           </Button>
           {/*<Button style={{margin:'0 20px'}}>导出</Button>*/}
 

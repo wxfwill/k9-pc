@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Table, Button, Icon, Popconfirm, message } from 'antd';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Table, Button, Icon, Popconfirm, message} from 'antd';
+import {Link} from 'react-router-dom';
 import VideoCameraDlg from './VideoCameraDlg';
 import Immutable from 'immutable';
 class DogTable extends Component {
@@ -12,11 +12,11 @@ class DogTable extends Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 10,
       currPage: 1,
-      selectedRowKeys: [],
+      selectedRowKeys: []
     };
   }
   componentWillMount() {
@@ -26,57 +26,58 @@ class DogTable extends Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let filter = nextProps.filter;
-    let _this = this;
-    this.setState({ filter: filter }, function () {
+    const filter = nextProps.filter;
+    const _this = this;
+    this.setState({filter: filter}, function () {
       _this.fetch({
         pageSize: _this.state.pageSize,
         currPage: 1,
         houseId: filter && filter.houseId,
-        name: filter && filter.name,
+        name: filter && filter.name
       });
     });
   }
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
-    React.$ajax.postData('/api/dogRoom/listRoomData', { ...params })
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+    this.setState({loading: true});
+    React.$ajax
+      .postData('/api/dogRoom/listRoomData', {...params})
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
-        this.setState({ dataSource: res.list, loading: false, pagination });
+        this.setState({dataSource: res.list, loading: false, pagination});
       })
       .catch(function (error) {
         console.log(error);
       });
   }
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
-      currPage: pagination.current,
+      currPage: pagination.current
     });
   };
   onSelectChange = (selectedRowKeys) => {
     //console.log(selectedRowKeys)
-    this.setState({ selectedRowKeys });
+    this.setState({selectedRowKeys});
   };
   //删除
   deleteDogs = (record, index) => {
-    let { pagination } = this.state;
+    const {pagination} = this.state;
     console.log('删除成功的额信息');
     console.log(pagination);
-    React.$ajax.postData('/api/dogRoom/deleteByIds', { ids: [record.id] }).then((res) => {
+    React.$ajax.postData('/api/dogRoom/deleteByIds', {ids: [record.id]}).then((res) => {
       if (res.code == 0) {
         message.success('删除成功');
         this.fetch({
           pageSize: pagination.pageSize,
-          currPage: pagination.current,
+          currPage: pagination.current
         });
       } else {
         message.serror('删除失败');
@@ -85,16 +86,16 @@ class DogTable extends Component {
   };
   //批量删除
   deleteMore = () => {
-    const { selectedRowKeys, pagination } = this.state;
+    const {selectedRowKeys, pagination} = this.state;
     if (selectedRowKeys.length < 1) {
       message.warn('请选择要删除的视频');
     } else {
-      React.$ajax.postData('/api/dogRoom/deleteByIds', { ids: selectedRowKeys }).then((res) => {
+      React.$ajax.postData('/api/dogRoom/deleteByIds', {ids: selectedRowKeys}).then((res) => {
         if (res.code == 0) {
           message.success('删除成功');
           this.fetch({
             pageSize: pagination.pageSize,
-            currPage: pagination.current,
+            currPage: pagination.current
           });
         } else {
           message.error('删除失败');
@@ -118,24 +119,24 @@ class DogTable extends Component {
 
   viewVideoCamera = (id) => {
     console.log(id, 'asd');
-    this.refs['videoCameraDlg'].viewVideo({ vid: id, visible: true });
+    this.refs.videoCameraDlg.viewVideo({vid: id, visible: true});
   };
 
   render() {
-    const { dataSource, loading, pagination, selectedRowKeys } = this.state;
+    const {dataSource, loading, pagination, selectedRowKeys} = this.state;
     const rowSelection = {
       onChange: this.onSelectChange,
-      selectedRowKeys,
+      selectedRowKeys
     };
     const columns = [
       {
         title: '楼号',
         dataIndex: 'houseName',
-        key: 'houseName',
+        key: 'houseName'
       },
       {
         title: '犬舍',
-        dataIndex: 'name',
+        dataIndex: 'name'
       },
       /*  {
         title:'是否有警犬在犬舍',
@@ -152,19 +153,19 @@ class DogTable extends Component {
           return (
             <div>
               <span
-                style={{ cursor: 'pointer', color: '#1890ff' }}
+                style={{cursor: 'pointer', color: '#1890ff'}}
                 // onClick={()=>this.viewDetail(record)}
               >
-                <Link to={{ pathname: '/app/room/infoDetail', query: { Id: record.id, targetText: '查看' } }}>
-                  <span style={{ cursor: 'pointer', color: '#1890ff' }}>
-                    <Icon type="eye" style={{ margin: '0 10px' }} />
+                <Link to={{pathname: '/app/room/infoDetail', query: {Id: record.id, targetText: '查看'}}}>
+                  <span style={{cursor: 'pointer', color: '#1890ff'}}>
+                    <Icon type="eye" style={{margin: '0 10px'}} />
                     查看
                   </span>
                 </Link>
               </span>
-              <Link to={{ pathname: '/app/room/infoEdit', query: { Id: record.id, targetText: '编辑' } }}>
-                <span style={{ cursor: 'pointer', color: '#1890ff' }}>
-                  <Icon type="edit" style={{ margin: '0 10px' }} />
+              <Link to={{pathname: '/app/room/infoEdit', query: {Id: record.id, targetText: '编辑'}}}>
+                <span style={{cursor: 'pointer', color: '#1890ff'}}>
+                  <Icon type="edit" style={{margin: '0 10px'}} />
                   编辑
                 </span>
               </Link>
@@ -175,21 +176,21 @@ class DogTable extends Component {
             */}
 
               <Popconfirm title="确认删除此犬舍?" onConfirm={() => this.deleteDogs(record)}>
-                <span style={{ cursor: 'pointer', color: '#1890ff' }}>
-                  <Icon type="delete" style={{ margin: '0 10px' }} />
+                <span style={{cursor: 'pointer', color: '#1890ff'}}>
+                  <Icon type="delete" style={{margin: '0 10px'}} />
                   删除
                 </span>
               </Popconfirm>
             </div>
           );
-        },
-      },
+        }
+      }
     ];
     return (
       <div>
-        <div style={{ marginBottom: '20px' }}>
-          <Button type="primary" style={{ marginRight: '20px' }} onClick={this.addInfo}>
-            <Link to={{ pathname: '/app/room/infoAdd', query: { targetText: '新增' } }}>新增犬舍</Link>
+        <div style={{marginBottom: '20px'}}>
+          <Button type="primary" style={{marginRight: '20px'}} onClick={this.addInfo}>
+            <Link to={{pathname: '/app/room/infoAdd', query: {targetText: '新增'}}}>新增犬舍</Link>
           </Button>
           {/*<Button style={{margin:'0 20px'}}>导出</Button>*/}
           <Button onClick={this.deleteMore}>批量删除</Button>

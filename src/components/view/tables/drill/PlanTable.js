@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Table,
   Button,
@@ -15,15 +15,15 @@ import {
   Divider,
   Badge,
   Tag,
-  Tooltip,
+  Tooltip
 } from 'antd';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import moment from 'moment';
 import Immutable from 'immutable';
 import SubDetailTabe from './SubDetailTabe';
-const localSVG = require('images/banglocation.svg');
 // require('style/view/common/deployTable.less');
 import 'style/app/dogManage/dogCure/dogCureTable.less';
+const localSVG = require('images/banglocation.svg');
 
 class SubTable extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class SubTable extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 10,
       currPage: 1,
@@ -40,7 +40,7 @@ class SubTable extends React.Component {
       loading: false,
       filter: null,
       changeLeft: false,
-      showDetail: false,
+      showDetail: false
     };
   }
   componentWillMount() {
@@ -50,40 +50,40 @@ class SubTable extends React.Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let filter = nextProps.filter;
-    let isReset = util.method.isObjectValueEqual(nextProps, this.props);
+    const filter = nextProps.filter;
+    const isReset = util.method.isObjectValueEqual(nextProps, this.props);
     if (!isReset) {
-      let _this = this;
-      this.setState({ filter, data: [] }, function () {
+      const _this = this;
+      this.setState({filter, data: []}, function () {
         _this.fetch({
           pageSize: _this.state.pageSize,
           currPage: 1,
           ...filter,
-          trainDate: filter.trainDate && filter.trainDate.format('x'),
+          trainDate: filter.trainDate && filter.trainDate.format('x')
         });
       });
     }
   }
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
-    let { filter } = this.state;
+    const {filter} = this.state;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
       currPage: pagination.current,
-      ...filter,
+      ...filter
     });
   };
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+    this.setState({loading: true});
     React.$ajax
-      .postData('/api/train/listPlanPage', { ...params })
+      .postData('/api/train/listPlanPage', {...params})
       .then((obj) => {
-        let res = obj.data;
-        const pagination = { ...this.state.pagination };
+        const res = obj.data;
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
@@ -91,7 +91,7 @@ class SubTable extends React.Component {
           data: [...this.state.data, ...res.list],
           loading: false,
           pagination,
-          totalPage: res.totalPage,
+          totalPage: res.totalPage
         });
       })
       .catch(function (error) {
@@ -99,15 +99,15 @@ class SubTable extends React.Component {
       });
   }
   handleShow() {
-    let _this = this;
+    const _this = this;
     this.setState(
       {
-        changeLeft: false,
+        changeLeft: false
       },
       function () {
         setTimeout(() => {
           _this.setState({
-            showDetail: false,
+            showDetail: false
           });
         }, 600);
       }
@@ -117,30 +117,30 @@ class SubTable extends React.Component {
     this.setState({
       detailTitle: data,
       showDetail: true,
-      changeLeft: true,
+      changeLeft: true
     });
   };
   loadMore = () => {
-    const { currPage, pageSize, filter } = this.state;
+    const {currPage, pageSize, filter} = this.state;
     this.setState(
-      { currPage: currPage + 1 },
+      {currPage: currPage + 1},
       this.fetch({
         currPage: currPage + 1,
         pageSize,
-        ...filter,
+        ...filter
       })
     );
   };
   deletePlan = (item) => {
-    React.$ajax.postData('/api/train/deleteByIds', { ids: [item.id] }).then((res) => {
+    React.$ajax.postData('/api/train/deleteByIds', {ids: [item.id]}).then((res) => {
       if (res.code == 0) {
         message.info('删除成功！');
         this.setState(
           {
             currPage: 1,
-            data: [],
+            data: []
           },
-          this.fetch({ currPage: 1, pageSize: this.state.pageSize })
+          this.fetch({currPage: 1, pageSize: this.state.pageSize})
         );
       } else {
         message.error('删除失败！');
@@ -154,8 +154,7 @@ class SubTable extends React.Component {
       <div className="card_title">
         <div
           className="title_h"
-          style={{ width: '250px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-        >
+          style={{width: '250px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>
           <Tooltip title={item.subjectName}>训练科目： {item.subjectName}</Tooltip>
         </div>
         <div className="item">
@@ -170,8 +169,7 @@ class SubTable extends React.Component {
         </div>
         <div
           className="item"
-          style={{ width: '250px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-        >
+          style={{width: '250px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>
           <Tooltip title={item.location ? item.location : '--'}>
             训练场地： {item.location ? item.location : '--'}
           </Tooltip>
@@ -198,24 +196,23 @@ class SubTable extends React.Component {
         title={ItemTitle}
         key={item.id + 'card'}
         extra={item.saveStatus == 0 ? <Tag color="#f50">未发布</Tag> : <Tag color="#108ee9">已发布</Tag>}
-        style={{ minWidth: 380, width: '23%', maxWidth: 480, display: 'inline-block', margin: '0 20px 20px 0' }}
-        bodyStyle={{ padding: '15px 32px' }}
-      >
+        style={{minWidth: 380, width: '23%', maxWidth: 480, display: 'inline-block', margin: '0 20px 20px 0'}}
+        bodyStyle={{padding: '15px 32px'}}>
         <div className="item_body">
           {item.saveStatus == 0 ? (
             <div className="body_detail">
-              <Link to={{ pathname: '/app/drill/planEdit', query: { editItem: item } }}>
-                <Icon type="edit" style={{ cursor: 'pointer', margin: '0 10px 0 -10px', color: '#999999' }} />
-                <span style={{ color: '#999' }}>编辑</span>
+              <Link to={{pathname: '/app/drill/planEdit', query: {editItem: item}}}>
+                <Icon type="edit" style={{cursor: 'pointer', margin: '0 10px 0 -10px', color: '#999999'}} />
+                <span style={{color: '#999'}}>编辑</span>
               </Link>{' '}
             </div>
           ) : null}
 
           {item.saveStatus == 0 ? null : (
-            <div className="body_detail" style={{ borderRight: '0' }}>
-              <Link to={{ pathname: '/app/drill/planDetail', query: { editItem: item } }}>
-                <Icon type="eye" style={{ cursor: 'pointer', margin: '0 10px 0 -10px', color: '#999999' }} />
-                <span style={{ color: '#999' }}> 查看</span>{' '}
+            <div className="body_detail" style={{borderRight: '0'}}>
+              <Link to={{pathname: '/app/drill/planDetail', query: {editItem: item}}}>
+                <Icon type="eye" style={{cursor: 'pointer', margin: '0 10px 0 -10px', color: '#999999'}} />
+                <span style={{color: '#999'}}> 查看</span>{' '}
               </Link>{' '}
             </div>
           )}
@@ -224,8 +221,8 @@ class SubTable extends React.Component {
             <div className="body_delete">
               {' '}
               <Popconfirm title="确认删除此计划信息?" onConfirm={() => this.deletePlan(item)}>
-                <span style={{ cursor: 'pointer' }}>
-                  <Icon type="delete" style={{ margin: '0 10px' }} />
+                <span style={{cursor: 'pointer'}}>
+                  <Icon type="delete" style={{margin: '0 10px'}} />
                   删除
                 </span>
               </Popconfirm>
@@ -251,26 +248,26 @@ class SubTable extends React.Component {
                 fontSize: '12px',
                 height: '16px',
                 lineHeight: '16px',
-                backgroundColor: '#99a9bf',
+                backgroundColor: '#99a9bf'
               }}
             />
           );
-        },
+        }
       },
       {
         title: '训练项目',
         dataIndex: 'trainSubjectName',
-        key: 'trainSubjectName',
+        key: 'trainSubjectName'
       },
       {
         title: '训练阶段',
         dataIndex: 'trainLevel',
         key: 'trainLevel',
         render: (level) => {
-          let levelNum = parseInt(level) - 1;
-          let levelArr = ['初级', '中级', '高级'];
+          const levelNum = parseInt(level) - 1;
+          const levelArr = ['初级', '中级', '高级'];
           return levelArr[levelNum];
-        },
+        }
       },
       {
         title: '操作',
@@ -278,18 +275,18 @@ class SubTable extends React.Component {
         key: 'key',
         render: (data) => {
           return (
-            <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.queryDetail(data)}>
+            <span style={{color: '#1890ff', cursor: 'pointer'}} onClick={() => this.queryDetail(data)}>
               查看详情
             </span>
           );
-        },
-      },
+        }
+      }
     ];
     return (
-      <div className="dogCureTable" style={{ paddingTop: '0' }}>
-        <div style={{ marginBottom: '20px' }}>
-          <Button type="primary" style={{ marginRight: '20px' }}>
-            <Link to={{ pathname: `/app/drill/planAdd`, query: { targetText: '新增' } }}>新增训练计划</Link>
+      <div className="dogCureTable" style={{paddingTop: '0'}}>
+        <div style={{marginBottom: '20px'}}>
+          <Button type="primary" style={{marginRight: '20px'}}>
+            <Link to={{pathname: `/app/drill/planAdd`, query: {targetText: '新增'}}}>新增训练计划</Link>
           </Button>
         </div>
 
@@ -299,12 +296,12 @@ class SubTable extends React.Component {
         {this.state.totalPage <= this.state.currPage ? (
           ''
         ) : (
-          <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
+          <div style={{textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px'}}>
             {this.state.loading && <Spin />} <Button onClick={this.loadMore}>加载更多</Button>{' '}
           </div>
         )}
         {this.state.data.length == 0 ? (
-          <div style={{ textAlign: 'center', color: '#999', marginTop: 12, height: 32, lineHeight: '32px' }}>
+          <div style={{textAlign: 'center', color: '#999', marginTop: 12, height: 32, lineHeight: '32px'}}>
             {' '}
             暂无数据
           </div>

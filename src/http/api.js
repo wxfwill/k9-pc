@@ -15,7 +15,7 @@ const postData = (url, data, config) => {
     url: url,
     method: 'post',
     data,
-    timeout: config && config.timeout ? config.timeout : configs.timeout,
+    timeout: config && config.timeout ? config.timeout : configs.timeout
   });
 };
 const formDataPost = (url, data, config) => {
@@ -24,8 +24,8 @@ const formDataPost = (url, data, config) => {
     method: 'post',
     data,
     headers: {
-      'Content-Type': config || 'application/json;charset=UTF-8',
-    },
+      'Content-Type': config || 'application/json;charset=UTF-8'
+    }
   });
 };
 // get
@@ -33,7 +33,7 @@ const getData = (url, params) => {
   return axios({
     url: url,
     method: 'get',
-    params,
+    params
   });
 };
 // flie data post
@@ -42,7 +42,7 @@ const fileDataPost = (url, data) => {
     url: url,
     method: 'post',
     data,
-    responseType: 'blob',
+    responseType: 'blob'
   });
 };
 
@@ -52,7 +52,7 @@ const fileDataGet = (url, params) => {
     url: url,
     method: 'get',
     params,
-    responseType: 'blob',
+    responseType: 'blob'
   });
 };
 
@@ -67,5 +67,5 @@ export default {
   postData,
   fileDataPost,
   fileDataGet,
-  formDataPost,
+  formDataPost
 };

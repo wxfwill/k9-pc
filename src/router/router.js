@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
+import React, {Component} from 'react';
+import {HashRouter, Route, Switch, Redirect} from 'react-router-dom';
 import AuthRouter from 'components/AuthRouter';
 import routerArr from './allRouter';
 
@@ -12,9 +12,7 @@ class Routes extends Component {
     super(props);
   }
   componentWillUnmount() {
-    this.setState = (state, callback) => {
-      return;
-    };
+    this.setState = () => {};
   }
   render() {
     return (

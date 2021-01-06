@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Icon } from 'antd';
-import { getSingle } from './util';
+import React, {Component} from 'react';
+import {Icon} from 'antd';
+import {getSingle} from './util';
 
 import Cover from './components/Cover'; //封面
 import BackCover from './components/BackCover'; //封底
@@ -42,16 +42,16 @@ class Archivew extends Component {
       startDate: defSatrtDate,
       endDate: defEndDate,
       userId: 1,
-      allInforList: [{ bookName: '封面' }, { bookName: '目录' }], //所有信息列表
+      allInforList: [{bookName: '封面'}, {bookName: '目录'}], //所有信息列表
       bookList: [], //翻页集合
       atLeft: [],
-      numbAdd: 1,
+      numbAdd: 1
     };
   }
   componentDidMount() {
     const userId = util.urlParse(this.props.location.search).userId;
     // const userId = null;
-    this.setState({ userId: userId ? userId : null }, () => {
+    this.setState({userId: userId || null}, () => {
       this.getAllInfor();
     });
   }
@@ -60,17 +60,17 @@ class Archivew extends Component {
     this.setState(
       {
         startDate: startDate,
-        endDate: endDate,
+        endDate: endDate
       },
       () => {
-        let { numbAdd } = this.state;
+        const {numbAdd} = this.state;
         if (numbAdd > 1) {
           this.setState(
             {
-              allInforList: [{ bookName: '封面' }, { bookName: '目录' }], //所有信息列表
+              allInforList: [{bookName: '封面'}, {bookName: '目录'}], //所有信息列表
               bookList: [], //翻页集合
               numbAdd: 1,
-              atLeft: [],
+              atLeft: []
             },
             () => {
               this.getAllInfor();
@@ -92,8 +92,8 @@ class Archivew extends Component {
       param: {
         repDateStart: startDate, //上报时间始
         repDateEnd: endDate, //上报时间止
-        userId: [userId], //用户ID(list)
-      },
+        userId: [userId] //用户ID(list)
+      }
     };
     return React.$ajax.postData('/api/performanceAssessment/getSelfEvaluationList', reqObj);
   };
@@ -104,8 +104,8 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userId: userId, //用户ID
-      },
+        userId: userId //用户ID
+      }
     };
     return React.$ajax.postData('/api/report/pageDocCarUseReportInfo', reqObj);
   };
@@ -116,8 +116,8 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userId: userId, //用户ID
-      },
+        userId: userId //用户ID
+      }
     };
     return React.$ajax.postData('/api/report/pageDocAttendanceCar', reqObj);
   };
@@ -128,8 +128,8 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userIds: [userId], //用户Id（list）
-      },
+        userIds: [userId] //用户Id（list）
+      }
     };
     return React.$ajax.postData('/api/reward/getPageRewardSync', reqObj);
   };
@@ -140,8 +140,8 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userId: userId, //用户ID
-      },
+        userId: userId //用户ID
+      }
     };
     return React.$ajax.postData('/api/report/pageDocDailyWork', reqObj);
   };
@@ -152,8 +152,8 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userId: userId, //用户ID
-      },
+        userId: userId //用户ID
+      }
     };
     return React.$ajax.postData('/api/work-wx-sp/pageDocClock', reqObj);
   };
@@ -164,8 +164,8 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userIds: [userId], //用户ID
-      },
+        userIds: [userId] //用户ID
+      }
     };
     return React.$ajax.postData('/api/leaveAfterSync/getPageLeaveAfterSync', reqObj); //getLeaveAfterSyncList
   };
@@ -176,8 +176,8 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userId: userId, //用户ID
-      },
+        userId: userId //用户ID
+      }
     };
     return React.$ajax.postData('/api/work-wx-sp/pageDocGoodsCommon', reqObj);
   };
@@ -188,8 +188,8 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userId: userId, //用户ID
-      },
+        userId: userId //用户ID
+      }
     };
     return React.$ajax.postData('/api/work-wx-sp/pageDocGoodsKitchen', reqObj);
   };
@@ -200,8 +200,8 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userId: userId, //用户ID
-      },
+        userId: userId //用户ID
+      }
     };
     return React.$ajax.postData('/api/work-wx-sp/pageDocGoodsTherapy', reqObj);
   };
@@ -212,8 +212,8 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userId: userId, //用户ID
-      },
+        userId: userId //用户ID
+      }
     };
     return React.$ajax.postData('/api/work-wx-sp/pageDocElectricGun', reqObj);
   };
@@ -224,8 +224,8 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userId: userId, //用户ID
-      },
+        userId: userId //用户ID
+      }
     };
     return React.$ajax.postData('/api/work-wx-sp/pageDocInterPhone', reqObj);
   };
@@ -236,8 +236,8 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userId: userId, //用户ID
-      },
+        userId: userId //用户ID
+      }
     };
     return React.$ajax.postData('/api/work-wx-sp/pageDocMakeDogFood', reqObj);
   };
@@ -248,8 +248,8 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userId: userId, //用户ID
-      },
+        userId: userId //用户ID
+      }
     };
     return React.$ajax.postData('/api/work-wx-sp/pageDocMask', reqObj);
   };
@@ -260,8 +260,8 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userId: userId, //用户ID
-      },
+        userId: userId //用户ID
+      }
     };
     return React.$ajax.postData('/api/work-wx-sp/pageDocDogTransfer', reqObj);
   };
@@ -272,35 +272,35 @@ class Archivew extends Component {
       param: {
         startDate: startDate, //开始时间
         endDate: endDate, //结束时间
-        userId: userId, //用户ID
-      },
+        userId: userId //用户ID
+      }
     };
     return React.$ajax.postData('/api/work-wx-sp/pageDocWatchMonitor', reqObj);
   };
 
   //获取所有的信息
   getAllInfor = () => {
-    let { startDate, endDate, userId } = this.state;
+    let {startDate, endDate, userId} = this.state;
     startDate = this.getTime(startDate);
     endDate = this.getTime(endDate);
-    let SelfEvaluationList = [], //绩效考核
-      DocCarUseReportInfo = [], //工作用车
-      DocAttendanceCar = [], //出勤用车
-      RewardSyncList = [], //奖励事项
-      DocDailyWork = [], //日报信息
-      AttendanceInfo = [], //考勤管理
-      LeaveAfterSyncInfo = [], //请假/离深/补休
-      DogFoodInfo = [], //犬粮申请
-      AidRecipientsInfo = [], //通用物资领用
-      GetMaskInfo = [], // 口罩领用
-      ClinicMaterialArr = [], // 诊疗点物资领取
-      WalkieTalkieMaterialArr = [], // 对讲机领取
-      ElectricGunArr = [], // 电击枪领取
-      KitchenMaterialArr = [], // 厨房物资领取
-      DogTransferInfoArr = [], // 犬只调动审批
-      MonitoringViewInfoArr = [], // 监控查看申请
-      BackCoverArr = [{ bookName: '封底' }],
-      BlankPageArr = [{ bookName: '最后一页' }];
+    let SelfEvaluationList = []; //绩效考核
+    let DocCarUseReportInfo = []; //工作用车
+    let DocAttendanceCar = []; //出勤用车
+    let RewardSyncList = []; //奖励事项
+    let DocDailyWork = []; //日报信息
+    let AttendanceInfo = []; //考勤管理
+    let LeaveAfterSyncInfo = []; //请假/离深/补休
+    let DogFoodInfo = []; //犬粮申请
+    let AidRecipientsInfo = []; //通用物资领用
+    let GetMaskInfo = []; // 口罩领用
+    let ClinicMaterialArr = []; // 诊疗点物资领取
+    let WalkieTalkieMaterialArr = []; // 对讲机领取
+    let ElectricGunArr = []; // 电击枪领取
+    let KitchenMaterialArr = []; // 厨房物资领取
+    let DogTransferInfoArr = []; // 犬只调动审批
+    let MonitoringViewInfoArr = []; // 监控查看申请
+    const BackCoverArr = [{bookName: '封底'}];
+    const BlankPageArr = [{bookName: '最后一页'}];
     Promise.all([
       this.getSelfEvaluationList(startDate, endDate, userId), //获取绩效考核详情
       this.pageDocCarUseReportInfo(startDate, endDate, userId), //获取工作用车信息
@@ -317,7 +317,7 @@ class Archivew extends Component {
       this.pageDocMakeDogFood(startDate, endDate, userId), //犬粮申请
       this.pageDocMask(startDate, endDate, userId), //口罩领用
       this.pageDocDogTransfer(startDate, endDate, userId), //犬只调动审批
-      this.pageDocWatchMonitor(startDate, endDate, userId), //查看监控
+      this.pageDocWatchMonitor(startDate, endDate, userId) //查看监控
     ]).then((res) => {
       if (res && res.length > 0) {
         console.log(res);
@@ -393,7 +393,7 @@ class Archivew extends Component {
         ...ElectricGunArr,
         ...KitchenMaterialArr,
         ...DogTransferInfoArr,
-        ...MonitoringViewInfoArr,
+        ...MonitoringViewInfoArr
       ];
 
       if (allInforListArr.length % 2 === 0) {
@@ -406,21 +406,21 @@ class Archivew extends Component {
       //获取所有信息列表集合
       this.setState(
         {
-          allInforList: allInforListArr,
+          allInforList: allInforListArr
         },
         () => {
           //所有信息列表拆分成书本正反两页
-          const { allInforList } = this.state;
+          const {allInforList} = this.state;
           console.log(allInforList);
-          let bookList = [];
+          const bookList = [];
           allInforList.map((item, index) => {
             if (index % 2 == 0) {
-              bookList.push({ paper: [allInforList[index], allInforList[index + 1]] });
+              bookList.push({paper: [allInforList[index], allInforList[index + 1]]});
             }
           });
           this.setState(
             {
-              bookList: bookList,
+              bookList: bookList
             },
             () => {
               console.log(this.state.bookList, 'bookListbookListbookListbookList');
@@ -505,9 +505,9 @@ class Archivew extends Component {
 
   //翻页
   getPage = (curI) => {
-    const { bookList, numbAdd } = this.state;
+    const {bookList, numbAdd} = this.state;
     const len = bookList ? bookList.length : 0;
-    let i = numbAdd;
+    const i = numbAdd;
     if (i == 1 || i == len + 1) {
       //翻到第一页或最后一页的时候
       if (i == 1) {
@@ -525,13 +525,13 @@ class Archivew extends Component {
   };
   //向前翻页
   forward = (i, callBack) => {
-    let newAtLelft = this.state.atLeft;
+    const newAtLelft = this.state.atLeft;
     newAtLelft.push(i);
     i++;
     this.setState(
       {
         atLeft: newAtLelft,
-        numbAdd: i,
+        numbAdd: i
       },
       () => {
         callBack && callBack();
@@ -540,13 +540,13 @@ class Archivew extends Component {
   };
   //向后翻页
   backwards = (i, callBack) => {
-    let newAtLelft = this.state.atLeft;
+    const newAtLelft = this.state.atLeft;
     newAtLelft.pop(i);
     i--;
     this.setState(
       {
         atLeft: newAtLelft,
-        numbAdd: i,
+        numbAdd: i
       },
       () => {
         callBack && callBack();
@@ -555,9 +555,9 @@ class Archivew extends Component {
   };
   //从目录跳转
   jumpDirectory = (name) => {
-    let { bookList, numbAdd } = this.state;
-    let cindex = '',
-      papindex = '';
+    const {bookList, numbAdd} = this.state;
+    let cindex = '';
+    let papindex = '';
     bookList.map((item, index) => {
       item.paper.map((el, eli) => {
         if (el.$indexes && el.bookName == name) {
@@ -575,7 +575,7 @@ class Archivew extends Component {
   };
 
   render() {
-    const { bookList, atLeft, numbAdd, startDate, endDate } = this.state;
+    const {bookList, atLeft, numbAdd, startDate, endDate} = this.state;
     return (
       <div className="record-main">
         <div className="return-link" onClick={() => this.props.history.push('/app/archivew/list')}>
@@ -597,8 +597,7 @@ class Archivew extends Component {
                   <div
                     key={index}
                     className={['page-list', atLeft.indexOf(index + 1) > -1 ? 'page-left' : 'page-right'].join(' ')}
-                    style={numbAdd == 1 ? { left: '25%' } : numbAdd == bookList.length + 1 ? { left: '75%' } : {}}
-                  >
+                    style={numbAdd == 1 ? {left: '25%'} : numbAdd == bookList.length + 1 ? {left: '75%'} : {}}>
                     {item.paper && item.paper.length > 0
                       ? item.paper.map((el, i) => {
                           return (
@@ -611,12 +610,11 @@ class Archivew extends Component {
                               //   }px)`,
                               // }}
                               style={{
-                                transform: `translateZ(${(2 * index + i) / 50}px)`,
+                                transform: `translateZ(${(2 * index + i) / 50}px)`
                               }}
                               onClick={() => {
                                 this.getPage(i);
-                              }}
-                            >
+                              }}>
                               <div className="pic-list">{this.showContent(el, 2 * index + i)}</div>
                             </div>
                           );

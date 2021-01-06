@@ -7,7 +7,7 @@
       {
         noPrint: '.no-print',
         onStart: function () {},
-        onEnd: function () {},
+        onEnd: function () {}
       },
       options
     );
@@ -33,8 +33,8 @@
     },
 
     getStyle: function () {
-      var str = '',
-        styles = document.querySelectorAll('style,link');
+      var str = '';
+      var styles = document.querySelectorAll('style,link');
       for (var i = 0; i < styles.length; i++) {
         str += styles[i].outerHTML;
       }
@@ -85,10 +85,10 @@
     },
 
     writeIframe: function (content) {
-      var w,
-        doc,
-        iframe = document.createElement('iframe'),
-        f = document.body.appendChild(iframe);
+      var w;
+      var doc;
+      var iframe = document.createElement('iframe');
+      var f = document.body.appendChild(iframe);
       iframe.id = 'myIframe';
       iframe.style = 'position:absolute;width:0;height:0;top:-10px;left:-10px;';
 
@@ -120,7 +120,7 @@
           console.log('err', err);
         }
       };
-    },
+    }
   };
   window.Print = Print;
 })(window, document);

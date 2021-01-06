@@ -1,22 +1,22 @@
 import axios from 'axios';
 import config from './config';
-import { message } from 'antd';
+import {message} from 'antd';
 import React from 'react';
-const history = require('history').createHashHistory();
-// 请求次数
-let repeat_count = 0;
-let loading = null;
 
 import store from '../store/index';
+const history = require('history').createHashHistory();
+// 请求次数
+const repeat_count = 0;
+let loading = null;
 
-let ajax = function $axios(options) {
+const ajax = function $axios(options) {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
       baseURL: config.baseUrl,
       method: config.method,
       headers: config.headers,
       timeout: config.timeout,
-      withCredentials: config.withCredentials,
+      withCredentials: config.withCredentials
     });
 
     // request 拦截器
@@ -24,7 +24,7 @@ let ajax = function $axios(options) {
       (config) => {
         message.destroy();
         loading = message.loading('加载中...', 0);
-        config.headers['k9token'] = store.getState().loginReducer.token ? store.getState().loginReducer.token : null;
+        config.headers.k9token = store.getState().loginReducer.token ? store.getState().loginReducer.token : null;
         return config;
       },
 
@@ -60,11 +60,11 @@ let ajax = function $axios(options) {
             loading();
           });
           console.log('response.data');
-          let name = headers['content-disposition'].split(';')[1].split('filename=')[1];
+          const name = headers['content-disposition'].split(';')[1].split('filename=')[1];
           console.log(decodeURIComponent(name));
-          let bobleObj = {
+          const bobleObj = {
             name: decodeURIComponent(name),
-            file: response.data,
+            file: response.data
           };
           return bobleObj;
         }
@@ -79,7 +79,7 @@ let ajax = function $axios(options) {
           // token 过期
           message.destroy();
           data && message.info(data.msg);
-          React.store.dispatch({ type: 'USER_TOKEN', token: null });
+          React.store.dispatch({type: 'USER_TOKEN', token: null});
           history.push('/login');
           return data;
         } else {

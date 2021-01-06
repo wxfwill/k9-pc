@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import {Route, Redirect} from 'react-router-dom';
 // import { menusAll } from '@/router/menusAll';
 
 // 白名单权限
@@ -22,7 +22,7 @@ const myAuth = [
   '/alarmDetail',
   '/safeRiskDetail',
   '/related',
-  '/caseDetailBak',
+  '/caseDetailBak'
 ];
 
 // 跳转
@@ -31,7 +31,7 @@ function redirectTo(props) {
   // console.log(props);
   // 添加额外参数
   props.location.meta = props.meta;
-  let user = sessionStorage.getItem('user');
+  const user = sessionStorage.getItem('user');
   // 只要用户没有登录，一律跳转到首页
   if (!user) {
     console.log(user);
@@ -52,7 +52,7 @@ function redirectTo(props) {
 
 // 获取权限
 function hasAuth(props) {
-  let paths = getAllPath();
+  const paths = getAllPath();
   let hasA = false;
   paths.forEach((item) => {
     if (props.path.indexOf(item.url) !== -1) {
@@ -64,8 +64,8 @@ function hasAuth(props) {
 
 // 获取所有有权限的路由
 function getAllPath() {
-  let menus = sessionStorage.getItem('menus') ? JSON.parse(sessionStorage.getItem('menus')) : [];
-  let thisMenus = [];
+  const menus = sessionStorage.getItem('menus') ? JSON.parse(sessionStorage.getItem('menus')) : [];
+  const thisMenus = [];
   // 获取有权限的模块
   menus.forEach((item) => {
     menusAll.forEach((item2) => {
@@ -77,7 +77,7 @@ function getAllPath() {
   });
 
   // 获取有权限的子模块地址
-  let paths = [];
+  const paths = [];
   thisMenus.forEach((item) => {
     paths.push(item);
     if (item.children) {

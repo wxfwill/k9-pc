@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Table, Button, Tag, Badge, Icon, Divider } from 'antd';
+import React, {Component} from 'react';
+import {Table, Button, Tag, Badge, Icon, Divider} from 'antd';
 import moment from 'moment';
 
 export const tableHeader = (callbackView) => {
@@ -17,16 +17,16 @@ export const tableHeader = (callbackView) => {
               fontSize: '12px',
               height: '16px',
               lineHeight: '16px',
-              backgroundColor: '#99a9bf',
+              backgroundColor: '#99a9bf'
             }}
           />
         );
-      },
+      }
     },
     {
       title: '任务名称',
       dataIndex: 'taskName',
-      key: 'taskName',
+      key: 'taskName'
     },
     {
       title: '执行日期',
@@ -34,7 +34,7 @@ export const tableHeader = (callbackView) => {
       key: 'taskDate',
       render: (text) => {
         return text ? moment(text).format('YYYY-MM-DD') : '--';
-      },
+      }
     },
     {
       title: '发布日期',
@@ -42,7 +42,7 @@ export const tableHeader = (callbackView) => {
       key: 'publishDate',
       render: (text) => {
         return text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--';
-      },
+      }
     },
     ,
     {
@@ -50,8 +50,8 @@ export const tableHeader = (callbackView) => {
       dataIndex: 'operator',
       key: 'operator',
       render: (text) => {
-        return text ? text : '--';
-      },
+        return text || '--';
+      }
     },
     {
       title: '操作',
@@ -80,14 +80,13 @@ export const tableHeader = (callbackView) => {
               size="small"
               onClick={() => {
                 return callbackView && callbackView(record);
-              }}
-            >
+              }}>
               查看
             </Button>
           </span>
         );
-      },
-    },
+      }
+    }
   ];
   return columns;
 };

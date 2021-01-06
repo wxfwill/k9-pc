@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Form, Row, Col, Input, Button, Icon, Select } from 'antd';
-import { thirdLayout } from 'util/Layout';
+import React, {Component} from 'react';
+import {Form, Row, Col, Input, Button, Icon, Select} from 'antd';
+import {thirdLayout} from 'util/Layout';
 import httpAjax from 'libs/httpAjax';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -12,12 +12,12 @@ class SearchForm extends React.Component {
     trainType: '',
     trainLevel: '',
     typeOption: [],
-    LevelOption: [],
+    LevelOption: []
   };
   componentWillMount() {
-    let _this = this;
+    const _this = this;
     //let typeOption = httpAjax('post',config.apiUrl+'/api/trainingSubject/getAllTrainType');
-    let LevelOption = httpAjax('post', config.apiUrl + '/api/trainingSubject/getAllTrainLevel');
+    const LevelOption = httpAjax('post', config.apiUrl + '/api/trainingSubject/getAllTrainLevel');
     /*Promise.all([typeOption,LevelOption]).then((resArr)=>{
       _this.setState({
         typeOption:resArr[0].data,
@@ -26,16 +26,16 @@ class SearchForm extends React.Component {
     })*/
     Promise.all([LevelOption]).then((resArr) => {
       _this.setState({
-        LevelOption: resArr[0].data,
+        LevelOption: resArr[0].data
       });
     });
   }
   handleSearch = (e) => {
     e.preventDefault();
-    let { limit } = this.props;
+    const {limit} = this.props;
     this.props.form.validateFields((err, values) => {
       Object.keys(values).forEach(function (item, index) {
-        typeof values[item] == 'undefined' ? (values[item] = '') : '';
+        typeof values[item] === 'undefined' ? (values[item] = '') : '';
       });
       limit(values);
     });
@@ -44,18 +44,18 @@ class SearchForm extends React.Component {
     this.props.form.resetFields();
   };
   toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const {expand} = this.state;
+    this.setState({expand: !expand});
   };
   handleChange(name, value) {
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
   render() {
-    let expand = this.state.expand;
-    const { getFieldDecorator } = this.props.form;
-    let optionArr = ['初级', '中级', '高级'];
+    const expand = this.state.expand;
+    const {getFieldDecorator} = this.props.form;
+    const optionArr = ['初级', '中级', '高级'];
     return (
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
         <Row gutter={24}>
@@ -89,11 +89,11 @@ class SearchForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
+          <Col span={24} style={{textAlign: 'right'}}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{marginLeft: 8}} onClick={this.handleReset}>
               清空
             </Button>
           </Col>

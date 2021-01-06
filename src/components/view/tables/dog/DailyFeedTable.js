@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Table, message, Tag, Badge, Button, Icon } from 'antd';
+import {Link} from 'react-router-dom';
+import {Table, message, Tag, Badge, Button, Icon} from 'antd';
 import httpAjax from 'libs/httpAjax';
 import DailyFeedDetailTable from './DailyFeedDetailTable';
 import Immutable from 'immutable';
@@ -12,7 +12,7 @@ class DailyFeedTable extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
+        defaultCurrent: 1
       },
       pageSize: 5,
       currPage: 1,
@@ -21,7 +21,7 @@ class DailyFeedTable extends React.Component {
       filter: null,
       detailSource: '',
       successColor: '#2db7f5',
-      waringColor: 'volcano',
+      waringColor: 'volcano'
     };
   }
   componentWillMount() {
@@ -31,48 +31,48 @@ class DailyFeedTable extends React.Component {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
-    let filter = nextProps.filter;
-    let isReset = util.method.isObjectValueEqual(nextProps, this.props);
+    const filter = nextProps.filter;
+    const isReset = util.method.isObjectValueEqual(nextProps, this.props);
     if (!isReset) {
-      let _this = this;
-      this.setState({ filter }, function () {
+      const _this = this;
+      this.setState({filter}, function () {
         _this.fetch({
           pageSize: _this.state.pageSize,
           currPage: 1,
-          ...filter,
+          ...filter
         });
       });
     }
   }
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
-    let { filter } = this.state;
+    const {filter} = this.state;
     this.setState({
-      pagination: pager,
+      pagination: pager
     });
     this.fetch({
       pageSize: pagination.pageSize,
       currPage: pagination.current,
-      ...filter,
+      ...filter
     });
   };
-  fetch(params = { pageSize: this.state.pageSize, currPage: this.state.currPage }) {
-    this.setState({ loading: true });
-    httpAjax('post', config.apiUrl + '/api/feed/getDailyFeed', { ...params })
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+    this.setState({loading: true});
+    httpAjax('post', config.apiUrl + '/api/feed/getDailyFeed', {...params})
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
-        this.setState({ dataSource: res.list, loading: false, pagination });
+        this.setState({dataSource: res.list, loading: false, pagination});
       })
       .catch(function (error) {
         console.log(error);
       });
   }
   render() {
-    const { showDetail, changeLeft, detailSource, successColor, waringColor } = this.state;
+    const {showDetail, changeLeft, detailSource, successColor, waringColor} = this.state;
     const columns = [
       {
         title: 'ID',
@@ -87,26 +87,26 @@ class DailyFeedTable extends React.Component {
                 fontSize: '12px',
                 height: '16px',
                 lineHeight: '16px',
-                backgroundColor: '#99a9bf',
+                backgroundColor: '#99a9bf'
               }}
             />
           );
-        },
+        }
       },
       {
         title: '犬舍',
         dataIndex: 'houseId',
-        key: 'houseId',
+        key: 'houseId'
       },
       {
         title: '犬名',
         dataIndex: 'dogName',
-        key: 'dogName',
+        key: 'dogName'
       },
       {
         title: '品种',
         dataIndex: 'dogBreed',
-        key: 'dogBreed',
+        key: 'dogBreed'
       },
       {
         title: '第一餐',
@@ -115,7 +115,7 @@ class DailyFeedTable extends React.Component {
         render: (text, record, index) => {
           // 1 表示已喂  0 表示没喂
           return text === 1 ? <Icon type="check" /> : <Icon type="minus" />;
-        },
+        }
       },
       {
         title: '第二餐',
@@ -124,7 +124,7 @@ class DailyFeedTable extends React.Component {
         render: (text, record, index) => {
           // 1 表示已喂  0 表示没喂
           return text === 1 ? <Icon type="check" /> : <Icon type="minus" />;
-        },
+        }
       },
       {
         title: '状态',
@@ -133,7 +133,7 @@ class DailyFeedTable extends React.Component {
         render: (text, record, index) => {
           // 1 表示正常   0表示异常
           return text === 1 ? <Tag color={successColor}>正常</Tag> : <Tag color={waringColor}>异常</Tag>;
-        },
+        }
       },
       {
         title: '清扫',
@@ -142,8 +142,8 @@ class DailyFeedTable extends React.Component {
         render: (text, record, index) => {
           // 1 表示已清扫   0表示未清扫
           return text === 1 ? <Tag color={successColor}>已清扫</Tag> : <Tag color={waringColor}>未清扫</Tag>;
-        },
-      },
+        }
+      }
     ];
     return (
       <div>

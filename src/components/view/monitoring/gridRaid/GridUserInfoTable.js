@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import { Table, Button, Tag, Badge } from 'antd';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Table, Button, Tag, Badge} from 'antd';
+import {Link} from 'react-router-dom';
 import httpAjax from 'libs/httpAjax';
 const localSVG = require('images/banglocation.svg');
 
 const columns = [
   {
     title: '警号',
-    dataIndex: 'number',
+    dataIndex: 'number'
   },
   {
     title: '姓名',
-    dataIndex: 'name',
+    dataIndex: 'name'
   },
   {
     title: '区域编号',
-    dataIndex: 'index',
-  },
+    dataIndex: 'index'
+  }
 ];
 
 class GridUserInfoTable extends React.Component {
@@ -26,14 +26,14 @@ class GridUserInfoTable extends React.Component {
     this.state = {
       selectPeoples: [],
       gridUserInfo: [], //网格区域人员信息列表
-      selectedRows: [],
+      selectedRows: []
     };
   }
   componentWillReceiveProps(nextProps) {
     //已选择人员区域合并展示处理
-    const { selectPeoples } = nextProps;
-    let filter_selectPeoples = [],
-      hasSeledObj = {};
+    const {selectPeoples} = nextProps;
+    const filter_selectPeoples = [];
+    const hasSeledObj = {};
     selectPeoples.forEach((item) => {
       let hasSeled = false;
       if (!hasSeledObj[item.number]) {
@@ -42,7 +42,7 @@ class GridUserInfoTable extends React.Component {
         hasSeled = true;
         hasSeledObj[item.number].push(item.index);
       }
-      let newItem = { ...item };
+      const newItem = {...item};
       if (!hasSeled) {
         filter_selectPeoples.push(newItem);
       }
@@ -50,29 +50,29 @@ class GridUserInfoTable extends React.Component {
     filter_selectPeoples.forEach((nItem) => {
       nItem.index = hasSeledObj[nItem.number].sort().join(',');
     });
-    this.setState({ selectPeoples: filter_selectPeoples });
+    this.setState({selectPeoples: filter_selectPeoples});
   }
 
   addUser(ua) {
     //添加用户
     this.state.gridUserInfo.push(ua);
-    this.setState({ gridUserInfo: this.state.gridUserInfo });
+    this.setState({gridUserInfo: this.state.gridUserInfo});
   }
 
   render() {
-    const { isCheck } = this.props;
-    const { selectPeoples } = this.state;
+    const {isCheck} = this.props;
+    const {selectPeoples} = this.state;
     const rowSelection = {
       onSelect: (record, selected, selectedRows) => {
-        this.setState({ selectedRows });
-        const status = selectedRows.length > 0 ? true : false;
+        this.setState({selectedRows});
+        const status = selectedRows.length > 0;
         this.props.contralDeleteBtn(status);
       },
       onSelectAll: (selected, selectedRows, changeRows) => {
-        this.setState({ selectedRows });
-        const status = selectedRows.length > 0 ? true : false;
+        this.setState({selectedRows});
+        const status = selectedRows.length > 0;
         this.props.contralDeleteBtn(status);
-      },
+      }
     };
     return isCheck ? (
       <div>

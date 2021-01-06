@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Card, Select, Form, Collapse, Table, Modal, Row, Col, Input, Button, Icon, message, Tag } from 'antd';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Card, Select, Form, Collapse, Table, Modal, Row, Col, Input, Button, Icon, message, Tag} from 'antd';
+import {Link} from 'react-router-dom';
 import EditableTable from './EditableTable';
 import SubjectDetail from './SubjectDetail';
-import { firstLayout, secondLayout } from 'util/Layout';
+import {firstLayout, secondLayout} from 'util/Layout';
 import moment from 'moment';
 import 'style/app/performance.less';
 const Panel = Collapse.Panel;
@@ -24,13 +24,13 @@ class RegisterEdit extends Component {
       isSubjectDetail: false,
       subjectInfo: '',
       autonomyData: [],
-      totalScore: '',
+      totalScore: ''
     };
   }
 
   componentDidMount() {
     if (this.props.location.query && this.props.location.query.record) {
-      let { record, checkDate } = this.props.location.query;
+      const {record, checkDate} = this.props.location.query;
       this.fetch(record, checkDate);
     }
   }
@@ -38,10 +38,10 @@ class RegisterEdit extends Component {
     React.$ajax.performance
       .performanceCheckInfo({
         userId: record.userId,
-        checkDate: checkDate,
+        checkDate: checkDate
       })
       .then((res) => {
-        let { autonomyData, automaticData } = this.state;
+        const {autonomyData, automaticData} = this.state;
         automaticData.dogTrain = [];
         automaticData.dogUse = [];
         automaticData.outdoor = [];
@@ -70,7 +70,7 @@ class RegisterEdit extends Component {
           autonomyData: autonomyData,
           automaticData: automaticData,
           checkDate: checkDate,
-          totalScore: record.totalScore,
+          totalScore: record.totalScore
         });
       })
       .catch(function (error) {
@@ -82,30 +82,30 @@ class RegisterEdit extends Component {
     console.log(key);
   }
   showModal = (subjectInfo) => {
-    let { record } = this.state;
+    const {record} = this.state;
     subjectInfo.userId = record.userId;
     this.setState({
       isSubjectDetail: true,
-      subjectInfo: subjectInfo,
+      subjectInfo: subjectInfo
     });
   };
   hideModal = () => {
     this.setState({
-      isSubjectDetail: false,
+      isSubjectDetail: false
     });
   };
   //取消当月资格
   cancelRank = () => {
     this.props.form.validateFields((error, row) => {
       if (!error) {
-        this.setState({ modalLoading: true });
+        this.setState({modalLoading: true});
         row.id = this.state.record.id;
         row.pageSize = this.state.pageSize;
         row.currPage = this.state.currPage;
         React.$ajax.performance
-          .cancelRank({ ...row })
+          .cancelRank({...row})
           .then((res) => {
-            this.setState({ isShow: false, visible: false });
+            this.setState({isShow: false, visible: false});
 
             message.success('取消成功！');
           })
@@ -116,10 +116,10 @@ class RegisterEdit extends Component {
     });
   };
   updateTotalScore = (score = 0) => {
-    let { totalScore } = this.state;
+    let {totalScore} = this.state;
     totalScore = Number(totalScore) + Number(score);
     this.setState({
-      totalScore: totalScore,
+      totalScore: totalScore
     });
   };
   render() {
@@ -132,9 +132,9 @@ class RegisterEdit extends Component {
       modalLoading,
       isSubjectDetail,
       subjectInfo,
-      totalScore,
+      totalScore
     } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     const title = moment(checkDate).format('M') + '月绩效';
     const baseData = [
       {
@@ -142,53 +142,53 @@ class RegisterEdit extends Component {
         month: moment(checkDate).format('M') + '月考核',
         name: record.name,
         duty: record.duty,
-        totalScore: totalScore,
-      },
+        totalScore: totalScore
+      }
     ];
 
     const baseColumns = [
       {
         title: '考核月份',
         dataIndex: 'month',
-        key: 'month',
+        key: 'month'
       },
       {
         title: '被考核人',
         dataIndex: 'name',
-        key: 'name',
+        key: 'name'
       },
       {
         title: '职位',
         dataIndex: 'duty',
-        key: 'duty',
+        key: 'duty'
       },
       {
         title: '绩效总分',
         dataIndex: 'totalScore',
-        key: 'totalScore',
-      },
+        key: 'totalScore'
+      }
     ];
 
     const automaticColumns = [
       {
         title: '序号',
         dataIndex: 'id',
-        key: 'id',
+        key: 'id'
       },
       {
         title: '考核项目',
         dataIndex: 'subjectName',
-        key: 'subjectName',
+        key: 'subjectName'
       },
       {
         title: '指标名称',
         dataIndex: 'item',
-        key: 'item',
+        key: 'item'
       },
       {
         title: '得分',
         dataIndex: 'score',
-        key: 'score',
+        key: 'score'
       },
       {
         title: '操作',
@@ -197,42 +197,42 @@ class RegisterEdit extends Component {
         render: (text, record, index) => {
           return (
             <div>
-              <span onClick={() => this.showModal(record)} style={{ cursor: 'pointer', color: '#1890ff' }}>
-                <Icon type="eye" style={{ margin: '0 10px' }} />
+              <span onClick={() => this.showModal(record)} style={{cursor: 'pointer', color: '#1890ff'}}>
+                <Icon type="eye" style={{margin: '0 10px'}} />
                 查看
               </span>
             </div>
           );
-        },
-      },
+        }
+      }
     ];
 
     const autonomyColumns = [
       {
         title: '序号',
         dataIndex: 'id',
-        key: 'id',
+        key: 'id'
       },
       {
         title: '考核项目',
         dataIndex: 'subjectName',
-        key: 'subjectName',
+        key: 'subjectName'
       },
       {
         title: '指标名称',
         dataIndex: 'item',
-        key: 'item',
+        key: 'item'
       },
       {
         title: '考核人',
         dataIndex: 'examinerStr',
-        key: 'examinerStr',
+        key: 'examinerStr'
       },
       {
         title: '得分',
         dataIndex: 'score',
-        key: 'score',
-      },
+        key: 'score'
+      }
     ];
 
     return (
@@ -243,7 +243,7 @@ class RegisterEdit extends Component {
               <Table dataSource={baseData} columns={baseColumns} pagination={false} />
             </Panel>
             <Panel header={<Tag color="#2db7f5">自动打分</Tag>} key="2">
-              <Card style={{ marginTop: 16 }} type="inner" title={<Tag color="#2db7f5">警犬训练</Tag>}>
+              <Card style={{marginTop: 16}} type="inner" title={<Tag color="#2db7f5">警犬训练</Tag>}>
                 <Table
                   dataSource={automaticData.dogTrain}
                   columns={automaticColumns}
@@ -251,7 +251,7 @@ class RegisterEdit extends Component {
                   className="performanceTableForm"
                 />
               </Card>
-              <Card style={{ marginTop: 16 }} type="inner" title={<Tag color="#2db7f5">警犬使用及执勤值班</Tag>}>
+              <Card style={{marginTop: 16}} type="inner" title={<Tag color="#2db7f5">警犬使用及执勤值班</Tag>}>
                 <Table
                   dataSource={automaticData.dogUse}
                   columns={automaticColumns}
@@ -259,7 +259,7 @@ class RegisterEdit extends Component {
                   className="performanceTableForm"
                 />
               </Card>
-              <Card style={{ marginTop: 16 }} type="inner" title={<Tag color="#2db7f5">出勤考勤</Tag>}>
+              <Card style={{marginTop: 16}} type="inner" title={<Tag color="#2db7f5">出勤考勤</Tag>}>
                 <Table
                   dataSource={automaticData.outdoor}
                   columns={automaticColumns}
@@ -269,7 +269,7 @@ class RegisterEdit extends Component {
               </Card>
             </Panel>
             <Panel header={<Tag color="#2db7f5">自主打分</Tag>} key="3">
-              <Card style={{ marginTop: 16 }} type="inner" title={<Tag color="#2db7f5">训练考核</Tag>}>
+              <Card style={{marginTop: 16}} type="inner" title={<Tag color="#2db7f5">训练考核</Tag>}>
                 <EditableTable
                   autonomyData={autonomyData.trainCheck}
                   checkDate={checkDate}
@@ -277,7 +277,7 @@ class RegisterEdit extends Component {
                   typeId={2}
                 />
               </Card>
-              <Card style={{ marginTop: 16 }} type="inner" title={<Tag color="#2db7f5">理化管理</Tag>}>
+              <Card style={{marginTop: 16}} type="inner" title={<Tag color="#2db7f5">理化管理</Tag>}>
                 <EditableTable
                   autonomyData={autonomyData.dailyManage}
                   checkDate={checkDate}
@@ -297,18 +297,17 @@ class RegisterEdit extends Component {
             onCancel={this.hideModal}
             loading={modalLoading}
             okText="确认"
-            cancelText="取消"
-          >
+            cancelText="取消">
             <Row gutter={24}>
               <Col xl={24} lg={24} md={24} sm={24} xs={24}>
                 <FormItem label="原因：" {...firstLayout}>
                   {getFieldDecorator('cancelReason', {
                     rules: [
-                      { required: true, message: '请输入原因' },
-                      { max: 300, message: '原因不超过300' },
+                      {required: true, message: '请输入原因'},
+                      {max: 300, message: '原因不超过300'}
                     ],
-                    initialValue: '',
-                  })(<Input.TextArea placeholder="" autosize={{ minRows: 2, maxRows: 24 }} />)}
+                    initialValue: ''
+                  })(<Input.TextArea placeholder="" autosize={{minRows: 2, maxRows: 24}} />)}
                 </FormItem>
               </Col>
             </Row>

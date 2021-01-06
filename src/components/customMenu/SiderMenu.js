@@ -1,8 +1,8 @@
 import React from 'react';
-import { Menu, Icon } from 'antd';
-import { Link } from 'react-router-dom';
+import {Menu, Icon} from 'antd';
+import {Link} from 'react-router-dom';
 
-const renderMenuItem = ({ id, key, title, icon, pathname, ...props }) => {
+const renderMenuItem = ({id, key, title, icon, pathname, ...props}) => {
   if (pathname.split('/').length == 1) {
     pathname = ('/view/404' + Math.random()).split('.').join('');
   }
@@ -16,7 +16,7 @@ const renderMenuItem = ({ id, key, title, icon, pathname, ...props }) => {
   );
 };
 
-const renderSubMenu = ({ id, key, title, icon, pathname, sub, ...props }) => (
+const renderSubMenu = ({id, key, title, icon, pathname, sub, ...props}) => (
   <Menu.SubMenu
     key={key || pathname}
     title={
@@ -25,13 +25,12 @@ const renderSubMenu = ({ id, key, title, icon, pathname, sub, ...props }) => (
         <span className="nav-text">{title}</span>
       </span>
     }
-    {...props}
-  >
+    {...props}>
     {sub && sub.map((item) => renderMenuItem(item))}
   </Menu.SubMenu>
 );
 
-export default ({ menus, ...props }) => (
+export default ({menus, ...props}) => (
   <Menu {...props}>
     {menus && menus.map((item) => (item.sub && item.sub.length ? renderSubMenu(item) : renderMenuItem(item)))}
   </Menu>

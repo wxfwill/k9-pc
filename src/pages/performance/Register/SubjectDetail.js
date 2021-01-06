@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Input, Icon, Button, Popconfirm, Modal } from 'antd';
+import {Table, Input, Icon, Button, Popconfirm, Modal} from 'antd';
 import httpAjax from 'libs/httpAjax';
 import Immutable from 'immutable';
 import moment from 'moment';
@@ -11,17 +11,17 @@ class SubjectDetail extends React.Component {
       {
         title: '姓名',
         dataIndex: 'trainerName',
-        key: 'trainerName',
+        key: 'trainerName'
       },
       {
         title: '警犬',
         dataIndex: 'dogName',
-        key: 'dogName',
+        key: 'dogName'
       },
       {
         title: '指标名称',
         dataIndex: 'trainerName',
-        key: 'trainerName',
+        key: 'trainerName'
       },
       {
         title: '开始时间',
@@ -29,7 +29,7 @@ class SubjectDetail extends React.Component {
         key: 'startTime',
         render: (text, record, index) => {
           return <span>{record.startTime ? moment(record.startTime).format('YYYY-MM-DD h:mm:ss') : '--'}</span>;
-        },
+        }
       },
       {
         title: '结束时间',
@@ -37,34 +37,34 @@ class SubjectDetail extends React.Component {
         key: 'endTime',
         render: (text, record, index) => {
           return <span>{record.endTime ? moment(record.endTime).format('YYYY-MM-DD h:mm:ss') : '--'}</span>;
-        },
+        }
       },
       {
         title: '地点',
         dataIndex: 'trainPlace',
-        key: 'trainPlace',
-      },
+        key: 'trainPlace'
+      }
     ];
     this.DogUseColumns = [
       {
         title: '姓名',
         dataIndex: 'userName',
-        key: 'userName',
+        key: 'userName'
       },
       {
         title: '指标名称',
         dataIndex: 'itemName',
-        key: 'itemName',
+        key: 'itemName'
       },
       {
         title: '任务名称',
         dataIndex: 'taskName',
-        key: 'taskName',
+        key: 'taskName'
       },
       {
         title: '警犬',
         dataIndex: 'dogName',
-        key: 'dogName',
+        key: 'dogName'
       },
       {
         title: '开始时间',
@@ -72,7 +72,7 @@ class SubjectDetail extends React.Component {
         key: 'startTime',
         render: (text, record, index) => {
           return <span>{record.startTime ? moment(record.startTime).format('YYYY-MM-DD h:mm:ss') : '--'}</span>;
-        },
+        }
       },
       {
         title: '结束时间',
@@ -80,24 +80,24 @@ class SubjectDetail extends React.Component {
         key: 'endTime',
         render: (text, record, index) => {
           return <span>{record.endTime ? moment(record.endTime).format('YYYY-MM-DD h:mm:ss') : '--'}</span>;
-        },
+        }
       },
       {
         title: '地点',
         dataIndex: 'location',
-        key: 'location',
-      },
+        key: 'location'
+      }
     ];
     this.LeaveColumns = [
       {
         title: '序号',
         dataIndex: 'id',
-        key: 'id',
+        key: 'id'
       },
       {
         title: '训导员',
         dataIndex: 'userName',
-        key: 'userName',
+        key: 'userName'
       },
       {
         title: '请假开始时间',
@@ -107,7 +107,7 @@ class SubjectDetail extends React.Component {
           return (
             <span>{record.leaveStartTime ? moment(record.leaveStartTime).format('YYYY-MM-DD h:mm:ss') : '--'}</span>
           );
-        },
+        }
       },
       {
         title: '请假结束时间',
@@ -115,7 +115,7 @@ class SubjectDetail extends React.Component {
         key: 'leaveEndTime',
         render: (text, record, index) => {
           return <span>{record.leaveEndTime ? moment(record.leaveEndTime).format('YYYY-MM-DD h:mm:ss') : '--'}</span>;
-        },
+        }
       },
       {
         title: '申请时间',
@@ -123,18 +123,18 @@ class SubjectDetail extends React.Component {
         key: 'applyTime',
         render: (text, record, index) => {
           return <span>{record.applyTime ? moment(record.applyTime).format('YYYY-MM-DD h:mm:ss') : '--'}</span>;
-        },
+        }
       },
       {
         title: '请假天数',
         dataIndex: 'duration',
-        key: 'duration',
+        key: 'duration'
       },
       {
         title: '请假类型',
         dataIndex: 'typeName',
-        key: 'typeName',
-      },
+        key: 'typeName'
+      }
     ];
     this.wColumns = [
       {
@@ -143,12 +143,12 @@ class SubjectDetail extends React.Component {
         key: 'recordTime',
         render: (text, record, index) => {
           return <span>{record.recordTime ? moment(record.recordTime).format('YYYY-MM-DD') : '--'}</span>;
-        },
+        }
       },
       {
         title: '来源',
         dataIndex: 'source',
-        key: 'source',
+        key: 'source'
       },
       {
         title: '类型',
@@ -180,22 +180,22 @@ class SubjectDetail extends React.Component {
               break;
           }
           return typeVal;
-        },
+        }
       },
       {
         title: '部门',
         dataIndex: 'groupName',
-        key: 'groupName',
+        key: 'groupName'
       },
       {
         title: '汇报人',
         dataIndex: 'reportUserName',
-        key: 'reportUserName',
+        key: 'reportUserName'
       },
       {
         title: '记录人',
         dataIndex: 'recordUserName',
-        key: 'recordUserName',
+        key: 'recordUserName'
       },
       {
         title: '执行人',
@@ -204,7 +204,7 @@ class SubjectDetail extends React.Component {
         render: (text, record, index) => {
           const peoValue = record.userVOS.map((t) => t.name);
           return <span>{peoValue.join(',')}</span>;
-        },
+        }
       },
       {
         title: '执行时间',
@@ -212,13 +212,13 @@ class SubjectDetail extends React.Component {
         key: 'recordTime',
         render: (text, record, index) => {
           return <span>{record.taskTime ? moment(record.taskTime).format('YYYY-MM-DD') : '--'}</span>;
-        },
+        }
       },
       {
         title: '执行任务情况',
         dataIndex: 'taskDesc',
-        key: 'taskDesc',
-      },
+        key: 'taskDesc'
+      }
     ];
 
     this.state = {
@@ -232,13 +232,13 @@ class SubjectDetail extends React.Component {
       pagination: {
         showSizeChanger: true,
         showQuickJumper: true,
-        defaultCurrent: 1,
-      },
+        defaultCurrent: 1
+      }
     };
   }
   componentWillUnmount() {
     this.setState({
-      dataSource: [],
+      dataSource: []
     });
   }
 
@@ -246,14 +246,14 @@ class SubjectDetail extends React.Component {
     this.setState({
       subjectInfo: nextProps.subjectInfo,
       checkDate: nextProps.checkDate,
-      nextProps,
+      nextProps
     });
-    const { pageSize, currPage } = this.state;
+    const {pageSize, currPage} = this.state;
     this.getDataSource(nextProps, pageSize, currPage);
   }
 
   getDataSource(nextProps, pageSize, currPage) {
-    const { subjectInfo, checkDate } = nextProps;
+    const {subjectInfo, checkDate} = nextProps;
     console.log(subjectInfo, 'subjectInfo');
     let action = '/api/performanceCheck/getDogTrainInfoById';
     let columns = this.DogTrainColumns;
@@ -269,21 +269,21 @@ class SubjectDetail extends React.Component {
       return;
     }
     this.setState({
-      dataSource: [],
+      dataSource: []
     });
     let data = {
-      id: subjectInfo.id ? subjectInfo.id : 0,
+      id: subjectInfo.id ? subjectInfo.id : 0
     };
     if (subjectInfo.is4w == 1) {
       data = {
-        id: subjectInfo.dataId ? subjectInfo.dataId : 0,
+        id: subjectInfo.dataId ? subjectInfo.dataId : 0
       };
       columns = this.wColumns;
     }
     React.$ajax.performance
       .getSelectUrlData(action, data)
       .then((res) => {
-        const pagination = { ...this.state.pagination };
+        const pagination = {...this.state.pagination};
         pagination.total = res.totalCount;
         pagination.current = res.currPage;
         pagination.pageSize = res.pageSize;
@@ -296,7 +296,7 @@ class SubjectDetail extends React.Component {
         this.setState({
           dataSource: data,
           pagination,
-          columns: columns,
+          columns: columns
         });
       })
       .catch(function (error) {
@@ -304,19 +304,19 @@ class SubjectDetail extends React.Component {
       });
   }
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
+    const pager = {...this.state.pagination};
     pager.current = pagination.current;
     this.setState({
       pagination: pager,
       pageSize: pagination.pageSize,
-      currPage: pagination.current,
+      currPage: pagination.current
     });
     this.getDataSource(this.state.nextProps, pagination.pageSize, pagination.current);
   };
 
   render() {
-    const { dataSource, pagination, columns, enable } = this.state;
-    const { isSubjectDetail, hideModal, subjectInfo } = this.props;
+    const {dataSource, pagination, columns, enable} = this.state;
+    const {isSubjectDetail, hideModal, subjectInfo} = this.props;
     const title = subjectInfo.subjectName + '——详细信息';
     return (
       <div>
@@ -330,9 +330,8 @@ class SubjectDetail extends React.Component {
           footer={[
             <Button key="back" type="primary" onClick={hideModal}>
               确定
-            </Button>,
-          ]}
-        >
+            </Button>
+          ]}>
           <Table
             bordered
             dataSource={dataSource}

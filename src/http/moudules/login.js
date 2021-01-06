@@ -6,7 +6,7 @@ export const postLogin = (data) => {
   return axios({
     url: '/api/userCenter/login',
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -14,7 +14,7 @@ export const postLogin = (data) => {
 export const loginOut = () => {
   return axios({
     url: 'api/userCenter/logout',
-    method: 'post',
+    method: 'post'
   });
 };
 // 下载案件信息
@@ -22,10 +22,10 @@ export const downCaseInfo = (params) => {
   return axios({
     url: '/case/download/' + params.id + '?template=' + params.template,
     headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
+      'Content-Type': 'application/json;charset=UTF-8'
     },
     method: 'get',
-    responseType: 'blob',
+    responseType: 'blob'
   });
 };
 
@@ -35,7 +35,7 @@ export const downDocFile = (params) => {
     url: '/judDoc/download',
     method: 'get',
     responseType: 'blob',
-    params,
+    params
   });
 };
 
@@ -44,7 +44,7 @@ export const getTodayOnDuty = (data) => {
   return axios({
     url: '/api/onDuty/getTodayOnDuty',
     method: 'post',
-    data,
+    data
   });
 };
 
@@ -53,6 +53,6 @@ export const updatePassword = (data) => {
   return axios({
     url: '/api/userCenter/updatePassword',
     method: 'post',
-    data,
+    data
   });
 };
