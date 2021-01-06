@@ -11,7 +11,7 @@
     "build:dev": "npm run build --[dev] && gulp default",
     "build:pro": "npm run build --[pro]",
     "build:analy": "npm run build --[analy]",
-    "eslint": "eslint --fix src/"
+    "eslint": "eslint --fix src/**/*.js"
   },
   "husky": {
     "hooks": {
@@ -25,7 +25,6 @@
       "git add"
     ]
   },
-  "type": "module",
   "keywords": [],
   "author": "will",
   "license": "ISC",
@@ -79,13 +78,8 @@
     "css-minimizer-webpack-plugin": "^1.1.5",
     "eslint": "^7.17.0",
     "eslint-config-prettier": "^7.1.0",
-    "eslint-config-standard": "^16.0.2",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.22.0",
-    "eslint-plugin-standard": "^5.0.0",
     "gulp": "^4.0.0",
     "gulp-ssh": "^0.7.0",
     "husky": "^4.3.6",

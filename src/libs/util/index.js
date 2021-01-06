@@ -1,4 +1,4 @@
-import {message, Button, Alert} from 'antd';
+import {message} from 'antd';
 import moment from 'moment';
 const LogoSrc = require('images/logo.png');
 const LogoPng = require('images/left-logo.png');
@@ -93,7 +93,7 @@ const method = {
   subsection: function (data, fn, count, time) {
     let timmer = null;
     function start() {
-      const preCoord = data.slice(0, 1);
+      // const preCoord = data.slice(0, 1);
       for (var i = 0; i < Math.min(count || 1, data.length); i++) {
         var obj = data.splice(0, 2);
         fn([...obj, data[0]]);
@@ -109,7 +109,6 @@ const method = {
     };
   },
   throttle: function (fn, interval) {
-    const _self = fn;
     var timmer;
     let isFirst = true;
     return function () {
@@ -145,6 +144,9 @@ export const jQPrintPartialHtml = (select, {title = document.title} = {}) => {
   });
 };
 
+function padLeftZero(str) {
+  return ('00' + str).substr(str.length);
+}
 /* 格式化时间戳
  */
 export function formatDate(date, fmt) {
@@ -166,9 +168,7 @@ export function formatDate(date, fmt) {
   }
   return fmt;
 }
-function padLeftZero(str) {
-  return ('00' + str).substr(str.length);
-}
+
 // 获取url参数
 export const urlParse = (src) => {
   const url = decodeURIComponent(src) || null;
