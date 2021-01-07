@@ -11,7 +11,8 @@
     "build:dev": "npm run build --[dev] && gulp default",
     "build:pro": "npm run build --[pro]",
     "build:analy": "npm run build --[analy]",
-    "eslint": "eslint --fix src/**/*.js"
+    "eslint": "eslint --fix src/**/*.js",
+    "commit": "git-cz"
   },
   "husky": {
     "hooks": {
@@ -21,7 +22,8 @@
   "lint-staged": {
     "src/**/*.{js,jsx}": [
       "prettier --write",
-      "eslint --fix"
+      "eslint --fix",
+      "git add"
     ]
   },
   "config": {
