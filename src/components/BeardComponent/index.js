@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import {Breadcrumb} from 'antd';
 import {Link} from 'react-router-dom';
 

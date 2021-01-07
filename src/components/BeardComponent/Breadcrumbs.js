@@ -1,13 +1,14 @@
 import React from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import BreadcrumbsHoc from './IndexHoc';
 import routerArr from '../../router/allRouter';
 require('style/view/common/Breadcrumbs.less');
 
 const BreadcrumbsComponent = ({breadcrumbs, isShowGridMap}) => {
+  console.log(isShowGridMap);
   return breadcrumbs.length > 1 ? (
-    <div className="customBread" style={{display: isShowGridMap ? 'none' : 'flex'}}>
+    <div className="customBread">
       <span className="leftBlue"></span>
       {breadcrumbs.map((breadcrumb, index) => (
         <span key={breadcrumb.props.path} className="txt">
@@ -28,8 +29,8 @@ const Breadcrumbs = withRouter((props) => {
 const mapStateToProps = (state) => ({
   isShowGridMap: state.commonReducer.isShowGridMap
 });
-const mapDispatchToProps = (dispatch) => ({
-  changeNavNameAction: (bread) => dispatch(changeNavName(bread))
+const mapDispatchToProps = () => ({
+  // changeNavNameAction: (bread) => dispatch()
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Breadcrumbs);

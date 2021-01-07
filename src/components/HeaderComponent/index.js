@@ -150,7 +150,7 @@ class HeaderComponent extends Component {
     });
   };
   handleCollapsed = () => {
-    this.props.changeMapType(false);
+    // this.props.changeMapType(false);
     this.props.isCollapsedAction();
   };
   handleDrop = ({key}) => {
@@ -214,7 +214,11 @@ class HeaderComponent extends Component {
           <Row type="flex" justify="space-between" align="middle">
             <Col xs={8} sm={10} md={12} lg={18}>
               <img src={constant.LogoPng} alt="logo" />
-              <Button type="primary" className="collapsed" onClick={this.handleCollapsed.bind(this)}>
+              <Button
+                type="primary"
+                className="collapsed"
+                onClick={this.handleCollapsed.bind(this)}
+                style={{display: this.props.isShowCollaps ? 'inline-block' : 'none'}}>
                 <Icon type={this.props.isCollapsed ? 'menu-unfold' : 'menu-fold'} />
               </Button>
             </Col>

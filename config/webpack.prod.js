@@ -3,7 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 // css 压缩
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -16,7 +16,7 @@ module.exports = merge(common, {
   output: {
     filename: 'assets/js/[name].js',
     path: path.resolve(__dirname, '../dist'),
-    publicPath: './',
+    publicPath: './'
   },
   optimization: {
     splitChunks: {
@@ -35,7 +35,7 @@ module.exports = merge(common, {
           minChunks: 2,
           reuseExistingChunk: true,
           enforce: true,
-          priority: 8,
+          priority: 8
         },
         icon: {
           name: 'icon',
@@ -44,20 +44,20 @@ module.exports = merge(common, {
           minChunks: 1,
           reuseExistingChunk: true,
           enforce: true,
-          priority: 7,
+          priority: 7
         },
         // 同步代码继续执行
         vendors: {
           test: /[\\/]node_modules[\\/]/, // 同步 引入的库是否在 node_modules中
           priority: -10, // 值越大，优先级就越高
-          name: 'vendors',
+          name: 'vendors'
         },
         default: {
           priority: -20,
           reuseExistingChunk: true, // 当一个模块之前引用过，再次使用时可以直接复用
-          name: 'default',
-        },
-      },
+          name: 'default'
+        }
+      }
     },
     minimize: true, // 开启输出压缩
     minimizer: [
@@ -69,37 +69,37 @@ module.exports = merge(common, {
             warnings: false,
             drop_console: true,
             drop_debugger: true,
-            pure_funcs: ['console.log'], //移除console
-          },
-        },
+            pure_funcs: ['console.log'] //移除console
+          }
+        }
       }),
       new CssMinimizerPlugin(),
       (compiler) => {
         isAnaly && new BundleAnalyzerPplugin().apply(compiler);
-      },
-    ],
+      }
+    ]
   },
   target: ['web', 'es5'],
   stats: {
-    children: false,
+    children: false
   },
   performance: {
-    hints: false,
+    hints: false
   },
   plugins: [
     new CleanWebpackPlugin(),
     // //删除
     // new CleanWebpackPlugin({
     //   dry: true,
-    //   'cleanStaleWe​​bpackAssets': false,
     //   cleanOnceBeforeBuildPatterns: ['dist'],
     //   dangerouslyAllowCleanPatternsOutsideProject: true,
     // }),
     new webpack.DefinePlugin({
       'process.env.BASE_URL': '"' + process.env.BASE_URL + '"',
       'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV),
+      'process.env.BASE_WEB_URL': JSON.stringify(process.env.BASE_WEB_URL)
     }),
     // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/),
-  ],
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/)
+  ]
 });

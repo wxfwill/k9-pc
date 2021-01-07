@@ -9,7 +9,7 @@ console.log('当前构建模式===' + process.env.NODE_ENV);
 console.log('当前打包环境===' + process.env.BASE_ENV);
 const commonSet = {
   entry: {
-    main: ['babel-polyfill', './src/app.js'],
+    main: ['babel-polyfill', './src/app.js']
     // vendor1: ['react', 'react-router-dom', 'react-redux'],
     // vendor2: ['antd', 'axios'],
     // vendor3: ['classnames'],
@@ -18,14 +18,14 @@ const commonSet = {
     rules: [
       {
         test: /\.bundle\.jsx?$/,
-        use: 'bundle-loader',
+        use: 'bundle-loader'
       },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
-        },
+          loader: 'babel-loader'
+        }
         // include: [
         //   resolve('src'),
         //   resolve('node_modules/webpack'),
@@ -39,20 +39,20 @@ const commonSet = {
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              publicPath: '../',
-            },
+              publicPath: '../'
+            }
           },
           'css-loader',
           {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                plugins: ['autoprefixer'],
-              },
-            },
+                plugins: ['autoprefixer']
+              }
+            }
           },
-          'less-loader',
-        ],
+          'less-loader'
+        ]
       },
       {
         test: /\.(png|svg|jpg|gif)/,
@@ -69,16 +69,16 @@ const commonSet = {
             loader: 'image-webpack-loader',
             options: {
               optipng: {
-                enabled: false,
+                enabled: false
               },
               pngquant: {
                 enabled: false,
                 quality: [0.65, 0.9],
-                speed: 4,
-              },
-            },
-          },
-        ],
+                speed: 4
+              }
+            }
+          }
+        ]
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf|mp4)$/,
@@ -86,33 +86,33 @@ const commonSet = {
           {
             loader: 'file-loader',
             options: {
-              name: 'fonts/[name].[hash:7].[ext]',
-            },
-          },
-        ],
-      },
-    ],
+              name: 'fonts/[name].[hash:7].[ext]'
+            }
+          }
+        ]
+      }
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({
       title: 'k9 pc',
       template: './template/index.html',
       inject: true,
-      favicon: './src/images/logo.png',
+      favicon: './src/images/logo.png'
     }), //自动生成html
     new webpack.ProvidePlugin({
       util: 'util',
-      config: 'config',
+      config: 'config'
     }),
     new MiniCssExtractPlugin({
       filename: devMode ? 'css/[name].css' : 'css/[name]-[chunkhash:8].css', // hmr不支持hash命名
-      ignoreOrder: true, // 禁止检查顺序
-    }),
+      ignoreOrder: true // 禁止检查顺序
+    })
   ],
   resolve: {
     fallback: {
       crypto: require.resolve('crypto-browserify'),
-      stream: require.resolve('stream-browserify'),
+      stream: require.resolve('stream-browserify')
     },
     extensions: ['.js', '.json', '.jsx'],
     alias: {
@@ -126,10 +126,10 @@ const commonSet = {
       images: `${srcPath}/images`,
       libs: `${srcPath}/libs`,
       util: `${srcPath}/libs/util`,
-      config: path.resolve(__dirname, './config'),
+      config: path.resolve(__dirname, './config')
       // 'react-dom': '@hot-loader/react-dom',
-    },
-  },
+    }
+  }
 };
 
 module.exports = commonSet;

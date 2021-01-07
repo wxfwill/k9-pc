@@ -5,13 +5,13 @@ const commonSet = require('./webpack.common.js');
 
 const config = {
   entry: {
-    main: ['babel-polyfill', './src/app.js'],
+    main: ['babel-polyfill', './src/app.js']
   },
   // target: ['web', 'es5'],
   output: {
     filename: 'assets/js/[name].js',
     path: path.resolve(__dirname, '../dist'),
-    publicPath: '/',
+    publicPath: '/'
   },
   mode: 'development',
   devtool: 'eval-cheap-module-source-map', // 注意新旧名字的区别
@@ -30,16 +30,16 @@ const config = {
       '/api/*': {
         target: 'http://172.16.121.137:8030/', // 开发环境
         changeOrigin: true,
-        secure: true,
-      },
-    },
+        secure: true
+      }
+    }
   },
   stats: {
-    children: false,
+    children: false
   },
   optimization: {
     runtimeChunk: {
-      name: 'manifest',
+      name: 'manifest'
     },
     splitChunks: {
       chunks: 'all', // 同步 异步 都采用代码分割
@@ -57,21 +57,21 @@ const config = {
           minChunks: 1,
           reuseExistingChunk: true,
           enforce: true,
-          priority: 8,
+          priority: 8
         },
         // 同步代码继续执行
         vendors: {
           test: /[\\/]node_modules[\\/]/, // 同步 引入的库是否在 node_modules中
           priority: -10, // 值越大，优先级就越高
-          name: 'vendors',
+          name: 'vendors'
         },
         default: {
           priority: -20,
           reuseExistingChunk: true, // 当一个模块之前引用过，再次使用时可以直接复用
-          name: 'default',
-        },
-      },
-    },
+          name: 'default'
+        }
+      }
+    }
   },
   module: commonSet.module,
   plugins: [
@@ -81,9 +81,10 @@ const config = {
     new webpack.DefinePlugin({
       'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
       'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV),
+      'process.env.BASE_WEB_URL': JSON.stringify(process.env.BASE_WEB_URL)
     }),
-    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/),
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/)
   ].concat(commonSet.plugins),
-  resolve: commonSet.resolve,
+  resolve: commonSet.resolve
 };
 module.exports = config;

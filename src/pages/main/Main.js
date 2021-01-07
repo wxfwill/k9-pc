@@ -19,7 +19,6 @@ class MainComponent extends React.Component {
     this.menus = this.props.menus;
   }
   componentDidMount() {
-    console.log(this.props.isShowGridMap);
     const _this = this;
     let beginTime = 0; //执行onbeforeunload的开始时间
     let differTime = 0; //时间差
@@ -52,7 +51,7 @@ class MainComponent extends React.Component {
     const {route} = this.props;
     return (
       <Layout className={classNames('indexComponent')} style={{height: '100%'}}>
-        <HeaderComponent />
+        <HeaderComponent isShowCollaps={true} />
         <Layout style={{height: 'calc(100% - 64px)'}}>
           <SliderCustom menus={this.menus} onRef={this.onRef} isCollapsed={this.props.isCollapsed} />
           <Layout id="mainWrapper">
@@ -65,10 +64,7 @@ class MainComponent extends React.Component {
               </Content>
             </div>
             <BackTop target={() => document.getElementById('mainWrapper1')} visibilityHeight={200} />
-            <Footer
-              style={{textAlign: 'center', padding: '10px', display: this.props.isShowGridMap ? 'none' : 'block'}}>
-              {util.constant.footerText}
-            </Footer>
+            <Footer style={{textAlign: 'center', padding: '10px'}}>{util.constant.footerText}</Footer>
           </Layout>
         </Layout>
       </Layout>

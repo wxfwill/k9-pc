@@ -312,6 +312,7 @@ const routerArr = [
     component: Archivew,
     requiresAuth: false
   },
+  {path: '/app/monitoring/grid/viewMap', requiresAuth: false, component: ViewGridMap},
   {
     path: '/app',
     component: Main,
@@ -397,8 +398,8 @@ const routerArr = [
             name: '网格化任务',
             items: [
               {path: '/app/monitoring/grid/list', component: GridRaidTaskList, name: '列表'},
-              {path: '/app/monitoring/grid/addGrid', component: GridRaid, name: '新建'},
-              {path: '/app/monitoring/grid/viewMap', component: ViewGridMap, name: '查看轨迹'}
+              {path: '/app/monitoring/grid/addGrid', component: GridRaid, name: '新建'}
+              // {path: '/app/monitoring/grid/viewMap', component: ViewGridMap}
             ]
           },
           {path: '/app/monitoring/ViewGridRaidTask/:taskID', component: ViewGridRaidTask},

@@ -3,7 +3,7 @@ module.exports = {
   // 开启eslint支持
   eslintIntegration: true,
   // 单行最大长度
-  printWidth: 150,
+  printWidth: 120,
   // 设置编辑器每一个水平缩进的空格数
   tabWidth: 2,
   // 在句尾添加分号

@@ -19,14 +19,14 @@ const time =
 // 对应测试环境的 dev test 文件夹
 const ENV_LIST = [
   {
-    envName: 'dev',
+    envName: 'dev'
   },
   {
-    envName: 'test',
+    envName: 'test'
   },
   {
-    envName: 'pro',
-  },
+    envName: 'pro'
+  }
 ];
 const argv = JSON.parse(process.env.npm_config_argv).original || process.argv;
 console.log(argv);
@@ -52,18 +52,18 @@ const gulpConfig = {
         host: '172.16.121.137',
         port: 22,
         username: 'root',
-        password: 'password',
+        password: 'password'
       },
       commands: [
         // 删除现有文件
         // `rm -rf /root/nginx_szcg/website/zhifa/ dist` ( 1.删除项目目录 )
-        'rm -rf ' + remotePath + projectName + '/*',
+        'rm -rf ' + remotePath + projectName + '/*'
       ],
       backups: [
         // cd /root/nginx_szcg/website/zhifa/dist/  ( 2.进入项目目录 )
         'cd ' + remotePath + projectName + '/',
         // tar -zcvf /root/nginx_szcg/website/zhifa/dist-copy/2019-4-17-3-59.tar.gz  ( 3.压缩备份，不会自动创建备份目录 )
-        'tar -zcvf ' + remotePath + projectName + '-copy/' + time + '.tar.gz *',
+        'tar -zcvf ' + remotePath + projectName + '-copy/' + time + '.tar.gz *'
       ],
       rollback: [
         // tar -zxvf /root/nginx_szcg/website/zhifa/dist-copy/2019-4-17-3-59.tar.gz -C /root/nginx_szcg/website/zhifa/dist/（4.解压恢复）
@@ -75,19 +75,19 @@ const gulpConfig = {
           '.tar.gz -C ' +
           remotePath +
           projectName +
-          '/',
+          '/'
       ],
       // 只有修改nginx服务器的配置文件才需要重启nginx
       reload: [
         // /usr/local/webserver/nginx/sbin/nginx -s stop ( nginx -s stop  OR  nginx -s reload OR nginx -s start)
         '/usr/local/nginx/sbin/nginx -s stop',
         // /usr/local/webserver/nginx/sbin/nginx -c /usr/local/webserver/nginx/conf/nginx.conf
-        '/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf',
-      ],
-    },
+        '/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf'
+      ]
+    }
   },
 
-  proServerSShConfig: {},
+  proServerSShConfig: {}
 };
 
 module.exports = gulpConfig;

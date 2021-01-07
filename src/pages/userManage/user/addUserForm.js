@@ -72,7 +72,8 @@ class FormCompomnent extends React.Component {
         this.setState({groupList: res.data});
       }
     });
-    const formStatus = util.urlParse(this.props.location.search) && util.urlParse(this.props.location.search).formStatus;
+    const formStatus =
+      util.urlParse(this.props.location.search) && util.urlParse(this.props.location.search).formStatus;
     const userId = util.urlParse(this.props.location.search) && util.urlParse(this.props.location.search).userId;
     userId && this.setState({userId});
 
@@ -94,8 +95,18 @@ class FormCompomnent extends React.Component {
     React.$ajax.getData('/api/user/queryUserInfoByUserId', {userId}).then((res) => {
       if (res.code == 0) {
         const resData = res.data ? res.data : {};
+        console.log(resData);
         resData.birthday = resData.birthday ? moment(resData.birthday) : null;
-        resData.roles = resData.roles ? resData.roles[0].roleId.toString() : undefined;
+        // resData.roles = resData.roles ? resData.roles[0].roleId.toString() : undefined;
+        let _roles = [];
+        if (resData.roles) {
+          resData.roles.map((item) => {
+            _roles.push(item.roleId);
+          });
+        } else {
+          _roles = undefined;
+        }
+        resData.roles = _roles;
         resData.groupId = resData.groupId ? resData.groupId.toString() : undefined;
         // 警员图片
         resData.photo = resData.photo ? resData.photo.toString() : null;
@@ -264,7 +275,11 @@ class FormCompomnent extends React.Component {
                           //rules: [{ required: true, message: '请选择政治面貌' }],
                           initialValue: formDataEle.politicsStatus
                         })(
-                          <Select disabled={disabled} placeholder="请选择" getPopupContainer={(triggerNode) => triggerNode.parentNode} allowClear>
+                          <Select
+                            disabled={disabled}
+                            placeholder="请选择"
+                            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                            allowClear>
                             {formData &&
                               formData.politicsStatusArr.map((item, index) => {
                                 return (
@@ -294,7 +309,11 @@ class FormCompomnent extends React.Component {
                           //rules: [{ required: true, message: '请选择身份类别' }],
                           initialValue: formDataEle.dutyType
                         })(
-                          <Select disabled={disabled} placeholder="请选择" getPopupContainer={(triggerNode) => triggerNode.parentNode} allowClear>
+                          <Select
+                            disabled={disabled}
+                            placeholder="请选择"
+                            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                            allowClear>
                             {formData.dutyTypeArr.map((item, index) => {
                               return (
                                 <Option value={item.id} key={index}>
@@ -312,7 +331,11 @@ class FormCompomnent extends React.Component {
                           //rules:[{required:true,message:'请选择学历'}],
                           initialValue: formDataEle.degree
                         })(
-                          <Select disabled={disabled} placeholder="请选择" getPopupContainer={(triggerNode) => triggerNode.parentNode} allowClear>
+                          <Select
+                            disabled={disabled}
+                            placeholder="请选择"
+                            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                            allowClear>
                             {formData.degreeArr.map((item, index) => {
                               return (
                                 <Option value={item.id} key={index}>
@@ -345,7 +368,11 @@ class FormCompomnent extends React.Component {
                           //rules:[{required:true,message:'请选择专业'}],
                           initialValue: formDataEle.major
                         })(
-                          <Select disabled={disabled} placeholder="请选择" getPopupContainer={(triggerNode) => triggerNode.parentNode} allowClear>
+                          <Select
+                            disabled={disabled}
+                            placeholder="请选择"
+                            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                            allowClear>
                             {formData.majorArr.map((item, index) => {
                               return (
                                 <Option value={item.id} key={index}>
@@ -365,7 +392,11 @@ class FormCompomnent extends React.Component {
                           //rules: [{ required: true, message: '请选择职务' }],
                           initialValue: formDataEle.duty
                         })(
-                          <Select disabled={disabled} placeholder="请选择" getPopupContainer={(triggerNode) => triggerNode.parentNode} allowClear>
+                          <Select
+                            disabled={disabled}
+                            placeholder="请选择"
+                            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                            allowClear>
                             {this.props.dutyList &&
                               this.props.dutyList.map((item, index) => {
                                 return (
@@ -384,7 +415,11 @@ class FormCompomnent extends React.Component {
                           //rules: [{ required: true, message: '请选择资格证书' }],
                           initialValue: formDataEle.credentials
                         })(
-                          <Select disabled={disabled} placeholder="请选择" getPopupContainer={(triggerNode) => triggerNode.parentNode} allowClear>
+                          <Select
+                            disabled={disabled}
+                            placeholder="请选择"
+                            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                            allowClear>
                             {formData.credentialsArr.map((item, index) => {
                               return (
                                 <Option value={item.id} key={index}>
@@ -404,7 +439,11 @@ class FormCompomnent extends React.Component {
                           //rules: [{ required: true, message: '请选择职称' }],
                           initialValue: formDataEle.title
                         })(
-                          <Select disabled={disabled} placeholder="请选择" getPopupContainer={(triggerNode) => triggerNode.parentNode} allowClear>
+                          <Select
+                            disabled={disabled}
+                            placeholder="请选择"
+                            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                            allowClear>
                             {formData.titleArr.map((item, index) => {
                               return (
                                 <Option value={item.id} key={index}>
@@ -433,7 +472,11 @@ class FormCompomnent extends React.Component {
                           //rules: [{ required: true, message: '请选择工作单位' }],
                           initialValue: formDataEle.unitId
                         })(
-                          <Select disabled={disabled} allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择">
+                          <Select
+                            disabled={disabled}
+                            allowClear
+                            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                            placeholder="请选择">
                             {workUnitList &&
                               workUnitList.map((item, index) => {
                                 return (
@@ -487,7 +530,11 @@ class FormCompomnent extends React.Component {
                           //rules: [{ required: true, message: '请选择所属中队' }],
                           initialValue: formDataEle.groupId
                         })(
-                          <Select disabled={disabled} allowClear placeholder="请选择" getPopupContainer={(triggerNode) => triggerNode.parentNode}>
+                          <Select
+                            disabled={disabled}
+                            allowClear
+                            placeholder="请选择"
+                            getPopupContainer={(triggerNode) => triggerNode.parentNode}>
                             {groupList &&
                               groupList.map((item, index) => {
                                 return (
@@ -508,7 +555,12 @@ class FormCompomnent extends React.Component {
                           rules: [{required: true, message: '请选择角色'}],
                           initialValue: formDataEle.roles
                         })(
-                          <Select disabled={disabled} placeholder="请选择" getPopupContainer={(triggerNode) => triggerNode.parentNode} allowClear>
+                          <Select
+                            disabled={disabled}
+                            mode="multiple"
+                            placeholder="请选择"
+                            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                            allowClear>
                             {roleList &&
                               roleList.map((item, index) => {
                                 return (
@@ -534,13 +586,25 @@ class FormCompomnent extends React.Component {
                     {getFieldDecorator('remark', {
                       rules: [{max: 500, message: '个人履历长度不超过500'}],
                       initialValue: formDataEle.remark
-                    })(<TextArea placeholder="个人履历" allowClear autoSize={{minRows: 3, maxRows: 6}} disabled={disabled} />)}
+                    })(
+                      <TextArea
+                        placeholder="个人履历"
+                        allowClear
+                        autoSize={{minRows: 3, maxRows: 6}}
+                        disabled={disabled}
+                      />
+                    )}
                   </FormItem>
                   <FormItem label="警员图片" {...firstLayout}>
                     {getFieldDecorator('photo', {
                       rules: [{required: true, message: '请上传警员图片'}],
                       initialValue: formDataEle.photo
-                    })(<CustomUpload photoUrl={formDataEle.photo} parent={this} key={new Date().getTime()}></CustomUpload>)}
+                    })(
+                      <CustomUpload
+                        photoUrl={formDataEle.photo}
+                        parent={this}
+                        key={new Date().getTime()}></CustomUpload>
+                    )}
 
                     {/* <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                       <img alt="example" style={{ width: '100%' }} src={previewImage} />

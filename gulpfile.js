@@ -1,5 +1,3 @@
-/** @format */
-
 // 在Node中不能使用ES6语法的模块化
 const gulpConfig = require('./gulpfile.config.js');
 
@@ -79,7 +77,7 @@ gulp.task(
       port = 8000;
     }
     console.log('发布完毕...', '请通过以下地址访问...');
-    console.log(config.ssh.host + ':' + port);
+    console.log('http://' + config.ssh.host + ':' + port);
     // Did you forget to signal async completion? 报错后需要调用done,以结束task
     done(); // 在不使用文件流的情况下，向task的函数里传入一个名叫done的回调函数，以结束task
   })

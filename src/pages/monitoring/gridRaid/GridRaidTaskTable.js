@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {Table, Button, Tag, Badge, Icon, Divider} from 'antd';
-import {withRouter, Link} from 'react-router-dom';
+import React from 'react';
+import {Table} from 'antd';
+import {withRouter} from 'react-router-dom';
 
 import Immutable from 'immutable';
 import {connect} from 'react-redux';
@@ -30,18 +30,10 @@ class GridRaidTaskTable extends React.Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.fetch();
   }
-  handleViewMap = (row) => {
-    this.props.changeGridMap(true);
-    // this.props.history.push('/app/monitoring/grid/viewMap');
-    window.open('http://localhost:8001/#/app/monitoring/grid/viewMap');
-  };
-  handleReact = () => {
-    this.props.changeGridMap(false);
-  };
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (Immutable.is(Immutable.Map(this.props.filter), Immutable.Map(nextProps.filter))) {
       return;
     }
@@ -59,7 +51,16 @@ class GridRaidTaskTable extends React.Component {
       });
     }
   }
-  handleTableChange = (pagination, filters, sorter) => {
+  // handleReact = () => {
+  //   this.props.changeGridMap(false);
+  // };
+  handleViewMap = (row) => {
+    console.log(row);
+    this.props.changeGridMap(true);
+    // this.props.history.push('/app/monitoring/grid/viewMap');
+    window.open(`${process.env.BASE_WEB_URL}/#/app/monitoring/grid/viewMap`);
+  };
+  handleTableChange = (pagination) => {
     const pager = {...this.state.pagination};
     pager.current = pagination.current;
     const {filter} = this.state;
@@ -92,7 +93,7 @@ class GridRaidTaskTable extends React.Component {
     //   const { match } = this.props;
     return (
       <div>
-        <div className="table-operations">
+        {/* <div className="table-operations">
           <Button type="primary">
             <Link to="/app/monitoring/grid/addGrid">
               <Icon type="plus" style={{marginRight: 5}} />
@@ -100,7 +101,7 @@ class GridRaidTaskTable extends React.Component {
             </Link>
           </Button>
           <Button onClick={this.handleReact}>复位</Button>
-        </div>
+        </div> */}
         <Table
           rowKey={(row) => {
             return 'key-' + row.id;

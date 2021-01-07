@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
-import {Menu, Dropdown, Icon, Input, Checkbox} from 'antd';
+import {Menu, Dropdown, Layout, Icon, Input, Checkbox} from 'antd';
+import classNames from 'classnames';
+import HeaderComponent from 'components/HeaderComponent';
 
+require('style/index.less');
 require('style/pages/GridDisplayMap.less');
 
 const CheckboxGroup = Checkbox.Group;
@@ -39,7 +42,7 @@ class GridMap extends Component {
   dropMenu = () => {
     return this.state.dropList && this.state.dropList.length > 0 ? (
       <Menu onClick={this.handleDrop} selectable>
-        {this.state.dropList.map((item, index) => {
+        {this.state.dropList.map((item) => {
           return (
             <Menu.Item key={item.key} name={item.name}>
               <span className="cursor">{item.name}</span>
@@ -122,39 +125,44 @@ class GridMap extends Component {
   }
   render() {
     return (
-      <div className="rootMap">
-        <div className="leftMap" id="rootMap">
-          两步路地图展示
-        </div>
-        <div className="rightOption">
-          <div className="dropdown-wrap">
-            <Dropdown overlay={this.dropMenu()} trigger={['click']} placement="bottomCenter">
-              <span className="cursor">
-                <i className="text">{this.state.selectName}</i>
-                <Icon type="down" />
-              </span>
-            </Dropdown>
-            <Input
-              className="input-wrap"
-              placeholder="请输入姓名或警号搜索"
-              prefix={<Icon type="search" style={{color: '#BBBCBD'}} />}
-              onChange={(event) => this.handleChangeNumber(event).then(this.handleChangeInput)}
-              allowClear></Input>
-          </div>
-
-          <div className="all-checkout">
-            <div>
-              <Checkbox
-                indeterminate={this.state.indeterminate}
-                onChange={this.onCheckAllChange}
-                checked={this.state.checkAll}>
-                显示轨迹(默认全部)
-              </Checkbox>
+      <Layout className={classNames('indexComponent')} style={{height: '100%'}}>
+        <HeaderComponent isShowCollaps={false} />
+        <Layout style={{height: 'calc(100% - 64px)'}}>
+          <div className="rootMap">
+            <div className="leftMap" id="rootMap">
+              两步路地图展示
             </div>
-            <CheckboxGroup options={this.plainOptions} value={this.state.checkedList} onChange={this.onChange} />
+            <div className="rightOption">
+              <div className="dropdown-wrap">
+                <Dropdown overlay={this.dropMenu()} trigger={['click']} placement="bottomCenter">
+                  <span className="cursor">
+                    <i className="text">{this.state.selectName}</i>
+                    <Icon type="down" />
+                  </span>
+                </Dropdown>
+                <Input
+                  className="input-wrap"
+                  placeholder="请输入姓名或警号搜索"
+                  prefix={<Icon type="search" style={{color: '#BBBCBD'}} />}
+                  onChange={(event) => this.handleChangeNumber(event).then(this.handleChangeInput)}
+                  allowClear></Input>
+              </div>
+
+              <div className="all-checkout">
+                <div>
+                  <Checkbox
+                    indeterminate={this.state.indeterminate}
+                    onChange={this.onCheckAllChange}
+                    checked={this.state.checkAll}>
+                    显示轨迹(默认全部)
+                  </Checkbox>
+                </div>
+                <CheckboxGroup options={this.plainOptions} value={this.state.checkedList} onChange={this.onChange} />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </Layout>
+      </Layout>
     );
   }
 }

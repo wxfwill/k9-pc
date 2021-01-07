@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {Row, Col, Card, Tag} from 'antd';
-import {Route} from 'react-router-dom';
+import {Row, Col, Card} from 'antd';
 import GRTaskTable from './GridRaidTaskTable';
 import GRTaskSearch from './GridRaidTaskSearch';
 

@@ -24,7 +24,7 @@ class SliderCustom extends Component {
     }
     this.setMenuOpen(this.props.history.location.pathname);
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.isCollapsed) {
       this.setState({firstHide: true});
     } else {
@@ -93,8 +93,7 @@ class SliderCustom extends Component {
           background: '#fff',
           overflowY: 'auto',
           height: '100%',
-          overflowX: 'hidden',
-          display: this.props.isShowGridMap ? 'none' : 'block'
+          overflowX: 'hidden'
         }}>
         <Menu
           mode="inline"
