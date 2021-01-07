@@ -11,7 +11,7 @@ class AidRecipients extends Component {
       currentIndex: ''
     };
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       detailInfor: nextProps.detailInfor,
       currentIndex: nextProps.currentIndex
