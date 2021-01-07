@@ -15,14 +15,14 @@
   },
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
     "src/**/*.{js,jsx}": [
       "prettier --write",
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ]
   },
   "keywords": [],
@@ -67,6 +67,8 @@
     "webpack-merge": "^4.1.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
     "@fantasticit/code-lint": "^0.0.6",
     "autoprefixer": "^8.6.5",
     "babel-eslint": "^10.1.0",
