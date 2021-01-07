@@ -11,12 +11,12 @@
     "build:dev": "npm run build --[dev] && gulp default",
     "build:pro": "npm run build --[pro]",
     "build:analy": "npm run build --[analy]",
-    "eslint": "eslint --fix src/**/*.js",
-    "commit": "git-cz"
+    "eslint": "eslint --fix src/**/*.js"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
@@ -25,11 +25,6 @@
       "eslint --fix",
       "git add"
     ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
-    }
   },
   "keywords": [],
   "author": "will",
@@ -74,13 +69,14 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-angular": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
-    "@fantasticit/code-lint": "^0.0.6",
     "autoprefixer": "^8.6.5",
     "babel-eslint": "^10.1.0",
     "babel-plugin-import": "^1.6.2",
     "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "babel-polyfill": "^6.26.0",
+    "conventional-changelog-cli": "^2.1.1",
     "crypto-browserify": "^3.12.0",
     "crypto-js": "^4.0.0",
     "css-minimizer-webpack-plugin": "^1.1.5",
