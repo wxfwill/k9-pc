@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link, withRouter} from 'react-router-dom';
-import {Layout, Menu, Dropdown, Modal, Icon, Row, Col, Badge, Button, message} from 'antd';
+import {Layout, Menu, Dropdown, Modal, Icon, Row, Col, Button, message} from 'antd';
 // import * as systomStatus from 'actions/systomStatus';
 import {showNavCollapsed} from 'store/actions/common';
 import {saveToken} from 'store/actions/loginAction';
@@ -212,7 +212,7 @@ class HeaderComponent extends Component {
       <Header className="header">
         <div className="logo">
           <Row type="flex" justify="space-between" align="middle">
-            <Col xs={8} sm={10} md={12} lg={18}>
+            <Col xs={8} sm={10} md={10} lg={12}>
               <img src={constant.LogoPng} alt="logo" />
               <Button
                 type="primary"
@@ -222,12 +222,12 @@ class HeaderComponent extends Component {
                 <Icon type={this.props.isCollapsed ? 'menu-unfold' : 'menu-fold'} />
               </Button>
             </Col>
-            <Col offset={2} xs={2} sm={2} md={2} lg={1} className="center">
+            {/* <Col offset={2} xs={2} sm={2} md={1} lg={1} className="center">
               <Badge count={this.totalMsgNum == 0 ? '' : this.totalMsgNum}>
                 <Icon type="notification" />
               </Badge>
-            </Col>
-            <Col xs={6} sm={6} md={6} lg={3}>
+            </Col> */}
+            <Col xs={6} sm={6} md={6} lg={6} className="center">
               <Dropdown overlay={this.dropMenu()}>
                 <a
                   className="ant-dropdown-link"

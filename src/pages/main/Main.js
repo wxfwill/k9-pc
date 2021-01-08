@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import {Layout, BackTop} from 'antd';
 import {renderRoutes} from 'react-router-config';
 import {showNavCollapsed, changeRoute, changeNavName} from 'store/actions/common';
+import {saveToken} from 'store/actions/loginAction';
 import SliderCustom from 'components/customMenu/SliderCustom';
 import CustomBreadcrumb from 'components/BeardComponent/Breadcrumbs';
 import HeaderComponent from 'components/HeaderComponent';
@@ -26,7 +27,8 @@ class MainComponent extends React.Component {
       differTime = new Date().getTime() - beginTime;
       if (differTime <= 3) {
         // 关闭
-        _this.props.changeRouteAction('/app/home/index');
+        _this.props.changeRouteAction('/app/index');
+        _this.props.tokenAction(null);
       } else {
         // 刷新
       }
@@ -83,6 +85,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
   isCollapsedAction: () => dispatch(showNavCollapsed()),
+  tokenAction: (token) => dispatch(saveToken(token)),
   changeRouteAction: (url) => dispatch(changeRoute(url)),
   changeNavNameAction: (bread) => dispatch(changeNavName(bread))
 });
