@@ -81,7 +81,6 @@ class SliderCustom extends Component {
   };
   render() {
     const {menus} = this.props;
-    console.log(menus);
     return (
       <Sider
         trigger={null}
