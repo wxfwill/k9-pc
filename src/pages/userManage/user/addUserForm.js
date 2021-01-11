@@ -37,7 +37,7 @@ class FormCompomnent extends React.Component {
         university: undefined, // 毕业院校
         dutyType: undefined, // 身份类别
         degree: undefined, // 学历
-        incumbent: null, // 是否在职
+        incumbent: 1, // 是否在职
         major: undefined, // 专业
         duty: undefined, // 职务
         credentials: undefined, // 资格证书
@@ -360,7 +360,7 @@ class FormCompomnent extends React.Component {
                     <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                       <FormItem label="是否在职" {...secondLayout}>
                         {getFieldDecorator('incumbent', {
-                          //rules: [{ required: true, message: '是否在职' }],
+                          rules: [{required: true, message: '是否在职'}],
                           initialValue: formDataEle.incumbent
                         })(
                           <RadioGroup disabled={disabled}>
