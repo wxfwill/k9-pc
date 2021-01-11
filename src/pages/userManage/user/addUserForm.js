@@ -112,11 +112,12 @@ class FormCompomnent extends React.Component {
         resData.photo = resData.photo ? resData.photo.toString() : null;
 
         for (const key in resData) {
-          if (key != 'birthday' && !resData[key] && resData[key] != 0) {
+          if (key !== 'birthday' && !resData[key] && resData[key] !== 0) {
             resData[key] = undefined;
           }
         }
         const obj = Object.assign({}, this.state.formDataEle, resData);
+        console.log(obj);
         this.setState({formDataEle: obj});
       }
     });
@@ -169,7 +170,13 @@ class FormCompomnent extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         values.birthday = values.birthday ? moment(values.birthday).format('x') : null;
-        values.roles = [{roleId: values.roles}];
+        let arr = [];
+        if (values.roles && values.roles.length > 0) {
+          values.roles.map((item) => {
+            arr.push({roleId: item});
+          });
+        }
+        values.roles = arr;
         const obj = Object.assign({}, values, {id: userId, userId: userInfo.id.toString()});
         React.$ajax.postData('/api/user/createUser', obj).then((res) => {
           if (res && res.code == 0) {
@@ -191,6 +198,7 @@ class FormCompomnent extends React.Component {
   render() {
     const {getFieldDecorator} = this.props.form;
     const {formDataEle, disabled, workUnitList, roleList, groupList} = this.state;
+    console.log('重新渲染==');
     return (
       <div className="AddDogForm">
         <Row gutter={24}>
@@ -600,10 +608,7 @@ class FormCompomnent extends React.Component {
                       rules: [{required: true, message: '请上传警员图片'}],
                       initialValue: formDataEle.photo
                     })(
-                      <CustomUpload
-                        photoUrl={formDataEle.photo}
-                        parent={this}
-                        key={new Date().getTime()}></CustomUpload>
+                      <CustomUpload photoUrl={formDataEle.photo} parent={this} key={formDataEle.photo}></CustomUpload>
                     )}
 
                     {/* <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>

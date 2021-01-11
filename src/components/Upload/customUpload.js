@@ -1,12 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Upload, Icon, message} from 'antd';
 import {connect} from 'react-redux';
-
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
 
 @connect(
   (state) => ({token: state.loginReducer.token})
@@ -46,7 +40,7 @@ class CustomUpload extends React.Component {
     return isJpgOrPng && isLt2M;
   };
   handleCustomRequest = (option) => {
-    const {onSuccess, onError, file, onProgress} = option;
+    const {onSuccess, file} = option;
     const param = new FormData();
     param.append('file', file);
     React.$ajax.postData('/api/user/uploadImg', param).then((res) => {
@@ -70,7 +64,7 @@ class CustomUpload extends React.Component {
       this.setState({loading: true});
     }
   };
-  setSvg = (url) => {};
+  setSvg = () => {};
   render() {
     const uploadButton = (
       <div>
