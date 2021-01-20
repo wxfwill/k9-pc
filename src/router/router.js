@@ -17,7 +17,7 @@ class Routes extends Component {
   render() {
     return (
       <HashRouter>
-        <div className="app">
+        <div className="app" basename="/">
           <Switch>
             <Route exact path="/" render={() => <Redirect to="/login" push />} />
             <Route path="/login" component={LoginComponent} />

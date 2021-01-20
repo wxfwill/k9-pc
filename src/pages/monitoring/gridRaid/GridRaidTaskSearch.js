@@ -1,10 +1,9 @@
-import React, {Component} from 'react';
-import {Form, Row, Col, Input, Button, Icon, Select, DatePicker} from 'antd';
+import React from 'react';
+import {Form, Row, Col, Input, Button, Icon, DatePicker} from 'antd';
 import {thirdLayout} from 'util/Layout';
 import moment from 'moment';
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
-const Option = Select.Option;
 
 require('style/view/common/conduct.less');
 class SearchForm extends React.Component {
@@ -53,7 +52,6 @@ class SearchForm extends React.Component {
     });
   }
   render() {
-    const expand = this.state.expand;
     const {getFieldDecorator} = this.props.form;
     const rangeConfig = {
       rules: [{type: 'array', message: 'Please select time!'}]
@@ -85,9 +83,6 @@ class SearchForm extends React.Component {
               <Icon type="rollback" />
               清空
             </Button>
-            {/*     <a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>
-              {this.state.expand ? '展开' : '收起'}  <Icon type={this.state.expand ? 'down': 'up' } />
-            </a> */}
           </Col>
         </Row>
       </Form>

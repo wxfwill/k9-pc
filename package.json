@@ -20,7 +20,7 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx}": [
+    "/[^k9.min]*.{js, jsx}/": [
       "prettier --write",
       "eslint --fix"
     ]

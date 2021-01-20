@@ -22,6 +22,11 @@ class GridRaidTaskTable extends React.Component {
         defaultCurrent: 1
       },
       filter: null,
+      param: {
+        endDate: '',
+        startDate: '',
+        taskName: ''
+      },
       firstLoad: true,
       pageSize: 5,
       currPage: 1,
@@ -42,11 +47,13 @@ class GridRaidTaskTable extends React.Component {
       const filter = nextProps.filter;
       const _this = this;
       this.setState({firstLoad: true});
+      console.log(filter);
       this.setState({filter}, function () {
+        let {filter} = this.state;
         _this.fetch({
           pageSize: _this.state.pageSize,
           currPage: 1,
-          ...filter
+          param: filter
         });
       });
     }
@@ -70,19 +77,21 @@ class GridRaidTaskTable extends React.Component {
     this.fetch({
       pageSize: pagination.pageSize,
       currPage: pagination.current,
-      ...filter
+      param: filter
     });
   };
-  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage}) {
+  fetch(params = {pageSize: this.state.pageSize, currPage: this.state.currPage, param: this.state.param}) {
     this.setState({loading: true});
     React.$ajax
-      .postData('/api/cmdMonitor/listGridTask', {...params})
+      .postData('/api/grid-hunting/page', {...params})
       .then((res) => {
         const pagination = {...this.state.pagination};
-        pagination.total = res.totalCount;
-        pagination.current = res.currPage;
-        pagination.pageSize = res.pageSize;
-        this.setState({data: res.list, loading: false, pagination});
+        let resData = res.data;
+        pagination.total = resData.totalCount;
+        pagination.current = resData.currPage;
+        // pagination.pageSize = resData.pageSize;
+        console.log(resData.list);
+        this.setState({data: resData.list, loading: false, pagination});
       })
       .catch(function (error) {
         console.log(error);

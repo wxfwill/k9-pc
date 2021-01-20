@@ -21,3 +21,6 @@ export const USER_DUTY_LIST = 'USER_DUTY_LIST';
 
 // 网格化搜捕--查看地图
 export const GRID_SHOW_MAP = 'GRID_SHOW_MAP';
+
+// websocket 实例
+export const WEBSOCKET = 'WEBSOCKET';

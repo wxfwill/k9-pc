@@ -1,10 +1,11 @@
-import {IS_COLLAPSED, NAV_DATA, MENU_HIGH_LINE, GRID_SHOW_MAP} from '../actionTypes';
+import {IS_COLLAPSED, NAV_DATA, MENU_HIGH_LINE, GRID_SHOW_MAP, WEBSOCKET} from '../actionTypes';
 
 const initialzeState = {
   collapsed: false,
   routeUrl: '/app/index',
   navData: [],
-  isShowGridMap: false
+  isShowGridMap: false,
+  socket: null
 };
 
 export default function collaspedReducer(state = initialzeState, action) {
@@ -28,6 +29,11 @@ export default function collaspedReducer(state = initialzeState, action) {
       return {
         ...state,
         isShowGridMap: action.showMap
+      };
+    case WEBSOCKET:
+      return {
+        ...state,
+        socket: action.ws
       };
     default:
       return state;

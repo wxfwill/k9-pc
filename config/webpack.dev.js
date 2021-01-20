@@ -81,7 +81,8 @@ const config = {
     new webpack.DefinePlugin({
       'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
       'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV),
-      'process.env.BASE_WEB_URL': JSON.stringify(process.env.BASE_WEB_URL)
+      'process.env.BASE_WEB_URL': JSON.stringify(process.env.BASE_WEB_URL),
+      'process.env.BASE_WS': JSON.stringify(process.env.BASE_WS)
     }),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/)
   ].concat(commonSet.plugins),

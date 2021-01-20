@@ -1,4 +1,4 @@
-import {IS_COLLAPSED, NAV_DATA, MENU_HIGH_LINE, GRID_SHOW_MAP} from '../actionTypes';
+import {IS_COLLAPSED, NAV_DATA, MENU_HIGH_LINE, GRID_SHOW_MAP, WEBSOCKET} from '../actionTypes';
 
 export function showNavCollapsed() {
   return {
@@ -24,5 +24,12 @@ export function changeMapType(showMap) {
   return {
     type: GRID_SHOW_MAP,
     showMap
+  };
+}
+
+export function wsInstance(ws) {
+  return {
+    type: WEBSOCKET,
+    ws
   };
 }

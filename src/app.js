@@ -41,6 +41,8 @@ require('style/App.less');
 // 打印
 require('libs/util/print');
 
+// 两步路地图
+require('libs/util/k9.min.js');
 // 模块热替换
 const App = {
   run: function (renderRoute) {

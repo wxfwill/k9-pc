@@ -2,22 +2,26 @@ const ENV_LIST = [
   {
     envName: 'local', // 本地
     apiUrl: 'http://172.16.121.137:8030',
-    webUrl: 'http://localhost:8001'
+    webUrl: 'http://localhost:8001',
+    wsUrl: 'ws://172.16.121.137:8030'
   },
   {
     envName: 'dev', // build--开发
     apiUrl: 'http://172.16.121.137:8030',
-    webUrl: 'http://172.16.121.137:8010'
+    webUrl: 'http://172.16.121.137:8010',
+    wsUrl: 'ws://172.16.121.137:8030'
   },
   {
     envName: 'test', // build--测试
     apiUrl: 'http://172.16.121.137:8080',
-    webUrl: 'http://172.16.121.137:8000'
+    webUrl: 'http://172.16.121.137:8000',
+    wsUrl: 'ws://172.16.121.137:8080'
   },
   {
     envName: 'pro', // build--生产
     apiUrl: 'http://k9pc.hcfdev.cn',
-    webUrl: 'http://k9pc.hcfdev.cn'
+    webUrl: 'http://k9pc.hcfdev.cn',
+    wsUrl: 'ws://k9pc.hcfdev.cn'
   },
   {
     envName: 'analy', // analy
@@ -35,6 +39,7 @@ console.log(HOST_CONF);
 process.env.BASE_URL = HOST_CONF.apiUrl;
 process.env.BASE_ENV = HOST_CONF.envName;
 process.env.BASE_WEB_URL = HOST_CONF.webUrl;
+process.env.BASE_WS = HOST_CONF.wsUrl;
 
 module.exports.HOST_CONF = HOST_CONF;
 module.exports.ENV_LIST = ENV_LIST;

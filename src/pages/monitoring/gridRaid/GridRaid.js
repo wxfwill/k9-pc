@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'underscore';
 import {
@@ -12,13 +11,9 @@ import {
   Icon,
   Spin,
   Button,
-  Table,
   Card,
-  Collapse,
-  Badge,
   Tag,
   Select,
-  Modal,
   Form,
   Tabs,
   Input,
@@ -26,20 +21,20 @@ import {
   DatePicker
 } from 'antd';
 import GridUserInfoTable from './GridUserInfoTable';
-import GridTable from './GridTable';
+// import GridTable from './GridTable';
 import moment from 'moment';
 import {tMap} from 'components/view/common/createGridMap';
 
-const Panel = Collapse.Panel;
+// const Panel = Collapse.Panel;
 const antIcon = <Icon type="loading" style={{fontSize: 30}} spin />;
 const Option = Select.Option;
-const OptGroup = Select.OptGroup;
-const ButtonGroup = Button.Group;
+// const OptGroup = Select.OptGroup;
+// const ButtonGroup = Button.Group;
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const Search = Input.Search;
 // card
-const {Meta} = Card;
+// const {Meta} = Card;
 
 const mockDate = [];
 for (var i = 0; i < 50; i++) {
@@ -90,10 +85,6 @@ class _GridRaid extends Component {
     this.labelList = [];
     this.reactMarkers = {}; //存储所有栅格中的marker
     this.rectIndex = 1; //当前编辑栅格 index
-  }
-  componentWillMount() {
-    // let { unfold } = this.props.systomActions;
-    // unfold(true);
   }
   componentDidMount() {
     const _this = this;
@@ -167,7 +158,7 @@ class _GridRaid extends Component {
       _this.refs.child.addUser(_this.currSelUser); //调用子组件在右侧显示人员列表
 
       let userId = -1;
-      _this.selPeopleArr.forEach(function (item, index) {
+      _this.selPeopleArr.forEach(function (item) {
         if (item.number == _this.currSelUser.key) {
           userId = item.id;
         }
@@ -183,14 +174,14 @@ class _GridRaid extends Component {
       });
 
       //创建一个Marker,标识执勤人员的位置
-      var marker = new qq.maps.Marker({
-        position: _this.state.searchArea.latLng,
-        map: this.TMap.map,
-        visible: true,
-        title: _this.currSelUser.key + '-' + _this.currSelUser.label,
-        icon: new qq.maps.MarkerImage(jc_path, new qq.maps.Size(48, 48))
-        //animation:qq.maps.MarkerAnimation.BOUNCE
-      });
+      // var marker = new qq.maps.Marker({
+      //   position: _this.state.searchArea.latLng,
+      //   map: this.TMap.map,
+      //   visible: true,
+      //   title: _this.currSelUser.key + '-' + _this.currSelUser.label,
+      //   icon: new qq.maps.MarkerImage(jc_path, new qq.maps.Size(48, 48))
+      //   //animation:qq.maps.MarkerAnimation.BOUNCE
+      // });
     };
 
     this.handleSelectPeopleCancel = function () {
@@ -201,6 +192,9 @@ class _GridRaid extends Component {
       userArea.areaNo = _this.state.searchArea.index; //搜索区域网格编号
       _this.currSelUser = userArea; //当前选中的人
     };
+  }
+  componentWillUnmount() {
+    clearTimeout(this.timmer);
   }
 
   //提交网格化搜索
@@ -233,7 +227,7 @@ class _GridRaid extends Component {
         });
         React.$ajax
           .postData('/api/cmdMonitor/saveGridTask', {...params})
-          .then((res) => {
+          .then(() => {
             message.success('发布成功！页面即将跳转...', 2, function () {
               history.push({pathname: '/app/monitoring/grid/list'});
             });
@@ -244,10 +238,6 @@ class _GridRaid extends Component {
       }
     });
   };
-
-  componentWillUnmount() {
-    clearTimeout(this.timmer);
-  }
 
   resetMapSearch = (parts) => {
     // 选择搜索半径 重新绘制搜索网格
@@ -289,7 +279,7 @@ class _GridRaid extends Component {
     //栅格填充已选人员
     const _this = this;
     const rectIndex = searchArea.index;
-    const {selectOne, selectPeoples, reportUserList, allPeoples, reactMarkers} = this.state;
+    const {selectOne, selectPeoples, reportUserList, allPeoples} = this.state;
     console.log(reportUserList);
 
     if (!_.isEmpty(selectOne)) {
@@ -297,7 +287,7 @@ class _GridRaid extends Component {
       // 同一个区域不能添加同一个人
       let isAddFlag = true;
       let hasMarker = false; //判断是否已生成marker
-      selectPeoples.forEach((item, index) => {
+      selectPeoples.forEach((item) => {
         // if(item.number==newSelectOne.number && item.index==newSelectOne.index){
         //     message.info('同一个区域不能添加同一个人!');
         //     isAddFlag=false;
@@ -316,7 +306,7 @@ class _GridRaid extends Component {
       selectPeoples.push(newSelectOne);
       //上报人员列表
       let isHase = true;
-      reportUserList.forEach((item, index) => {
+      reportUserList.forEach((item) => {
         if (item.number == newSelectOne.number) {
           isHase = false;
         }
@@ -327,7 +317,7 @@ class _GridRaid extends Component {
       console.log(reportUserList, 'reportUserList');
       // this.setState({selectOne: null}); //添加后清除所选人员
       this.setState({selectPeoples, reportUserList});
-      allPeoples.forEach((item, index) => {
+      allPeoples.forEach((item) => {
         // 可选列表隐藏已选人员
         if (item.id == selectOne.id) {
           item.hide = true;
@@ -433,7 +423,7 @@ class _GridRaid extends Component {
       .then((res) => {
         me.selPeopleArr = res.data; //保存到当前对象中,后面要获取这个用户的id
         const selPeopleOptions = [];
-        res.data.forEach((item, index) => {
+        res.data.forEach((item) => {
           selPeopleOptions.push(
             <Option key={item.id} value={item.number}>
               {item.name}
@@ -464,7 +454,7 @@ class _GridRaid extends Component {
   renderSelectNums = (id) => {
     //更新展示该人员已选次数
     let nums = 0;
-    const {selectPeoples, allPeoples} = this.state;
+    const {selectPeoples} = this.state;
     selectPeoples.forEach((item) => {
       if (item.id == id) {
         nums++;
@@ -480,7 +470,7 @@ class _GridRaid extends Component {
     console.log(item);
     let marker;
     let label;
-    const {selectPeoples, allPeoples} = this.state;
+    const {selectPeoples} = this.state;
     const filter_markerList = [];
     const filter_labelList = [];
     const filter_curReactMarkers = [];
@@ -493,7 +483,7 @@ class _GridRaid extends Component {
       isOnly = true;
     }
 
-    this.markerList.forEach((mItem, index) => {
+    this.markerList.forEach((mItem) => {
       // 对应的marker
       if (!marker && mItem.index == item.index) {
         marker = mItem;
@@ -502,7 +492,7 @@ class _GridRaid extends Component {
       }
     });
 
-    this.labelList.forEach((lItem, index) => {
+    this.labelList.forEach((lItem) => {
       //对应的marker下的label
       if (!label && lItem.index == item.index) {
         label = lItem;
@@ -511,20 +501,20 @@ class _GridRaid extends Component {
       }
     });
 
-    curReactMarkers.forEach((rItem, index) => {
+    curReactMarkers.forEach((rItem) => {
       //对应栅格里的人员
       if (rItem.id != item.id) {
         filter_curReactMarkers.push(rItem);
       }
     });
 
-    selectPeoples.forEach((sItem, index) => {
+    selectPeoples.forEach((sItem) => {
       // 删除选中的人员 & 删除上报人员
       let hasFind = false;
       if (item.id == sItem.id && item.index == sItem.index) {
         hasFind = true;
-        if (item.index) {
-        }
+        // if (item.index) {
+        // }
       }
       if (!hasFind) {
         filter_selectPeoples.push(sItem);
@@ -532,7 +522,8 @@ class _GridRaid extends Component {
     });
 
     const listHas = {}; //重组上报人员
-    filter_selectPeoples.forEach((item, index) => {
+    filter_selectPeoples.forEach((item) => {
+      // eslint-disable-next-line no-empty
       if (listHas[item.number]) {
       } else {
         filter_reportUserList.push(item);
@@ -573,13 +564,14 @@ class _GridRaid extends Component {
   };
   deleteSelectPeo = () => {
     //删除已选区域人员
+    // eslint-disable-next-line react/no-string-refs
     const GridUserInfoTable = this.refs.child;
     const {selectedRows} = GridUserInfoTable.state;
     let {selectPeoples, allPeoples} = this.state;
     //  debugger
     const filter_selectPeoples = [];
 
-    selectPeoples.forEach((item, index) => {
+    selectPeoples.forEach((item) => {
       // 删除选中的人员
       let hasFind = false;
       selectedRows.forEach((rowItem) => {
@@ -592,7 +584,7 @@ class _GridRaid extends Component {
         filter_selectPeoples.push(item);
       }
     });
-    allPeoples.forEach((allItem, index) => {
+    allPeoples.forEach((allItem) => {
       //可选人员列表展示删除人员
       selectedRows.forEach((rowItem) => {
         if (allItem.id == rowItem.id) {
@@ -604,7 +596,7 @@ class _GridRaid extends Component {
     this.setState({selectPeoples: filter_selectPeoples});
 
     const filter_markerList = [];
-    this.markerList.forEach((mItem, index) => {
+    this.markerList.forEach((mItem) => {
       // 删除地图标记
       let hasFind = false;
       selectedRows.forEach((rowItem) => {
@@ -622,7 +614,7 @@ class _GridRaid extends Component {
 
     const filter_labelList = [];
 
-    this.labelList.forEach((lItem, index) => {
+    this.labelList.forEach((lItem) => {
       let hasFind = false;
       selectedRows.forEach((rowItem) => {
         if (lItem.id == rowItem.id) {
@@ -649,7 +641,7 @@ class _GridRaid extends Component {
     this.labelList.forEach((t) => {
       t.setMap(null);
     });
-    allPeoples.forEach((item, index) => {
+    allPeoples.forEach((item) => {
       delete item.hide;
     });
     this.markerList = [];
@@ -688,7 +680,7 @@ class _GridRaid extends Component {
       React.$ajax
         .postData('/api/cmdMonitor/gridSearchSet')
         .then((res) => {
-          const radiusList = JSON.parse(res.data.pvalue.replace(/\'/g, '"'));
+          const radiusList = JSON.parse(res.data.pvalue.replace(/\\'/g, '"'));
           const radius = radiusList[0].radius;
           const parts = radiusList[0].parts;
           this.setState({radiusList: radiusList, radius: radius, parts: parts});
@@ -715,11 +707,10 @@ class _GridRaid extends Component {
   render() {
     // const { collapsed } = this.props.systomState;
     const collapsed = false;
-    const {getFieldProps, getFieldDecorator} = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     const {
       allPeopleH,
       allPeoples,
-      selectOne,
       selectPeoples,
       showAllPeo,
       allPeopleTop,
@@ -789,7 +780,6 @@ class _GridRaid extends Component {
                 返回
               </Tag>
             }
-            bordered
             style={{
               width: 360,
               position: 'absolute',
@@ -893,6 +883,7 @@ class _GridRaid extends Component {
                   contralDeleteBtn={(status) => {
                     this.setState({showDeleteBtn: status});
                   }}
+                  // eslint-disable-next-line react/no-string-refs
                   ref="child"
                 />
               </TabPane>
@@ -945,7 +936,6 @@ class _GridRaid extends Component {
             }}>
             <Card
               bordered={false}
-              bordered
               bodyStyle={{paddingTop: 0}}
               style={{width: 335, height: allPeopleH - 50, overflow: 'auto'}}>
               <div className="avator_card" style={{padding: 5}}>
@@ -1007,6 +997,7 @@ class _GridRaid extends Component {
               style={{width: 335, height: 50}}
               actions={[
                 <Radio.Button
+                  key={'large'}
                   onClick={() => {
                     this.setState({showAllPeo: false});
                   }}
@@ -1020,12 +1011,6 @@ class _GridRaid extends Component {
     );
   }
 }
-const mapStateToProps = (state) => ({
-  systomState: state.system
-});
-const mapDispatchToProps = (dispatch) => ({
-  systomActions: bindActionCreators(systomState, dispatch)
-});
 
 const GridRaid = connect()(_GridRaid);
 

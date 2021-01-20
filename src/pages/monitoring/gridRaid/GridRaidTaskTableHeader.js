@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Table, Button, Tag, Badge, Icon, Divider} from 'antd';
+import React from 'react';
+import {Button, Tag, Badge} from 'antd';
 import moment from 'moment';
 
 export const tableHeader = (callbackView) => {
@@ -46,9 +46,29 @@ export const tableHeader = (callbackView) => {
     },
     ,
     {
+      title: '任务状态',
+      dataIndex: 'taskStatus',
+      key: 'taskStatus',
+      render: (text) => {
+        return text == 0 ? (
+          <Tag style={{width: '80px', padding: '2px 0'}} color="#87d068">
+            未开始
+          </Tag>
+        ) : text == 3 ? (
+          <Tag style={{width: '80px', padding: '2px 0'}} color="#108ee9">
+            结束
+          </Tag>
+        ) : (
+          <Tag style={{width: '80px', padding: '2px 0'}} color="#f50">
+            进行中
+          </Tag>
+        );
+      }
+    },
+    {
       title: '发布人员',
-      dataIndex: 'operator',
-      key: 'operator',
+      dataIndex: 'publishUserName',
+      key: 'publishUserName',
       render: (text) => {
         return text || '--';
       }
@@ -57,7 +77,7 @@ export const tableHeader = (callbackView) => {
       title: '操作',
       dataIndex: 'key',
       key: 'key',
-      render: (id, record, index) => {
+      render: (id, record) => {
         return (
           <span>
             {/* <Link

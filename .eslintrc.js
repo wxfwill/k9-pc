@@ -9,7 +9,9 @@ module.exports = {
     process: true,
     $: true,
     qq: true,
-    __dirname: true
+    __dirname: true,
+    K9: true,
+    config: true
   },
   parser: 'babel-eslint',
   parserOptions: {
@@ -31,6 +33,7 @@ module.exports = {
     'no-console': 0, //不禁用console
     'no-debugger': 2, //禁用debugger
     'no-var': 0, //对var警告
+    'no-sparse-arrays': 0,
     // 'no-irregular-whitespace': 0, //不规则的空白不允许
     'no-trailing-spaces': 1, //一行结束后面有空格就发出警告
     // 'eol-last': 0, //文件以单一的换行符结束
@@ -52,7 +55,7 @@ module.exports = {
     'no-spaced-func': 2, //函数调用时 函数名与()之间不能有空格
     'no-this-before-super': 0, //在调用super()之前不能使用this或super
     'no-undef': 2, //不能有未定义的变量
-    'no-use-before-define': 2, //未定义前不能使用
+    'no-use-before-define': 0, //未定义前不能使用
     'react/display-name': 0, //防止在React组件定义中丢失displayName
     'react/forbid-prop-types': [2, {forbid: ['any']}], //禁止某些propTypes
     'react/jsx-boolean-value': 0, //在JSX中强制布尔属性符号

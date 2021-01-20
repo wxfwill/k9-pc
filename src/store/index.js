@@ -1,5 +1,5 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
-import createLogger from 'redux-logger';
+// import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 
 import loginReducer from './reducers/loginReducer';
@@ -11,7 +11,7 @@ import userReducer from './reducers/userReducer';
 import {persistStore, persistReducer} from 'redux-persist';
 // import storageSession from 'redux-persist/lib/storage/session';
 import storage from 'redux-persist/lib/storage';
-const logger = process.env.NODE_ENV == 'development' ? createLogger : '';
+// const logger = process.env.NODE_ENV == 'development' ? createLogger : '';
 const middleware = [thunk];
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

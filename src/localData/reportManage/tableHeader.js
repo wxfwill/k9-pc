@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button} from 'antd';
 
-export const tableHeaderLabel = (editCallback) => {
+export const tableHeaderLabel = () => {
   const data = [
     {
       title: '姓名',
@@ -11,14 +11,14 @@ export const tableHeaderLabel = (editCallback) => {
     {
       title: '任务开始时间',
       dataIndex: 'startTime',
-      render: (txt, record) => {
+      render: (txt) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
       }
     },
     {
       title: '任务结束时间',
       dataIndex: 'endTime',
-      render: (txt, record) => {
+      render: (txt) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
       }
     },
@@ -58,7 +58,7 @@ export const tableHeaderLabel = (editCallback) => {
   return data;
 };
 
-export const tableHeaderLabel1 = (editCallback) => {
+export const tableHeaderLabel1 = () => {
   const data = [
     {
       title: '姓名',
@@ -68,14 +68,15 @@ export const tableHeaderLabel1 = (editCallback) => {
     {
       title: '开始时间',
       dataIndex: 'startTime',
-      render: (txt, record) => {
+      render: (txt) => {
+        console.log(txt);
         return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
       }
     },
     {
       title: '结束时间',
       dataIndex: 'endTime',
-      render: (txt, record) => {
+      render: (txt) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
       }
     },
@@ -138,7 +139,7 @@ export const ownTableHeaderDetal = [
   {
     title: '任务时间',
     dataIndex: 'repTime',
-    render: (txt, record) => {
+    render: (txt) => {
       return util.formatDate(new Date(txt), 'yyyy-MM-dd');
     }
   },
@@ -170,21 +171,21 @@ export const teamTableHeaderDetal = [
   {
     title: '队员姓名',
     dataIndex: 'userNames',
-    render: (txt, record) => {
+    render: (txt) => {
       return txt.join('、');
     }
   },
   {
     title: '任务时间',
     dataIndex: 'repTime',
-    render: (txt, record) => {
+    render: (txt) => {
       return util.formatDate(new Date(txt), 'yyyy-MM-dd');
     }
   },
   {
     title: '任务类型',
     dataIndex: 'category',
-    render: (txt, record) => {
+    render: (txt) => {
       return txt.join();
     }
   },
@@ -213,7 +214,7 @@ export const dailyInformationDetal = [
   {
     title: '汇报时间',
     dataIndex: 'repTime',
-    render: (txt, record) => {
+    render: (txt) => {
       return txt ? util.formatDate(new Date(txt), 'yyyy-MM-dd') : '';
     }
   },
@@ -259,7 +260,7 @@ export const leaveInformationDetal = (editCallback) => {
     {
       title: '申请时间',
       dataIndex: 'leaveDate',
-      render: (txt, row, index) => {
+      render: (txt) => {
         return txt ? util.formatDate(new Date(txt), 'yyyy-MM-dd') : '--';
       }
     },
@@ -271,7 +272,7 @@ export const leaveInformationDetal = (editCallback) => {
     {
       title: '请假开始时间',
       dataIndex: 'startDate',
-      render: (txt, row, index) => {
+      render: (txt) => {
         //return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
         return txt ? util.formatDate(new Date(txt), 'yyyy-MM-dd') : '--';
       }
@@ -279,7 +280,7 @@ export const leaveInformationDetal = (editCallback) => {
     {
       title: '请假结束时间',
       dataIndex: 'endDate',
-      render: (txt, row, index) => {
+      render: (txt) => {
         //return util.formatDate(new Date(txt), 'yyyy-MM-dd hh:mm:ss');
         return txt ? util.formatDate(new Date(txt), 'yyyy-MM-dd') : '--';
       }
@@ -292,7 +293,7 @@ export const leaveInformationDetal = (editCallback) => {
     {
       title: '请假时长',
       dataIndex: 'leaveHours',
-      render: (txt, row, index) => {
+      render: (txt) => {
         return txt ? txt + '小时' : '--';
       }
     },
@@ -308,7 +309,7 @@ export const leaveInformationDetal = (editCallback) => {
     {
       title: '审批状态',
       dataIndex: 'approvalState',
-      render: (txt, recode, index) => {
+      render: (txt) => {
         return txt && txt.split('-')[1];
       }
     },
@@ -323,7 +324,7 @@ export const leaveInformationDetal = (editCallback) => {
     {
       title: '操作',
       dataIndex: 'option',
-      render: (txt, record, index) => {
+      render: (txt, record) => {
         return record.repStatus == 'error' ? (
           <Button type="primary" size="small" onClick={() => editCallback && editCallback(record)}>
             编辑
@@ -382,7 +383,7 @@ export const AwardInformationDetal = (editCallback) => {
     {
       title: '完成时间',
       dataIndex: 'completeDate',
-      render: (txt, row, index) => {
+      render: (txt) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd');
       }
     },
@@ -401,7 +402,7 @@ export const AwardInformationDetal = (editCallback) => {
     {
       title: '审批时间',
       dataIndex: 'approvalDate',
-      render: (txt, row, index) => {
+      render: (txt) => {
         return util.formatDate(new Date(txt), 'yyyy-MM-dd');
       }
     },
@@ -412,7 +413,7 @@ export const AwardInformationDetal = (editCallback) => {
     {
       title: '操作',
       dataIndex: 'option',
-      render: (txt, record, index) => {
+      render: (txt, record) => {
         return record.repStatus == 'error' ? (
           <Button type="primary" size="small" onClick={() => editCallback && editCallback(record)}>
             编辑
