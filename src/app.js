@@ -36,8 +36,6 @@ React.$ajax = api;
 React.httpAjax = httpAjax;
 React.store = store;
 require('style/App.less');
-// require('normalize.css');
-
 // 打印
 require('libs/util/print');
 

@@ -27,6 +27,7 @@ class MainComponent extends React.Component {
       differTime = new Date().getTime() - beginTime;
       if (differTime <= 3) {
         // 关闭
+        _this.props.socket.close();
         _this.props.changeRouteAction('/app/index');
         _this.props.tokenAction(null);
       } else {
@@ -81,7 +82,8 @@ const mapStateToProps = (state) => ({
   navData: state.commonReducer.navData,
   routeUrl: state.commonReducer.routeUrl,
   menus: state.loginReducer.menuList,
-  isShowGridMap: state.commonReducer.isShowGridMap
+  isShowGridMap: state.commonReducer.isShowGridMap,
+  socket: state.commonReducer.socket
 });
 const mapDispatchToProps = (dispatch) => ({
   isCollapsedAction: () => dispatch(showNavCollapsed()),

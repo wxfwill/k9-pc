@@ -461,7 +461,15 @@ class GridMap extends Component {
                         <div className="user" key={index}>
                           <Checkbox onChange={(e) => this.handleItemEle(e, item)} checked={item.checked}>
                             <div className="user-list">
-                              <img src={require('images/one.jpg')} alt="user" className="user" />
+                              <img
+                                src={
+                                  item.photo
+                                    ? `${process.env.BASE_URL}/api/user/showImg?fileName=${item.photo}`
+                                    : require('images/one.jpg')
+                                }
+                                alt="user"
+                                className="user"
+                              />
                               <div className="user-con">
                                 <p className="desc">
                                   <span className="name">
