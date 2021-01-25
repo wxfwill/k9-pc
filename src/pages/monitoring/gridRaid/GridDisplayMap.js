@@ -63,7 +63,7 @@ class GridMap extends Component {
     }
   }
   handleOnMessage = (data) => {
-    console.log('消息来了额');
+    console.log('消息来了');
     console.log(data);
     let resData = data;
     // 已有轨迹

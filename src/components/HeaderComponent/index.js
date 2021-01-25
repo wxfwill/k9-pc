@@ -116,7 +116,7 @@ class HeaderComponent extends Component {
         React.$ajax.postData('/api/userCenter/logout').then((res) => {
           if (res.code == 0) {
             hide();
-            this.props.socket.close();
+            this.props.socke && this.props.socket.close();
             this.props.changeRouteAction('/app/index');
             this.props.tokenAction(null);
             this.props.history.push('/login');

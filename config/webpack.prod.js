@@ -98,7 +98,8 @@ module.exports = merge(common, {
       'process.env.BASE_URL': '"' + process.env.BASE_URL + '"',
       'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV),
       'process.env.BASE_WEB_URL': JSON.stringify(process.env.BASE_WEB_URL),
-      'process.env.BASE_WS': JSON.stringify(process.env.BASE_WS)
+      'process.env.BASE_WS': JSON.stringify(process.env.BASE_WS),
+      'process.env.BASE_INFO': `${process.env.BASE_INFO}`
     }),
     // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/)

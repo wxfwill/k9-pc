@@ -1,28 +1,28 @@
 import React from 'react';
-import {Button, Tag, Badge} from 'antd';
+import {Button, Tag} from 'antd';
 import moment from 'moment';
 
 export const tableHeader = (callbackView) => {
   const columns = [
-    {
-      title: '序号',
-      dataIndex: 'id',
-      key: 'id',
-      render: (id) => {
-        return (
-          <Badge
-            count={id}
-            style={{
-              minWidth: '50px',
-              fontSize: '12px',
-              height: '16px',
-              lineHeight: '16px',
-              backgroundColor: '#99a9bf'
-            }}
-          />
-        );
-      }
-    },
+    // {
+    //   title: '序号',
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   render: (id) => {
+    //     return (
+    //       <Badge
+    //         count={id}
+    //         style={{
+    //           minWidth: '50px',
+    //           fontSize: '12px',
+    //           height: '16px',
+    //           lineHeight: '16px',
+    //           backgroundColor: '#99a9bf'
+    //         }}
+    //       />
+    //     );
+    //   }
+    // },
     {
       title: '任务名称',
       dataIndex: 'taskName',
