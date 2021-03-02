@@ -65,6 +65,7 @@ class GridMap extends Component {
   handleOnMessage = (data) => {
     console.log('消息来了');
     console.log(data);
+    let {checkedList} = this.state;
     let resData = data;
     // 已有轨迹
     if (resData && resData.code == 0 && resData.serviceCode == 'queryGridHuntingLocation') {
@@ -80,7 +81,9 @@ class GridMap extends Component {
       let resArr = resData.data;
       if (resArr && resArr.length > 0) {
         resArr.map((item) => {
-          this.updateTrackLine(this.state.map, item.userName, item.tracks);
+          if (checkedList.includes(item.id)) {
+            this.updateTrackLine(this.state.map, item.userName, item.tracks);
+          }
         });
       }
     }
@@ -163,6 +166,7 @@ class GridMap extends Component {
       });
       this.setState({dropList: areaArr, checkedList: defauleCheckList}, () => {
         let {checkedList} = this.state;
+        console.log(checkedList);
         this.setState({
           indeterminate: !!checkedList.length && checkedList.length < this.state.allAreaUser.length,
           checkAll: checkedList.length === this.state.allAreaUser.length
@@ -173,17 +177,29 @@ class GridMap extends Component {
   // 添加多人轨迹
   addTrackLine = (map, data) => {
     let trArr = [];
+    console.log(data);
+    console.log(this.state.checkedList);
+    let {checkedList} = this.state;
     if (data && data.length > 0) {
       data.map((item) => {
-        trArr.push({
-          name: item.userName,
-          paths: this.formatLatIng(item.tracks),
-          color: item.userType == 1 ? '#FF8226' : item.userType == 2 ? '#35C58B' : '#FF8226',
-          lineWidth: 3
-        });
+        if (checkedList.includes(item.id)) {
+          trArr.push({
+            name: item.userName,
+            paths: this.formatLatIng(item.tracks),
+            color: item.userType == 1 ? '#FF8226' : item.userType == 2 ? '#35C58B' : '#FF8226',
+            lineWidth: 3
+          });
+        }
       });
+      // data.map((item) => {
+      //   trArr.push({
+      //     name: item.userName,
+      //     paths: this.formatLatIng(item.tracks),
+      //     color: item.userType == 1 ? '#FF8226' : item.userType == 2 ? '#35C58B' : '#FF8226',
+      //     lineWidth: 3
+      //   });
+      // });
     }
-    console.log(trArr);
     map.addTracks(trArr);
   };
   //添加1个人的轨迹
@@ -313,24 +329,28 @@ class GridMap extends Component {
   };
   onCheckAllChange = (e) => {
     console.log(e);
-    // const arr = [];
+    let arr = [];
     let {allAreaUser, existTrack} = this.state;
+    console.log(existTrack);
     if (e.target.checked) {
       allAreaUser.map((item) => {
-        // arr.push(item.userTaskId);
+        arr.push(item.userTaskId);
         item.checked = true;
       });
-      this.addTrackLine(this.state.map, existTrack);
+      this.setState({checkedList: arr}, () => {
+        this.addTrackLine(this.state.map, existTrack);
+      });
     } else {
       allAreaUser.map((item) => {
         item.checked = false;
       });
+      arr = [];
       this.state.map.removeTrack();
     }
 
     this.setState({
       allAreaUser,
-      // checkedList: e.target.checked ? arr : [],
+      checkedList: e.target.checked ? arr : [],
       indeterminate: false,
       checkAll: e.target.checked
     });
@@ -365,6 +385,7 @@ class GridMap extends Component {
       indeterminate: !!checkedList.length && checkedList.length < this.state.allAreaUser.length,
       checkAll: checkedList.length === this.state.allAreaUser.length
     });
+    console.log(this.state.checkedList);
   };
   queryGroupUser = util.Debounce(
     (keyword) => {
