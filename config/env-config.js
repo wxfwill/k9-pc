@@ -1,7 +1,7 @@
 const ENV_LIST = [
   {
     envName: 'local', // 本地
-    apiUrl: 'http://172.16.121.137:8030',
+    apiUrl: 'http://k9pc.hcfdev.cn',
     webUrl: 'http://localhost:8001',
     wsUrl: 'ws://172.16.121.137:8030'
   },

@@ -168,11 +168,11 @@ class HeaderComponent extends Component {
             <Icon type="download" /> app端
           </span>
         </Menu.Item>
-        <Menu.Item key="IM">
+        {/* <Menu.Item key="IM">
           <span style={{cursor: 'pointer'}}>
             <Icon type="download" /> IM
           </span>
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item key="changePassword">
           <span style={{cursor: 'pointer'}}>
             <Icon type="edit" /> 修改密码
