@@ -29,7 +29,31 @@ class GridMap extends Component {
       indeterminate: true,
       checkAll: false,
       dropList: [],
+      layerType: [
+        {
+          name: '高德矢量地图',
+          key: 'gao1'
+        },
+        {
+          name: '高德卫星地图',
+          key: 'gao2'
+        },
+        {
+          name: 'OCM地图',
+          key: 'ocm1'
+        },
+        {
+          name: 'OCM+Landscape',
+          key: 'ocm2'
+        },
+        {
+          name: '天地图',
+          key: 'mapTianditu'
+        }
+      ],
       selectName: '全部区域',
+      selectLayerTpye: '图层类型',
+      defaultKey: ['gao1'],
       selecId: '',
       taskPoint: [], // 初始化任务点
       allAreaUser: [], // 区域人员
@@ -107,6 +131,8 @@ class GridMap extends Component {
               let obj1 = Object.assign({}, this.state.wsPar, {
                 taskId: util.urlParse(this.props.location.search).taskId
               });
+              // 默认图层
+              this.selectLayer(this.state.layerType[0]);
               this.setState({wsPar: obj1}, () => {
                 let {wsPar} = this.state;
                 // 发送
@@ -117,6 +143,12 @@ class GridMap extends Component {
         );
       }
     });
+  };
+  // 图层
+  selectLayer = (item) => {
+    if (!item) return;
+    this.setState({selectLayerTpye: item.name || item.item.props.name});
+    this.state.map[item.key]();
   };
   // 格式化经纬度坐标
   formatLatIng = (data) => {
@@ -303,6 +335,19 @@ class GridMap extends Component {
       });
     }
   };
+  dorpLayer = () => {
+    return this.state.layerType && this.state.layerType.length > 0 ? (
+      <Menu onClick={this.selectLayer} selectable defaultSelectedKeys={this.state.defaultKey}>
+        {this.state.layerType.map((item) => {
+          return (
+            <Menu.Item key={item.key} name={item.name}>
+              <span className="cursor">{item.name}</span>
+            </Menu.Item>
+          );
+        })}
+      </Menu>
+    ) : null;
+  };
   dropMenu = () => {
     return this.state.dropList && this.state.dropList.length > 0 ? (
       <Menu onClick={this.handleDrop} selectable>
@@ -451,6 +496,12 @@ class GridMap extends Component {
             <div className="leftMap" id="rootMap"></div>
             <div className="rightOption">
               <div className="dropdown-wrap">
+                <Dropdown overlay={this.dorpLayer()} trigger={['click']} placement="bottomCenter">
+                  <span className="cursor layer">
+                    <i className="text">{this.state.selectLayerTpye}</i>
+                    <Icon type="down" />
+                  </span>
+                </Dropdown>
                 <Dropdown overlay={this.dropMenu()} trigger={['click']} placement="bottomCenter">
                   <span className="cursor">
                     <i className="text">{this.state.selectName}</i>
